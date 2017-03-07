@@ -1,0 +1,49 @@
+[
+  {
+    "pin": {
+      "location": {
+        "lat": 49.306168,
+        "lon": -122.783516
+      },
+      "id": 1,
+      "company_id": 1,
+      "title": "Software Engineer",
+      "kind": "internship",
+      "link": "some_link",
+      "company": "Home Inc.",
+      "search_text": "software engineer javascript front-end"
+    }
+  },
+
+  {
+    "pin": {
+      "location": {
+        "lat": 49.198215,
+        "lon": -123.007668
+      },
+      "id": 2,
+      "company_id": 2,
+      "title": "Manufacturing Engineer",
+      "kind": "senior",
+      "link": "some_link",
+      "company": "Ballard Power Systems",
+      "search_text": "mechanical engineer manufacturing sustainability"
+    }
+  },
+
+  {
+    "pin": {
+      "location": {
+        "lat": 49.259695,
+        "lon": -123.255181
+      },
+      "id": 3,
+      "company_id": 3,
+      "title": "Research Engineer",
+      "kind": "junior",
+      "link": "some_link",
+      "company": "NCIS Facility - UBC",
+      "search_text": "electrical engineer R&D instrumentation"
+    }
+  }
+]

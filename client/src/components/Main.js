@@ -19,7 +19,7 @@ class App extends React.Component {
   }
 
   validateAuth(nextState, replace, callPage) {
-    replace('/login');
+    // replace('/login');
     callPage();
 
     // console.log("inside validateAuth");
