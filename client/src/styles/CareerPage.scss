@@ -1,0 +1,43 @@
+.career-page {
+  background-color: #f5f5f5; padding: 0 $default_margin $default_margin $default_margin; min-height: 100vh; overflow: auto;
+
+  .main-container {
+    padding: $top_margin $default_margin $default_margin 270px; width: 75%; min-width: 310px; display: inline-block; margin: auto; vertical-align: top;
+    .header {
+      background-color: $dark-blue; color: white; padding: 5px; font-weight: bold; margin-bottom: $default_margin / 2; overflow: hidden;
+      .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; }
+    }
+
+    .page-msg {
+      font-size: 16px; text-align: center;
+      .fa, .sr-only { font-size: 16px; padding: 3px }
+    }
+
+    .career-rows {
+      .job-row {
+        background-color: white; padding: $default_margin/2; margin-top: $default_margin/2; border: 1px darken(#f5f5f5, 20%) solid;
+        .button {  height: 100%; font-size: 10px; color: $dark-blue; float: right; }
+        .tag { margin: 3px; background-color: $light-blue; color: white; font-weight: bold; }
+        .fa {
+          font-size: 14px; cursor: pointer; vertical-align: middle; margin-left: 10px;
+          &:hover { transform: scale(1.1); }
+        }
+        .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
+        small a { color: $dark-blue; &:hover { color: $pumpkin; } }
+      }
+    }
+  }
+  .hamburger { display: none; }
+  .control-bar {
+    display: inline-block; margin-top: $top_margin; width: 250px; float: left; position: fixed; height: calc(100vh - 50px - 30px); overflow: scroll;
+    .card-content {
+      .geo-criteria .control { display: inline-block; max-width: 110px; padding-right: 5px; }
+      .categories.control .checkbox { padding-right: 10px; }
+      .button { width: 100%; background-color: $dark-blue; }
+      .tag { margin: 3px; cursor: pointer; background-color: $light-blue; color: white; font-weight: bold; }
+    }
+  }
+
+}
+
+

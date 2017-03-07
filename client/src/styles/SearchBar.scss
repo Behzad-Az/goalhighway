@@ -1,0 +1,24 @@
+.search-bar-container {
+  width: 100%; margin: 0 auto 10px; min-width: 360px; padding: 0 0 0 0; background-color: #f5f5f5;
+  position: relative;
+  .search-bar {
+    :active, :focus { border-color: $dark-blue; }
+    &.control { margin-bottom: 0; }
+    .icon { color: $dark-blue; }
+    &.results {
+      border: 1px $dark-blue solid; background-color: white; position: absolute; left: 0; right: 0;
+      padding: 5px; display: none; z-index: 1;
+      p {
+        :hover { color: $pumpkin; }
+        padding: 0 10px;
+        a {
+          color: $dark-blue; font-size: 16px; line-height: 32px;
+          i { line-height: 32px; }
+          span { padding-left: 10px; }
+        }
+      }
+      &.is-enabled { display: block; }
+    }
+  }
+  .control.has-icon:not(.has-icon-right) .input.is-medium + .icon { z-index: 0; }
+}

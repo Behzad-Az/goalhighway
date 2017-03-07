@@ -1,0 +1,41 @@
+.register-login-page {
+  background-image: url(../images/background-04.png);
+  background-size: cover;
+  min-height: 100vh;
+  overflow: auto;
+
+  .nav.login {
+    height: 60px; background-color: #f5f5f5;
+    .container {
+      max-width: 100%;
+      .nav-item {
+        padding: 0 20px;
+        &.credentials {
+          width: 400px;
+          .credential {
+            margin: auto; padding-right: 10px; display: inline;
+            .label { text-align: left; margin: 0; font-size: 12px; color: $dark-blue; }
+            .input { max-height: 30px; border-color: $dark-blue; font-size: 12px; }
+          }
+          .button { max-height: 30px; margin-top: 20px; background-color: $dark-blue; color: white; font-style: bold; }
+        }
+      }
+    }
+  }
+
+  .message {
+    padding-left: calc(100% - 360px); padding-bottom: $default_margin/2; margin: 0; background-color: transparent;
+    &.is-danger .message-body { background-color: #fff5f7; }
+    &.is-success .message-body { background-color: #f6fef9; }
+  }
+
+  .main-container {
+    padding: $default_margin/2 $default_margin;
+    .card {
+      display: inline-block; float: right; width: 360px; background-color: #f5f5f5; border-radius: 5px;
+      .card-content .control .input { border-color: #ccc; }
+      a { color: $dark-blue; font-weight: bold; }
+    }
+  }
+
+}

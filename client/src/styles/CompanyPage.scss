@@ -1,0 +1,60 @@
+.company-page {
+  background-color: #f5f5f5; padding: 0 20px 20px 20px; min-height: 100vh; overflow: auto;
+
+  .main-container {
+    padding: $top_margin $default_margin; width: 60%; min-width: 360px; display: inline-block; margin: auto;
+
+    .header {
+      background-color: $dark-blue; color: white; padding: 8px; font-weight: bold; margin-bottom: 20px; overflow: hidden;
+      border-radius: 10px;
+      .fa { float: right; }
+      .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; }
+      .button:hover, .button.is-hovered { font-weight: bold }
+      a { color: white; font-weight: bold; :hover { color: $peach; } }
+    }
+
+    .page-msg {
+      font-size: 16px; text-align: center;
+      .fa, .sr-only { font-size: 16px; padding: 3px }
+    }
+
+    .top-row .row-container {
+      margin-bottom: $default_margin;
+      .top-row-button {
+        display: inline-block; width: 50%; text-align: center;
+        .fa { cursor: pointer; font-size: 35px; &:hover { transform: scale(1.1); } }
+        .fa.disabled { pointer-events: none; cursor: default; opacity: 0.5 }
+        p { font-size: 13px; }
+      }
+    }
+
+    .job-rows {
+      .job-row {
+        background-color: white; padding: $default_margin/2; margin: $default_margin/2 0; border: 1px darken(#f5f5f5, 20%) solid;
+        .tag { margin: 3px; background-color: $light-blue; color: white; font-weight: bold; }
+        .fa {
+          font-size: 14px; cursor: pointer; vertical-align: middle; margin-left: 10px;
+          &:hover { transform: scale(1.1); }
+        }
+        .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
+        small a { color: $dark-blue; &:hover { color: $pumpkin; } }
+      }
+    }
+
+    .qa-rows .qa-row {
+      background-color: white; padding: $default_margin/2; margin-top: $default_margin/2; border: 1px darken(#f5f5f5, 20%) solid;
+      .button.new-answer {  height: 100%; font-size: 10px; color: $dark-blue; }
+      .tag { margin: 3px; background-color: $light-blue; color: white; font-weight: bold; }
+      .fa {
+        font-size: 14px; cursor: pointer; vertical-align: middle; margin-left: 10px;
+        &:hover { transform: scale(1.1); }
+      }
+      .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
+      small a { color: $dark-blue; &:hover { color: $pumpkin; } }
+      .date.top-right { float: right; }
+    }
+
+  }
+
+}
+

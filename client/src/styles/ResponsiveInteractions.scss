@@ -1,0 +1,26 @@
+$side_hamburger_width: 40px;
+
+@media screen and (max-width: 1000px) {
+  .side-bar {
+    padding: none !important;
+    display: none;
+  }
+  .index-page, .inst-page, .course-page, .doc-page, .course-review-page, .profile-page, .company-page {
+    .main-container { display: block; width: 100%; padding: $top_margin 1px; }
+  }
+
+  .career-page {
+    .main-container { display: inline-block; width: 100%; padding: $top_margin 0px $default_margin $side_hamburger_width+10px; }
+    .hamburger {
+      display: inline-block; width: $side_hamburger_width;
+      background-color: $dark-blue; height: calc(100vh - 50px - 30px); margin-top: $top_margin;
+      float: left; position: fixed; cursor: pointer; :hover { transform: scale(1.1); }
+      .fa { margin: auto; display: block; margin: 5px; font-size: 30px; color: white; }
+    }
+    .control-bar { display: none; }
+    .control-bar.is-enabled { display: inline-block; position: fixed; margin-left: $side_hamburger_width; width: 250px; z-index: 1; }
+  }
+
+}
+
+

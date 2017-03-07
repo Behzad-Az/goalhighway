@@ -1,0 +1,21 @@
+.side-bar {
+  display: inline-block; margin-top: $top_margin;
+  .card-content { padding: 15px; }
+  &.right { float: right; width: 25%; }
+  &.left { float: left; width: 15%; }
+  .image {
+    &.is-4by3 img { height: 100%; width: auto; padding: 5px; margin: auto; }
+    &.inst-logo img { width: 40px; }
+  }
+  .button.edit { position: absolute; right: 5px; top: 5px; font-size: 12px; }
+  .fa { font-size: 16px; }
+
+  .feed-container {
+    .filter-feed-controls .filter.control {
+        margin: 0; min-width: 25%; max-width: 25%;
+        input { display: block; margin: auto; }
+        .checkbox { text-align: center; display: block; }
+    }
+    hr { margin: 0 0 20px 0; }
+  }
+}
