@@ -1,4 +1,4 @@
-npm install babel-core@6.0.0 babel-eslint@6.0.0 babel-loader@6.0.0 babel-polyfill@6.3.14 babel-preset-es2015@6.0.15 babel-preset-react@6.0.15 babel-preset-stage-0@6.5.0 bower-webpack-plugin@0.1.9 -D
+<!-- npm install babel-core@6.0.0 babel-eslint@6.0.0 babel-loader@6.0.0 babel-polyfill@6.3.14 babel-preset-es2015@6.0.15 babel-preset-react@6.0.15 babel-preset-stage-0@6.5.0 bower-webpack-plugin@0.1.9 -D
 
 npm install chai@3.2.0 copyfiles@1.0.0 css-loader@0.23.1 eslint@3.0.0 eslint-loader@1.0.0 eslint-plugin-react@6.0.0 file-loader@0.9.0 glob@7.0.0 isparta-instrumenter-loader@1.0.0 -D
 
@@ -8,7 +8,7 @@ npm install minimist@1.2.0 mocha@3.0.0 node-sass@4.5.0 null-loader@0.1.1 open@0.
 
 npm install sass-loader@6.0.2 style-loader@0.13.2 url-loader@0.5.6 webpack@1.12.0 webpack-dev-server@1.12.0 -D
 
-npm install core-js@2.0.0 normalize.css@4.0.0 react@15.4.2 react-addons-css-transition-group@15.4.2 react-alert@1.0.14 react-autosuggest@9.0.0 react-dom@15.4.2 react-router@3.0.0 react-select@1.0.0-rc.2 --save
+npm install core-js@2.0.0 normalize.css@4.0.0 react@15.4.2 react-addons-css-transition-group@15.4.2 react-alert@1.0.14 react-autosuggest@9.0.0 react-dom@15.4.2 react-router@3.0.0 react-select@1.0.0-rc.2 --save -->
 
 
 

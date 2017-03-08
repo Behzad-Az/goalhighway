@@ -16,13 +16,13 @@ const postLogin = (req, res, knex, bcrypt) => {
     currUser = user;
     return verifyPwd(password, currUser[0].password);
   }).then(valid => {
+    console.log("i'm here 8: ", valid);
     if (valid) {
       req.session.username = username;
       req.session.user_id = currUser[0].id;
       req.session.inst_prog_id = currUser[0].inst_prog_id;
       req.session.inst_id = currUser[0].inst_id;
       req.session.prog_id = currUser[0].prog_id;
-      console.log("i'm here 6.0: ", req.session);
       res.send(true);
     } else {
       throw "Error inside postLogin.js: invalid username and password";

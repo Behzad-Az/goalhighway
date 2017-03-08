@@ -7,7 +7,9 @@ const express = require('express');
 const url = require('url');
 const app = express();
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
+// const bcryptNodeJs = require('bcryptNodeJs');
+const bcryptJs = require('bcryptjs');
 const session = require('express-session');
 const connection = require('./db/knexfile.js').development;
 const knex = require('knex')(connection);
@@ -235,7 +237,7 @@ app.post('/api/institutions', (req, res) => {
 });
 
 app.post('/api/register', (req, res) => {
-  postNewUser(req, res, knex, bcrypt, esClient);
+  postNewUser(req, res, knex, bcryptJs, esClient);
 });
 
 app.post('/api/searchbar', (req, res) => {
@@ -287,7 +289,7 @@ app.post('/api/courses/:course_id/items/:item_id', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-  postLogin(req, res, knex, bcrypt);
+  postLogin(req, res, knex, bcryptJs);
 });
 
 
