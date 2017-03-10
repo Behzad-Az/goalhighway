@@ -30,12 +30,14 @@ npm install core-js normalize.css react react-addons-css-transition-group react-
 
 server {
     listen 80;
-    server_name goalhwy.com;
-    # root /www/goalhighway-03/dist;
-    # index index.html index.htm;
+    listen [::]:80 default_server ipv6only=on;
+    server_name localhost;
+    root /home/behzad/app/client/dist;
+    index index.html index.htm;
     location / {
-        root /www/goalhighway-03/dist;
-        index index.html index.htm;
         try_files $uri $uri/ /index.html;
+    }
+    location /api/ {
+        proxy_pass http://127.0.0.1:19001;
     }
 }
