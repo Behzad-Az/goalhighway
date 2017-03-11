@@ -15,18 +15,17 @@ class RevisionRow extends Component {
     this.renderFlagSelect = this.renderFlagSelect.bind(this);
   }
 
-  handleRevisionRequest(e) {
-    $.ajax({
+  handleRevisionRequest() {
+    fetch(`/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}/revisions/${this.props.rev.id}`, {
       method: 'GET',
-      url: `/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}/revisions/${this.props.rev.id}`,
-      dataType: 'JSON',
-      success: response => {
-        response[0] ? console.log("printing revision response 0: ", response) : console.error("server error - 0", response);
-      }
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => resJSON[0] ? console.log("printing revision resJSON 0: ", resJSON) : console.error("server error - 0", resJSON))
+    .catch(err => console.error("server error - 0", resJSON));
   }
 
-  handleDeletionRequest(e) {
+  handleDeletionRequest() {
     $.ajax({
       method: 'DELETE',
       url: `/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}/revisions/${this.props.rev.id}`,

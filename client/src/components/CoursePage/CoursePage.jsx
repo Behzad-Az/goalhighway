@@ -46,24 +46,25 @@ class CoursePage extends Component {
 
   loadComponentData(courseId) {
     courseId = courseId || this.state.courseInfo.id;
-    $.ajax({
+    fetch(`/api/courses/${courseId}`, {
       method: 'GET',
-      url: `/api/courses/${courseId}`,
-      dataType: 'JSON',
-      success: response => this.conditionData(response)
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(response) {
-    if (response) {
+  conditionData(resJSON) {
+    if (resJSON) {
       let filterDocs = (docs, docType) => docs.filter(doc => doc.type === docType);
       let newState = {
-        courseInfo: response.courseInfo,
-        courseFeed: response.courseFeed,
-        itemsForSale: response.itemsForSale,
-        sampleQuestions: filterDocs(response.docs, 'sample_question'),
-        asgReports: filterDocs(response.docs, 'asg_report'),
-        lectureNotes: filterDocs(response.docs, 'lecture_note'),
+        courseInfo: resJSON.courseInfo,
+        courseFeed: resJSON.courseFeed,
+        itemsForSale: resJSON.itemsForSale,
+        sampleQuestions: filterDocs(resJSON.docs, 'sample_question'),
+        asgReports: filterDocs(resJSON.docs, 'asg_report'),
+        lectureNotes: filterDocs(resJSON.docs, 'lecture_note'),
         dataLoaded: true
       };
       this.setState(newState);

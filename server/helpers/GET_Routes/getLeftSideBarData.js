@@ -1,12 +1,12 @@
 const getLeftSideBarData = (req, res, knex, user_id) => {
   let userInfo, progName, instName, contributionCount;
 
-  const getUserInfo = () => knex('users').select('username', 'user_created_at').where('id', req.session.user_id);
+  const getUserInfo = () => knex('users').select('username', 'user_created_at').where('id', user_id);
   const getProgName = () => knex('programs').select('prog_long_name').where('id', req.session.prog_id);
   const getInstName = () => knex('institutions').select('inst_long_name').where('id', req.session.inst_id);
-  const getRevCount = () => knex('revisions').where('user_id', req.session.user_id).count('id');
-  const getItemCount = () => knex('items_for_sale').where('owner_id', req.session.user_id).count('id');
-  const getCourseReviewCount = () => knex('course_reviews').where('reviewer_id', req.session.user_id).count('id');
+  const getRevCount = () => knex('revisions').where('user_id', user_id).count('id');
+  const getItemCount = () => knex('items_for_sale').where('owner_id', user_id).count('id');
+  const getCourseReviewCount = () => knex('course_reviews').where('reviewer_id', user_id).count('id');
 
   Promise.all([
     getUserInfo(),

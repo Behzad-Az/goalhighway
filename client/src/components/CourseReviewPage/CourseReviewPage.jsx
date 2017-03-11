@@ -31,18 +31,19 @@ class CourseReviewPage extends Component {
   }
 
   loadComponentData() {
-    $.ajax({
+    fetch(`/api/courses/${this.courseId}/reviews`, {
       method: 'GET',
-      url: `/api/courses/${this.courseId}/reviews`,
-      dataType: 'JSON',
-      success: response => this.conditionData(response)
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(response) {
-    if (response) {
-      response.dataLoaded = true;
-      this.setState(response);
+  conditionData(resJSON) {
+    if (resJSON) {
+      resJSON.dataLoaded = true;
+      this.setState(resJSON);
     } else {
       this.setState({ dataLoaded: true, pageError: true });
     }

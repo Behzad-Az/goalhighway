@@ -24,7 +24,6 @@ class Login extends Component {
       url: '/api/login',
       data: this.state,
       success: response => {
-        console.log("i'm here 3: ", response);
         response ? browserHistory.push("/home") : this.props.handleBadInput(true, 'Invalid login credentials.');
       }
     });

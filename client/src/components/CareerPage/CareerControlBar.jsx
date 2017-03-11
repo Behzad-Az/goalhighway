@@ -8,6 +8,7 @@ class CareerControlBar extends Component {
     this.preferenceTags = ['aerospace', 'automation', 'automotive', 'design', 'electrical', 'energy', 'engineer', 'instrumentation', 'manufacturing', 'mechanical', 'military', 'mining', 'naval', 'programming', 'project-management', 'QA/QC', 'R&D', 'robotics', 'software'];
     this.reactAlert = new ReactAlert();
     this.state = {
+      dataLoaded: false,
       username: '',
       postalCode: '',
       jobDistance: '',
@@ -26,42 +27,45 @@ class CareerControlBar extends Component {
   }
 
   componentDidMount() {
-    $.ajax({
+    fetch('/api/users/currentuser', {
       method: 'GET',
-      url: '/api/users/currentuser',
-      dataType: 'JSON',
-      success: response => {
-        response ? this.conditionData(response) : console.error("Error in server 0: ", response);
-      }
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(response) {
-    let jobQuery = response.job_query;
-    let jobKind = response.job_kind;
+  conditionData(resJSON) {
+    if (resJSON) {
+      let jobQuery = resJSON.job_query;
+      let jobKind = resJSON.job_kind;
 
-    jobKind = jobKind ? jobKind.split(' ') : [];
+      jobKind = jobKind ? jobKind.split(' ') : [];
 
-    if (jobQuery) {
-      jobQuery = jobQuery.split(' ');
-      jobQuery.forEach(query => {
-        if (this.preferenceTags.includes(query)) {
-          let index = this.preferenceTags.indexOf(query);
-          this.preferenceTags.splice(index, 1);
-        }
+      if (jobQuery) {
+        jobQuery = jobQuery.split(' ');
+        jobQuery.forEach(query => {
+          if (this.preferenceTags.includes(query)) {
+            let index = this.preferenceTags.indexOf(query);
+            this.preferenceTags.splice(index, 1);
+          }
+        });
+      } else {
+        jobQuery = [];
+      }
+
+      this.dataLoaded = true;
+      this.setState({
+        username: resJSON.username,
+        postalCode: resJSON.postal_code ? resJSON.postal_code.toUpperCase() : '',
+        jobDistance: resJSON.job_distance ? resJSON.job_distance : '',
+        jobKind,
+        jobQuery
       });
     } else {
-      jobQuery = [];
+      this.setState({ dataLoaded: true, pageError: true });
     }
-
-    this.dataLoaded = true;
-    this.setState({
-      username: response.username,
-      postalCode: response.postal_code ? response.postal_code.toUpperCase() : '',
-      jobDistance: response.job_distance ? response.job_distance : '',
-      jobKind,
-      jobQuery
-    });
   }
 
   handleChange(e) {

@@ -26,12 +26,13 @@ class CareerPage extends Component {
   }
 
   loadComponentData() {
-    $.ajax({
+    fetch('/api/users/currentuser/jobs', {
       method: 'GET',
-      url: '/api/users/currentuser/jobs',
-      dataType: 'JSON',
-      success: response => this.conditionData(response)
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   conditionData(response) {

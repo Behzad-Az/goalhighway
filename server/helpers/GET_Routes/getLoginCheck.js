@@ -1,5 +1,4 @@
 const getLoginCheck = (req, res, knex, user_id) => {
-  console.log("i'm here 6.1: ", req.session);
   if (req.session.user_id) {
     let userInfo = Object.assign({}, req.session);
     delete userInfo.cookie;

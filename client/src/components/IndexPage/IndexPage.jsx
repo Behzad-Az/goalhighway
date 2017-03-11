@@ -21,18 +21,21 @@ class IndexPage extends Component {
   }
 
   componentDidMount() {
-    $.ajax({
+    fetch('/api/home', {
       method: 'GET',
-      url: '/api/home',
-      dataType: 'JSON',
-      success: response => this.conditionData(response)
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(err => {
+      console.log("Error here: ", err);
     });
   }
 
-  conditionData(response) {
-    if (response) {
-      response.dataLoaded = true;
-      this.setState(response);
+  conditionData(resJSON) {
+    if (resJSON) {
+      resJSON.dataLoaded = true;
+      this.setState(resJSON);
     } else {
       this.setState({ dataLoaded: true, pageError: true });
     }

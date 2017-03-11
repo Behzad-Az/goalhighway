@@ -22,14 +22,14 @@ module.exports = {
   devServer: {
     contentBase: './src/',
     historyApiFallback: true,
-    hot: true,
+    // hot: true,
     proxy: {
       '/api/**': 'http://127.0.0.1:19001',
       '/api/': 'http://127.0.0.1:19001'
     },
     port: defaultSettings.port,
     publicPath: defaultSettings.publicPath,
-    noInfo: false
+    // noInfo: false
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],

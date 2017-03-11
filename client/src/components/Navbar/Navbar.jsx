@@ -6,28 +6,35 @@ class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      dataLoaded: false,
+      pageError: false,
       userInfo: {},
       notifications: [],
       unViewedNotif: false
     };
+    this.conditionData = this.conditionData.bind(this);
     this.handleHamburger = this.handleHamburger.bind(this);
     this.showNotifications = this.showNotifications.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
-    $.ajax({
+    fetch('/api/usernavbardata', {
       method: 'GET',
-      url: '/api/usernavbardata',
-      dataType: 'JSON',
-      success: response => {
-        let newState = {
-          ...response,
-          unViewedNotif: response.notifications.reduce((a, b) => ({ unviewed: a.unviewed || b.unviewed }), { unviewed: false } ).unviewed
-        };
-        response ? this.setState(newState) : console.error('server error - 0', response);
-      }
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
+  }
+
+  conditionData(resJSON) {
+    if (resJSON) {
+      resJSON.unViewedNotif = resJSON.notifications.reduce((a, b) => ({ unviewed: a.unviewed || b.unviewed }), { unviewed: false } ).unviewed;
+      this.setState(resJSON);
+    } else {
+      this.setState({ dataLoaded: true, pageError: true });
+    }
   }
 
   handleHamburger(e) {
@@ -37,8 +44,7 @@ class Navbar extends Component {
     nav.className = className.includes(' is-active') ? 'nav-right nav-menu' : 'nav-right nav-menu is-active';
   }
 
-  showNotifications(e) {
-    e.preventDefault();
+  showNotifications() {
     let notifList = document.getElementById('notification-list');
     let className = notifList.getAttribute('class');
     notifList.className = className.includes(' is-enabled') ? 'notification-list' : 'notification-list is-enabled';

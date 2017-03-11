@@ -44,18 +44,19 @@ class DocPage extends Component {
   loadComponentData(courseId, docId) {
     courseId = courseId || this.state.courseInfo.id;
     docId = docId || this.state.docInfo.id;
-    $.ajax({
+    fetch(`/api/courses/${courseId}/docs/${docId}`, {
       method: 'GET',
-      url: `/api/courses/${courseId}/docs/${docId}`,
-      dataType: 'JSON',
-      success: response => this.conditionData(response)
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(response) {
-    if (response) {
-      response.dataLoaded = true;
-      this.setState(response);
+  conditionData(resJSON) {
+    if (resJSON) {
+      resJSON.dataLoaded = true;
+      this.setState(resJSON);
     } else {
       this.setState({ dataLoaded: true, pageError: true });
     }

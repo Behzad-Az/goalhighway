@@ -44,24 +44,25 @@ class InstPage extends Component {
   }
 
   loadComponentData(instId) {
-    $.ajax({
+    fetch(`/api/institutions/${instId}`, {
       method: 'GET',
-      url: `/api/institutions/${instId}`,
-      dataType: 'JSON',
-      success: response => this.conditionData(response, instId)
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON, instId))
+    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(response, instId) {
-    if (response) {
-      response.instList.forEach(inst => {
+  conditionData(resJSON, instId) {
+    if (resJSON) {
+      resJSON.instList.forEach(inst => {
         inst.label = inst.inst_display_name;
         inst.value = inst.id;
       });
-      response.instId = instId;
-      response.dataLoaded = true;
-      this.fixedCurrInstCourses = response.currInstCourses;
-      this.setState(response);
+      resJSON.instId = instId;
+      resJSON.dataLoaded = true;
+      this.fixedCurrInstCourses = resJSON.currInstCourses;
+      this.setState(resJSON);
     } else {
       this.setState({ dataLoaded: true, pageError: true });
     }

@@ -35,24 +35,25 @@ class CompanyPage extends Component {
 
   loadComponentData(companyId) {
     companyId = companyId || this.state.companyInfo.id;
-    $.ajax({
+    fetch(`/api/companies/${companyId}`, {
       method: 'GET',
-      url: `/api/companies/${companyId}`,
-      dataType: 'JSON',
-      success: response => this.conditionData(response)
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(response) {
-    if (response) {
-      let jobs = response.jobs.map(data => {
+  conditionData(resJSON) {
+    if (resJSON) {
+      let jobs = resJSON.jobs.map(data => {
         return {
           ...data._source.pin,
           tags: data._source.pin.search_text.split(' ')
         };
       });
       let state = {
-        ...response,
+        ...resJSON,
         jobs: jobs,
         dataLoaded: true
       };

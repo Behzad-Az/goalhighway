@@ -19,49 +19,46 @@ class App extends React.Component {
   }
 
   validateAuth(nextState, replace, callPage) {
-    // replace('/login');
-    callPage();
+    fetch('/api/login/check', {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (!resJSON.authorized) {
+        console.log("inide unauthorize");
+        replace('/login');
+        callPage();
+      } else {
+        switch (nextState.routes[0].path) {
+          case '/':
+            console.log("inside /");
+            replace('/home');
+            callPage();
+            break;
 
-    // console.log("inside validateAuth");
-    // fetch('/api/login/check')
-    // .then(response => response.json())
-    // .then(resJSON => {
-    //   console.log("inside resJSON: ", resJSON);
+          case '/users/:user_id':
+            console.log("inside users/user_id");
+            if (nextState.params.user_id != resJSON.userInfo.user_id) { replace(`/users/${resJSON.userInfo.user_id}`); }
+            callPage();
+            break;
 
-    //   if (!resJSON.authorized) {
-    //     console.log("inide unauthorize");
-    //     replace('/login');
-    //     callPage();
-    //   } else {
-    //     switch (nextState.routes[0].path) {
-    //       case '/':
-    //         console.log("inside /");
-    //         replace('/home');
-    //         callPage();
-    //         break;
+          case '/users/:user_id/jobs':
+            console.log("inside userid/jobs");
+            if (nextState.params.user_id != resJSON.userInfo.user_id) { replace(`/users/${resJSON.userInfo.user_id}/jobs`); }
+            callPage();
+            break;
 
-    //       case '/users/:user_id':
-    //         console.log("inside users/user_id");
-    //         if (nextState.params.user_id != resJSON.userInfo.user_id) { replace(`/users/${resJSON.userInfo.user_id}`); }
-    //         callPage();
-    //         break;
-
-    //       case '/users/:user_id/jobs':
-    //         console.log("inside userid/jobs");
-    //         if (nextState.params.user_id != resJSON.userInfo.user_id) { replace(`/users/${resJSON.userInfo.user_id}/jobs`); }
-    //         callPage();
-    //         break;
-
-    //       default:
-    //         console.log("inside default");
-    //         callPage();
-    //         break;
-    //     }
-    //   }
-    // })
-    // .catch(err => {
-    //   console.log("Error here: ", err);
-    // });
+          default:
+            console.log("inside default");
+            callPage();
+            break;
+        }
+      }
+    })
+    .catch(err => {
+      console.log("Error here: ", err);
+    });
 
   }
 

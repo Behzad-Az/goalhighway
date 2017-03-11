@@ -7,8 +7,6 @@ const express = require('express');
 const url = require('url');
 const app = express();
 const bodyParser = require('body-parser');
-// const bcrypt = require('bcrypt');
-// const bcryptNodeJs = require('bcryptNodeJs');
 const bcryptJs = require('bcryptjs');
 const session = require('express-session');
 const connection = require('./db/knexfile.js').development;
@@ -51,10 +49,6 @@ app.use(blacklist, (req, res, next) => {
 // ***************************************************
 const PORT = process.env.PORT || 19001;
 const server = app.listen(PORT, '127.0.0.1', 'localhost', () => console.log(`Listening on ${ PORT }`));
-// app.listen(PORT, () => {
-//   console.log(`listening to http://localhost: ${PORT}`);
-// });
-
 
 // ***************************************************
 // HELPERS

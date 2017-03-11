@@ -16,7 +16,6 @@ const postLogin = (req, res, knex, bcrypt) => {
     currUser = user;
     return verifyPwd(password, currUser[0].password);
   }).then(valid => {
-    console.log("i'm here 8: ", valid);
     if (valid) {
       req.session.username = username;
       req.session.user_id = currUser[0].id;
