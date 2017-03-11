@@ -26,20 +26,20 @@ class JobRow extends Component {
       data: state,
       url: `/api/flags/jobs/${this.props.job.id}`,
       success: response => {
-        response ? console.log("i'm here 0: ", response) : console.error("Error in server 0: ", response);
+        response ? console.log('Flag submitted', response) : console.error('Error in server 0: ', response);
       }
     }).always(() => this.setState(state));
   }
 
   renderFlagSelect() {
     return (
-      <small className="control flag-submission">
-        <span className="select is-small">
-          <select name="flagReason" onChange={this.handleFlagSubmit}>
-            <option value="">select reason</option>
-            <option value="expired link">Expired link</option>
-            <option value="poor categorization">Poor categorization</option>
-            <option value="other">Other</option>
+      <small className='control flag-submission'>
+        <span className='select is-small'>
+          <select name='flagReason' onChange={this.handleFlagSubmit}>
+            <option value=''>select reason</option>
+            <option value='expired link'>Expired link</option>
+            <option value='poor categorization'>Poor categorization</option>
+            <option value='other'>Other</option>
           </select>
         </span>
       </small>
@@ -48,26 +48,26 @@ class JobRow extends Component {
 
   render() {
     return (
-      <article className="media job-row">
-        <figure className="media-left">
-          <p className="image is-64x64">
-            <img src="http://bulma.io/images/placeholders/128x128.png" />
+      <article className='media job-row'>
+        <figure className='media-left'>
+          <p className='image is-64x64'>
+            <img src='http://bulma.io/images/placeholders/128x128.png' />
           </p>
         </figure>
-        <div className="media-content">
-          <div className="content">
+        <div className='media-content'>
+          <div className='content'>
             <p>
-              <Link to={`/companies/${this.props.job.company_id}`}><button className="button">Company Page</button></Link>
+              <Link to={`/companies/${this.props.job.company_id}`}><button className='button'>Company Page</button></Link>
               <strong>{this.props.job.title}</strong>
               <br />
               {this.props.job.company}
               <br />
               Job Level: {this.props.job.kind}
               <br />
-              {this.props.job.tags.map((tag, index) => <span key={index} className="tag">{tag}</span>)}
+              {this.props.job.tags.map((tag, index) => <span key={index} className='tag'>{tag}</span>)}
               <br />
               <small><Link>Apply Now!</Link></small>
-              <i className="fa fa-flag expandable" aria-hidden="true" onClick={this.handleFlagClick} style={{ color: this.state.flagRequest ? "#9D0600" : "inherit" }} />
+              <i className='fa fa-flag expandable' aria-hidden='true' onClick={this.handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
               {this.state.flagRequest && this.renderFlagSelect()}
             </p>
           </div>

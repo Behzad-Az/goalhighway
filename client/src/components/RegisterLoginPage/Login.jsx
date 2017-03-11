@@ -24,32 +24,32 @@ class Login extends Component {
       url: '/api/login',
       data: this.state,
       success: response => {
-        response ? browserHistory.push("/home") : this.props.handleBadInput(true, 'Invalid login credentials.');
+        response ? browserHistory.push('/home') : this.props.handleBadInput(true, 'Invalid login credentials.');
       }
     });
   }
 
   render() {
     return (
-      <nav className="nav login has-shadow">
-        <div className="container">
-          <div className="nav-left">
-            <Link className="nav-item logo" to={"/home"}><img src="../../../public/images/goalhighway-logo.png" alt="Bulma logo" /></Link>
+      <nav className='nav login has-shadow'>
+        <div className='container'>
+          <div className='nav-left'>
+            <Link className='nav-item logo' to={'/home'}><img src='../../../public/images/goalhighway-logo.png' alt='Bulma logo' /></Link>
           </div>
-          <div className="nav-item credentials">
-            <div className="credential">
-              <label className="label">Username:</label>
-              <input type='text' className="input is-primary"
-                     placeholder="Enter username" name="username"
+          <div className='nav-item credentials'>
+            <div className='credential'>
+              <label className='label'>Username:</label>
+              <input type='text' className='input is-primary'
+                     placeholder='Enter username' name='username'
                      onChange={this.handleChange} />
             </div>
-            <div className="credential">
-              <label className="label">Password:</label>
-              <input type='password' className="input is-primary"
-                     placeholder="Enter password" name="password"
+            <div className='credential'>
+              <label className='label'>Password:</label>
+              <input type='password' className='input is-primary'
+                     placeholder='Enter password' name='password'
                      onChange={this.handleChange} />
             </div>
-            <button className="button" onClick={this.handleLogin}>Log in</button>
+            <button className='button' onClick={this.handleLogin}>Log in</button>
           </div>
         </div>
       </nav>

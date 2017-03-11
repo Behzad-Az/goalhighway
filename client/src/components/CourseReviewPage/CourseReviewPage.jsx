@@ -37,7 +37,7 @@ class CourseReviewPage extends Component {
     })
     .then(response => response.json())
     .then(resJSON => this.conditionData(resJSON))
-    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   conditionData(resJSON) {
@@ -45,7 +45,7 @@ class CourseReviewPage extends Component {
       resJSON.dataLoaded = true;
       this.setState(resJSON);
     } else {
-      this.setState({ dataLoaded: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 

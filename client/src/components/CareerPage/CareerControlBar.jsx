@@ -33,7 +33,7 @@ class CareerControlBar extends Component {
     })
     .then(response => response.json())
     .then(resJSON => this.conditionData(resJSON))
-    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   conditionData(resJSON) {
@@ -64,7 +64,7 @@ class CareerControlBar extends Component {
         jobQuery
       });
     } else {
-      this.setState({ dataLoaded: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 
@@ -119,12 +119,12 @@ class CareerControlBar extends Component {
 
   handleUpdateSearch() {
     const successFcn = () => {
-      this.reactAlert.showAlert("search profile updated", "info");
+      this.reactAlert.showAlert('search profile updated', 'info');
       this.props.reload();
     };
 
     let data = {
-      type: "job",
+      type: 'job',
       postalCode: this.state.postalCode,
       jobDistance: this.state.jobDistance,
       jobKind: this.state.jobKind.join(' '),
@@ -136,34 +136,34 @@ class CareerControlBar extends Component {
       url: '/api/users/currentuser',
       data: data,
       success: response => {
-        response ? successFcn() : this.reactAlert.showAlert("could not update search criteria", "error");
+        response ? successFcn() : this.reactAlert.showAlert('could not update search criteria', 'error');
       }
     }).always(this.props.toggleControlBar);
   }
 
   render() {
     return this.dataLoaded ? (
-      <div id="control-bar" className="card control-bar">
+      <div id='control-bar' className='card control-bar'>
 
-        <div className="card-content">
+        <div className='card-content'>
 
-          <div className="media">
-            <div className="media-content">
-              <p className="title is-4">Jobs for {this.state.username}</p>
+          <div className='media'>
+            <div className='media-content'>
+              <p className='title is-4'>Jobs for {this.state.username}</p>
             </div>
           </div>
 
-          <div className="content">
+          <div className='content'>
 
-            <label className="label">Search Area:</label>
-            <div className="geo-criteria">
-              <p className="control">
-                <input className="input" type="text" name="postalCode" placeholder="postal code" onChange={this.handleChange} defaultValue={this.state.postalCode} />
+            <label className='label'>Search Area:</label>
+            <div className='geo-criteria'>
+              <p className='control'>
+                <input className='input' type='text' name='postalCode' placeholder='postal code' onChange={this.handleChange} defaultValue={this.state.postalCode} />
               </p>
 
-              <p className="control">
-                <span className="select">
-                  <select name="jobDistance" onChange={this.handleChange} defaultValue={this.state.jobDistance}>
+              <p className='control'>
+                <span className='select'>
+                  <select name='jobDistance' onChange={this.handleChange} defaultValue={this.state.jobDistance}>
                     <option value=''>Range</option>
                     <option value={10}>10km</option>
                     <option value={20}>20km</option>
@@ -176,40 +176,40 @@ class CareerControlBar extends Component {
               </p>
             </div>
 
-            <label className="label">Categories:</label>
-            <p className="categories control">
-              <label className="checkbox">
-                <input type="checkbox" name="jobKind" value="summer" onChange={this.handleJobKind} checked={this.state.jobKind.includes("summer")} />
+            <label className='label'>Categories:</label>
+            <p className='categories control'>
+              <label className='checkbox'>
+                <input type='checkbox' name='jobKind' value='summer' onChange={this.handleJobKind} checked={this.state.jobKind.includes('summer')} />
                 Summer/Part-Time
               </label>
-              <label className="checkbox">
-                <input type="checkbox" name="jobKind" value="internship" onChange={this.handleJobKind} checked={this.state.jobKind.includes("internship")} />
+              <label className='checkbox'>
+                <input type='checkbox' name='jobKind' value='internship' onChange={this.handleJobKind} checked={this.state.jobKind.includes('internship')} />
                 Intern/Coop
               </label>
-              <label className="checkbox">
-                <input type="checkbox" name="jobKind" value="junior" onChange={this.handleJobKind} checked={this.state.jobKind.includes("junior")} />
+              <label className='checkbox'>
+                <input type='checkbox' name='jobKind' value='junior' onChange={this.handleJobKind} checked={this.state.jobKind.includes('junior')} />
                 Junior
               </label>
-              <label className="checkbox">
-                <input type="checkbox" name="jobKind" value="senior" onChange={this.handleJobKind} checked={this.state.jobKind.includes("senior")} />
+              <label className='checkbox'>
+                <input type='checkbox' name='jobKind' value='senior' onChange={this.handleJobKind} checked={this.state.jobKind.includes('senior')} />
                 Senior
               </label>
             </p>
 
-            <label className="label">My preferenence tages:</label>
-            <div className="control">
+            <label className='label'>My preferenence tages:</label>
+            <div className='control'>
               { this.state.jobQuery.map((tag, i) => <span key={i} className='tag' onClick={() => this.moveDownTag(tag)}>{tag}</span>) }
               { !this.state.jobQuery[0] && <p>Select tags from the list below...</p> }
             </div>
 
-            <p className="control">
-              <button className="button is-primary" disabled={!this.validateForm()} onClick={this.handleUpdateSearch}>Update</button>
+            <p className='control'>
+              <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleUpdateSearch}>Update</button>
             </p>
 
             <hr />
 
-            <p className="control">
-              <input className="input" type="text" name="tagFilterPhrase" placeholder="search for tags" onChange={this.handleChange}/>
+            <p className='control'>
+              <input className='input' type='text' name='tagFilterPhrase' placeholder='search for tags' onChange={this.handleChange}/>
             </p>
 
             <div className='tags-list'>

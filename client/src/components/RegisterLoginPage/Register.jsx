@@ -32,17 +32,18 @@ class Register extends Component {
   }
 
   componentDidMount() {
-    $.ajax({
+    fetch('/api/institutions_programs', {
       method: 'GET',
-      url: `/api/institutions_programs`,
-      dataType: 'JSON',
-      success: response => this.conditionData(response)
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(response) {
-    if (response) {
-      let instProgDropDownList = response.map(inst => {
+  conditionData(resJSON) {
+    if (resJSON) {
+      let instProgDropDownList = resJSON.map(inst => {
         let value = inst.id;
         let label = inst.inst_display_name;
         let programs = inst.programs.map(prog => {
@@ -54,7 +55,7 @@ class Register extends Component {
       });
       this.setState({ instProgDropDownList, dataLoaded: true });
     } else {
-      this.setState({ data: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 
@@ -93,7 +94,7 @@ class Register extends Component {
 
   getEmailAvailability(e) {
     let email = e.target.value.toLowerCase();
-    let emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    let emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     if (email.length > 5 && email.match(emailRegex)) {
       $.ajax({
         method: 'POST',
@@ -130,56 +131,56 @@ class Register extends Component {
   render() {
     let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value === this.state.instId).programs : [];
     return (
-      <div className="card">
-        <header className="card-header">
-          <p className="card-header-title">
+      <div className='card'>
+        <header className='card-header'>
+          <p className='card-header-title'>
             Register Here
           </p>
         </header>
 
-        <div className="card-content">
-          <div className="control">
-            <label className="label">Username: {this.state.usernameAvaialble && <i className="fa fa-check" />}</label>
-            <input type='text' className="input is-primary"
-                   placeholder="Enter username" name="username"
+        <div className='card-content'>
+          <div className='control'>
+            <label className='label'>Username: {this.state.usernameAvaialble && <i className='fa fa-check' />}</label>
+            <input type='text' className='input is-primary'
+                   placeholder='Enter username' name='username'
                    onChange={this.getUserAvailability} />
           </div>
-          <div className="control">
-            <label className="label">Email: {this.state.emailAvaialble && <i className="fa fa-check" />}</label>
-            <input type='email' className="input is-primary"
-                   placeholder="Enter email" name="email"
+          <div className='control'>
+            <label className='label'>Email: {this.state.emailAvaialble && <i className='fa fa-check' />}</label>
+            <input type='email' className='input is-primary'
+                   placeholder='Enter email' name='email'
                    onChange={this.getEmailAvailability} />
           </div>
-          <div className="control">
-            <label className="label">Password:</label>
-            <input type='password' className="input is-primary"
-                   placeholder="Enter password" name="password"
+          <div className='control'>
+            <label className='label'>Password:</label>
+            <input type='password' className='input is-primary'
+                   placeholder='Enter password' name='password'
                    onChange={this.handleChange} />
           </div>
-          <div className="control">
-            <label className="label">Confirm Password:</label>
-            <input type='password' className="input is-primary"
-                   placeholder="Enter password" name="passwordConfirm"
+          <div className='control'>
+            <label className='label'>Confirm Password:</label>
+            <input type='password' className='input is-primary'
+                   placeholder='Enter password' name='passwordConfirm'
                    onChange={this.handleChange} />
           </div>
 
-          <div className="control">
-            <label className="label">Primary Institution:</label>
-            <SingleSelect disabled={false} initialValue={this.state.instId} options={this.state.instProgDropDownList} name="instId" handleChange={this.handleInstChange} />
+          <div className='control'>
+            <label className='label'>Primary Institution:</label>
+            <SingleSelect disabled={false} initialValue={this.state.instId} options={this.state.instProgDropDownList} name='instId' handleChange={this.handleInstChange} />
           </div>
 
-          <div className="control">
-            <label className="label">Primary Program:</label>
-            <SingleSelect disabled={false} initialValue={this.state.progId} options={programList} name="progId" handleChange={this.handleProgChange} />
+          <div className='control'>
+            <label className='label'>Primary Program:</label>
+            <SingleSelect disabled={false} initialValue={this.state.progId} options={programList} name='progId' handleChange={this.handleProgChange} />
           </div>
 
-          <div className="control">
-            <label className="label">Primary Academic Year:</label>
-            <SingleSelect disabled={false} initialValue={this.state.userYear} options={this.academicYears} name="userYear" handleChange={this.handleUserYearChange} />
+          <div className='control'>
+            <label className='label'>Primary Academic Year:</label>
+            <SingleSelect disabled={false} initialValue={this.state.userYear} options={this.academicYears} name='userYear' handleChange={this.handleUserYearChange} />
           </div>
         </div>
-        <footer className="card-footer">
-          <Link className="card-footer-item" onClick={this.handleRegister}>Register!</Link>
+        <footer className='card-footer'>
+          <Link className='card-footer-item' onClick={this.handleRegister}>Register!</Link>
         </footer>
       </div>
     );

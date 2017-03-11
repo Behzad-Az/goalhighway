@@ -17,28 +17,29 @@ class UserProfilePage extends Component {
   }
 
   componentDidMount() {
-    $.ajax({
+    fetch('/api/users/currentuser', {
       method: 'GET',
-      url: '/api/users/currentuser',
-      dataType: 'JSON',
-      success: response => this.conditionData(response)
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(response) {
-    if (response) {
+  conditionData(resJSON) {
+    if (resJSON) {
       let userInfo = {
-        username: response.username,
-        email: response.email,
-        instDisplayName: response.inst_display_name,
-        instId: response.inst_id,
-        progDisplayName: response.prog_display_name,
-        progId: response.prog_id,
-        userYear: response.user_year
+        username: resJSON.username,
+        email: resJSON.email,
+        instDisplayName: resJSON.inst_display_name,
+        instId: resJSON.inst_id,
+        progDisplayName: resJSON.prog_display_name,
+        progId: resJSON.prog_id,
+        userYear: resJSON.user_year
       };
       this.setState({ userInfo, dataLoaded: true });
     } else {
-      this.setState({ dataLoaded: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 

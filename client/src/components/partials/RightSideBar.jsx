@@ -4,8 +4,9 @@ import CourseFeed from '../CoursePage/CourseFeed/CourseFeed.jsx';
 class RightSideBar extends Component {
   constructor(props) {
     super(props);
-    this.dataLoaded = false;
     this.state = {
+      dataLoaded: false,
+      pageError: false,
       courseCount: 'N/A',
       courseFeeds: [],
       instName: 'N/A',
@@ -13,22 +14,30 @@ class RightSideBar extends Component {
       studentCount: 'N/A',
       tutorCount: 'N/A'
     };
+    this.conditionData = this.conditionData.bind(this);
   }
 
   componentWillMount() {
-    $.ajax({
+    fetch('/api/rightsidebar', {
       method: 'GET',
-      url: '/api/rightsidebar',
-      dataType: 'JSON',
-      success: response => {
-        this.dataLoaded = true;
-        response ? this.setState(response) : console.error('Error in server 0: ', response);
-      }
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
+  }
+
+  conditionData(resJSON) {
+    if (resJSON) {
+      resJSON.dataLoaded = true;
+      this.setState(resJSON);
+    } else {
+      throw 'Server returned false';
+    }
   }
 
   render() {
-    return this.dataLoaded ? (
+    return this.state.dataLoaded ? (
       <div className='card side-bar right'>
         <div className='card-content'>
           <div className='media'>

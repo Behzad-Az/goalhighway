@@ -3,29 +3,38 @@ import React, {Component} from 'react';
 class LeftSideBar extends Component {
   constructor(props) {
     super(props);
-    this.dataLoaded = false;
     this.state = {
+      dataLoaded: false,
+      pageError: false,
       userInfo: { username: 'N/A', user_created_at: 'N/A' },
       progName: 'N/A',
       instName: 'N/A',
       contributionCount: 'N/A'
     };
+    this.conditionData = this.conditionData.bind(this);
   }
 
   componentWillMount() {
-    $.ajax({
+    fetch('/api/leftsidebar', {
       method: 'GET',
-      url: '/api/leftsidebar',
-      dataType: 'JSON',
-      success: response => {
-        this.dataLoaded = true;
-        response ? this.setState(response) : console.error('Error in server 0: ', response);
-      }
-    });
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
+  }
+
+  conditionData(resJSON) {
+    if (resJSON) {
+      resJSON.dataLoaded = true;
+      this.setState(resJSON);
+    } else {
+      throw 'Server returned false';
+    }
   }
 
   render() {
-    return this.dataLoaded ? (
+    return this.state.dataLoaded ? (
       <div className='card side-bar left'>
         <button className='button is-info edit'>Edit</button>
         <div className='card-image'>

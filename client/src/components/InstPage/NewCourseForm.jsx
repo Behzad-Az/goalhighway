@@ -21,7 +21,7 @@ class NewCourseForm extends Component {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
-  };
+  }
 
   validateForm() {
     return this.state.prefix &&
@@ -44,7 +44,7 @@ class NewCourseForm extends Component {
       url: '/api/courses',
       data: data,
       success: response => {
-        response ? this.reactAlert.showAlert("New course added.", "info") : this.reactAlert.showAlert("could not add new course", "error");
+        response ? this.reactAlert.showAlert('New course added.', 'info') : this.reactAlert.showAlert('could not add new course', 'error');
       }
     }).always(() => {
       HandleModal('new-course-form');
@@ -54,35 +54,35 @@ class NewCourseForm extends Component {
 
   render() {
     return (
-      <div id="new-course-form" className="modal">
-        <div className="modal-background" onClick={() => HandleModal('new-course-form')}></div>
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p className="modal-card-title">{this.props.instName} - New Course</p>
-            <button className="delete" onClick={() => HandleModal('new-course-form')}></button>
+      <div id='new-course-form' className='modal'>
+        <div className='modal-background' onClick={() => HandleModal('new-course-form')}></div>
+        <div className='modal-card'>
+          <header className='modal-card-head'>
+            <p className='modal-card-title'>{this.props.instName} - New Course</p>
+            <button className='delete' onClick={() => HandleModal('new-course-form')}></button>
           </header>
-          <section className="modal-card-body">
+          <section className='modal-card-body'>
 
-            <label className="label">Prefix:</label>
-            <p className="control">
-              <input className="input" type="text" name="prefix" placeholder="Example: MATH" onChange={this.handleChange} />
+            <label className='label'>Prefix:</label>
+            <p className='control'>
+              <input className='input' type='text' name='prefix' placeholder='Example: MATH' onChange={this.handleChange} />
             </p>
 
-            <label className="label">Suffix:</label>
-            <p className="control">
-              <input className="input" type="text" name="suffix" placeholder="Example: 101" onChange={this.handleChange} />
+            <label className='label'>Suffix:</label>
+            <p className='control'>
+              <input className='input' type='text' name='suffix' placeholder='Example: 101' onChange={this.handleChange} />
             </p>
 
-            <label className="label">Title:</label>
-            <p className="control">
-              <input className="input" type="text" name="courseDesc" placeholder="Example: Introducion to calculus" onChange={this.handleChange} />
+            <label className='label'>Title:</label>
+            <p className='control'>
+              <input className='input' type='text' name='courseDesc' placeholder='Example: Introducion to calculus' onChange={this.handleChange} />
             </p>
 
-            <label className="label">Academic Year:</label>
-            <p className="control">
-              <span className="select">
-                <select className="select" name="courseYear" onChange={this.handleChange}>
-                  <option value="">-</option>
+            <label className='label'>Academic Year:</label>
+            <p className='control'>
+              <span className='select'>
+                <select className='select' name='courseYear' onChange={this.handleChange}>
+                  <option value=''>-</option>
                   <option value={1}>1</option>
                   <option value={2}>2</option>
                   <option value={3}>3</option>
@@ -94,9 +94,9 @@ class NewCourseForm extends Component {
             </p>
 
           </section>
-          <footer className="modal-card-foot">
-            <button className="button is-primary" disabled={!this.validateForm()} onClick={this.handleNewCoursePost}>Submit</button>
-            <button className="button" onClick={() => HandleModal('new-course-form')}>Cancel</button>
+          <footer className='modal-card-foot'>
+            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewCoursePost}>Submit</button>
+            <button className='button' onClick={() => HandleModal('new-course-form')}>Cancel</button>
           </footer>
         </div>
       </div>

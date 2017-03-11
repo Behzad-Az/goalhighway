@@ -32,22 +32,23 @@ class PersonalInformation extends Component {
     this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
   }
 
-  componentDidMount() {
-    $.ajax({
-      method: 'GET',
-      url: `/api/institutions_programs`,
-      dataType: 'JSON',
-      success: response => this.conditionData(response)
-    });
-  }
-
   componentWillReceiveProps(nextProps) {
     this.setState(nextProps.userInfo);
   }
 
-  conditionData(response) {
-    if (response) {
-      let instProgDropDownList = response.map(inst => {
+  componentDidMount() {
+    fetch('/api/institutions_programs', {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this.conditionData(resJSON))
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
+  }
+
+  conditionData(resJSON) {
+    if (resJSON) {
+      let instProgDropDownList = resJSON.map(inst => {
         let value = inst.id;
         let label = inst.inst_display_name;
         let programs = inst.programs.map(prog => {
@@ -59,7 +60,7 @@ class PersonalInformation extends Component {
       });
       this.setState({ instProgDropDownList, dataLoaded: true });
     } else {
-      this.setState({ dataLoaded: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 
@@ -87,7 +88,7 @@ class PersonalInformation extends Component {
 
   handleUpdateProfile() {
     let data = {
-      type: "profile",
+      type: 'profile',
       username: this.state.username.trim().toLowerCase(),
       email: this.state.email.trim().toLowerCase(),
       userYear: this.state.userYear,
@@ -99,7 +100,7 @@ class PersonalInformation extends Component {
       url: '/api/users/currentuser',
       data: data,
       success: response => {
-        response ? this.reactAlert.showAlert("User profile saved", "info") : this.reactAlert.showAlert("Could not save user profile", "error");
+        response ? this.reactAlert.showAlert('User profile saved', 'info') : this.reactAlert.showAlert('Could not save user profile', 'error');
       }
     }).always(this.toggleView);
   }
@@ -107,58 +108,58 @@ class PersonalInformation extends Component {
   showInfo() {
     if (this.props.dataLoaded) {
       return (
-        <div className="card">
-          <header className="card-header">
-            <p className="card-header-title">
+        <div className='card'>
+          <header className='card-header'>
+            <p className='card-header-title'>
               Profile Information
             </p>
-            <Link className="card-header-icon">
+            <Link className='card-header-icon'>
               <button
-                className="button is-primary"
+                className='button is-primary'
                 onClick={this.toggleView}>
                 Edit
               </button>
             </Link>
           </header>
-          <div className="card-content">
-            <div className="content">
-              <label className="label">Username:</label>
-              <p className="title is-6">{this.state.username}</p>
+          <div className='card-content'>
+            <div className='content'>
+              <label className='label'>Username:</label>
+              <p className='title is-6'>{this.state.username}</p>
             </div>
 
-            <div className="content">
-              <label className="label">Email:</label>
-              <p className="title is-6">{this.state.email}</p>
+            <div className='content'>
+              <label className='label'>Email:</label>
+              <p className='title is-6'>{this.state.email}</p>
             </div>
 
-            <div className="content">
-              <label className="label">Primary Institution:</label>
-              <p className="title is-6">{this.state.instDisplayName}</p>
+            <div className='content'>
+              <label className='label'>Primary Institution:</label>
+              <p className='title is-6'>{this.state.instDisplayName}</p>
             </div>
 
-            <div className="content">
-              <label className="label">Primary Program:</label>
-              <p className="title is-6">{this.state.progDisplayName}</p>
+            <div className='content'>
+              <label className='label'>Primary Program:</label>
+              <p className='title is-6'>{this.state.progDisplayName}</p>
             </div>
 
-            <div className="content">
-              <label className="label">Primary Academic Year:</label>
-              <p className="title is-6">{`Year ${this.state.userYear}`}</p>
+            <div className='content'>
+              <label className='label'>Primary Academic Year:</label>
+              <p className='title is-6'>{`Year ${this.state.userYear}`}</p>
             </div>
           </div>
         </div>
       );
     } else {
       return (
-        <div className="card">
-          <header className="card-header">
-            <p className="card-header-title">
+        <div className='card'>
+          <header className='card-header'>
+            <p className='card-header-title'>
               Profile Information
             </p>
           </header>
-          <div className="card-content">
-            <div className="content">
-              <p className="title is-6">Could not load the information...</p>
+          <div className='card-content'>
+            <div className='content'>
+              <p className='title is-6'>Could not load the information...</p>
             </div>
           </div>
         </div>
@@ -170,80 +171,80 @@ class PersonalInformation extends Component {
     let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value === this.state.instId).programs : [];
     if (this.state.dataLoaded && !this.state.pageError) {
       return (
-        <div className="card">
-          <header className="card-header">
-            <p className="card-header-title">
+        <div className='card'>
+          <header className='card-header'>
+            <p className='card-header-title'>
               Profile Information
             </p>
           </header>
 
-          <div className="card-content">
-            <div className="control">
-              <label className="label">Username:</label>
-              <input type='text' className="input is-primary"
-                     placeholder="Enter username" name="username"
+          <div className='card-content'>
+            <div className='control'>
+              <label className='label'>Username:</label>
+              <input type='text' className='input is-primary'
+                     placeholder='Enter username' name='username'
                      defaultValue={this.state.username}
                      onChange={this.handleChange} />
             </div>
-            <div className="control">
-              <label className="label">Email:</label>
-              <input type='text' className="input is-primary"
-                     placeholder="Enter email" name="email"
+            <div className='control'>
+              <label className='label'>Email:</label>
+              <input type='text' className='input is-primary'
+                     placeholder='Enter email' name='email'
                      defaultValue={this.state.email}
                      onChange={this.handleChange} />
             </div>
 
-            <div className="control">
-              <label className="label">Primary Institution:</label>
+            <div className='control'>
+              <label className='label'>Primary Institution:</label>
               <SingleSelect
                 disabled={false}
                 initialValue={this.state.instId}
                 options={this.state.instProgDropDownList}
-                name="instId"
+                name='instId'
                 handleChange={this.handleInstChange} />
             </div>
 
-            <div className="control">
-              <label className="label">Primary Program:</label>
+            <div className='control'>
+              <label className='label'>Primary Program:</label>
               <SingleSelect
                 disabled={false}
                 initialValue={this.state.progId}
                 options={programList}
-                name="progId"
+                name='progId'
                 handleChange={this.handleProgChange} />
             </div>
 
-            <div className="control">
-              <label className="label">Primary Academic Year:</label>
+            <div className='control'>
+              <label className='label'>Primary Academic Year:</label>
               <SingleSelect
                 disabled={false}
                 initialValue={this.state.userYear}
                 options={this.academicYears}
-                name="userYear"
+                name='userYear'
                 handleChange={this.handleUserYearChange} />
             </div>
           </div>
-          <footer className="card-footer">
-            <Link className="card-footer-item" onClick={this.handleUpdateProfile}>Save</Link>
-            <Link className="card-footer-item" onClick={this.toggleView}>Cancel</Link>
+          <footer className='card-footer'>
+            <Link className='card-footer-item' onClick={this.handleUpdateProfile}>Save</Link>
+            <Link className='card-footer-item' onClick={this.toggleView}>Cancel</Link>
           </footer>
         </div>
       );
     } else {
       return (
-        <div className="card">
-          <header className="card-header">
-            <p className="card-header-title">
+        <div className='card'>
+          <header className='card-header'>
+            <p className='card-header-title'>
               Profile Information
             </p>
           </header>
-          <div className="card-content">
-            <div className="content">
-              <p className="title is-6">Unable to edit profile at this time...</p>
+          <div className='card-content'>
+            <div className='content'>
+              <p className='title is-6'>Unable to edit profile at this time...</p>
             </div>
           </div>
-          <footer className="card-footer">
-            <Link className="card-footer-item" onClick={this.toggleView}>View Profile</Link>
+          <footer className='card-footer'>
+            <Link className='card-footer-item' onClick={this.toggleView}>View Profile</Link>
           </footer>
         </div>
       );
@@ -253,7 +254,7 @@ class PersonalInformation extends Component {
   render() {
 
     return (
-      <div className="personal-info-container">
+      <div className='personal-info-container'>
         { this.state.editView ? this.editInfo() : this.showInfo() }
       </div>
     );

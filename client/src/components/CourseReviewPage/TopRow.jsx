@@ -48,7 +48,6 @@ class TopRow extends Component {
   getProfAvgRatings() {
     let profRatingSum = {};
     let profRatingCount = {};
-    let output = [];
     this.props.courseReviews.forEach(review => {
       profRatingSum[review.name] = profRatingSum[review.name] ? profRatingSum[review.name] + review.prof_rating : review.prof_rating;
       profRatingCount[review.name] = profRatingCount[review.name] ? profRatingCount[review.name] + 1 : 1;
@@ -56,7 +55,7 @@ class TopRow extends Component {
     return Object.keys(profRatingSum).map((profName, index) =>
       <tr key={index}>
         <td>{profName}:</td>
-        <td className="second-column">
+        <td className='second-column'>
           {this.decodeProf(Math.round(profRatingSum[profName] / profRatingCount[profName]))}
         </td>
       </tr>
@@ -66,95 +65,95 @@ class TopRow extends Component {
   decodeWorkload(value) {
     switch(value) {
       case 1:
-        return "Too little";
+        return 'Too little';
       case 2:
-        return "Too much";
+        return 'Too much';
       case 3:
-        return "Fair";
+        return 'Fair';
       default:
-        return "unknown";
-    };
+        return 'unknown';
+    }
   }
 
   decodeFairness(value) {
     switch(value) {
       case 1:
-        return "Too easy";
+        return 'Too easy';
       case 2:
-        return "Too difficult";
+        return 'Too difficult';
       case 3:
-        return "Fair";
+        return 'Fair';
       default:
-        return "unknown";
-    };
+        return 'unknown';
+    }
   }
 
   decodeProf(value) {
     switch(value) {
       case 1:
-        return "Not good";
+        return 'Not good';
       case 2:
-        return "Below average";
+        return 'Below average';
       case 3:
-        return "Average";
+        return 'Average';
       case 4:
-        return "Above average";
+        return 'Above average';
       case 5:
-        return "Excellent!";
+        return 'Excellent!';
       default:
-        return "unknown";
-    };
+        return 'unknown';
+    }
   }
 
   render() {
     let profAvgs = this.getProfAvgRatings();
     let overallAvgs = this.getAverageValues();
     return (
-      <div className="top-row row-container">
-        <h1 className="header">
+      <div className='top-row row-container'>
+        <h1 className='header'>
           <Link to={`/institutions/${this.props.courseInfo.inst_id}`}>{this.props.courseInfo.inst_display_name} </Link>
           > <Link to={`/courses/${this.props.courseInfo.id}`}>{this.props.courseInfo.short_display_name} </Link>
-          > <span className="review-name">Reviews</span>
-          <button className="button" onClick={() => HandleModal('new-course-review-form')}>New Review</button>
+          > <span className='review-name'>Reviews</span>
+          <button className='button' onClick={() => HandleModal('new-course-review-form')}>New Review</button>
         </h1>
-        <div className="review-row columns">
-          <table className="top-row-info column is-6">
+        <div className='review-row columns'>
+          <table className='top-row-info column is-6'>
             <thead>
-              <tr><th colSpan="2">Average Ratings:</th></tr>
+              <tr><th colSpan='2'>Average Ratings:</th></tr>
             </thead>
             <tbody>
               <tr>
                 <td>Overvall:</td>
-                <td className="second-column">
-                  <div className="star-rating">
-                    <div className="outer">
-                      <i className="fa fa-star-o" aria-hidden="true" />
-                      <div className="inner" style={{ width: `${this.calcStarPercent(0, overallAvgs.overallRating)}%` }}>
-                        <i className="fa fa-star" aria-hidden="true" />
+                <td className='second-column'>
+                  <div className='star-rating'>
+                    <div className='outer'>
+                      <i className='fa fa-star-o' aria-hidden='true' />
+                      <div className='inner' style={{ width: `${this.calcStarPercent(0, overallAvgs.overallRating)}%` }}>
+                        <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
-                    <div className="outer">
-                      <i className="fa fa-star-o" aria-hidden="true" />
-                      <div className="inner" style={{ width: `${this.calcStarPercent(1, overallAvgs.overallRating)}%` }}>
-                        <i className="fa fa-star" aria-hidden="true" />
+                    <div className='outer'>
+                      <i className='fa fa-star-o' aria-hidden='true' />
+                      <div className='inner' style={{ width: `${this.calcStarPercent(1, overallAvgs.overallRating)}%` }}>
+                        <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
-                    <div className="outer">
-                      <i className="fa fa-star-o" aria-hidden="true" />
-                      <div className="inner" style={{ width: `${this.calcStarPercent(2, overallAvgs.overallRating)}%` }}>
-                        <i className="fa fa-star" aria-hidden="true" />
+                    <div className='outer'>
+                      <i className='fa fa-star-o' aria-hidden='true' />
+                      <div className='inner' style={{ width: `${this.calcStarPercent(2, overallAvgs.overallRating)}%` }}>
+                        <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
-                    <div className="outer">
-                      <i className="fa fa-star-o" aria-hidden="true" />
-                      <div className="inner" style={{ width: `${this.calcStarPercent(3, overallAvgs.overallRating)}%` }}>
-                        <i className="fa fa-star" aria-hidden="true" />
+                    <div className='outer'>
+                      <i className='fa fa-star-o' aria-hidden='true' />
+                      <div className='inner' style={{ width: `${this.calcStarPercent(3, overallAvgs.overallRating)}%` }}>
+                        <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
-                    <div className="outer">
-                      <i className="fa fa-star-o" aria-hidden="true" />
-                      <div className="inner" style={{ width: `${this.calcStarPercent(4, overallAvgs.overallRating)}%` }}>
-                        <i className="fa fa-star" aria-hidden="true" />
+                    <div className='outer'>
+                      <i className='fa fa-star-o' aria-hidden='true' />
+                      <div className='inner' style={{ width: `${this.calcStarPercent(4, overallAvgs.overallRating)}%` }}>
+                        <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
                   </div>
@@ -162,22 +161,22 @@ class TopRow extends Component {
               </tr>
               <tr>
                 <td>Teaching:</td>
-                <td className="second-column">{this.decodeProf(overallAvgs.profRating)}</td>
+                <td className='second-column'>{this.decodeProf(overallAvgs.profRating)}</td>
               </tr>
               <tr>
                 <td>Evaluation:</td>
-                <td className="second-column">{this.decodeFairness(overallAvgs.fairnessRating)}</td>
+                <td className='second-column'>{this.decodeFairness(overallAvgs.fairnessRating)}</td>
               </tr>
               <tr>
                 <td>Workload:</td>
-                <td className="second-column">{this.decodeWorkload(overallAvgs.workloadRating)}</td>
+                <td className='second-column'>{this.decodeWorkload(overallAvgs.workloadRating)}</td>
               </tr>
             </tbody>
           </table>
 
-          <table className="top-row-info column is-6">
+          <table className='top-row-info column is-6'>
             <thead>
-              <tr><th colSpan="2">Previous Instructors:</th></tr>
+              <tr><th colSpan='2'>Previous Instructors:</th></tr>
             </thead>
             <tbody>
               {profAvgs}

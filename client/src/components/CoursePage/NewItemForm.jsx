@@ -21,7 +21,7 @@ class NewItemForm extends Component {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
-  };
+  }
 
   validateForm() {
     return this.state.title &&
@@ -31,7 +31,7 @@ class NewItemForm extends Component {
 
   handleNewItemPost() {
     const successFcn = () => {
-      this.reactAlert.showAlert("New item posted", "info");
+      this.reactAlert.showAlert('New item posted', 'info');
       this.props.reload();
     };
     let data = {
@@ -45,42 +45,42 @@ class NewItemForm extends Component {
       url: `/api/courses/${this.props.courseId}/items`,
       data: data,
       success: response => {
-        response ? successFcn() : this.reactAlert.showAlert("error in posting item", "error");
+        response ? successFcn() : this.reactAlert.showAlert('error in posting item', 'error');
       }
     }).always(() => HandleModal('new-item-form'));
   }
 
   render() {
     return (
-      <div id="new-item-form" className="modal">
-        <div className="modal-background" onClick={() => HandleModal('new-item-form')}></div>
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p className="modal-card-title">New Item For Sale or Trade</p>
-            <button className="delete" onClick={() => HandleModal('new-item-form')}></button>
+      <div id='new-item-form' className='modal'>
+        <div className='modal-background' onClick={() => HandleModal('new-item-form')}></div>
+        <div className='modal-card'>
+          <header className='modal-card-head'>
+            <p className='modal-card-title'>New Item For Sale or Trade</p>
+            <button className='delete' onClick={() => HandleModal('new-item-form')}></button>
           </header>
-          <section className="modal-card-body">
-            <label className="label">Item Title:</label>
-            <p className="control">
-              <input className="input" type="text" name="title" placeholder="Enter item title here" onChange={this.handleChange} />
+          <section className='modal-card-body'>
+            <label className='label'>Item Title:</label>
+            <p className='control'>
+              <input className='input' type='text' name='title' placeholder='Enter item title here' onChange={this.handleChange} />
             </p>
-            <label className="label">Item Description:</label>
-            <p className="control">
-              <textarea className="textarea" name="itemDesc" placeholder="Enter description of item here" onChange={this.handleChange} />
+            <label className='label'>Item Description:</label>
+            <p className='control'>
+              <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' onChange={this.handleChange} />
             </p>
-            <label className="label">Upload photo (optional but recommended):</label>
-            <p className="control">
-              <input className="upload" type="file" name="photoPath" onChange={this.handleChange} />
+            <label className='label'>Upload photo (optional but recommended):</label>
+            <p className='control'>
+              <input className='upload' type='file' name='photoPath' onChange={this.handleChange} />
             </p>
-            <label className="label">Item Price:</label>
-            <p className="control has-icon has-icon-left">
-              <input className="input" type="text" name="price" placeholder="Enter price here" onChange={this.handleChange} />
-              <span className="icon"><i className="fa fa-dollar" /></span>
+            <label className='label'>Item Price:</label>
+            <p className='control has-icon has-icon-left'>
+              <input className='input' type='text' name='price' placeholder='Enter price here' onChange={this.handleChange} />
+              <span className='icon'><i className='fa fa-dollar' /></span>
             </p>
           </section>
-          <footer className="modal-card-foot">
-            <button className="button is-primary" disabled={!this.validateForm()} onClick={this.handleNewItemPost}>Submit</button>
-            <button className="button" onClick={() => HandleModal('new-item-form')}>Cancel</button>
+          <footer className='modal-card-foot'>
+            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewItemPost}>Submit</button>
+            <button className='button' onClick={() => HandleModal('new-item-form')}>Cancel</button>
           </footer>
         </div>
       </div>

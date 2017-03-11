@@ -27,9 +27,7 @@ class IndexPage extends Component {
     })
     .then(response => response.json())
     .then(resJSON => this.conditionData(resJSON))
-    .catch(err => {
-      console.log("Error here: ", err);
-    });
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   conditionData(resJSON) {
@@ -37,7 +35,7 @@ class IndexPage extends Component {
       resJSON.dataLoaded = true;
       this.setState(resJSON);
     } else {
-      this.setState({ dataLoaded: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 

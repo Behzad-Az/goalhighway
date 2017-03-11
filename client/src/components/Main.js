@@ -26,40 +26,32 @@ class App extends React.Component {
     .then(response => response.json())
     .then(resJSON => {
       if (!resJSON.authorized) {
-        console.log("inide unauthorize");
         replace('/login');
         callPage();
       } else {
         switch (nextState.routes[0].path) {
           case '/':
-            console.log("inside /");
             replace('/home');
             callPage();
             break;
 
           case '/users/:user_id':
-            console.log("inside users/user_id");
             if (nextState.params.user_id != resJSON.userInfo.user_id) { replace(`/users/${resJSON.userInfo.user_id}`); }
             callPage();
             break;
 
           case '/users/:user_id/jobs':
-            console.log("inside userid/jobs");
             if (nextState.params.user_id != resJSON.userInfo.user_id) { replace(`/users/${resJSON.userInfo.user_id}/jobs`); }
             callPage();
             break;
 
           default:
-            console.log("inside default");
             callPage();
             break;
         }
       }
     })
-    .catch(err => {
-      console.log("Error here: ", err);
-    });
-
+    .catch(err => console.error(err));
   }
 
   render() {

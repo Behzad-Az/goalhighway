@@ -25,7 +25,7 @@ class Navbar extends Component {
     })
     .then(response => response.json())
     .then(resJSON => this.conditionData(resJSON))
-    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   conditionData(resJSON) {
@@ -33,7 +33,7 @@ class Navbar extends Component {
       resJSON.unViewedNotif = resJSON.notifications.reduce((a, b) => ({ unviewed: a.unviewed || b.unviewed }), { unviewed: false } ).unviewed;
       this.setState(resJSON);
     } else {
-      this.setState({ dataLoaded: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 
@@ -71,14 +71,12 @@ class Navbar extends Component {
   }
 
   handleLogout() {
-    $.ajax({
+    fetch('/api/logout', {
       method: 'GET',
-      url: '/api/logout',
-      dataType: 'JSON',
-      success: response => {
-        response ? browserHistory.push('/login') : console.error('Error in server - 0: ', response);
-      }
-    });
+      credentials: 'same-origin'
+    })
+    .then(() => browserHistory.push('/login'))
+    .catch(() => console.error('Error in logout'));
   }
 
   render() {

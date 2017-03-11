@@ -50,7 +50,7 @@ class InstPage extends Component {
     })
     .then(response => response.json())
     .then(resJSON => this.conditionData(resJSON, instId))
-    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   conditionData(resJSON, instId) {
@@ -64,7 +64,7 @@ class InstPage extends Component {
       this.fixedCurrInstCourses = resJSON.currInstCourses;
       this.setState(resJSON);
     } else {
-      this.setState({ dataLoaded: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 

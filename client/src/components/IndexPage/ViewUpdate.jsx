@@ -12,6 +12,6 @@ class ViewUpdate extends Component {
     );
   }
 
-};
+}
 
 export default ViewUpdate;

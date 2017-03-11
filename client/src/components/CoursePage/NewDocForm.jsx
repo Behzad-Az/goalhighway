@@ -32,7 +32,7 @@ class NewDocForm extends Component {
 
   handleNewDocPost() {
     const successFcn = () => {
-      this.reactAlert.showAlert("New document saved", "info");
+      this.reactAlert.showAlert('New document saved', 'info');
       this.props.reload();
     };
     let data = {
@@ -44,50 +44,50 @@ class NewDocForm extends Component {
     $.ajax({
       method: 'POST',
       url: `/api/courses/${this.props.courseId}`,
-      data: this.state,
+      data: data,
       success: response => {
-        response ? successFcn() : this.reactAlert.showAlert("Unable to upload document", "error");
+        response ? successFcn() : this.reactAlert.showAlert('Unable to upload document', 'error');
       }
     }).always(() => HandleModal('new-doc-form'));
   }
 
   render() {
     return (
-      <div id="new-doc-form" className="modal">
-        <div className="modal-background" onClick={() => HandleModal('new-doc-form')}></div>
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p className="modal-card-title">New Document</p>
-            <button className="delete" onClick={() => HandleModal('new-doc-form')}></button>
+      <div id='new-doc-form' className='modal'>
+        <div className='modal-background' onClick={() => HandleModal('new-doc-form')}></div>
+        <div className='modal-card'>
+          <header className='modal-card-head'>
+            <p className='modal-card-title'>New Document</p>
+            <button className='delete' onClick={() => HandleModal('new-doc-form')}></button>
           </header>
-          <section className="modal-card-body">
-            <label className="label">Document Title:</label>
-            <p className="control">
-              <input className="input" type="text" name="title" placeholder="Enter document title here" onChange={this.handleChange} />
+          <section className='modal-card-body'>
+            <label className='label'>Document Title:</label>
+            <p className='control'>
+              <input className='input' type='text' name='title' placeholder='Enter document title here' onChange={this.handleChange} />
             </p>
-            <label className="label">Upload the Document:</label>
-            <p className="control">
-              <input className="upload" type="file" name="filePath" placeholder="Enter document title here" onChange={this.handleChange} />
+            <label className='label'>Upload the Document:</label>
+            <p className='control'>
+              <input className='upload' type='file' name='filePath' placeholder='Enter document title here' onChange={this.handleChange} />
             </p>
-            <label className="label">Revision Comment:</label>
-            <p className="control">
-              <input className="input" type="text" name="revDesc" placeholder="Enter revision comment here" defaultValue={this.state.revDesc} onChange={this.handleChange} />
+            <label className='label'>Revision Comment:</label>
+            <p className='control'>
+              <input className='input' type='text' name='revDesc' placeholder='Enter revision comment here' defaultValue={this.state.revDesc} onChange={this.handleChange} />
             </p>
-            <label className="label">Select Type of Document:</label>
-            <p className="control">
-              <span className="select">
-                <select className="select" name="type" onChange={this.handleChange}>
-                  <option value="">-</option>
-                  <option value="asg_report">Assigntment / Report</option>
-                  <option value="lecture_note">Lecture Note</option>
-                  <option value="sample_question">Sample Question</option>
+            <label className='label'>Select Type of Document:</label>
+            <p className='control'>
+              <span className='select'>
+                <select className='select' name='type' onChange={this.handleChange}>
+                  <option value=''>-</option>
+                  <option value='asg_report'>Assigntment / Report</option>
+                  <option value='lecture_note'>Lecture Note</option>
+                  <option value='sample_question'>Sample Question</option>
                 </select>
               </span>
             </p>
           </section>
-          <footer className="modal-card-foot">
-            <button className="button is-primary" disabled={!this.validateForm()} onClick={this.handleNewDocPost}>Submit</button>
-            <button className="button" onClick={() => HandleModal('new-doc-form')}>Cancel</button>
+          <footer className='modal-card-foot'>
+            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewDocPost}>Submit</button>
+            <button className='button' onClick={() => HandleModal('new-doc-form')}>Cancel</button>
           </footer>
         </div>
       </div>

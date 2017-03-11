@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import AlertContainer from 'react-alert';
 
 class ReactAlert {
@@ -11,8 +11,8 @@ class ReactAlert {
     };
 
     this.icons = {
-      info: <i className="fa fa-info-circle fa-fw" aria-hidden="true"/>,
-      error: <i className="fa fa-exclamation-circle fa-fw" aria-hidden="true"/>
+      info: <i className='fa fa-info-circle fa-fw' aria-hidden='true'/>,
+      error: <i className='fa fa-exclamation-circle fa-fw' aria-hidden='true'/>
     };
 
     this.container = <AlertContainer ref={(a) => global.msg = a} {...this.alertOptions} />;

@@ -32,7 +32,7 @@ class CareerPage extends Component {
     })
     .then(response => response.json())
     .then(resJSON => this.conditionData(resJSON))
-    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   conditionData(response) {
@@ -45,7 +45,7 @@ class CareerPage extends Component {
       });
       this.setState({ jobs, dataLoaded: true });
     } else {
-      this.setState({ dataLoaded: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 

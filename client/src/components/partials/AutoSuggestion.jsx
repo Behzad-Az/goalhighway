@@ -52,7 +52,7 @@ class AutoSuggestion extends Component {
   render() {
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: "We'll auto-suggest some results :)",
+      placeholder: 'We will auto-suggest some results :)',
       value,
       onChange: this.onChange
     };

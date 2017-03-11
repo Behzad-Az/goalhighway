@@ -36,19 +36,19 @@ class QaRow extends Component {
       data: state,
       url: `/api/flags/interview_questions/${this.props.qa.id}`,
       success: response => {
-        response ? console.log("i'm here 0: ", response) : console.error("Error in server 0: ", response);
+        response ? console.log('Flag submitted', response) : console.error('Error in server 0: ', response);
       }
     }).always(() => this.setState(state));
   }
 
   renderFlagSelect() {
     return (
-      <small className="control flag-submission">
-        <span className="select is-small">
-          <select name="flagReason" onChange={this.handleFlagSubmit}>
-            <option value="">select reason</option>
-            <option value="inappropriate content">inappropriate / unrelated</option>
-            <option value="other">Other</option>
+      <small className='control flag-submission'>
+        <span className='select is-small'>
+          <select name='flagReason' onChange={this.handleFlagSubmit}>
+            <option value=''>select reason</option>
+            <option value='inappropriate content'>inappropriate / unrelated</option>
+            <option value='other'>Other</option>
           </select>
         </span>
       </small>
@@ -58,10 +58,10 @@ class QaRow extends Component {
   render() {
     const modalId = `new-answer-form-${this.props.qa.id}`;
     return (
-      <article className="media qa-row">
+      <article className='media qa-row'>
         <NewAnswerForm question={this.props.qa} modalId={modalId} reload={this.props.reload} companyId={this.props.companyId} />
-        <div className="media-content">
-          <div className="content">
+        <div className='media-content'>
+          <div className='content'>
             <p>
               <strong>{this.props.qa.question}</strong>
               <br />
@@ -69,11 +69,11 @@ class QaRow extends Component {
               <br />
               Like Count: {this.props.qa.like_count}
               <br />
-              <small><Link onClick={this.handleShowAnswers}>{ this.state.showAnswers ? "Hide Answers" : "Show Answers" }</Link></small>
-              <i className="fa fa-flag" aria-hidden="true" onClick={this.handleFlagClick} style={{ color: this.state.flagRequest ? "#9D0600" : "inherit" }} />
+              <small><Link onClick={this.handleShowAnswers}>{ this.state.showAnswers ? 'Hide Answers' : 'Show Answers' }</Link></small>
+              <i className='fa fa-flag' aria-hidden='true' onClick={this.handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
               {this.state.flagRequest && this.renderFlagSelect()}
             </p>
-            { this.state.showAnswers && <p><button className="button new-answer" onClick={() => HandleModal(modalId)}>Post New Answer</button></p> }
+            { this.state.showAnswers && <p><button className='button new-answer' onClick={() => HandleModal(modalId)}>Post New Answer</button></p> }
             { this.state.showAnswers && this.props.qa.answers.map((ans, index) => <AnswerRow key={index} ans={ans} index={index + 1}/>) }
             { this.state.showAnswers && !this.props.qa.answers[0] && <p>No answers provided yet...</p> }
           </div>

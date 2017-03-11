@@ -41,7 +41,7 @@ class CompanyPage extends Component {
     })
     .then(response => response.json())
     .then(resJSON => this.conditionData(resJSON))
-    .catch(err => this.setState({ dataLoaded: true, pageError: true }));
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   conditionData(resJSON) {
@@ -52,14 +52,11 @@ class CompanyPage extends Component {
           tags: data._source.pin.search_text.split(' ')
         };
       });
-      let state = {
-        ...resJSON,
-        jobs: jobs,
-        dataLoaded: true
-      };
-      this.setState(state);
+      resJSON.jobs = jobs;
+      resJSON.dataLoaded = true;
+      this.setState(resJSON);
     } else {
-      this.setState({ dataLoaded: true, pageError: true });
+      throw 'Server returned false';
     }
   }
 

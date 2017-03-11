@@ -49,7 +49,7 @@ class NewInstForm extends Component {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
-  };
+  }
 
   validateForm() {
     return this.state.instLongName &&
@@ -77,7 +77,7 @@ class NewInstForm extends Component {
       url: '/api/institutions',
       data: data,
       success: response => {
-        response ? this.reactAlert.showAlert("New institude added.", "info") : this.reactAlert.showAlert("could not add new institude", "error");
+        response ? this.reactAlert.showAlert('New institude added.', 'info') : this.reactAlert.showAlert('could not add new institude', 'error');
       }
     }).always(() => {
       HandleModal('new-inst-form');
@@ -87,35 +87,35 @@ class NewInstForm extends Component {
 
   render() {
     return (
-      <div id="new-inst-form" className="modal">
-        <div className="modal-background" onClick={() => HandleModal('new-inst-form')}></div>
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p className="modal-card-title">New Institution</p>
-            <button className="delete" onClick={() => HandleModal('new-inst-form')}></button>
+      <div id='new-inst-form' className='modal'>
+        <div className='modal-background' onClick={() => HandleModal('new-inst-form')}></div>
+        <div className='modal-card'>
+          <header className='modal-card-head'>
+            <p className='modal-card-title'>New Institution</p>
+            <button className='delete' onClick={() => HandleModal('new-inst-form')}></button>
           </header>
-          <section className="modal-card-body">
+          <section className='modal-card-body'>
 
-            <label className="label">Institution Full Name:</label>
-            <p className="control">
-              <input className="input" type="text" name="instLongName" placeholder="Example: University of British Columbia" onChange={this.handleChange} />
+            <label className='label'>Institution Full Name:</label>
+            <p className='control'>
+              <input className='input' type='text' name='instLongName' placeholder='Example: University of British Columbia' onChange={this.handleChange} />
             </p>
 
-            <label className="label">Institution Given Name (optional):</label>
-            <p className="control">
-              <input className="input" type="text" name="instShortName" placeholder="Example (optional): UBC" onChange={this.handleChange} />
+            <label className='label'>Institution Given Name (optional):</label>
+            <p className='control'>
+              <input className='input' type='text' name='instShortName' placeholder='Example (optional): UBC' onChange={this.handleChange} />
             </p>
 
-            <label className="label">Country:</label>
-            <SingleSelect disabled={false} initialValue={this.state.country} name="country" options={this.countryList} handleChange={this.handleCountrySelect} />
+            <label className='label'>Country:</label>
+            <SingleSelect disabled={false} initialValue={this.state.country} name='country' options={this.countryList} handleChange={this.handleCountrySelect} />
 
-            <label className="label">State / Province:</label>
-            <SingleSelect disabled={false} initialValue={this.state.province} name="province" options={this.provinceList[this.state.country]} handleChange={this.handleProvinceSelect} />
+            <label className='label'>State / Province:</label>
+            <SingleSelect disabled={false} initialValue={this.state.province} name='province' options={this.provinceList[this.state.country]} handleChange={this.handleProvinceSelect} />
 
           </section>
-          <footer className="modal-card-foot">
-            <button className="button is-primary" disabled={!this.validateForm()} onClick={this.handleNewInstPost}>Submit</button>
-            <button className="button" onClick={() => HandleModal('new-inst-form')}>Cancel</button>
+          <footer className='modal-card-foot'>
+            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewInstPost}>Submit</button>
+            <button className='button' onClick={() => HandleModal('new-inst-form')}>Cancel</button>
           </footer>
         </div>
       </div>
