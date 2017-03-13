@@ -26,17 +26,23 @@ class RevisionRow extends Component {
   }
 
   handleDeletionRequest() {
-    $.ajax({
+    fetch(`/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}/revisions/${this.props.rev.id}`, {
       method: 'DELETE',
-      url: `/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}/revisions/${this.props.rev.id}`,
-      success: response => {
-        if (response) {
-          response === this.props.currentUrl ? this.props.reload(this.props.docInfo.course_id, this.props.docInfo.id) : browserHistory.push(response);
-        } else {
-          console.error('server error - 0', response);
-        }
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/string',
+        'Content-Type': 'application/json'
       }
-    });
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        resJSON.url === this.props.currentUrl ? this.props.reload(this.props.docInfo.course_id, this.props.docInfo.id) : browserHistory.push(resJSON.url);
+      } else {
+        throw 'Server returned false';
+      }
+    })
+    .catch(err => console.error('Unable to delete revision - ', err));
   }
 
   handleFlagClick() {
@@ -47,14 +53,19 @@ class RevisionRow extends Component {
   handleFlagSubmit(e) {
     let state = {};
     state[e.target.name] = e.target.value;
-    $.ajax({
+    fetch(`/api/flags/revisions/${this.props.rev.id}`, {
       method: 'POST',
-      data: state,
-      url: `/api/flags/revisions/${this.props.rev.id}`,
-      success: response => {
-        response ? console.log('Revision flag submitted') : console.error('Error in server 0: ', response);
-      }
-    }).always(() => this.setState(state));
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(state)
+    })
+    .then(response => response.json())
+    .then(resJSON => { if (!resJSON) throw 'Server returned false' })
+    .catch(err => console.error('Unable to post flag - ', err))
+    .then(() => this.setState(state));
   }
 
   renderFlagSelect() {

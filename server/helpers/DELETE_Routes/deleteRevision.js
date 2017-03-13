@@ -60,7 +60,7 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
   .then(revs => (revs[0].id == rev_id && revs[1]) ? Promise.all([ deleteRev(), updateElasticSearch(revs[1].title, revs[1].type) ]) : deleteRev() )
   .then(() => getRemainingRevCount())
   .then(revCount => parseInt(revCount[0].count) ? "no_need_to_delete_doc" : Promise.all([ deleteDoc(), deleteElasticDoc() ]))
-  .then(deleted => deleted === "no_need_to_delete_doc" ? res.send(`/courses/${course_id}/docs/${doc_id}`) : res.send(`/courses/${course_id}`))
+  .then(deleted => deleted === "no_need_to_delete_doc" ? res.send({ url: `/courses/${course_id}/docs/${doc_id}` }) : res.send({ url: `/courses/${course_id}` }))
   .catch(err => {
     console.error("Error inside deleteRevision: ", err);
     res.send(false);

@@ -37,8 +37,7 @@ class Navbar extends Component {
     }
   }
 
-  handleHamburger(e) {
-    e.preventDefault();
+  handleHamburger() {
     let nav = document.getElementById('hamburger-menu');
     let className = nav.getAttribute('class');
     nav.className = className.includes(' is-active') ? 'nav-right nav-menu' : 'nav-right nav-menu is-active';

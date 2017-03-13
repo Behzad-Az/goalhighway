@@ -31,9 +31,13 @@ class NewDocForm extends Component {
   }
 
   handleNewDocPost() {
-    const successFcn = () => {
-      this.reactAlert.showAlert('New document saved', 'info');
-      this.props.reload();
+    const successFcn = resJSON => {
+      if (resJSON) {
+        this.reactAlert.showAlert('New document saved', 'info');
+        this.props.reload();
+      } else {
+        throw 'Server returned false';
+      }
     };
     let data = {
       title: this.state.title,
@@ -41,14 +45,19 @@ class NewDocForm extends Component {
       revDesc: this.state.revDesc,
       filePath: this.state.filePath
     };
-    $.ajax({
+    fetch(`/api/courses/${this.props.courseId}`, {
       method: 'POST',
-      url: `/api/courses/${this.props.courseId}`,
-      data: data,
-      success: response => {
-        response ? successFcn() : this.reactAlert.showAlert('Unable to upload document', 'error');
-      }
-    }).always(() => HandleModal('new-doc-form'));
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => successFcn(resJSON))
+    .catch(() => this.reactAlert.showAlert('Unable to upload document', 'error'))
+    .then(() => HandleModal('new-doc-form'));
   }
 
   render() {
