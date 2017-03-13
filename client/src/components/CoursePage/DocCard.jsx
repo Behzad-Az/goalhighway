@@ -19,7 +19,7 @@ class DocCard extends Component {
   }
 
   findImageLink(filePath) {
-    let directoryPath = '../../../public/images/';
+    let directoryPath = '../../images/';
     let extension = filePath.substr(filePath.lastIndexOf('.') + 1) + '.png';
     return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
   }
@@ -71,7 +71,7 @@ class DocCard extends Component {
         <div className='card-content'>
           <div className='card-image'>
             <figure className='image is-64x64'>
-              <img src={this.state.imageLink} alt='' />
+              <img src={this.state.imageLink} alt='doc-type' />
             </figure>
           </div>
           <div className='card-text'>

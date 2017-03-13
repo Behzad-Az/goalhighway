@@ -13,7 +13,7 @@ class WelcomeBox extends Component {
         <p className="title is-4">There are tons of courses already here for you to choose from. Click here to start</p>
         <Link to={`/institutions/${this.props.instId}`}>
           <figure className="image">
-            <img src="../../public/images/login-page-photo.png" />
+            <img src="../../images/login-page-photo.png" />
           </figure>
         </Link>
       </div>

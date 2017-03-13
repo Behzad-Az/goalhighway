@@ -88,7 +88,7 @@ class RevisionRow extends Component {
         <div className='column is-6'>Description:<br/>{this.props.rev.rev_desc}</div>
         <div className='column is-3 buttons'>
           <figure className='image is-48x48'>
-            <img src='../../../../../public/images/pdf.png' alt='' onClick={this.handleRevisionRequest} />
+            <img src='../../../images/pdf.png' alt='download' onClick={this.handleRevisionRequest} />
           </figure>
           {this.props.rev.deleteable && <i onClick={this.handleDeletionRequest} className='fa fa-trash' aria-hidden='true' />}
           <i className='fa fa-flag' aria-hidden='true' onClick={this.handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />

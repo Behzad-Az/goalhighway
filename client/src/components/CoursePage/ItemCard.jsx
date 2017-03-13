@@ -105,7 +105,7 @@ class ItemCard extends Component {
           <div className='card-image'>
             { this.props.item.editable && <button className='button is-info' onClick={this.toggleView}>Edit</button> }
             <figure className='image is-96x96'>
-              <img src='../../../public/images/camera-logo.png' alt='' />
+              <img src='../../images/camera-logo.png' alt='picture' />
             </figure>
           </div>
           <div className='card-text'>
