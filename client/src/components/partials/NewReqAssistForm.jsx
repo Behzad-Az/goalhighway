@@ -6,7 +6,7 @@ class NewReqAssistForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      issue_desc: this.props.courseInfo.latestAssistRequest,
+      issueDesc: this.props.courseInfo.latestAssistRequest,
       assistReqOpen: this.props.courseInfo.assistReqOpen,
       closureReason: ''
     };
@@ -20,7 +20,7 @@ class NewReqAssistForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    nextProps.courseInfo.latestAssistRequest !== this.state.issue_desc ? this.setState({ issue_desc: nextProps.courseInfo.latestAssistRequest }) : '';
+    nextProps.courseInfo.latestAssistRequest !== this.state.issueDesc ? this.setState({ issueDesc: nextProps.courseInfo.latestAssistRequest }) : '';
     nextProps.courseInfo.assistReqOpen !== this.state.assistReqOpen ? this.setState({ assistReqOpen: nextProps.courseInfo.assistReqOpen }) : '';
   }
 
@@ -31,8 +31,8 @@ class NewReqAssistForm extends Component {
   }
 
   validateForm() {
-    return this.state.issue_desc &&
-           this.state.issue_desc.length <= 400
+    return this.state.issueDesc &&
+           this.state.issueDesc.length <= 400
   }
 
   formFooterOptions() {
@@ -69,7 +69,7 @@ class NewReqAssistForm extends Component {
       ...this.props.courseInfo,
       subscriptionStatus: true,
       assistReqOpen: action === 'close' ? false : true,
-      latestAssistRequest: this.state.issue_desc
+      latestAssistRequest: this.state.issueDesc
     };
     this.props.updateParentState({ courseInfo });
     HandleModal('new-request-assist-form');
@@ -78,30 +78,48 @@ class NewReqAssistForm extends Component {
   handleUpdateRequestAssist(action) {
     let data = {
       action: action,
-      issue_desc: this.state.issue_desc,
+      issue_desc: this.state.issueDesc,
       closure_reason: this.state.closureReason
     };
 
-    $.ajax({
+    fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}/tutorlog/update`, {
       method: 'POST',
-      url: `/api/users/currentuser/courses/${this.props.courseInfo.id}/tutorlog/update`,
-      data: data,
-      success: response => {
-        response ? this.updateParentState(action) : console.error('Error in serve 0: ', response);
-        this.setState({ closureReason: '' });
-      }
-    });
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.updateParentState(action); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(err => console.error('Unable to update or close assistance request - ', err))
+    .then(() => this.setState({ closureReason: '' }));
   }
 
   handleNewRequestAssist() {
-    $.ajax({
+    let data = {
+      issue_desc: this.state.issueDesc
+    };
+
+    fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}/tutorlog`, {
       method: 'POST',
-      url: `/api/users/currentuser/courses/${this.props.courseInfo.id}/tutorlog`,
-      data: this.state,
-      success: response => {
-        response ? this.updateParentState('new') : console.error('Error in server - 0: ', response);
-      }
-    });
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.updateParentState('new'); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(err => console.error('Unable to post assistance request - ', err));
   }
 
   render() {
@@ -115,7 +133,7 @@ class NewReqAssistForm extends Component {
           </header>
           <section className='modal-card-body'>
             <p className='control'>
-              <textarea className='textarea' name='issue_desc' placeholder='How may one of our tutors assist you?' value={this.state.issue_desc} onChange={this.handleChange} />
+              <textarea className='textarea' name='issueDesc' placeholder='How may one of our tutors assist you?' value={this.state.issueDesc} onChange={this.handleChange} />
             </p>
           </section>
           { this.formFooterOptions() }

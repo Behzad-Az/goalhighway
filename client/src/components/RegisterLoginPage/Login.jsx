@@ -19,14 +19,25 @@ class Login extends Component {
   }
 
   handleLogin() {
-    $.ajax({
+    let data = {
+      username: this.state.username,
+      password: this.state.password
+    };
+
+    fetch('/api/login', {
       method: 'POST',
-      url: '/api/login',
-      data: this.state,
-      success: response => {
-        response ? browserHistory.push('/home') : this.props.handleBadInput(true, 'Invalid login credentials.');
-      }
-    });
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      resJSON ? browserHistory.push('/home') : this.props.handleBadInput(true, 'Invalid login credentials.');
+    })
+    .catch(err => console.error('Unable to process login - ', err));
   }
 
   render() {

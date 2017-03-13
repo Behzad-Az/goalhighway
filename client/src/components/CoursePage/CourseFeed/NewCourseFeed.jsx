@@ -7,7 +7,7 @@ class NewCourseFeed extends Component {
     this.maxContentLength = 250;
     this.reactAlert = new ReactAlert();
     this.state = {
-      commenter_name: '',
+      commenterName: '',
       category: '',
       content: ''
     };
@@ -23,7 +23,7 @@ class NewCourseFeed extends Component {
 
   clearForm() {
     this.setState({
-      commenter_name: '',
+      commenterName: '',
       category: '',
       content: ''
     });
@@ -37,15 +37,29 @@ class NewCourseFeed extends Component {
   }
 
   handleSubmit() {
-    $.ajax({
+    let data = {
+      commenter_name: this.state.commenterName,
+      category: this.state.category,
+      content: this.state.content
+    };
+
+    fetch(`/api/courses/${this.props.courseId}/comments`, {
       method: 'POST',
-      url: `/api/courses/${this.props.courseId}/comments`,
-      data: this.state,
-      success: (response) => {
-        response ? this.reactAlert.showAlert('Comment submitted', 'info') : console.error('server error - 0', response);
-      }
-    }).always(() => {
-      this.props.refresh(this.state, 'new');
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.reactAlert.showAlert('New course feed submitted', 'info'); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(err => console.error('Unable to post new course feed - ', err))
+    .then(() => {
+      this.props.updateCommentsOptimistically(this.state, 'new');
       this.clearForm();
     });
   }
@@ -60,7 +74,7 @@ class NewCourseFeed extends Component {
         <div className='control is-horizontal'>
           <div className='control is-grouped'>
             <p className='control is-expanded'>
-              <input className='input' name='commenter_name' type='text' placeholder='Name (Optional)' onChange={this.handleChange} value={this.state.commenter_name} />
+              <input className='input' name='commenterName' type='text' placeholder='Name (Optional)' onChange={this.handleChange} value={this.state.commenterName} />
             </p>
             <div className='control is-expanded'>
               <div className='select is-fullwidth'>

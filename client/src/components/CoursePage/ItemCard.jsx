@@ -29,11 +29,6 @@ class ItemCard extends Component {
   }
 
   handleEdit() {
-    const successFcn = () => {
-      let msg = this.state.deleted ? 'Item deleted' : 'Item updated';
-      this.reactAlert.showAlert(msg, 'info');
-      this.props.reload();
-    };
     let data = {
       photoPath: this.state.photoPath,
       itemDesc: this.state.itemDesc,
@@ -41,14 +36,28 @@ class ItemCard extends Component {
       price: this.state.price,
       deleted: this.state.deleted
     };
-    $.ajax({
+
+    fetch(`/api/courses/${this.props.item.course_id}/items/${this.props.item.id}`, {
       method: 'POST',
-      url: `/api/courses/${this.props.item.course_id}/items/${this.props.item.id}`,
-      data: data,
-      success: response => {
-        response ? successFcn() : this.reactAlert.showAlert('Unable to update item', 'error');
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        let msg = this.state.deleted ? 'Item deleted' : 'Item updated';
+        this.reactAlert.showAlert(msg, 'info');
+        this.props.reload();
+      } else {
+        throw 'Server returned false';
       }
-    }).always(this.toggleView);
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to update item', 'error'))
+    .then(this.toggleView);
   }
 
   handleDelete() {

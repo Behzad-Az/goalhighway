@@ -42,36 +42,57 @@ class TopRow extends Component {
   }
 
   handleUnsubscribe() {
-    $.ajax({
+    fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}`, {
       method: 'DELETE',
-      url: `/api/users/currentuser/courses/${this.props.courseInfo.id}`,
-      success: response => {
-        response ? this.setState({ subscriptionStatus: false, tutorStatus: false, assistReqOpen: false }) : console.error('Error in server - 0: ', response);
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/string',
+        'Content-Type': 'application/json'
       }
-    });
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.setState({ subscriptionStatus: false, tutorStatus: false, assistReqOpen: false }); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(err => console.error('Unable to unsubscribe - ', err));
   }
 
   handleSubscribe() {
-    $.ajax({
+    fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}`, {
       method: 'POST',
-      url: `/api/users/currentuser/courses/${this.props.courseInfo.id}`,
-      data: { courseId: this.props.courseInfo.id },
-      success: response => {
-        response ? this.setState({ subscriptionStatus: true }) : console.error('Error in server - 0: ', response);
-      }
-    });
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ courseId: this.props.courseInfo.id })
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.setState({ subscriptionStatus: true }); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(err => console.error('Unable to subscribe - ', err));
   }
 
   handleTutorStatus() {
     let tutorStatus = !this.state.tutorStatus;
-    $.ajax({
+    fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}/tutor`, {
       method: 'POST',
-      url: `/api/users/currentuser/courses/${this.props.courseInfo.id}/tutor`,
-      data: { tutorStatus },
-      success: response => {
-        response ? this.setState({ tutorStatus }) : console.error('Error in server - 0: ', response);
-      }
-    });
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ tutorStatus })
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.setState({ tutorStatus }); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(err => console.error('Unable to update tutor status - ', err));
   }
 
   render() {

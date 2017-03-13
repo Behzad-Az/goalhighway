@@ -28,6 +28,7 @@ class Register extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.getUserAvailability = this.getUserAvailability.bind(this);
     this.getEmailAvailability = this.getEmailAvailability.bind(this);
+    this.validateForm = this.validateForm.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
   }
 
@@ -80,32 +81,53 @@ class Register extends Component {
   getUserAvailability(e) {
     let username = e.target.value.toLowerCase();
     if (username.length > 2) {
-      $.ajax({
+      fetch('/api/username_availability', {
         method: 'POST',
-        url: '/api/username_availability',
-        data: { username },
-        success: usernameAvaialble => this.setState({ usernameAvaialble })
-      });
+        credentials: 'same-origin',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username })
+      })
+      .then(response => response.json())
+      .then(usernameAvaialble => this.setState({ usernameAvaialble, username }));
     } else {
-      this.setState({ usernameAvaialble: false });
+      this.setState({ usernameAvaialble: false, username });
     }
-    this.setState({ username });
   }
 
   getEmailAvailability(e) {
     let email = e.target.value.toLowerCase();
     let emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     if (email.length > 5 && email.match(emailRegex)) {
-      $.ajax({
+      fetch('/api/email_availability', {
         method: 'POST',
-        url: '/api/email_availability',
-        data: { email },
-        success: emailAvaialble => this.setState({ emailAvaialble })
-      });
+        credentials: 'same-origin',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      })
+      .then(response => response.json())
+      .then(emailAvaialble => this.setState({ emailAvaialble, email }));
     } else {
-      this.setState({ emailAvaialble: false });
+      this.setState({ emailAvaialble: false, email });
     }
-    this.setState({ email });
+  }
+
+  validateForm() {
+    return this.state.username &&
+           this.state.email &&
+           this.state.password &&
+           this.state.passwordConfirm &&
+           this.state.instId &&
+           this.state.progId &&
+           this.state.userYear &&
+           this.state.emailAvaialble &&
+           this.state.usernameAvaialble &&
+           this.state.password === this.state.passwordConfirm;
   }
 
   handleRegister() {
@@ -118,14 +140,21 @@ class Register extends Component {
       progId: this.state.progId,
       userYear: this.state.userYear
     };
-    $.ajax({
+
+    fetch('/api/register', {
       method: 'POST',
-      url: '/api/register',
-      data: data,
-      success: response => {
-        response ? this.props.handleSuccessfulRegister(true) : this.props.handleBadInput(true, 'Could not register new user.');
-      }
-    });
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      resJSON ? this.props.handleSuccessfulRegister(true) : this.props.handleBadInput(true, 'Could not register new user.');
+    })
+    .catch(err => console.error('Unable to process registeration - ', err));
   }
 
   render() {

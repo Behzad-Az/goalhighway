@@ -118,11 +118,6 @@ class CareerControlBar extends Component {
   }
 
   handleUpdateSearch() {
-    const successFcn = () => {
-      this.reactAlert.showAlert('search profile updated', 'info');
-      this.props.reload();
-    };
-
     let data = {
       type: 'job',
       postalCode: this.state.postalCode,
@@ -131,14 +126,24 @@ class CareerControlBar extends Component {
       jobQuery: this.state.jobQuery.join(' ')
     };
 
-    $.ajax({
+    fetch('/api/users/currentuser', {
       method: 'POST',
-      url: '/api/users/currentuser',
-      data: data,
-      success: response => {
-        response ? successFcn() : this.reactAlert.showAlert('could not update search criteria', 'error');
-      }
-    }).always(this.props.toggleControlBar);
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.reactAlert.showAlert('search profile updated', 'info');
+        this.props.reload();
+      } else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to update search criteria', 'error'))
+    .then(this.props.toggleControlBar);
   }
 
   render() {

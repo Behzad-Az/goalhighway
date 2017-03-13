@@ -31,14 +31,23 @@ class NewQuestionForm extends Component {
       answer: this.state.answer,
       outcome: this.state.outcome
     };
-    $.ajax({
+
+    fetch(`/api/companies/${this.props.companyInfo.id}`, {
       method: 'POST',
-      url: `/api/companies/${this.props.companyInfo.id}`,
-      data: data,
-      success: response => {
-        response ? this.props.reload() : console.error('Error in server 0: ', response);
-      }
-    }).always(() => HandleModal('new-question-form'));
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.props.reload(); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(err => console.error('Unable to post new interview question - ', err))
+    .then(() => HandleModal('new-question-form'));
   }
 
   render() {

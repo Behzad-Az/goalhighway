@@ -95,14 +95,23 @@ class PersonalInformation extends Component {
       instId: this.state.instId,
       progId: this.state.progId
     };
-    $.ajax({
+
+    fetch('/api/users/currentuser', {
       method: 'POST',
-      url: '/api/users/currentuser',
-      data: data,
-      success: response => {
-        response ? this.reactAlert.showAlert('User profile saved', 'info') : this.reactAlert.showAlert('Could not save user profile', 'error');
-      }
-    }).always(this.toggleView);
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.reactAlert.showAlert('User profile saved', 'info'); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Could not save user profile', 'error'))
+    .then(this.toggleView);
   }
 
   showInfo() {
@@ -252,7 +261,6 @@ class PersonalInformation extends Component {
   }
 
   render() {
-
     return (
       <div className='personal-info-container'>
         { this.state.editView ? this.editInfo() : this.showInfo() }

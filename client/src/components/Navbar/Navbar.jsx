@@ -49,14 +49,22 @@ class Navbar extends Component {
     notifList.className = className.includes(' is-enabled') ? 'notification-list' : 'notification-list is-enabled';
     if (className.includes(' is-enabled')) {
       notifList.className = 'notification-list';
-      $.ajax({
+
+      fetch('/api/users/currentuser/notifications/viewed', {
         method: 'POST',
-        url: `/api/users/${this.state.userInfo.id}/notifications/viewed`,
-        data: { asOfTime: this.state.notifications[0] ? this.state.notifications[0].notif_created_at : '' },
-        success: response => {
-          response ? console.log('Message 93: notifications set to seen') : console.error('Error in server 0 - ', response);
-        }
-      }).always(() => {
+        credentials: 'same-origin',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ asOfTime: this.state.notifications[0] ? this.state.notifications[0].notif_created_at : '' })
+      })
+      .then(response => response.json())
+      .then(resJSON => {
+        if (!resJSON) { throw 'Server returned false'; }
+      })
+      .catch(err => console.error('Error while setting viewed notifications - ', err))
+      .then(() => {
         let notifications = this.state.notifications.map(notif => {
           notif.unviewed = false;
           return notif;
@@ -64,6 +72,7 @@ class Navbar extends Component {
         let unViewedNotif = false;
         this.setState({ unViewedNotif, notifications });
       });
+
     } else {
       notifList.className = 'notification-list is-enabled';
     }

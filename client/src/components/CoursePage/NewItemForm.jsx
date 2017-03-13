@@ -30,24 +30,32 @@ class NewItemForm extends Component {
   }
 
   handleNewItemPost() {
-    const successFcn = () => {
-      this.reactAlert.showAlert('New item posted', 'info');
-      this.props.reload();
-    };
     let data = {
       title: this.state.title,
       itemDesc: this.state.itemDesc,
       price: this.state.price,
       photoPath: this.state.photoPath
     };
-    $.ajax({
+
+    fetch(`/api/courses/${this.props.courseId}/items`, {
       method: 'POST',
-      url: `/api/courses/${this.props.courseId}/items`,
-      data: data,
-      success: response => {
-        response ? successFcn() : this.reactAlert.showAlert('error in posting item', 'error');
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.reactAlert.showAlert('New item posted', 'info');
+        this.props.reload();
       }
-    }).always(() => HandleModal('new-item-form'));
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('error in posting item', 'error'))
+    .then(() => HandleModal('new-item-form'));
   }
 
   render() {

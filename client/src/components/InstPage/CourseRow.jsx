@@ -20,28 +20,39 @@ class CourseRow extends Component {
   }
 
   handleRemoval() {
-    let course_id = this.props.course.id;
-    let user_id = this.props.userId;
-    $.ajax({
+    fetch(`/api/users/currentuser/courses/${this.props.course.id}`, {
       method: 'DELETE',
-      url: `/api/users/${user_id}/courses/${course_id}`,
-      success: response => {
-        response ? this.toggleRemoveAdd('remove') : this.reactAlert.showAlert('Server error - could not remove course', 'error');
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/string',
+        'Content-Type': 'application/json'
       }
-    });
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.toggleRemoveAdd('remove'); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to remove course', 'error'));
   }
 
   handleAddition() {
-    let course_id = this.props.course.id;
-    let user_id = this.props.userId;
-    $.ajax({
+    let courseId = this.props.course.id;
+    fetch(`/api/users/currentuser/courses/${courseId}`, {
       method: 'POST',
-      url: `/api/users/${user_id}/courses/${course_id}`,
-      data: { course_id },
-      success: response => {
-        response ? this.toggleRemoveAdd('add') : this.reactAlert.showAlert('could not add course', 'error');
-      }
-    });
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ courseId })
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.toggleRemoveAdd('add'); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to add course', 'error'));
   }
 
   toggleRemoveAdd(removeOrAdd) {

@@ -14,24 +14,33 @@ class SearhBar extends Component {
 
   handleSearch(e) {
     if (e.target.value.length > 2) {
-      $.ajax({
+
+      fetch('/api/searchbar', {
         method: 'POST',
-        url: '/api/searchbar',
-        data: { query: e.target.value },
-        success: response => {
-          response ? this.conditionData(response) : console.error('Error in server 0: ', response);
-        }
-      });
+        credentials: 'same-origin',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: e.target.value })
+      })
+      .then(response => response.json())
+      .then(resJSON => {
+        if (resJSON) { this.conditionData(resJSON); }
+        else { throw 'Server returned false'; }
+      })
+      .catch(err => console.error('Unable to process search query - ', err));
+
     } else {
       this.setState({ searchResults: [] });
       this.showSearchResults(false);
     }
   }
 
-  conditionData(response) {
+  conditionData(resJSON) {
     let searchResults = [];
-    if (response.length) {
-      response.forEach((result, index) => {
+    if (resJSON.length) {
+      resJSON.forEach((result, index) => {
         switch (result._type) {
           case 'document':
             searchResults.push(

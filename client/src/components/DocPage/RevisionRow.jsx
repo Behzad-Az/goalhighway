@@ -36,11 +36,8 @@ class RevisionRow extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) {
-        resJSON.url === this.props.currentUrl ? this.props.reload(this.props.docInfo.course_id, this.props.docInfo.id) : browserHistory.push(resJSON.url);
-      } else {
-        throw 'Server returned false';
-      }
+      if (resJSON) { resJSON.url === this.props.currentUrl ? this.props.reload(this.props.docInfo.course_id, this.props.docInfo.id) : browserHistory.push(resJSON.url); }
+      else { throw 'Server returned false'; }
     })
     .catch(err => console.error('Unable to delete revision - ', err));
   }

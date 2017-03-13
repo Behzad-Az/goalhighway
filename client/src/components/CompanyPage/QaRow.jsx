@@ -31,14 +31,19 @@ class QaRow extends Component {
   handleFlagSubmit(e) {
     let state = {};
     state[e.target.name] = e.target.value;
-    $.ajax({
+    fetch(`/api/flags/interview_questions/${this.props.qa.id}`, {
       method: 'POST',
-      data: state,
-      url: `/api/flags/interview_questions/${this.props.qa.id}`,
-      success: response => {
-        response ? console.log('Flag submitted', response) : console.error('Error in server 0: ', response);
-      }
-    }).always(() => this.setState(state));
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(state)
+    })
+    .then(response => response.json())
+    .then(resJSON => { if (!resJSON) throw 'Server returned false' })
+    .catch(err => console.error('Unable to post flag - ', err))
+    .then(() => this.setState(state));
   }
 
   renderFlagSelect() {

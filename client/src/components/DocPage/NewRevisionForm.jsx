@@ -30,24 +30,32 @@ class NewDocForm extends Component {
   }
 
   handleNewDocPost() {
-    const successFcn = () => {
-      this.reactAlert.showAlert('new revision uploaded', 'info');
-      this.props.reload();
-    };
     let data = {
       title: this.state.title,
       type: this.state.type,
       revDesc: this.state.revDesc,
       filePath: this.state.filePath
     };
-    $.ajax({
+
+    fetch(`/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}`, {
       method: 'POST',
-      url: `/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}`,
-      data: data,
-      success: response => {
-        response ? successFcn() : this.reactAlert.showAlert('could not save revision', 'error');
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.reactAlert.showAlert('new revision uploaded', 'info');
+        this.props.reload();
       }
-    }).always(() => HandleModal('new-revision-form'));
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to post revision', 'error'))
+    .then(() => HandleModal('new-revision-form'));
   }
 
   render() {

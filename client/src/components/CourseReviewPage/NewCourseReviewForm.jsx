@@ -68,10 +68,6 @@ class NewCourseReviewForm extends Component {
   }
 
   handleNewReview() {
-    const successFcn = () => {
-      this.reactAlert.showAlert('Successfully posted review', 'info');
-      this.props.reload();
-    };
     let data = {
       startYear: this.state.startYear,
       startMonth: this.state.startMonth,
@@ -82,14 +78,26 @@ class NewCourseReviewForm extends Component {
       reviewDesc: this.state.reviewDesc,
       profName: this.state.profName
     };
-    $.ajax({
+
+    fetch(`/api/courses/${this.props.courseId}/reviews`, {
       method: 'POST',
-      url: `/api/courses/${this.props.courseId}/reviews`,
-      data: data,
-      success: response => {
-        response ? successFcn() : this.reactAlert.showAlert('Unable to post review', 'error');
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.reactAlert.showAlert('Successfully posted review', 'info');
+        this.props.reload();
       }
-    }).always(() => HandleModal('new-course-review-form'));
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to post review', 'error'))
+    .then(() => HandleModal('new-course-review-form'));
   }
 
   render() {

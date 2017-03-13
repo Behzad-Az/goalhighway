@@ -39,17 +39,26 @@ class NewCourseForm extends Component {
       course_year: this.state.courseYear,
       inst_id: this.props.instId
     };
-    $.ajax({
+
+    fetch('/api/courses', {
       method: 'POST',
-      url: '/api/courses',
-      data: data,
-      success: response => {
-        response ? this.reactAlert.showAlert('New course added.', 'info') : this.reactAlert.showAlert('could not add new course', 'error');
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.reactAlert.showAlert('New course added.', 'info');
+        this.props.reload();
       }
-    }).always(() => {
-      HandleModal('new-course-form');
-      this.props.reload();
-    });
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to add new course', 'error'))
+    .then(() => HandleModal('new-course-form'));
   }
 
   render() {

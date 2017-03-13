@@ -52,11 +52,11 @@ class CourseFeed extends Component {
     let comments = this.state.comments.filter(comment => this.state.categoryFilters.includes(comment.category));
     return (
       <div className='feed-container'>
-        { this.props.courseId && <NewCourseFeed courseId={this.props.courseId} categories={this.categories} refresh={this.updateCommentsOptimistically} /> }
+        { this.props.courseId && <NewCourseFeed courseId={this.props.courseId} categories={this.categories} updateCommentsOptimistically={this.updateCommentsOptimistically} /> }
         <div className='feed-rows'>
           <hr />
           <FilterFeedControls categories={this.categories} updateFilters={this.updateCategoryFilters} />
-          { comments.map((comment, index) => <CommentRow key={index} comment={comment} refresh={this.updateCommentsOptimistically} /> )}
+          { comments.map((comment, index) => <CommentRow key={index} comment={comment} updateCommentsOptimistically={this.updateCommentsOptimistically} /> )}
         </div>
       </div>
     );

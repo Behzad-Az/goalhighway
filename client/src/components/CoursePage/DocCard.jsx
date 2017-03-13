@@ -49,14 +49,20 @@ class DocCard extends Component {
   }
 
   sendLikeDislike(value) {
-    $.ajax({
+    fetch(`/api/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}/likes`, {
       method: 'POST',
-      url: `/api/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}/likes`,
-      data: { like_or_dislike: value },
-      success: (response) => {
-        response ? console.log('message 98: ', response) : console.error('server error - 0', response);
-      }
-    });
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ like_or_dislike: value })
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (!resJSON) { throw 'Server returned false.'; }
+    })
+    .catch(err => console.error('Unable to like / dislike document - ', err));
   }
 
   render() {

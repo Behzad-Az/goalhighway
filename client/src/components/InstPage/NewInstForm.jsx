@@ -72,17 +72,26 @@ class NewInstForm extends Component {
       inst_long_name: this.state.instLongName,
       inst_short_name: this.state.instShortName
     };
-    $.ajax({
+
+    fetch('/api/institutions', {
       method: 'POST',
-      url: '/api/institutions',
-      data: data,
-      success: response => {
-        response ? this.reactAlert.showAlert('New institude added.', 'info') : this.reactAlert.showAlert('could not add new institude', 'error');
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.reactAlert.showAlert('New institution added.', 'info');
+        this.props.reload();
       }
-    }).always(() => {
-      HandleModal('new-inst-form');
-      this.props.reload();
-    });
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to add new institution', 'error'))
+    .then(() => HandleModal('new-inst-form'));
   }
 
   render() {
