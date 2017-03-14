@@ -44,51 +44,65 @@ app.use(blacklist, (req, res, next) => {
 
 
 
+// require('./multerserver')(app);
 
-require('./multerserver')(app);
+const multer = require('multer');
 
-// const multer = require('multer');
-// const axios = require('axios');
+const getRandomDocName = () => {
+  let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let length = 4;
+  let randomName = '';
+  for(let i = 0; i < length; i++) {
+    randomName += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return `${randomName}_`;
+};
 
-// const storage = multer.diskStorage({
-//   destination: './uploads/',
-//   filename: (req, file, cb) => {
-//     console.log("i'm here file: ", file);
-//     cb(null, `${new Date()}-${file.originalname}`);
-//   },
-// });
+const acceptableMimeType = [
+  'image/jepg',
+  'image/png',
+  'image/gif',
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+];
 
-// const upload = multer({ storage });
+const storage = multer.diskStorage({
+  destination: './uploads/',
+  filename: (req, file, cb) => {
+    let ext = '.unknown';
+    switch (file.mimetype) {
+      case 'image/jpeg':
+        ext = '.jpeg';
+        break;
+      case 'image/png':
+        ext = '.png';
+        break;
+      case 'image/gif':
+        ext = '.gif';
+        break;
+      case 'application/pdf':
+        ext = '.pdf';
+        break;
+      case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+        ext = '.xlsx';
+        break;
+      case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+        ext = '.docx';
+        break;
+    }
 
-// app.post('/api/uploads', upload.single('file'), (req, res) => {
-//   console.log("i'm here req.body: ", req.body);
-//   console.log("i'm here req.file: ", req.body.file);
-//  const file = req.file; // file passed from client
-//  const meta = req.body; // all other values passed from the client, like name, etc..
+    cb(null, getRandomDocName() + Date.now() + ext);
+  }
+});
 
-//  // send the data to our REST API
-//  // axios({
-//  //    url: `https://api.myrest.com/uploads`,
-//  //    method: 'post',
-//  //    data: {
-//  //      file,
-//  //      name: meta.name,
-//  //    },
-//  //  })
-//  //   .then(response => res.status(200).json(response.data.data))
-//  //   .catch((error) => res.status(500).json(error.response.data));
-// });
-
-
-
-
-
-
-
-
-
-
-
+const upload = multer({
+  storage,
+  limits: { fileSize: 20000000, files: 1 },
+  fileFilter: (req, file, cb) => {
+    acceptableMimeType.includes(file.mimetype) ? cb(null, true) : cb(null, false, new Error('unknown file type'));
+  }
+});
 
 
 
@@ -244,8 +258,11 @@ app.post('/api/courses', (req, res) => {
   postNewCourse(req, res, knex, req.session.user_id, esClient);
 });
 
-app.post('/api/courses/:course_id/docs', (req, res) => {
-  postNewDoc(req, res, knex, req.session.user_id, esClient);
+app.post('/api/courses/:course_id/docs', upload.single('file'), (req, res) => {
+  req.file ? postNewDoc(req, res, knex, req.session.user_id, esClient) : res.send(false);
+
+  // console.log("i'm here 6.0 body: ", req.body);
+  // console.log("i'm here 6.1 file: ", req.file);
 });
 
 app.post('/api/courses/:course_id/items', (req, res) => {

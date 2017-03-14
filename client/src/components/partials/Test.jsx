@@ -1,44 +1,4 @@
-// // Redux action
-// export function uploadSuccess({ data }) {
-//   return {
-//     type: 'UPLOAD_DOCUMENT_SUCCESS',
-//     data,
-//   };
-// }
-
-// export function uploadFail(error) {
-//   return {
-//     type: 'UPLOAD_DOCUMENT_FAIL',
-//     error,
-//   };
-// }
-
-// export function uploadDocumentRequest({ file, name }) {
-//   let data = new FormData();
-//   data.append('file', document);
-//   data.append('name', name);
-
-//   return (dispatch) => {
-//     axios.post('/files', data)
-//       .then(response => dispatch(uploadSuccess(response))
-//       .catch(error => dispatch(uploadFail(error));
-//   };
-// }
-
-/*
- ... A lot of Redux / React boilerplate happens here
- like mapDispatchToProps and mapStateToProps and @connect ...
-*/
-
-// Component method
-
-
-// Component render
-
-
-
 import React, {Component} from 'react';
-// import axios from 'axios';
 
 class FileUpload extends Component {
   constructor(props) {
@@ -46,35 +6,15 @@ class FileUpload extends Component {
     this.state = {
       file: ''
     };
-    this.uploadSuccess = this.uploadSuccess.bind(this);
-    this.uploadFail = this.uploadFail.bind(this);
     this.uploadDocumentRequest = this.uploadDocumentRequest.bind(this);
     this.handleFileUpload = this.handleFileUpload.bind(this);
-  }
-
-  uploadSuccess({ data }) {
-    return {
-      type: 'UPLOAD_DOCUMENT_SUCCESS',
-      data,
-    };
-  }
-
-  uploadFail(error) {
-    return {
-      type: 'UPLOAD_DOCUMENT_FAIL',
-      error,
-    };
   }
 
   uploadDocumentRequest() {
     console.log("i'm here 1: uploadDocumentRequest: ", this.state.file, this.state.name);
     let data = new FormData();
     data.append('file', this.state.file);
-    data.append('name', this.state.name);
-    // axios.post('/api/uploadHandler', data)
-    //   .then(response => this.uploadSuccess(response))
-    //   .catch(error => this.uploadFail(error));
-
+    data.append('name', 'default name');
 
     fetch('/api/uploadHandler', {
       method: 'POST',
@@ -97,16 +37,10 @@ class FileUpload extends Component {
 
   handleFileUpload(e) {
     const file = e.target.files[0];
-
-    this.setState({ file, name: 'file to be uploaded' });
-    // this.uploadDocumentRequest({
-    //    file,
-    //    name: 'Awesome Cat Pic'
-    // });
+    this.setState({ file });
   }
 
   render() {
-    console.log("i'm here 0: ", this.state);
     return (
       <div>
         <input type="file" onChange={this.handleFileUpload} />

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { browserHistory } from 'react-router';
 
+const download = require('../../download.js');
+
 class RevisionRow extends Component {
   constructor(props) {
     super(props);
@@ -20,9 +22,12 @@ class RevisionRow extends Component {
       method: 'GET',
       credentials: 'same-origin'
     })
-    .then(response => response.json())
-    .then(resJSON => resJSON[0] ? console.log('printing revision resJSON 0: ', resJSON) : console.error('Error while fetching file: Server returned false'))
-    .catch(err => console.error('Error while fetching file: ', err));
+    .then(response => {
+      if (response.status === 200) { return response.blob(); }
+      else { throw 'Server could not locate requested file.'; }
+    })
+    .then(blob => download(blob))
+    .catch(err => console.error('Unable to download file: - ', err));
   }
 
   handleDeletionRequest() {

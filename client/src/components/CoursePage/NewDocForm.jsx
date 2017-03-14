@@ -14,7 +14,7 @@ class NewDocForm extends Component {
       file: ''
     };
     this.handleChange = this.handleChange.bind(this);
-    this._handleImageChange = this._handleImageChange.bind(this);
+    this.handleFileChange = this.handleFileChange.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.handleNewDocPost = this.handleNewDocPost.bind(this);
   }
@@ -25,12 +25,9 @@ class NewDocForm extends Component {
     this.setState(state);
   }
 
-  _handleImageChange(e) {
-    e.preventDefault();
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    reader.onloadend = () => this.setState({ file });
-    reader.readAsDataURL(file);
+  handleFileChange(e) {
+    const file = e.target.files[0];
+    this.setState({ file });
   }
 
   validateForm() {
@@ -42,38 +39,44 @@ class NewDocForm extends Component {
   }
 
   handleNewDocPost() {
-    const successFcn = resJSON => {
+    // let data = {
+    //   title: this.state.title,
+    //   type: this.state.type,
+    //   revDesc: this.state.revDesc,
+    //   filePath: 'test.balls',
+    //   file: this.state.file
+    // };
+
+    let data = new FormData();
+    data.append('file', this.state.file);
+    data.append('title', this.state.title);
+    data.append('type', this.state.type);
+    data.append('revDesc', this.state.revDesc);
+    data.append('filePath', 'default file path');
+
+    fetch(`/api/courses/${this.props.courseId}/docs`, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        // 'Content-Type': 'application/json'
+      },
+      body: data
+    })
+    .then(response => response.json())
+    .then(resJSON => {
       if (resJSON) {
         this.reactAlert.showAlert('New document saved', 'info');
         this.props.reload();
       } else {
         throw 'Server returned false';
       }
-    };
-    let data = {
-      title: this.state.title,
-      type: this.state.type,
-      revDesc: this.state.revDesc,
-      filePath: 'test.balls',
-      file: this.state.file
-    };
-    fetch(`/api/courses/${this.props.courseId}/docs`, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(resJSON => successFcn(resJSON))
     .catch(() => this.reactAlert.showAlert('Unable to upload document', 'error'))
     .then(() => HandleModal('new-doc-form'));
   }
 
   render() {
-    console.log('here 0: ', this.state.file);
     return (
       <div id='new-doc-form' className='modal'>
         <div className='modal-background' onClick={() => HandleModal('new-doc-form')}></div>
@@ -89,11 +92,13 @@ class NewDocForm extends Component {
             </p>
             <label className='label'>Upload the Document:</label>
 
-            <form className='control' enctype='multipart/form-data'>
+
+            <p className='control'>
               <input className='upload'
                 type='file'
-                onChange={(e)=>this._handleImageChange(e)} />
-            </form>
+                placeholder='select file'
+                onChange={this.handleFileChange} />
+            </p>
 
 
             <label className='label'>Revision Comment:</label>
