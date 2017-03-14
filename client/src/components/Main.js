@@ -12,7 +12,7 @@ import RegisterLoginPage from './RegisterLoginPage/RegisterLoginPage.jsx';
 import CareerPage from './CareerPage/CareerPage.jsx';
 import CompanyPage from './CompanyPage/CompanyPage.jsx';
 
-import FileUploader from './partials/FileUploader.jsx';
+import FileUploader from './partials/Test.jsx';
 
 class App extends React.Component {
   constructor() {
@@ -69,7 +69,7 @@ class App extends React.Component {
         <Route path={'/users/:user_id/jobs'} component={CareerPage} onEnter={this.validateAuth} />
         <Route path={'/companies/:company_id'} component={CompanyPage} onEnter={this.validateAuth} />
         <Route path={'/login'} component={RegisterLoginPage} />
-        <Route path={'/test2'} component={FileUploader} />
+        <Route path={'/test'} component={FileUploader} />
         <Route path={'*'} component={IndexPage} onEnter={this.validateAuth} />
       </Router>
     );

@@ -47,7 +47,37 @@ app.use(blacklist, (req, res, next) => {
 
 require('./multerserver')(app);
 
+// const multer = require('multer');
+// const axios = require('axios');
 
+// const storage = multer.diskStorage({
+//   destination: './uploads/',
+//   filename: (req, file, cb) => {
+//     console.log("i'm here file: ", file);
+//     cb(null, `${new Date()}-${file.originalname}`);
+//   },
+// });
+
+// const upload = multer({ storage });
+
+// app.post('/api/uploads', upload.single('file'), (req, res) => {
+//   console.log("i'm here req.body: ", req.body);
+//   console.log("i'm here req.file: ", req.body.file);
+//  const file = req.file; // file passed from client
+//  const meta = req.body; // all other values passed from the client, like name, etc..
+
+//  // send the data to our REST API
+//  // axios({
+//  //    url: `https://api.myrest.com/uploads`,
+//  //    method: 'post',
+//  //    data: {
+//  //      file,
+//  //      name: meta.name,
+//  //    },
+//  //  })
+//  //   .then(response => res.status(200).json(response.data.data))
+//  //   .catch((error) => res.status(500).json(error.response.data));
+// });
 
 
 

@@ -1,9 +1,12 @@
 module.exports = (app) => {
+
   const multer = require('multer');
+
   const storage = multer.diskStorage({
     destination: './uploads/',
     filename: function (req, file, cb) {
       // Mimetype stores the file type, set extensions according to filetype
+      console.log("i'm here 6.0: ", file);
       switch (file.mimetype) {
         case 'image/jpeg':
           ext = '.jpeg';
@@ -31,10 +34,13 @@ module.exports = (app) => {
   const upload = multer({storage: storage});
 
   app.post('/api/uploadHandler', upload.single('file'), function (req, res, next) {
+
+    console.log("i'm here inside uploadHandler", req.body);
+
     if (req.file && req.file.originalname) {
       console.log(`Received file ${req.file.originalname}`);
     }
 
-    res.send({ responseText: req.file.path }); // You can send any response to the user here
+    // res.send({ responseText: req.file.path }); // You can send any response to the user here
   });
 }

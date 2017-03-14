@@ -23,7 +23,7 @@ export default class Example extends React.Component {
             autoDiscover: false,
             previewsContainer: false,
             uploadMultiple: false,
-            maxFiles: 1,
+            maxFiles: 1
         };
 
         this.componentConfig = {
@@ -55,7 +55,7 @@ export default class Example extends React.Component {
             addedfile: this.callback,
             success: this.success,
             removedfile: null
-        }
+        };
 
         return <DropzoneComponent config={this.componentConfig} eventHandlers={eventHandlers} djsConfig={this.djsConfig} />
     }
