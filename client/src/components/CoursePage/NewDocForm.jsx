@@ -10,9 +10,11 @@ class NewDocForm extends Component {
       title: '',
       type: '',
       revDesc: 'New Upload',
-      filePath: ''
+      filePath: '',
+      file: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this._handleImageChange = this._handleImageChange.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.handleNewDocPost = this.handleNewDocPost.bind(this);
   }
@@ -23,11 +25,20 @@ class NewDocForm extends Component {
     this.setState(state);
   }
 
+  _handleImageChange(e) {
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onloadend = () => this.setState({ file });
+    reader.readAsDataURL(file);
+  }
+
   validateForm() {
-    return this.state.title &&
-           this.state.revDesc &&
-           this.state.filePath &&
-           this.state.type
+    // return this.state.title &&
+    //        this.state.revDesc &&
+    //        this.state.file &&
+    //        this.state.type;
+    return true;
   }
 
   handleNewDocPost() {
@@ -43,9 +54,10 @@ class NewDocForm extends Component {
       title: this.state.title,
       type: this.state.type,
       revDesc: this.state.revDesc,
-      filePath: this.state.filePath
+      filePath: 'test.balls',
+      file: this.state.file
     };
-    fetch(`/api/courses/${this.props.courseId}`, {
+    fetch(`/api/courses/${this.props.courseId}/docs`, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
@@ -61,6 +73,7 @@ class NewDocForm extends Component {
   }
 
   render() {
+    console.log('here 0: ', this.state.file);
     return (
       <div id='new-doc-form' className='modal'>
         <div className='modal-background' onClick={() => HandleModal('new-doc-form')}></div>
@@ -75,9 +88,14 @@ class NewDocForm extends Component {
               <input className='input' type='text' name='title' placeholder='Enter document title here' onChange={this.handleChange} />
             </p>
             <label className='label'>Upload the Document:</label>
-            <p className='control'>
-              <input className='upload' type='file' name='filePath' placeholder='Enter document title here' onChange={this.handleChange} />
-            </p>
+
+            <form className='control' enctype='multipart/form-data'>
+              <input className='upload'
+                type='file'
+                onChange={(e)=>this._handleImageChange(e)} />
+            </form>
+
+
             <label className='label'>Revision Comment:</label>
             <p className='control'>
               <input className='input' type='text' name='revDesc' placeholder='Enter revision comment here' defaultValue={this.state.revDesc} onChange={this.handleChange} />

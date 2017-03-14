@@ -22,7 +22,6 @@ const googleMapsClient = require('@google/maps').createClient({
 });
 const blacklist = ['/api/home', '/api/courses', '/api/users', '/api/docs', '/api/institutions'];
 
-
 // ***************************************************
 // MIDDLEWARE
 // ***************************************************
@@ -42,6 +41,27 @@ app.use(blacklist, (req, res, next) => {
     res.send(false);
   }
 });
+
+
+
+
+require('./multerserver')(app);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ***************************************************
@@ -194,7 +214,7 @@ app.post('/api/courses', (req, res) => {
   postNewCourse(req, res, knex, req.session.user_id, esClient);
 });
 
-app.post('/api/courses/:course_id', (req, res) => {
+app.post('/api/courses/:course_id/docs', (req, res) => {
   postNewDoc(req, res, knex, req.session.user_id, esClient);
 });
 
