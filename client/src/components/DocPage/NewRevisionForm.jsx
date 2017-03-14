@@ -10,9 +10,11 @@ class NewDocForm extends Component {
       title: this.props.docInfo.title,
       type: this.props.docInfo.type,
       revDesc: '',
-      filePath: ''
+      filePath: '',
+      file: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleFileChange = this.handleFileChange.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.handleNewDocPost = this.handleNewDocPost.bind(this);
   }
@@ -23,33 +25,59 @@ class NewDocForm extends Component {
     this.setState(state);
   }
 
+  handleFileChange(e) {
+    const file = e.target.files[0];
+    this.setState({ file });
+  }
+
   validateForm() {
-    return this.state.title &&
-           this.state.revDesc &&
-           this.state.type;
+    // return this.state.title &&
+    //        this.state.revDesc &&
+    //        this.state.type;
+    return true;
   }
 
   handleNewDocPost() {
-    let data = {
-      title: this.state.title,
-      type: this.state.type,
-      revDesc: this.state.revDesc,
-      filePath: this.state.filePath
-    };
+    // let data = {
+    //   title: this.state.title,
+    //   type: this.state.type,
+    //   revDesc: this.state.revDesc,
+    //   filePath: this.state.filePath
+    // };
+
+    let data = new FormData();
+    data.append('file', this.state.file);
+    data.append('title', this.state.title);
+    data.append('type', this.state.type);
+    data.append('revDesc', this.state.revDesc);
+    data.append('filePath', 'default file path');
+
+    // fetch(`/api/courses/${this.props.courseId}/docs`, {
+    //   method: 'POST',
+    //   credentials: 'same-origin',
+    //   body: data
+    // })
+    // .then(response => response.json())
+    // .then(resJSON => {
+    //   if (resJSON) {
+    //     this.reactAlert.showAlert('New revision saved', 'info');
+    //     this.props.reload();
+    //   } else {
+    //     throw 'Server returned false';
+    //   }
+    // })
+    // .catch(() => this.reactAlert.showAlert('Unable to upload revision', 'error'))
+    // .then(() => HandleModal('new-doc-form'));
 
     fetch(`/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}`, {
       method: 'POST',
       credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      body: data
     })
     .then(response => response.json())
     .then(resJSON => {
       if (resJSON) {
-        this.reactAlert.showAlert('new revision uploaded', 'info');
+        this.reactAlert.showAlert('New revision uploaded', 'info');
         this.props.reload();
       }
       else { throw 'Server returned false'; }
@@ -74,7 +102,7 @@ class NewDocForm extends Component {
             </p>
             <label className='label'>Upload the new revision (optional):</label>
             <p className='control'>
-              <input className='upload' type='file' name='filePath' onChange={this.handleChange} />
+              <input className='upload' type='file' onChange={this.handleFileChange} />
             </p>
             <label className='label'>Revision Comment (mandatory):</label>
             <p className='control'>

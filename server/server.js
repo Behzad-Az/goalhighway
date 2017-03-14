@@ -44,8 +44,6 @@ app.use(blacklist, (req, res, next) => {
 
 
 
-// require('./multerserver')(app);
-
 const multer = require('multer');
 
 const getRandomDocName = () => {
@@ -260,9 +258,6 @@ app.post('/api/courses', (req, res) => {
 
 app.post('/api/courses/:course_id/docs', upload.single('file'), (req, res) => {
   req.file ? postNewDoc(req, res, knex, req.session.user_id, esClient) : res.send(false);
-
-  // console.log("i'm here 6.0 body: ", req.body);
-  // console.log("i'm here 6.1 file: ", req.file);
 });
 
 app.post('/api/courses/:course_id/items', (req, res) => {
@@ -273,8 +268,9 @@ app.post('/api/courses/:course_id/reviews', (req, res) => {
   postNewCourseReview(req, res, knex, req.session.user_id);
 });
 
-app.post('/api/courses/:course_id/docs/:doc_id', (req, res) => {
+app.post('/api/courses/:course_id/docs/:doc_id', upload.single('file'), (req, res) => {
   postNewRevision(req, res, knex, req.session.user_id, esClient);
+  // req.file ? postNewRevision(req, res, knex, req.session.user_id, esClient) : res.send(false);
 });
 
 app.post('/api/courses/:course_id/docs/:doc_id/likes', (req, res) => {

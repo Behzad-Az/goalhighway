@@ -3,8 +3,8 @@ const uploadDocToDb = require('../Multipurpose/uploadDocToDb.js');
 const postNewRevision = (req, res, knex, user_id, esClient) => {
 
   const determineFilePath = () => new Promise((resolve, reject) => {
-    if (req.body.file_path) {
-      resolve(uploadDocToDb(knex, req.body.filePath));
+    if (req.body.filePath && req.file && req.file.filename) {
+      resolve(req.file.filename);
     } else {
       knex('revisions').where('doc_id', req.params.doc_id).orderBy('rev_created_at', 'desc').limit(1).then(lastRevision => {
         resolve(lastRevision[0].file_path);

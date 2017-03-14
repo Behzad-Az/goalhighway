@@ -39,14 +39,6 @@ class NewDocForm extends Component {
   }
 
   handleNewDocPost() {
-    // let data = {
-    //   title: this.state.title,
-    //   type: this.state.type,
-    //   revDesc: this.state.revDesc,
-    //   filePath: 'test.balls',
-    //   file: this.state.file
-    // };
-
     let data = new FormData();
     data.append('file', this.state.file);
     data.append('title', this.state.title);
@@ -57,10 +49,6 @@ class NewDocForm extends Component {
     fetch(`/api/courses/${this.props.courseId}/docs`, {
       method: 'POST',
       credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        // 'Content-Type': 'application/json'
-      },
       body: data
     })
     .then(response => response.json())
@@ -91,16 +79,9 @@ class NewDocForm extends Component {
               <input className='input' type='text' name='title' placeholder='Enter document title here' onChange={this.handleChange} />
             </p>
             <label className='label'>Upload the Document:</label>
-
-
             <p className='control'>
-              <input className='upload'
-                type='file'
-                placeholder='select file'
-                onChange={this.handleFileChange} />
+              <input className='upload' type='file' onChange={this.handleFileChange} />
             </p>
-
-
             <label className='label'>Revision Comment:</label>
             <p className='control'>
               <input className='input' type='text' name='revDesc' placeholder='Enter revision comment here' defaultValue={this.state.revDesc} onChange={this.handleChange} />
