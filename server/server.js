@@ -123,7 +123,6 @@ const getCourseReviewPageData = require('./helpers/GET_Routes/getCourseReviewPag
 const getInstPageData = require('./helpers/GET_Routes/getInstPageData.js');
 const getRevisionData = require('./helpers/GET_Routes/getRevisionData.js');
 const getJobPageData = require('./helpers/GET_Routes/getJobPageData.js');
-// const getCourseFeed = require('./helpers/GET_Routes/getCourseFeed.js');
 const getUserNavBarData = require('./helpers/GET_Routes/getUserNavBarData.js');
 const getInstitutionsAndPrograms = require('./helpers/GET_Routes/getInstitutionsAndPrograms.js');
 const getInstList = require('./helpers/GET_Routes/getInstList.js');
@@ -190,10 +189,6 @@ app.get('/api/courses/:course_id/docs/:doc_id', (req, res) => {
 app.get('/api/courses/:course_id/docs/:doc_id/revisions/:rev_id', (req, res) => {
   getRevisionData(req, res, knex);
 });
-
-// app.get('/api/courses/:course_id/feed', (req, res) => {
-//   getCourseFeed(req, res, knex, req.session.user_id);
-// });
 
 app.get('/api/institutions', (req, res) => {
   getInstList(req, res, knex, req.session.user_id);
@@ -289,7 +284,7 @@ app.post('/api/users/:user_id/courses/:course_id/tutorlog', (req, res) => {
 });
 
 app.post('/api/institutions', (req, res) => {
-  postNewInst(req, res, knex, req.session.user_id);
+  postNewInst(req, res, knex, req.session.user_id, esClient);
 });
 
 app.post('/api/register', (req, res) => {

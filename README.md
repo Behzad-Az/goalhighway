@@ -12,6 +12,28 @@ npm install core-js@2.0.0 normalize.css@4.0.0 react@15.4.2 react-addons-css-tran
 
 
 
+Code Review:
+DELETE Routes:
+deleteCourseUser.js - checked and knex transaction added.
+deleteCourseFeed.js - checked and knex transaction added.
+deleteRevision.js - checked and knex transaction added. BUG: No transaction for the elastic search queries.
+
+POST Routes:
+checkEmailAvailability.js - checked and verified.
+checkUsernameAvailability.js - checked and verified.
+postLogin.js - checked and verified.
+postNewCourse.js - checked and knex transaction added. BUG: No transaction for the elastic search queries.
+-----------------------------------------------------------------------
+Files above this line might carry unnecessary knex transactions.
+-----------------------------------------------------------------------
+postNewCourseFeed.js - checked and verified.
+postNewCourseReview.j - checked and knex transaction added.
+postNewCourseUser.js - checked and verified.
+postNewCourseUserAssistReq.js - checked and knex transaction added.
+postNewDoc.js - checked and knex transaction added. Because elastic search query is the last one in the promise chain, any errors in it will rollback the knex postgres changes. But because uploading the file is the first thing that happens before the promise chain and through mutler, errors will not rollback the document upload itself.
+postNewFlag.js - checked and verified.
+postNewInst.js - checked and knex transaction, elastic search addition, and duplicate check were added.
+
 
 
 

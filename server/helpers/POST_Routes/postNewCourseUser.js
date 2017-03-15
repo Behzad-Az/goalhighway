@@ -1,5 +1,6 @@
 const postNewCourseUser = (req, res, knex, user_id) => {
-  let courseUserInfo = {
+
+  let courseUserInfoObj = {
     user_id: user_id,
     course_id: req.params.course_id,
     sub_date: knex.fn.now(),
@@ -9,17 +10,26 @@ const postNewCourseUser = (req, res, knex, user_id) => {
     unsub_reason: null
   };
 
-  const userAlreadyHasRow = () => knex('course_user').select('id').where('user_id', user_id).andWhere('course_id', req.params.course_id);
+  const userAlreadyHasCourse = () => knex('course_user')
+    .select('id').where('user_id', user_id)
+    .andWhere('course_id', req.params.course_id);
 
-  const insertOrUpdateCourseUser = (cousrse_user_id) => {
-    return cousrse_user_id ? knex('course_user').where('id', cousrse_user_id.id).update(courseUserInfo).returning('id') : knex('course_user').insert(courseUserInfo).returning('id');
-  }
+  const insertOrUpdateCourseUser = cousrse_user_id => {
+    return cousrse_user_id ?
+      knex('course_user')
+        .where('id', cousrse_user_id.id)
+        .update(courseUserInfoObj)
+        .returning('id') :
+      knex('course_user')
+        .insert(courseUserInfoObj)
+        .returning('id');
+  };
 
-  userAlreadyHasRow()
+  userAlreadyHasCourse()
   .then(result => insertOrUpdateCourseUser(result[0]))
   .then(id => res.send(true))
   .catch(err => {
-    console.error("Error inside postNewCourseUser.js: ", err);
+    console.error('Error inside postNewCourseUser.js: ', err);
     res.send(false);
   });
 

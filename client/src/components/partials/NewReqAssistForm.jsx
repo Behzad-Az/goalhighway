@@ -78,8 +78,8 @@ class NewReqAssistForm extends Component {
   handleUpdateRequestAssist(action) {
     let data = {
       action: action,
-      issue_desc: this.state.issueDesc,
-      closure_reason: this.state.closureReason
+      issueDesc: this.state.issueDesc,
+      closureReason: this.state.closureReason
     };
 
     fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}/tutorlog/update`, {
@@ -102,7 +102,7 @@ class NewReqAssistForm extends Component {
 
   handleNewRequestAssist() {
     let data = {
-      issue_desc: this.state.issueDesc
+      issueDesc: this.state.issueDesc
     };
 
     fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}/tutorlog`, {

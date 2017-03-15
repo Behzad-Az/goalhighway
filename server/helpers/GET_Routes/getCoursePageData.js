@@ -54,7 +54,7 @@ const getCoursePageData = (req, res, knex, user_id) => {
     getCourseFeed()
   ]).then(results => {
     courseFeed = results[6];
-    courseFeed.forEach(feed => feed.editable = feed.user_id === user_id);
+    courseFeed.forEach(feed => feed.editable = feed.commenter_id === user_id);
 
     let avgRating = results[5][0] ?  Math.round(results[5][0].avg / 5 * 100) : 0;
 

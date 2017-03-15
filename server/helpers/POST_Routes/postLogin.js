@@ -24,10 +24,10 @@ const postLogin = (req, res, knex, bcrypt) => {
       req.session.prog_id = currUser[0].prog_id;
       res.send(true);
     } else {
-      throw "Error inside postLogin.js: invalid username and password";
+      throw 'Invalid username and password';
     }
   }).catch(err => {
-    console.error("Error inside postLogin.js: ", err);
+    console.error('Error inside postLogin.js: ', err);
     res.send(false);
   });
 

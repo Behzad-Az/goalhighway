@@ -30,7 +30,6 @@ class NewInstForm extends Component {
         { value: 'VA', label: 'Virginia' }, { value: 'WA', label: 'Washington' }, { value: 'WV', label: 'West Virginia' }, { value: 'WI', label: 'Wisconsin' }, { value: 'WY', label: 'Wyoming' }
       ]
     };
-
     this.state = {
       instLongName: '',
       instShortName: '',
@@ -69,8 +68,8 @@ class NewInstForm extends Component {
     let data = {
       country: this.state.country,
       province:  this.state.province,
-      inst_long_name: this.state.instLongName,
-      inst_short_name: this.state.instShortName
+      instLongName: this.state.instLongName,
+      instShortName: this.state.instShortName
     };
 
     fetch('/api/institutions', {

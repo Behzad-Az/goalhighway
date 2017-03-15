@@ -16,44 +16,63 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
     inst_id: req.body.inst_id
   };
 
-  const checkIfCourseExists = () => knex('courses')
-    .where('inst_id', newCourseObj.inst_id).andWhere('prefix', newCourseObj.prefix).andWhere('suffix', newCourseObj.suffix)
-    .count('id as exists');
-
-  const insertCourse = () => knex('courses').insert(newCourseObj).returning('id');
-
-  const getSearchData = () => knex('institutions').select('inst_long_name', 'inst_short_name').where('id', req.body.inst_id);
-
-  const addDocToSearchCatalogue = bodyObj => {
-    const indexObj = {
-      index: {
-        _index: 'search_catalogue',
-        _type: 'course',
-        _id: bodyObj.id
-      }
-    };
-    return esClient.bulk({ body: [indexObj, bodyObj] })
-  };
-
-  let bodyObj = {
+  let esBodyObj = {
     title: `${prefix} ${suffix}`,
     inst_id: newCourseObj.inst_id,
     course_desc: newCourseObj.course_desc
   };
 
-  checkIfCourseExists().then(result => {
-    if (parseInt(result[0].exists)) { throw "course prefix and suffix already exist for this institution."; }
-    else { return insertCourse(); }
+  const checkIfCourseExists = trx => knex('courses')
+    .transacting(trx)
+    .where('inst_id', newCourseObj.inst_id)
+    .andWhere('prefix', newCourseObj.prefix)
+    .andWhere('suffix', newCourseObj.suffix)
+    .count('id as exists');
+
+  const insertCourse = trx => knex('courses')
+    .transacting(trx)
+    .insert(newCourseObj)
+    .returning('id');
+
+  const getSearchData = trx => knex('institutions')
+    .transacting(trx)
+    .select('inst_long_name', 'inst_short_name')
+    .where('id', req.body.inst_id);
+
+  const addDocToSearchCatalogue = esBodyObj => {
+    const indexObj = {
+      index: {
+        _index: 'search_catalogue',
+        _type: 'course',
+        _id: esBodyObj.id
+      }
+    };
+    return esClient.bulk({ body: [indexObj, esBodyObj] })
+  };
+
+  knex.transaction(trx => {
+    checkIfCourseExists(trx)
+    .then(result => {
+      if (parseInt(result[0].exists)) { throw 'Course prefix and suffix already exist for this institution.'; }
+      else { return insertCourse(trx); }
+    })
+    .then(course_id => {
+      esBodyObj.id = course_id[0];
+      return getSearchData(trx);
+    })
+    .then(courseInfo => {
+      esBodyObj.inst_name = `${courseInfo[0].inst_long_name} ${courseInfo[0].inst_short_name}`;
+      return addDocToSearchCatalogue(esBodyObj);
+    })
+    .then(() => trx.commit())
+    .catch(err => {
+      trx.rollback();
+      throw err;
+    });
   })
-  .then(course_id => {
-    bodyObj.id = course_id[0];
-    res.send(true);
-    return getSearchData();
-  }).then(courseInfo => {
-    bodyObj.inst_name = `${courseInfo[0].inst_long_name} ${courseInfo[0].inst_short_name}`;
-    return addDocToSearchCatalogue(bodyObj);
-  }).catch(err => {
-    console.error("Error inside postNewCourse.js: ", err);
+  .then(() => res.send(true))
+  .catch(err => {
+    console.error('Error inside postNewCourse.js', err);
     res.send(false);
   });
 

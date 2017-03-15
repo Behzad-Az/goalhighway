@@ -38,7 +38,7 @@ class NewCourseFeed extends Component {
 
   handleSubmit() {
     let data = {
-      commenter_name: this.state.commenterName,
+      commenterName: this.state.commenterName,
       category: this.state.category,
       content: this.state.content
     };

@@ -1,19 +1,28 @@
 const deleteCourseUser = (req, res, knex, user_id) => {
 
-  const voidOutstandingAssistRequests = () => knex('tutor_log')
+  const voidOutstandingAssistRequests = trx => knex('tutor_log')
+    .transacting(trx)
     .where('student_id', user_id)
     .andWhere('course_id', req.params.course_id)
     .whereNull('closed_at')
     .update({
       closed_at: knex.fn.now(),
       closure_reason: 'system_void_unsubscribed'
-    }).returning('id');
+    })
+    .returning('id');
 
-  const deleteAssistNotif = (tutor_log_id) => knex('notifications').where('tutor_log_id', tutor_log_id).del();
+  const deleteAssistNotif = (tutor_log_id, trx) => knex('notifications')
+    .transacting(trx)
+    .where('tutor_log_id', tutor_log_id)
+    .del();
 
-  const deleteCourseFeed = (tutor_log_id) => knex('course_feed').where('tutor_log_id', tutor_log_id).del();
+  const deleteCourseFeed = (tutor_log_id, trx) => knex('course_feed')
+    .transacting(trx)
+    .where('tutor_log_id', tutor_log_id)
+    .del();
 
-  const unsubscribeCourseUser = () => knex('course_user')
+  const unsubscribeCourseUser = trx => knex('course_user')
+    .transacting(trx)
     .where('course_id', req.params.course_id)
     .andWhere('user_id', user_id)
     .update({
@@ -24,17 +33,18 @@ const deleteCourseUser = (req, res, knex, user_id) => {
       unsub_reason: 'some_reason'
     });
 
-  Promise.all([
-    voidOutstandingAssistRequests(),
-    unsubscribeCourseUser()
-  ]).then(results => {
-    res.send(true);
-    return Promise.all([
-      deleteCourseFeed(results[0][0] || 0),
-      deleteAssistNotif(results[0][0] || 0)
-    ]);
-  }).catch(err => {
-    console.error("Error inside deleteCourseUser.js: ", err);
+  knex.transaction(trx => {
+    Promise.all([ voidOutstandingAssistRequests(trx), unsubscribeCourseUser(trx) ])
+    .then(results => Promise.all([ deleteCourseFeed(results[0][0] || 0), deleteAssistNotif(results[0][0] || 0) ]))
+    .then(() => trx.commit())
+    .catch(err => {
+      trx.rollback();
+      throw err;
+    });
+  })
+  .then(() => res.send(true))
+  .catch(err => {
+    console.error('Error inside deleteCourseUser.js', err);
     res.send(false);
   });
 

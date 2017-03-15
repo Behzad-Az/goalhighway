@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
       t.string('category', 100).notNullable();
       t.string('content', 400).notNullable();
       t.integer('course_id').notNullable().references('courses.id');
-      t.integer('user_id').notNullable().references('users.id');
+      t.integer('commenter_id').notNullable().references('users.id');
       t.integer('doc_id').references('docs.id');
       t.timestamp('feed_created_at').notNullable().defaultTo(knex.raw('now()'));
     })
