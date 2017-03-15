@@ -1,5 +1,3 @@
-const uploadDocToDb = require('../Multipurpose/uploadDocToDb.js');
-
 const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   let newDocObj = {
@@ -59,7 +57,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
         title: req.body.title,
         type: req.body.type,
         rev_desc: req.body.revDesc,
-        file_path: req.file.filename,
+        file_name: req.file.filename,
         doc_id: doc_id[0],
         user_id: user_id
       };

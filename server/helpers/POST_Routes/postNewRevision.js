@@ -1,15 +1,13 @@
-const uploadDocToDb = require('../Multipurpose/uploadDocToDb.js');
-
 const postNewRevision = (req, res, knex, user_id, esClient) => {
 
   const determineFilePath = () => new Promise((resolve, reject) => {
-    if (req.body.filePath && req.file && req.file.filename) {
+    if (req.file && req.file.filename) {
       resolve(req.file.filename);
     } else {
       knex('revisions').where('doc_id', req.params.doc_id).orderBy('rev_created_at', 'desc').limit(1).then(lastRevision => {
-        resolve(lastRevision[0].file_path);
+        resolve(lastRevision[0].file_name);
       }).catch(err => {
-        reject("could not find the file_path for last revision");
+        reject("could not find the file_name for last revision");
       });
     }
   });
@@ -52,14 +50,14 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
 
   const adminAddToCourseFeed = (adminFeedObj, trx) => knex('course_feed').transacting(trx).insert(adminFeedObj);
 
-  determineFilePath().then(filePath => {
+  determineFilePath().then(fileName => {
     let newRevObj = {
       title: req.body.title,
       type: req.body.type,
       rev_desc: req.body.revDesc,
       doc_id: req.params.doc_id,
       user_id: user_id,
-      file_path: filePath
+      file_name: fileName
     };
     knex.transaction(trx => {
       insertNewRevision(newRevObj, trx)

@@ -26,7 +26,7 @@ exports.seed = function(knex, Promise) {
 
     for(let n = 1; n <= randNum; n++) {
       promiseArr.push(knex('revisions').insert({
-        file_path: `file_path${i}_${n}${suffix[randNum]}`,
+        file_name: `file_name${i}_${n}${suffix[randNum]}`,
         doc_id: i,
         type: type,
         title: title

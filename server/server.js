@@ -270,7 +270,6 @@ app.post('/api/courses/:course_id/reviews', (req, res) => {
 
 app.post('/api/courses/:course_id/docs/:doc_id', upload.single('file'), (req, res) => {
   postNewRevision(req, res, knex, req.session.user_id, esClient);
-  // req.file ? postNewRevision(req, res, knex, req.session.user_id, esClient) : res.send(false);
 });
 
 app.post('/api/courses/:course_id/docs/:doc_id/likes', (req, res) => {

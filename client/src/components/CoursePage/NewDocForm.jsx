@@ -10,7 +10,6 @@ class NewDocForm extends Component {
       title: '',
       type: '',
       revDesc: 'New Upload',
-      filePath: '',
       file: ''
     };
     this.handleChange = this.handleChange.bind(this);
@@ -31,11 +30,10 @@ class NewDocForm extends Component {
   }
 
   validateForm() {
-    // return this.state.title &&
-    //        this.state.revDesc &&
-    //        this.state.file &&
-    //        this.state.type;
-    return true;
+    return this.state.title &&
+           this.state.revDesc &&
+           this.state.file &&
+           this.state.type;
   }
 
   handleNewDocPost() {
@@ -44,7 +42,6 @@ class NewDocForm extends Component {
     data.append('title', this.state.title);
     data.append('type', this.state.type);
     data.append('revDesc', this.state.revDesc);
-    data.append('filePath', 'default file path');
 
     fetch(`/api/courses/${this.props.courseId}/docs`, {
       method: 'POST',

@@ -11,16 +11,16 @@ class DocCard extends Component {
       likeCount: this.props.doc.likeCount,
       likeColor: '',
       dislikeColor: '',
-      imageLink: this.findImageLink(this.props.doc.revisions[0].file_path)
+      imageLink: this.findImageLink(this.props.doc.revisions[0].file_name)
     };
     this.handleLikeSubmission = this.handleLikeSubmission.bind(this);
     this.handleDislikeSubmission = this.handleDislikeSubmission.bind(this);
     this.sendLikeDislike = this.sendLikeDislike.bind(this);
   }
 
-  findImageLink(filePath) {
+  findImageLink(fileName) {
     let directoryPath = '../../images/';
-    let extension = filePath.substr(filePath.lastIndexOf('.') + 1) + '.png';
+    let extension = fileName.substr(fileName.lastIndexOf('.') + 1) + '.png';
     return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
   }
 

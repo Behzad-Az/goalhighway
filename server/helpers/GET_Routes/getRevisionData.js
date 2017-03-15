@@ -4,9 +4,9 @@ const getRevisionData = (req, res, knex) => {
     if (!revision[0]) {
       throw 'file could not be found';
     } else {
-      const fileName = revision[0].file_path;
-      const filePath = './uploads/' + fileName;
-      res.download(filePath, 'report.pdf');
+      const fileName = revision[0].file_name;
+      const downloadPath = './uploads/' + fileName;
+      res.download(downloadPath, 'report.pdf');
     }
   }).catch(err => {
     console.error('Error inside getReivisionData.js: ', err);

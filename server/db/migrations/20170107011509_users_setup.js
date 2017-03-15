@@ -16,7 +16,7 @@ exports.up = function(knex, Promise) {
       t.string('type', 50).notNullable();
       t.string('title', 100).notNullable();
       t.string('rev_desc', 250).notNullable().defaultTo("no desc");
-      t.string('file_path', 200).notNullable();
+      t.string('file_name', 200).notNullable();
       t.integer('doc_id').notNullable();
       t.integer('user_id').notNullable().references('users.id').defaultTo(1);
       t.timestamp('rev_created_at').notNullable().defaultTo(knex.raw('now()'));
