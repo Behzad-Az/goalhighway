@@ -48,7 +48,7 @@ class DocCard extends Component {
     this.setState(nextState);
   }
 
-  sendLikeDislike(value) {
+  sendLikeDislike(likeOrDislike) {
     fetch(`/api/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}/likes`, {
       method: 'POST',
       credentials: 'same-origin',
@@ -56,7 +56,7 @@ class DocCard extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ like_or_dislike: value })
+      body: JSON.stringify({ likeOrDislike })
     })
     .then(response => response.json())
     .then(resJSON => {

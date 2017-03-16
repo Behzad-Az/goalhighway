@@ -13,8 +13,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   const insertNewRev = (newRevObj, trx) =>  knex('revisions')
     .transacting(trx)
-    .insert(newRevObj)
-    .returning('id');
+    .insert(newRevObj);
 
   const adminAddToCourseFeed = (adminFeedObj, trx) => knex('course_feed')
     .transacting(trx)
@@ -26,6 +25,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     .where('courses.id', newDocObj.course_id);
 
   const addDocToElasticSearch = esDocObj => {
+    let kind;
     const indexObj = {
       index: {
         _index: 'search_catalogue',
@@ -33,8 +33,6 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
         _id: esDocObj.id
       }
     };
-
-    let kind;
     switch (esDocObj.kind) {
       case 'asg_report':
         kind = 'assignment assingments report reports';
@@ -49,11 +47,9 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
         kind = 'other_kind_not_specified';
         break;
     };
-
     esDocObj.kind = kind;
     return esClient.bulk({ body: [indexObj, esDocObj] })
   };
-
 
   knex.transaction(trx => {
     insertNewDoc(newDocObj, trx)
@@ -68,7 +64,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
       };
       return insertNewRev(newRevObj, trx);
     })
-    .then(rev_id => {
+    .then(() => {
       let adminFeedObj = {
         commenter_id: 2,
         course_id: newDocObj.course_id,

@@ -37,7 +37,7 @@ app.use(blacklist, (req, res, next) => {
   if (req.session.user_id) {
     next();
   } else {
-    console.error("Error inside server.js - invalid req.session.user_id");
+    console.error('Error inside server.js - invalid req.session.user_id');
     res.send(false);
   }
 });

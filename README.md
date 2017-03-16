@@ -33,6 +33,12 @@ postNewCourseUserAssistReq.js - checked and knex transaction added.
 postNewDoc.js - checked and knex transaction added. Because elastic search query is the last one in the promise chain, any errors in it will rollback the knex postgres changes. But because uploading the file is the first thing that happens before the promise chain and through mutler, errors will not rollback the document upload itself.
 postNewFlag.js - checked and verified.
 postNewInst.js - checked and knex transaction, elastic search addition, and duplicate check were added.
+postNewInterviewAnswer.js - checked and verified.
+posNewInterviewQuestion.js - checked and corrected with 'home-made' transaction in a very hacky way. Problem is using regular knex transactions, questionId of the new question cannot be used for the foreign key id of the answer in the following query.
+postNewItemForSale.js - checked and verified
+postNewLikeDislike.js - checked and verified
+postNewRevision.js - checked and knex transaction added. Because elastic search query is the last one in the promise chain, any errors in it will rollback the knex postgres changes. But because uploading the file is the first thing that happens before the promise chain and through mutler, errors will not rollback the document upload itself.
+postNewUser.js - checked and verified
 
 
 
