@@ -31,7 +31,9 @@ const getCoursePageData = (req, res, knex, user_id) => {
     .select('inst_display_name', 'short_display_name', 'full_display_name', 'course_desc', 'inst_id', 'courses.id')
     .where('courses.id', req.params.course_id);
 
-  const getCourseUserInfo = () => knex('course_user').where('user_id', user_id).andWhere('course_id', req.params.course_id);
+  const getCourseUserInfo = () => knex('course_user')
+    .where('user_id', user_id)
+    .andWhere('course_id', req.params.course_id);
 
   const getTutorLogInfo = () => knex('tutor_log')
     .where('student_id', user_id)

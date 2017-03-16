@@ -39,6 +39,11 @@ postNewItemForSale.js - checked and verified
 postNewLikeDislike.js - checked and verified
 postNewRevision.js - checked and knex transaction added. Because elastic search query is the last one in the promise chain, any errors in it will rollback the knex postgres changes. But because uploading the file is the first thing that happens before the promise chain and through mutler, errors will not rollback the document upload itself.
 postNewUser.js - checked and verified
+postSearchBarResults.js - checked and verified
+
+UPDATE Routes:
+updateCourseUserTutorStatus.js - checked and verified.
+updateItemForSale.js - checked and verified.
 
 
 

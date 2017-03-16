@@ -3,27 +3,32 @@ const updateItemForSale = (req, res, knex, user_id) => {
   let updatedItemObj = {
     title: req.body.title,
     item_desc: req.body.itemDesc,
-    price: req.body.price
+    price: req.body.price,
+    item_deleted_at: req.body.deleted ? knex.fn.now() : null
   };
 
   if (req.body.photo_path) { updatedItemObj.photo_path = req.body.photoPath; }
-  if (req.body.deleted == 'true') { updatedItemObj.item_deleted_at = knex.fn.now(); }
 
-  getItemOwner = () => knex('items_for_sale').select('owner_id').where('id', req.params.item_id);
+  verifyOwner = () => knex('items_for_sale')
+    .where('id', req.params.item_id)
+    .andWhere('owner_id', user_id)
+    .count('id as valid');
 
-  updateItem = itemObj => knex('items_for_sale').where('id', req.params.item_id).update(itemObj);
+  updateItem = itemObj => knex('items_for_sale')
+    .where('id', req.params.item_id)
+    .update(itemObj);
 
-  getItemOwner()
+  verifyOwner()
   .then(owner => {
-    if (owner[0].owner_id == user_id) {
+    if (parseInt(owner[0].valid)) {
       return updateItem(updatedItemObj);
     } else {
-      throw "User not authorized to update item.";
+      throw 'User is not the item owner.';
     }
   })
   .then(() => res.send(true))
   .catch(err => {
-    console.error("Error inside updateItemForSale.js: ", err);
+    console.error('Error inside updateItemForSale.js: ', err);
     res.send(false);
   });
 

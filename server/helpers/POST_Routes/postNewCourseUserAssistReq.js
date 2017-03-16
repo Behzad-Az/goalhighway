@@ -34,7 +34,10 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     .transacting(trx)
     .insert(courseFeedObj);
 
-  const getAllCourseTutors = () => knex('course_user').select('user_id').where('course_id', req.params.course_id).andWhere('tutor_status', true);
+  const getAllCourseTutors = () => knex('course_user')
+    .select('user_id')
+    .where('course_id', req.params.course_id)
+    .andWhere('tutor_status', true);
 
   const insertTutorNotif = (to_id, notifObj, trx) => {
     notifObj.to_id = to_id;
@@ -43,9 +46,27 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
       .insert(notifObj);
   };
 
+  const verifySubscription = () => knex('course_user')
+    .where('course_id', req.params.course_id)
+    .andWhere('user_id', user_id)
+    .whereNotNull('sub_date')
+    .whereNull('unsub_date')
+    .count('id as subscribed');
+
   knex.transaction(trx => {
-    closePrevReqIfNecessary(trx)
-    .then(() => Promise.all([ getUserInfo(), insertNewTutorLog(trx), getAllCourseTutors() ]))
+    verifySubscription()
+    .then(result => {
+      if (parseInt(result[0].subscribed)) {
+        return closePrevReqIfNecessary();
+      } else {
+        throw 'User must be subscribed before submitting assistance request.';
+      }
+    })
+    .then(() => Promise.all([
+      getUserInfo(),
+      insertNewTutorLog(trx),
+      getAllCourseTutors()
+    ]))
     .then(results => {
       newTutorLogId = results[1][0];
       courseTutorIds = results[2].map(tutor => tutor.user_id);
@@ -79,7 +100,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
   })
   .then(() => res.send(true))
   .catch(err => {
-    console.error('Error inside postNewCourseUserAssistReq.js', err);
+    console.error('Error inside postNewCourseUserAssistReq.js: ', err);
     res.send(false);
   });
 

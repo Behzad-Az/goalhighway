@@ -13,18 +13,30 @@ const updateTutorLog = (req, res, knex, user_id) => {
     };
   }
 
-  const updateCourseFeed = tutor_log_id => knex('course_feed').where('tutor_log_id', tutor_log_id).update({ content: `Requesting peer tutoring: ${req.body.issueDesc}` });
-  const deleteCourseFeed = tutor_log_id => knex('course_feed').where('tutor_log_id', tutor_log_id).del();
+  const updateCourseFeed = tutor_log_id => knex('course_feed')
+    .where('tutor_log_id', tutor_log_id)
+    .update({ content: `Requesting peer tutoring: ${req.body.issueDesc}` });
 
-  const updateAssistNotif = tutor_log_id => knex('notifications').where('tutor_log_id', tutor_log_id).update({ content: `Requesting peer tutoring: ${req.body.issueDesc}`, unviewed: true });
-  const deleteAssistNotif = tutor_log_id => knex('notifications').where('tutor_log_id', tutor_log_id).del();
+  const deleteCourseFeed = tutor_log_id => knex('course_feed')
+    .where('tutor_log_id', tutor_log_id)
+    .del();
 
-  knex('tutor_log')
+  const updateAssistNotif = tutor_log_id => knex('notifications')
+    .where('tutor_log_id', tutor_log_id)
+    .update({ content: `Requesting peer tutoring: ${req.body.issueDesc}`, unviewed: true });
+
+  const deleteAssistNotif = tutor_log_id => knex('notifications')
+    .where('tutor_log_id', tutor_log_id)
+    .del();
+
+  const alterTutorLog = () => knex('tutor_log')
     .where('student_id', user_id)
     .andWhere('course_id', req.params.course_id)
     .whereNull('closed_at')
     .update(updatedTutorLogData)
-    .returning('id')
+    .returning('id');
+
+  alterTutorLog()
   .then(id => {
     res.send(true);
     if (req.body.action === 'close') {

@@ -17,9 +17,11 @@ class TopRow extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    nextProps.courseInfo.subscriptionStatus !== this.state.subscriptionStatus ? this.setState({ subscriptionStatus: nextProps.courseInfo.subscriptionStatus }) : '';
-    nextProps.courseInfo.tutorStatus !== this.state.tutorStatus ? this.setState({ tutorStatus: nextProps.courseInfo.tutorStatus }) : '';
-    nextProps.courseInfo.assistReqOpen !== this.state.assistReqOpen ? this.setState({ assistReqOpen: nextProps.courseInfo.assistReqOpen }) : '';
+    this.setState({
+      subscriptionStatus: nextProps.courseInfo.subscriptionStatus,
+      tutorStatus: nextProps.courseInfo.tutorStatus,
+      assistReqOpen: nextProps.courseInfo.assistReqOpen
+    });
   }
 
   createBtnDiv(dfltClassName, truePhrase, trueCb, trueColor, validation, enable, falsePhrase, falseCb) {
