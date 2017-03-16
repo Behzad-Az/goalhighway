@@ -1,9 +1,7 @@
 const postLogin = (req, res, knex, bcrypt) => {
 
   let currUser;
-
   const username = req.body.username.toLowerCase();
-  const password = req.body.password;
 
   const findUser = () => knex('users')
     .innerJoin('institution_program', 'inst_prog_id', 'institution_program.id')
@@ -12,16 +10,21 @@ const postLogin = (req, res, knex, bcrypt) => {
 
   const verifyPwd = (given, actual) => bcrypt.compare(given, actual);
 
-  findUser().then(user => {
-    currUser = user;
-    return verifyPwd(password, currUser[0].password);
-  }).then(valid => {
+  findUser()
+  .then(user => {
+    if (user[0]) {
+      currUser = user[0];
+      return verifyPwd(req.body.password, currUser.password);
+    }
+    else { throw 'User could not be found'; }
+  })
+  .then(valid => {
     if (valid) {
       req.session.username = username;
-      req.session.user_id = currUser[0].id;
-      req.session.inst_prog_id = currUser[0].inst_prog_id;
-      req.session.inst_id = currUser[0].inst_id;
-      req.session.prog_id = currUser[0].prog_id;
+      req.session.user_id = currUser.id;
+      req.session.inst_prog_id = currUser.inst_prog_id;
+      req.session.inst_id = currUser.inst_id;
+      req.session.prog_id = currUser.prog_id;
       res.send(true);
     } else {
       throw 'Invalid username and password';

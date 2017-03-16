@@ -24,7 +24,7 @@ class RevisionRow extends Component {
     })
     .then(response => {
       if (response.status === 200) { return response.blob(); }
-      else { throw 'Server could not locate requested file.'; }
+      else { throw 'Server returned false.'; }
     })
     .then(blob => download(blob))
     .catch(err => console.error('Unable to download file: - ', err));
