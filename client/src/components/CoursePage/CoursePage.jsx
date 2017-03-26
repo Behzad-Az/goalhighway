@@ -28,34 +28,34 @@ class CoursePage extends Component {
       asgReports: [],
       lectureNotes: []
     };
-    this.loadComponentData = this.loadComponentData.bind(this);
-    this.conditionData = this.conditionData.bind(this);
-    this.updateState = this.updateState.bind(this);
-    this.renderPageAfterData = this.renderPageAfterData.bind(this);
+    this._loadComponentData = this._loadComponentData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._updateState = this._updateState.bind(this);
+    this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
-    this.loadComponentData(this.props.routeParams.course_id);
+    this._loadComponentData(this.props.routeParams.course_id);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.course_id !== this.state.courseInfo.id) {
-      this.loadComponentData(nextProps.params.course_id);
+      this._loadComponentData(nextProps.params.course_id);
     }
   }
 
-  loadComponentData(courseId) {
+  _loadComponentData(courseId) {
     courseId = courseId || this.state.courseInfo.id;
     fetch(`/api/courses/${courseId}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       let filterDocs = (docs, docType) => docs.filter(doc => doc.type === docType);
       let newState = {
@@ -73,7 +73,7 @@ class CoursePage extends Component {
     }
   }
 
-  renderPageAfterData() {
+  _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
         <div className="main-container">
@@ -88,13 +88,13 @@ class CoursePage extends Component {
         <div className="main-container">
           <SearchBar />
           <TopRow courseInfo={this.state.courseInfo} />
-          <NewDocForm courseId={this.state.courseInfo.id} reload={this.loadComponentData} />
-          <NewItemForm courseId={this.state.courseInfo.id} reload={this.loadComponentData} />
-          <NewReAssistForm courseInfo={this.state.courseInfo} updateParentState={this.updateState} />
+          <NewDocForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
+          <NewItemForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
+          <NewReAssistForm courseInfo={this.state.courseInfo} updateParentState={this._updateState} />
           <DocsRow docs={this.state.asgReports} header="Assignments and Reports" />
           <DocsRow docs={this.state.lectureNotes} header="Lecture Notes" />
           <DocsRow docs={this.state.sampleQuestions} header="Sample Questions" />
-          <ItemsRow items={this.state.itemsForSale} reload={this.loadComponentData} />
+          <ItemsRow items={this.state.itemsForSale} reload={this._loadComponentData} />
           <CourseFeed courseId={this.state.courseInfo.id} courseFeed={this.state.courseFeed} />
         </div>
       );
@@ -110,7 +110,7 @@ class CoursePage extends Component {
     }
   }
 
-  updateState(newState) {
+  _updateState(newState) {
     this.setState(newState);
   }
 
@@ -119,7 +119,7 @@ class CoursePage extends Component {
       <div className="course-page">
         <Navbar />
         <LeftSideBar />
-        { this.renderPageAfterData() }
+        { this._renderPageAfterData() }
         <RightSideBar />
         { this.reactAlert.container }
       </div>

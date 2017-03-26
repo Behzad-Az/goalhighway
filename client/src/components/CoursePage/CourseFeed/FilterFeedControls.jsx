@@ -3,10 +3,10 @@ import React, {Component} from 'react';
 class FilterFeedControls extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this._handleChange = this._handleChange.bind(this);
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     this.props.updateFilters(e.target.name, e.target.checked);
   }
 
@@ -15,7 +15,7 @@ class FilterFeedControls extends Component {
       <div className="filter-feed-controls control is-grouped">
         { this.props.categories.map((category, index) =>
           <p className="filter control" key={index}>
-            <input type="checkbox" name={category.name} defaultChecked={true} onChange={this.handleChange} />
+            <input type="checkbox" name={category.name} defaultChecked={true} onChange={this._handleChange} />
             <label className="checkbox">{ category.value }</label>
           </p>
         )}

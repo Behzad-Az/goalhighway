@@ -13,9 +13,9 @@ class DocCard extends Component {
       dislikeColor: '',
       imageLink: this.findImageLink(this.props.doc.revisions[0].file_name)
     };
-    this.handleLikeSubmission = this.handleLikeSubmission.bind(this);
-    this.handleDislikeSubmission = this.handleDislikeSubmission.bind(this);
-    this.sendLikeDislike = this.sendLikeDislike.bind(this);
+    this._handleLikeSubmission = this._handleLikeSubmission.bind(this);
+    this._handleDislikeSubmission = this._handleDislikeSubmission.bind(this);
+    this._sendLikeDislike = this._sendLikeDislike.bind(this);
   }
 
   findImageLink(fileName) {
@@ -24,7 +24,7 @@ class DocCard extends Component {
     return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
   }
 
-  handleLikeSubmission(e) {
+  _handleLikeSubmission(e) {
     let color = e.target.style.color;
     let value = color === 'green' ? -1 : 1;
     let nextState = {
@@ -32,11 +32,11 @@ class DocCard extends Component {
       likeColor: this.state.likeCount === this.originalLikeCount ? 'green' : '',
       dislikeColor: ''
     };
-    this.sendLikeDislike(value);
+    this._sendLikeDislike(value);
     this.setState(nextState);
   }
 
-  handleDislikeSubmission(e) {
+  _handleDislikeSubmission(e) {
     let color = e.target.style.color;
     let value = color === 'red' ? 1 : -1;
     let nextState = {
@@ -44,11 +44,11 @@ class DocCard extends Component {
       likeColor: '',
       dislikeColor: this.state.likeCount === this.originalLikeCount ? 'red' : ''
     };
-    this.sendLikeDislike(value);
+    this._sendLikeDislike(value);
     this.setState(nextState);
   }
 
-  sendLikeDislike(likeOrDislike) {
+  _sendLikeDislike(likeOrDislike) {
     fetch(`/api/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}/likes`, {
       method: 'POST',
       credentials: 'same-origin',
@@ -81,11 +81,11 @@ class DocCard extends Component {
             <p className='date title is-6'>Revision: {this.props.doc.revisions.length} - {this.props.doc.revisions[0].rev_created_at.slice(0, 10)}</p>
           </div>
           <p className='card-foot title is-6'>
-            <i onClick={this.handleLikeSubmission} className='fa fa-thumbs-up' aria-hidden='true' style={{cursor: 'pointer', color: this.state.likeColor}} />
+            <i onClick={this._handleLikeSubmission} className='fa fa-thumbs-up' aria-hidden='true' style={{cursor: 'pointer', color: this.state.likeColor}} />
             <span className='text-link'>
               <Link to={`/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}`}>See All Revisions</Link>
             </span>
-            <i onClick={this.handleDislikeSubmission} className='fa fa-thumbs-down' aria-hidden='true' style={{cursor: 'pointer', color: this.state.dislikeColor}} />
+            <i onClick={this._handleDislikeSubmission} className='fa fa-thumbs-down' aria-hidden='true' style={{cursor: 'pointer', color: this.state.dislikeColor}} />
             {this.state.likeCount}
           </p>
         </div>

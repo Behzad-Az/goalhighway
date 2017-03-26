@@ -17,15 +17,15 @@ class CourseFeed extends Component {
       categoryFilters: this.categories.map(category => category.name),
       comments: this.props.courseFeed
     };
-    this.updateCommentsOptimistically = this.updateCommentsOptimistically.bind(this);
-    this.updateCategoryFilters = this.updateCategoryFilters.bind(this);
+    this._updateCommentsOptimistically = this._updateCommentsOptimistically.bind(this);
+    this._updateCategoryFilters = this._updateCategoryFilters.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ comments: nextProps.courseFeed });
   }
 
-  updateCommentsOptimistically(sourceComment, newOrDelete) {
+  _updateCommentsOptimistically(sourceComment, newOrDelete) {
     let comments = this.state.comments;
     switch(newOrDelete) {
       case 'new':
@@ -42,7 +42,7 @@ class CourseFeed extends Component {
     this.setState(comments);
   }
 
-  updateCategoryFilters(filter, isItAddition) {
+  _updateCategoryFilters(filter, isItAddition) {
     let categoryFilters = this.state.categoryFilters;
     isItAddition ? categoryFilters.push(filter) : categoryFilters.splice(categoryFilters.indexOf(filter), 1);
     this.setState(categoryFilters);
@@ -52,11 +52,11 @@ class CourseFeed extends Component {
     let comments = this.state.comments.filter(comment => this.state.categoryFilters.includes(comment.category));
     return (
       <div className='feed-container'>
-        { this.props.courseId && <NewCourseFeed courseId={this.props.courseId} categories={this.categories} updateCommentsOptimistically={this.updateCommentsOptimistically} /> }
+        { this.props.courseId && <NewCourseFeed courseId={this.props.courseId} categories={this.categories} updateCommentsOptimistically={this._updateCommentsOptimistically} /> }
         <div className='feed-rows'>
           <hr />
-          <FilterFeedControls categories={this.categories} updateFilters={this.updateCategoryFilters} />
-          { comments.map((comment, index) => <CommentRow key={index} comment={comment} updateCommentsOptimistically={this.updateCommentsOptimistically} /> )}
+          <FilterFeedControls categories={this.categories} updateFilters={this._updateCategoryFilters} />
+          { comments.map((comment, index) => <CommentRow key={index} comment={comment} updateCommentsOptimistically={this._updateCommentsOptimistically} /> )}
         </div>
       </div>
     );

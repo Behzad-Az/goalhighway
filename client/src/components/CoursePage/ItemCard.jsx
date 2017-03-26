@@ -14,21 +14,21 @@ class ItemCard extends Component {
       price: this.props.item.price,
       deleted: false
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.toggleView = this.toggleView.bind(this);
-    this.editCard = this.editCard.bind(this);
-    this.viewCard = this.viewCard.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._handleEdit = this._handleEdit.bind(this);
+    this._handleDelete = this._handleDelete.bind(this);
+    this._toggleView = this._toggleView.bind(this);
+    this._editCardView = this._editCardView.bind(this);
+    this._showCardView = this._showCardView.bind(this);
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
 
-  handleEdit() {
+  _handleEdit() {
     let data = {
       photoPath: this.state.photoPath,
       itemDesc: this.state.itemDesc,
@@ -57,53 +57,53 @@ class ItemCard extends Component {
       }
     })
     .catch(() => this.reactAlert.showAlert('Unable to update item', 'error'))
-    .then(this.toggleView);
+    .then(this._toggleView);
   }
 
-  handleDelete() {
+  _handleDelete() {
     this.state.deleted = true;
-    this.handleEdit();
+    this._handleEdit();
   }
 
-  toggleView() {
+  _toggleView() {
     this.setState({ editCard: !this.state.editCard });
   }
 
-  editCard() {
+  _editCardView() {
     return (
       <div className='edit-item-index card'>
         <div className='card-content'>
           <label className='label'>Item Title:</label>
           <p className='control'>
-            <input className='input' type='text' name='title' placeholder='Enter item title here' defaultValue={this.state.title} onChange={this.handleChange} />
+            <input className='input' type='text' name='title' placeholder='Enter item title here' defaultValue={this.state.title} onChange={this._handleChange} />
           </p>
           <label className='label'>Item Description:</label>
           <p className='control'>
-            <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' defaultValue={this.state.itemDesc} onChange={this.handleChange} />
+            <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' defaultValue={this.state.itemDesc} onChange={this._handleChange} />
           </p>
           <label className='label'>Upload photo (optional but recommended):</label>
           <p className='control'>
-            <input className='upload' type='file' name='photoPath' onChange={this.handleChange} />
+            <input className='upload' type='file' name='photoPath' onChange={this._handleChange} />
           </p>
           <label className='label'>Item Price:</label>
           <p className='control has-icon has-icon-left'>
-            <input className='input' type='text' name='price' placeholder='Enter price here' defaultValue={this.props.item.price} onChange={this.handleChange} />
+            <input className='input' type='text' name='price' placeholder='Enter price here' defaultValue={this.props.item.price} onChange={this._handleChange} />
             <span className='icon is-small'><i className='fa fa-dollar' aria-hidden='true'/></span>
           </p>
         </div>
-          <button className='button is-info' onClick={this.handleEdit}>Save</button>
-          <button className='button is-link' onClick={this.toggleView}>Cancel</button>
-          <button className='button is-danger' onClick={this.handleDelete}>Delete</button>
+          <button className='button is-info' onClick={this._handleEdit}>Save</button>
+          <button className='button is-link' onClick={this._toggleView}>Cancel</button>
+          <button className='button is-danger' onClick={this._handleDelete}>Delete</button>
       </div>
     );
   }
 
-  viewCard() {
+  _showCardView() {
     return (
       <div className='item-index card'>
         <div className='card-content'>
           <div className='card-image'>
-            { this.props.item.editable && <button className='button is-info' onClick={this.toggleView}>Edit</button> }
+            { this.props.item.editable && <button className='button is-info' onClick={this._toggleView}>Edit</button> }
             <figure className='image is-96x96'>
               <img src='../../images/camera-logo.png' alt='picture' />
             </figure>
@@ -125,7 +125,7 @@ class ItemCard extends Component {
   }
 
   render() {
-    return this.state.editCard ? this.editCard() : this.viewCard();
+    return this.state.editCard ? this._editCardView() : this._showCardView();
   }
 }
 

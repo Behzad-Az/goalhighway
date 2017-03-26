@@ -4,10 +4,10 @@ import ItemCard from './ItemCard.jsx';
 class ItemsRow extends Component {
   constructor(props) {
     super(props);
-    this.populateRow = this.populateRow.bind(this);
+    this._populateRow = this._populateRow.bind(this);
   }
 
-  populateRow() {
+  _populateRow() {
     return this.props.items[0] ?
       this.props.items.map(item => <ItemCard key={item.id} item={item} reload={this.props.reload} /> ) :
       <p>No items for sale or trade at the moment...</p>
@@ -15,13 +15,13 @@ class ItemsRow extends Component {
 
   render() {
     return (
-      <div className="row-container">
-        <h1 className="header">
+      <div className='row-container'>
+        <h1 className='header'>
           Items for Sale or Trade:
-          <i className="fa fa-angle-down" aria-hidden="true" />
+          <i className='fa fa-angle-down' aria-hidden='true' />
         </h1>
-        <div className="items-row">
-          { this.populateRow() }
+        <div className='items-row'>
+          { this._populateRow() }
         </div>
       </div>
     );

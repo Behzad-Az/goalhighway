@@ -5,31 +5,31 @@ import HandleModal from '../partials/HandleModal.js';
 class NewItemForm extends Component {
   constructor(props) {
     super(props);
+    this.reactAlert = new ReactAlert();
     this.state = {
       title: '',
       itemDesc: '',
       photoPath: '',
       price: ''
     };
-    this.reactAlert = new ReactAlert();
-    this.handleChange = this.handleChange.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.handleNewItemPost = this.handleNewItemPost.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._handleNewItemPost = this._handleNewItemPost.bind(this);
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.title &&
            this.state.itemDesc &&
-           this.state.price
+           this.state.price;
   }
 
-  handleNewItemPost() {
+  _handleNewItemPost() {
     let data = {
       title: this.state.title,
       itemDesc: this.state.itemDesc,
@@ -70,24 +70,24 @@ class NewItemForm extends Component {
           <section className='modal-card-body'>
             <label className='label'>Item Title:</label>
             <p className='control'>
-              <input className='input' type='text' name='title' placeholder='Enter item title here' onChange={this.handleChange} />
+              <input className='input' type='text' name='title' placeholder='Enter item title here' onChange={this._handleChange} />
             </p>
             <label className='label'>Item Description:</label>
             <p className='control'>
-              <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' onChange={this.handleChange} />
+              <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' onChange={this._handleChange} />
             </p>
             <label className='label'>Upload photo (optional but recommended):</label>
             <p className='control'>
-              <input className='upload' type='file' name='photoPath' onChange={this.handleChange} />
+              <input className='upload' type='file' name='photoPath' onChange={this._handleChange} />
             </p>
             <label className='label'>Item Price:</label>
             <p className='control has-icon has-icon-left'>
-              <input className='input' type='text' name='price' placeholder='Enter price here' onChange={this.handleChange} />
+              <input className='input' type='text' name='price' placeholder='Enter price here' onChange={this._handleChange} />
               <span className='icon'><i className='fa fa-dollar' /></span>
             </p>
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewItemPost}>Submit</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewItemPost}>Submit</button>
             <button className='button' onClick={() => HandleModal('new-item-form')}>Cancel</button>
           </footer>
         </div>

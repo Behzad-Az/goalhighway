@@ -4,11 +4,11 @@ import ReactAlert from '../../partials/ReactAlert.jsx';
 class CommentRow extends Component {
   constructor(props) {
     super(props);
-    this.handleDeletionRequest = this.handleDeletionRequest.bind(this);
     this.reactAlert = new ReactAlert();
+    this._handleDeletionRequest = this._handleDeletionRequest.bind(this);
   }
 
-  handleDeletionRequest() {
+  _handleDeletionRequest() {
     fetch(`/api/courses/${this.props.comment.course_id}/feed/${this.props.comment.id}`, {
       method: 'DELETE',
       credentials: 'same-origin',
@@ -45,7 +45,7 @@ class CommentRow extends Component {
               <br />
               <small><a>Like</a> . </small>
               <small><a>Reply</a> . </small>
-              { this.props.comment.editable && <small><a onClick={this.handleDeletionRequest}>Remove</a> . </small> }
+              { this.props.comment.editable && <small><a onClick={this._handleDeletionRequest}>Remove</a> . </small> }
               <small>3 hrs</small>
             </p>
           </div>

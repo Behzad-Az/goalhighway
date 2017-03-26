@@ -11,17 +11,17 @@ class NewCourseFeed extends Component {
       category: '',
       content: ''
     };
-    this.validateForm = this.validateForm.bind(this);
-    this.clearForm = this.clearForm.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._clearForm = this._clearForm.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._handleSubmit = this._handleSubmit.bind(this);
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.category && this.state.content && this.state.content.length <= this.maxContentLength;
   }
 
-  clearForm() {
+  _clearForm() {
     this.setState({
       commenterName: '',
       category: '',
@@ -29,14 +29,14 @@ class NewCourseFeed extends Component {
     });
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     e.preventDefault();
     let obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
   }
 
-  handleSubmit() {
+  _handleSubmit() {
     let data = {
       commenterName: this.state.commenterName,
       category: this.state.category,
@@ -60,7 +60,7 @@ class NewCourseFeed extends Component {
     .catch(err => console.error('Unable to post new course feed - ', err))
     .then(() => {
       this.props.updateCommentsOptimistically(this.state, 'new');
-      this.clearForm();
+      this._clearForm();
     });
   }
 
@@ -74,11 +74,11 @@ class NewCourseFeed extends Component {
         <div className='control is-horizontal'>
           <div className='control is-grouped'>
             <p className='control is-expanded'>
-              <input className='input' name='commenterName' type='text' placeholder='Name (Optional)' onChange={this.handleChange} value={this.state.commenterName} />
+              <input className='input' name='commenterName' type='text' placeholder='Name (Optional)' onChange={this._handleChange} value={this.state.commenterName} />
             </p>
             <div className='control is-expanded'>
               <div className='select is-fullwidth'>
-                <select name='category' onChange={this.handleChange} value={this.state.category}>
+                <select name='category' onChange={this._handleChange} value={this.state.category}>
                   <option value=''>Select Category</option>
                   { this.props.categories.map((category, index) => <option key={index} value={category.name}>{category.value}</option> )}
                 </select>
@@ -88,15 +88,15 @@ class NewCourseFeed extends Component {
         </div>
         <div className='control is-horizontal'>
           <div className='control'>
-            <textarea className='textarea' name='content' placeholder='Type your comment here...' onChange={this.handleChange} value={this.state.content} />
+            <textarea className='textarea' name='content' placeholder='Type your comment here...' onChange={this._handleChange} value={this.state.content} />
           </div>
         </div>
         <div className='control is-grouped'>
           <p className='control'>
-            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleSubmit}>Post Comment</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleSubmit}>Post Comment</button>
           </p>
           <p className='control'>
-            <button className='button is-link' onClick={this.clearForm}>Clear</button>
+            <button className='button is-link' onClick={this._clearForm}>Clear</button>
           </p>
           <p className='char-counter' style={{color: this.maxContentLength - this.state.content.length < 0 ? 'red' : ''}}>{this.state.content.length}</p>
         </div>
