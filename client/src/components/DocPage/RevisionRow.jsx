@@ -10,14 +10,14 @@ class RevisionRow extends Component {
       flagRequest: false,
       flagReason: ''
     };
-    this.handleRevisionRequest = this.handleRevisionRequest.bind(this);
-    this.handleDeletionRequest = this.handleDeletionRequest.bind(this);
-    this.handleFlagClick = this.handleFlagClick.bind(this);
-    this.handleFlagSubmit = this.handleFlagSubmit.bind(this);
-    this.renderFlagSelect = this.renderFlagSelect.bind(this);
+    this._handleRevisionRequest = this._handleRevisionRequest.bind(this);
+    this._handleDeletionRequest = this._handleDeletionRequest.bind(this);
+    this._handleFlagClick = this._handleFlagClick.bind(this);
+    this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
+    this._renderFlagSelect = this._renderFlagSelect.bind(this);
   }
 
-  handleRevisionRequest() {
+  _handleRevisionRequest() {
     fetch(`/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}/revisions/${this.props.rev.id}`, {
       method: 'GET',
       credentials: 'same-origin'
@@ -30,7 +30,7 @@ class RevisionRow extends Component {
     .catch(err => console.error('Unable to download file: - ', err));
   }
 
-  handleDeletionRequest() {
+  _handleDeletionRequest() {
     fetch(`/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}/revisions/${this.props.rev.id}`, {
       method: 'DELETE',
       credentials: 'same-origin',
@@ -47,12 +47,12 @@ class RevisionRow extends Component {
     .catch(err => console.error('Unable to delete revision - ', err));
   }
 
-  handleFlagClick() {
+  _handleFlagClick() {
     let flagRequest = !this.state.flagRequest;
     this.setState({ flagRequest });
   }
 
-  handleFlagSubmit(e) {
+  _handleFlagSubmit(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     fetch(`/api/flags/revisions/${this.props.rev.id}`, {
@@ -70,11 +70,11 @@ class RevisionRow extends Component {
     .then(() => this.setState(state));
   }
 
-  renderFlagSelect() {
+  _renderFlagSelect() {
     return (
       <p className='control flag-submission'>
         <span className='select is-small'>
-          <select name='flagReason' onChange={this.handleFlagSubmit}>
+          <select name='flagReason' onChange={this._handleFlagSubmit}>
             <option value=''>select reason</option>
             <option value='inappropriate content'>Inappropriate content</option>
             <option value='does not belong to this course'>Doesn't belong to this course</option>
@@ -93,11 +93,11 @@ class RevisionRow extends Component {
         <div className='column is-6'>Description:<br/>{this.props.rev.rev_desc}</div>
         <div className='column is-3 buttons'>
           <figure className='image is-48x48'>
-            <img src='../../../images/pdf.png' alt='download' onClick={this.handleRevisionRequest} />
+            <img src='../../../images/pdf.png' alt='download' onClick={this._handleRevisionRequest} />
           </figure>
-          {this.props.rev.deleteable && <i onClick={this.handleDeletionRequest} className='fa fa-trash' aria-hidden='true' />}
-          <i className='fa fa-flag' aria-hidden='true' onClick={this.handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-          {this.state.flagRequest && this.renderFlagSelect()}
+          {this.props.rev.deleteable && <i onClick={this._handleDeletionRequest} className='fa fa-trash' aria-hidden='true' />}
+          <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+          {this.state.flagRequest && this._renderFlagSelect()}
         </div>
       </div>
     );

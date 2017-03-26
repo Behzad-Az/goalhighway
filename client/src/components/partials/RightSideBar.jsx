@@ -14,7 +14,7 @@ class RightSideBar extends Component {
       studentCount: 'N/A',
       tutorCount: 'N/A'
     };
-    this.conditionData = this.conditionData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
   }
 
   componentWillMount() {
@@ -23,11 +23,11 @@ class RightSideBar extends Component {
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       resJSON.dataLoaded = true;
       this.setState(resJSON);

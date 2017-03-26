@@ -15,12 +15,12 @@ class DocsRow extends Component {
 
   render() {
     return (
-      <div className="row-container">
-        <h1 className="header">
+      <div className='row-container'>
+        <h1 className='header'>
           { this.props.header }
-          <i className="fa fa-angle-down" aria-hidden="true" />
+          <i className='fa fa-angle-down' aria-hidden='true' />
         </h1>
-        <div className="docs-row">
+        <div className='docs-row'>
           {this._populateRow()}
         </div>
       </div>

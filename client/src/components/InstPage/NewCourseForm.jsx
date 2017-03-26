@@ -5,25 +5,25 @@ import HandleModal from '../partials/HandleModal.js';
 class NewCourseForm extends Component {
   constructor(props) {
     super(props);
+    this.reactAlert = new ReactAlert();
     this.state = {
       prefix: '',
       suffix: '',
       courseDesc: '',
       courseYear: ''
     };
-    this.reactAlert = new ReactAlert();
-    this.handleChange = this.handleChange.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.handleNewCoursePost = this.handleNewCoursePost.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._handleNewCoursePost = this._handleNewCoursePost.bind(this);
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.prefix &&
            this.state.suffix &&
            this.state.courseDesc &&
@@ -31,7 +31,7 @@ class NewCourseForm extends Component {
            this.props.instId
   }
 
-  handleNewCoursePost() {
+  _handleNewCoursePost() {
     let data = {
       prefix: this.state.prefix,
       suffix: this.state.suffix,
@@ -74,23 +74,23 @@ class NewCourseForm extends Component {
 
             <label className='label'>Prefix:</label>
             <p className='control'>
-              <input className='input' type='text' name='prefix' placeholder='Example: MATH' onChange={this.handleChange} />
+              <input className='input' type='text' name='prefix' placeholder='Example: MATH' onChange={this._handleChange} />
             </p>
 
             <label className='label'>Suffix:</label>
             <p className='control'>
-              <input className='input' type='text' name='suffix' placeholder='Example: 101' onChange={this.handleChange} />
+              <input className='input' type='text' name='suffix' placeholder='Example: 101' onChange={this._handleChange} />
             </p>
 
             <label className='label'>Title:</label>
             <p className='control'>
-              <input className='input' type='text' name='courseDesc' placeholder='Example: Introducion to calculus' onChange={this.handleChange} />
+              <input className='input' type='text' name='courseDesc' placeholder='Example: Introducion to calculus' onChange={this._handleChange} />
             </p>
 
             <label className='label'>Academic Year:</label>
             <p className='control'>
               <span className='select'>
-                <select className='select' name='courseYear' onChange={this.handleChange}>
+                <select className='select' name='courseYear' onChange={this._handleChange}>
                   <option value=''>-</option>
                   <option value={1}>1</option>
                   <option value={2}>2</option>
@@ -104,7 +104,7 @@ class NewCourseForm extends Component {
 
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewCoursePost}>Submit</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewCoursePost}>Submit</button>
             <button className='button' onClick={() => HandleModal('new-course-form')}>Cancel</button>
           </footer>
         </div>

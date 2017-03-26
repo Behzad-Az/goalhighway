@@ -5,15 +5,15 @@ import HandleModal from '../partials/HandleModal.js';
 class TopRow extends Component {
   constructor(props) {
     super(props);
-    this.getAverageValues = this.getAverageValues.bind(this);
-    this.calcStarPercent = this.calcStarPercent.bind(this);
-    this.getProfAvgRatings = this.getProfAvgRatings.bind(this);
-    this.decodeProf = this.decodeProf.bind(this);
-    this.decodeWorkload = this.decodeWorkload.bind(this);
-    this.decodeFairness = this.decodeFairness.bind(this);
+    this._getAverageValues = this._getAverageValues.bind(this);
+    this._calcStarPercent = this._calcStarPercent.bind(this);
+    this._getProfAvgRatings = this._getProfAvgRatings.bind(this);
+    this._decodeProf = this._decodeProf.bind(this);
+    this._decodeWorkload = this._decodeWorkload.bind(this);
+    this._decodeFairness = this._decodeFairness.bind(this);
   }
 
-  getAverageValues() {
+  _getAverageValues() {
     let length = this.props.courseReviews.length || 1;
     let sumRatings = this.props.courseReviews.reduce((a, b) => {
       return {
@@ -37,7 +37,7 @@ class TopRow extends Component {
     };
   }
 
-  calcStarPercent(count, avgValue) {
+  _calcStarPercent(count, avgValue) {
     if (count > avgValue) {
       return 0;
     } else {
@@ -45,7 +45,7 @@ class TopRow extends Component {
     }
   }
 
-  getProfAvgRatings() {
+  _getProfAvgRatings() {
     let profRatingSum = {};
     let profRatingCount = {};
     this.props.courseReviews.forEach(review => {
@@ -56,13 +56,13 @@ class TopRow extends Component {
       <tr key={index}>
         <td>{profName}:</td>
         <td className='second-column'>
-          {this.decodeProf(Math.round(profRatingSum[profName] / profRatingCount[profName]))}
+          {this._decodeProf(Math.round(profRatingSum[profName] / profRatingCount[profName]))}
         </td>
       </tr>
     );
   }
 
-  decodeWorkload(value) {
+  _decodeWorkload(value) {
     switch(value) {
       case 1:
         return 'Too little';
@@ -75,7 +75,7 @@ class TopRow extends Component {
     }
   }
 
-  decodeFairness(value) {
+  _decodeFairness(value) {
     switch(value) {
       case 1:
         return 'Too easy';
@@ -88,7 +88,7 @@ class TopRow extends Component {
     }
   }
 
-  decodeProf(value) {
+  _decodeProf(value) {
     switch(value) {
       case 1:
         return 'Not good';
@@ -106,8 +106,8 @@ class TopRow extends Component {
   }
 
   render() {
-    let profAvgs = this.getProfAvgRatings();
-    let overallAvgs = this.getAverageValues();
+    let profAvgs = this._getProfAvgRatings();
+    let overallAvgs = this._getAverageValues();
     return (
       <div className='top-row row-container'>
         <h1 className='header'>
@@ -128,31 +128,31 @@ class TopRow extends Component {
                   <div className='star-rating'>
                     <div className='outer'>
                       <i className='fa fa-star-o' aria-hidden='true' />
-                      <div className='inner' style={{ width: `${this.calcStarPercent(0, overallAvgs.overallRating)}%` }}>
+                      <div className='inner' style={{ width: `${this._calcStarPercent(0, overallAvgs.overallRating)}%` }}>
                         <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
                     <div className='outer'>
                       <i className='fa fa-star-o' aria-hidden='true' />
-                      <div className='inner' style={{ width: `${this.calcStarPercent(1, overallAvgs.overallRating)}%` }}>
+                      <div className='inner' style={{ width: `${this._calcStarPercent(1, overallAvgs.overallRating)}%` }}>
                         <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
                     <div className='outer'>
                       <i className='fa fa-star-o' aria-hidden='true' />
-                      <div className='inner' style={{ width: `${this.calcStarPercent(2, overallAvgs.overallRating)}%` }}>
+                      <div className='inner' style={{ width: `${this._calcStarPercent(2, overallAvgs.overallRating)}%` }}>
                         <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
                     <div className='outer'>
                       <i className='fa fa-star-o' aria-hidden='true' />
-                      <div className='inner' style={{ width: `${this.calcStarPercent(3, overallAvgs.overallRating)}%` }}>
+                      <div className='inner' style={{ width: `${this._calcStarPercent(3, overallAvgs.overallRating)}%` }}>
                         <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
                     <div className='outer'>
                       <i className='fa fa-star-o' aria-hidden='true' />
-                      <div className='inner' style={{ width: `${this.calcStarPercent(4, overallAvgs.overallRating)}%` }}>
+                      <div className='inner' style={{ width: `${this._calcStarPercent(4, overallAvgs.overallRating)}%` }}>
                         <i className='fa fa-star' aria-hidden='true' />
                       </div>
                     </div>
@@ -161,15 +161,15 @@ class TopRow extends Component {
               </tr>
               <tr>
                 <td>Teaching:</td>
-                <td className='second-column'>{this.decodeProf(overallAvgs.profRating)}</td>
+                <td className='second-column'>{this._decodeProf(overallAvgs.profRating)}</td>
               </tr>
               <tr>
                 <td>Evaluation:</td>
-                <td className='second-column'>{this.decodeFairness(overallAvgs.fairnessRating)}</td>
+                <td className='second-column'>{this._decodeFairness(overallAvgs.fairnessRating)}</td>
               </tr>
               <tr>
                 <td>Workload:</td>
-                <td className='second-column'>{this.decodeWorkload(overallAvgs.workloadRating)}</td>
+                <td className='second-column'>{this._decodeWorkload(overallAvgs.workloadRating)}</td>
               </tr>
             </tbody>
           </table>

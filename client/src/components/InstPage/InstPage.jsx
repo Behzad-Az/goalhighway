@@ -27,33 +27,33 @@ class InstPage extends Component {
       currInstCourses: [],
       currUserCourseIds: []
     };
-    this.loadComponentData = this.loadComponentData.bind(this);
-    this.conditionData = this.conditionData.bind(this);
-    this.findInstName = this.findInstName.bind(this);
-    this.handleFilter = this.handleFilter.bind(this);
+    this._loadComponentData = this._loadComponentData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._findInstName = this._findInstName.bind(this);
+    this._handleFilter = this._handleFilter.bind(this);
   }
 
   componentDidMount() {
-    this.loadComponentData(this.state.instId);
+    this._loadComponentData(this.state.instId);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.inst_id && (this.state.instId !== nextProps.params.inst_id)) {
-      this.loadComponentData(nextProps.params.inst_id);
+      this._loadComponentData(nextProps.params.inst_id);
     }
   }
 
-  loadComponentData(instId) {
+  _loadComponentData(instId) {
     fetch(`/api/institutions/${instId}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON, instId))
+    .then(resJSON => this._conditionData(resJSON, instId))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON, instId) {
+  _conditionData(resJSON, instId) {
     if (resJSON) {
       resJSON.instList.forEach(inst => {
         inst.label = inst.inst_display_name;
@@ -68,12 +68,12 @@ class InstPage extends Component {
     }
   }
 
-  findInstName() {
+  _findInstName() {
     let inst = this.state.instList.find(inst => inst.id == this.state.instId);
     return inst ? inst.inst_display_name : '';
   }
 
-  handleFilter(e) {
+  _handleFilter(e) {
     let phrase = new RegExp(e.target.value.toLowerCase());
     let currInstCourses = this.fixedCurrInstCourses.filter(course => course.full_display_name.toLowerCase().match(phrase));
     this.setState({ currInstCourses });
@@ -82,9 +82,9 @@ class InstPage extends Component {
   renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-exclamation-triangle" aria-hidden="true" />
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
             Error in loading up the page
           </p>
         </div>
@@ -92,32 +92,32 @@ class InstPage extends Component {
     } else if (this.state.dataLoaded) {
       let slicedArr = this.state.currInstCourses.slice(0, 199);
       return (
-        <div className="main-container">
+        <div className='main-container'>
           <SearchBar />
-          <h1 className="header">
+          <h1 className='header'>
             Institution:
-            <button className="button" onClick={() => HandleModal('new-inst-form')}>Don't see your institution?</button>
+            <button className='button' onClick={() => HandleModal('new-inst-form')}>Don't see your institution?</button>
           </h1>
-          <div className="inst-dropdown control">
+          <div className='inst-dropdown control'>
             <SingleSelect
               disabled={false}
               initialValue={parseInt(this.state.instId)}
-              name="instList"
+              name='instList'
               options={this.state.instList}
-              handleChange={this.loadComponentData} />
+              handleChange={this._loadComponentData} />
           </div>
-          <h1 className="header">
+          <h1 className='header'>
             Courses:
-            <button className="button" onClick={() => HandleModal('new-course-form')}>Don't see your course?</button>
+            <button className='button' onClick={() => HandleModal('new-course-form')}>Don't see your course?</button>
           </h1>
           <NewCourseForm
-            reload={() => this.loadComponentData(this.state.instId)}
+            reload={() => this._loadComponentData(this.state.instId)}
             instId={this.state.instId}
-            instName={this.findInstName()} />
+            instName={this._findInstName()} />
           <NewInstForm
-            reload={() => this.loadComponentData(this.state.instId)} />
-          <FilterInputBox handleFilter={this.handleFilter} />
-          <div className="course-rows">
+            reload={() => this._loadComponentData(this.state.instId)} />
+          <FilterInputBox handleFilter={this._handleFilter} />
+          <div className='course-rows'>
             { slicedArr.map((course, index) => <CourseRow key={index} course={course} currUserCourseIds={this.state.currUserCourseIds} userId={this.state.userId} /> )}
             { this.state.dataLoaded && this.state.currInstCourses[0] && <p>Many more courses available. Refine your search please.</p> }
             { this.state.dataLoaded && !this.state.currInstCourses[0] && <p>No courses are available for this institution. Be the first to add one.</p> }
@@ -126,10 +126,10 @@ class InstPage extends Component {
       );
     } else {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-            <span className="sr-only">Loading...</span>
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+            <span className='sr-only'>Loading...</span>
           </p>
         </div>
       );
@@ -138,7 +138,7 @@ class InstPage extends Component {
 
   render() {
     return (
-      <div className="inst-page">
+      <div className='inst-page'>
         <Navbar />
         <LeftSideBar />
         { this.renderPageAfterData() }

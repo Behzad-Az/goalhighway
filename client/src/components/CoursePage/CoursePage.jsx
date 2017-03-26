@@ -76,34 +76,34 @@ class CoursePage extends Component {
   _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-exclamation-triangle" aria-hidden="true" />
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
             Error in loading up the page
           </p>
         </div>
       );
     } else if (this.state.dataLoaded) {
       return (
-        <div className="main-container">
+        <div className='main-container'>
           <SearchBar />
           <TopRow courseInfo={this.state.courseInfo} />
           <NewDocForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
           <NewItemForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
           <NewReAssistForm courseInfo={this.state.courseInfo} updateParentState={this._updateState} />
-          <DocsRow docs={this.state.asgReports} header="Assignments and Reports" />
-          <DocsRow docs={this.state.lectureNotes} header="Lecture Notes" />
-          <DocsRow docs={this.state.sampleQuestions} header="Sample Questions" />
+          <DocsRow docs={this.state.asgReports} header='Assignments and Reports' />
+          <DocsRow docs={this.state.lectureNotes} header='Lecture Notes' />
+          <DocsRow docs={this.state.sampleQuestions} header='Sample Questions' />
           <ItemsRow items={this.state.itemsForSale} reload={this._loadComponentData} />
           <CourseFeed courseId={this.state.courseInfo.id} courseFeed={this.state.courseFeed} />
         </div>
       );
     } else {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-            <span className="sr-only">Loading...</span>
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+            <span className='sr-only'>Loading...</span>
           </p>
         </div>
       );
@@ -116,7 +116,7 @@ class CoursePage extends Component {
 
   render() {
     return (
-      <div className="course-page">
+      <div className='course-page'>
         <Navbar />
         <LeftSideBar />
         { this._renderPageAfterData() }

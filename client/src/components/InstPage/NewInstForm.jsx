@@ -30,21 +30,21 @@ class NewInstForm extends Component {
         { value: 'VA', label: 'Virginia' }, { value: 'WA', label: 'Washington' }, { value: 'WV', label: 'West Virginia' }, { value: 'WI', label: 'Wisconsin' }, { value: 'WY', label: 'Wyoming' }
       ]
     };
+    this.reactAlert = new ReactAlert();
     this.state = {
       instLongName: '',
       instShortName: '',
       country: '',
       province: ''
     };
-    this.reactAlert = new ReactAlert();
-    this.handleChange = this.handleChange.bind(this);
+    this._handleChange = this._handleChange.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.handleCountrySelect = this.handleCountrySelect.bind(this);
     this.handleProvinceSelect = this.handleProvinceSelect.bind(this);
     this.handleNewInstPost = this.handleNewInstPost.bind(this);
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
@@ -106,12 +106,12 @@ class NewInstForm extends Component {
 
             <label className='label'>Institution Full Name:</label>
             <p className='control'>
-              <input className='input' type='text' name='instLongName' placeholder='Example: University of British Columbia' onChange={this.handleChange} />
+              <input className='input' type='text' name='instLongName' placeholder='Example: University of British Columbia' onChange={this._handleChange} />
             </p>
 
             <label className='label'>Institution Given Name (optional):</label>
             <p className='control'>
-              <input className='input' type='text' name='instShortName' placeholder='Example (optional): UBC' onChange={this.handleChange} />
+              <input className='input' type='text' name='instShortName' placeholder='Example (optional): UBC' onChange={this._handleChange} />
             </p>
 
             <label className='label'>Country:</label>

@@ -12,11 +12,11 @@ class FilterFeedControls extends Component {
 
   render() {
     return (
-      <div className="filter-feed-controls control is-grouped">
+      <div className='filter-feed-controls control is-grouped'>
         { this.props.categories.map((category, index) =>
-          <p className="filter control" key={index}>
-            <input type="checkbox" name={category.name} defaultChecked={true} onChange={this._handleChange} />
-            <label className="checkbox">{ category.value }</label>
+          <p className='filter control' key={index}>
+            <input type='checkbox' name={category.name} defaultChecked={true} onChange={this._handleChange} />
+            <label className='checkbox'>{ category.value }</label>
           </p>
         )}
       </div>

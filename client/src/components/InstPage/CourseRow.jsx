@@ -10,16 +10,16 @@ class CourseRow extends Component {
     this.state = {
       userAlreadySubscribed: this.props.currUserCourseIds.includes(this.props.course.id)
     };
-    this.handleRemoval = this.handleRemoval.bind(this);
-    this.handleAddition = this.handleAddition.bind(this);
-    this.toggleRemoveAdd = this.toggleRemoveAdd.bind(this);
+    this._handleRemoval = this._handleRemoval.bind(this);
+    this._handleAddition = this._handleAddition.bind(this);
+    this._toggleRemoveAdd = this._toggleRemoveAdd.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ userAlreadySubscribed: nextProps.currUserCourseIds.includes(nextProps.course.id) });
   }
 
-  handleRemoval() {
+  _handleRemoval() {
     fetch(`/api/users/currentuser/courses/${this.props.course.id}`, {
       method: 'DELETE',
       credentials: 'same-origin',
@@ -30,13 +30,13 @@ class CourseRow extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { this.toggleRemoveAdd('remove'); }
+      if (resJSON) { this._toggleRemoveAdd('remove'); }
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to remove course', 'error'));
   }
 
-  handleAddition() {
+  _handleAddition() {
     let courseId = this.props.course.id;
     fetch(`/api/users/currentuser/courses/${courseId}`, {
       method: 'POST',
@@ -49,13 +49,13 @@ class CourseRow extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { this.toggleRemoveAdd('add'); }
+      if (resJSON) { this._toggleRemoveAdd('add'); }
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to add course', 'error'));
   }
 
-  toggleRemoveAdd(removeOrAdd) {
+  _toggleRemoveAdd(removeOrAdd) {
     let userAlreadySubscribed = !this.state.userAlreadySubscribed;
     this.setState({userAlreadySubscribed});
     removeOrAdd === 'remove' ? this.reactAlert.showAlert('Unsubscribed from course', 'info') : this.reactAlert.showAlert('Subscribed to course', 'info');
@@ -66,7 +66,7 @@ class CourseRow extends Component {
       <div className='course-row'>
         <Link to={`/courses/${this.props.course.id}`}>{this.props.course.short_display_name}</Link>
         <span> - </span>
-        { this.state.userAlreadySubscribed ? <Link onClick={this.handleRemoval}>Remove from my courses</Link> : <Link onClick={this.handleAddition}>Add to my courses</Link> }
+        { this.state.userAlreadySubscribed ? <Link onClick={this._handleRemoval}>Remove from my courses</Link> : <Link onClick={this._handleAddition}>Add to my courses</Link> }
       </div>
     );
   }

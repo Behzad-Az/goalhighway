@@ -12,30 +12,30 @@ class NewDocForm extends Component {
       revDesc: '',
       file: ''
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleFileChange = this.handleFileChange.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.handleNewDocPost = this.handleNewDocPost.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._handleFileChange = this._handleFileChange.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._handleNewDocPost = this._handleNewDocPost.bind(this);
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
 
-  handleFileChange(e) {
+  _handleFileChange(e) {
     const file = e.target.files[0];
     this.setState({ file });
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.title &&
            this.state.revDesc &&
            this.state.type;
   }
 
-  handleNewDocPost() {
+  _handleNewDocPost() {
     let data = new FormData();
     data.append('file', this.state.file);
     data.append('title', this.state.title);
@@ -71,20 +71,20 @@ class NewDocForm extends Component {
           <section className='modal-card-body'>
             <label className='label'>Document Title (you may revise this):</label>
             <p className='control'>
-              <input className='input' type='text' name='title' placeholder='Enter document title here' defaultValue={this.state.title} onChange={this.handleChange} />
+              <input className='input' type='text' name='title' placeholder='Enter document title here' defaultValue={this.state.title} onChange={this._handleChange} />
             </p>
             <label className='label'>Upload the new revision (optional):</label>
             <p className='control'>
-              <input className='upload' type='file' onChange={this.handleFileChange} />
+              <input className='upload' type='file' onChange={this._handleFileChange} />
             </p>
             <label className='label'>Revision Comment (mandatory):</label>
             <p className='control'>
-              <input className='input' type='text' name='revDesc' placeholder='Enter revision comment here' onChange={this.handleChange} />
+              <input className='input' type='text' name='revDesc' placeholder='Enter revision comment here' onChange={this._handleChange} />
             </p>
             <label className='label'>Select Type of Document (you may revise this):</label>
             <p className='control'>
               <span className='select'>
-                <select className='select' name='type' onChange={this.handleChange} defaultValue={this.state.type}>
+                <select className='select' name='type' onChange={this._handleChange} defaultValue={this.state.type}>
                   <option value=''>-</option>
                   <option value='asg_report'>Assigntment / Report</option>
                   <option value='lecture_note'>Lecture Note</option>
@@ -94,7 +94,7 @@ class NewDocForm extends Component {
             </p>
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewDocPost}>Submit</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewDocPost}>Submit</button>
             <button className='button' onClick={() => HandleModal('new-revision-form')}>Cancel</button>
           </footer>
         </div>

@@ -12,10 +12,10 @@ class Navbar extends Component {
       notifications: [],
       unViewedNotif: false
     };
-    this.conditionData = this.conditionData.bind(this);
-    this.handleHamburger = this.handleHamburger.bind(this);
-    this.showNotifications = this.showNotifications.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._handleHamburger = this._handleHamburger.bind(this);
+    this._showNotifications = this._showNotifications.bind(this);
+    this._handleLogout = this._handleLogout.bind(this);
   }
 
   componentDidMount() {
@@ -24,11 +24,11 @@ class Navbar extends Component {
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       resJSON.unViewedNotif = resJSON.notifications.reduce((a, b) => ({ unviewed: a.unviewed || b.unviewed }), { unviewed: false } ).unviewed;
       this.setState(resJSON);
@@ -37,13 +37,13 @@ class Navbar extends Component {
     }
   }
 
-  handleHamburger() {
+  _handleHamburger() {
     let nav = document.getElementById('hamburger-menu');
     let className = nav.getAttribute('class');
     nav.className = className.includes(' is-active') ? 'nav-right nav-menu' : 'nav-right nav-menu is-active';
   }
 
-  showNotifications() {
+  _showNotifications() {
     let notifList = document.getElementById('notification-list');
     let className = notifList.getAttribute('class');
     notifList.className = className.includes(' is-enabled') ? 'notification-list' : 'notification-list is-enabled';
@@ -78,7 +78,7 @@ class Navbar extends Component {
     }
   }
 
-  handleLogout() {
+  _handleLogout() {
     fetch('/api/logout', {
       method: 'GET',
       credentials: 'same-origin'
@@ -98,11 +98,11 @@ class Navbar extends Component {
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-mobile' to={`/users/${this.state.userInfo.id}/jobs`}>Jobs</Link>
           </div>
 
-          <Link className='nav-item' onClick={this.showNotifications}>
+          <Link className='nav-item' onClick={this._showNotifications}>
             <i className='fa fa-bell' aria-hidden='true' style={{ color: this.state.unViewedNotif ? '#9D0600' : 'inherit' }}/>
           </Link>
 
-          <span className='nav-toggle' onClick={this.handleHamburger}>
+          <span className='nav-toggle' onClick={this._handleHamburger}>
             <span/>
             <span/>
             <span/>
@@ -120,7 +120,7 @@ class Navbar extends Component {
               </figure>
               Profile
             </Link>
-            <Link className='nav-item is-tab' onClick={this.handleLogout}>Log out</Link>
+            <Link className='nav-item is-tab' onClick={this._handleLogout}>Log out</Link>
           </div>
         </div>
         <Notifications notifications={this.state.notifications} />

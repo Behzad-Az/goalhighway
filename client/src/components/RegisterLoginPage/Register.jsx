@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
-
 import SingleSelect from '../partials/SingleSelect.jsx';
 
 class Register extends Component {
@@ -152,7 +151,7 @@ class Register extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      resJSON ? this.props.handleSuccessfulRegister(true) : this.props.handleBadInput(true, 'Could not register new user.');
+      resJSON ? this.props.handleSuccessfulRegister(true) : this.props.handleBadInput(true, 'Unable to register new user.');
     })
     .catch(err => console.error('Unable to process registeration - ', err));
   }

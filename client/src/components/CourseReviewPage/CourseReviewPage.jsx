@@ -21,26 +21,26 @@ class CourseReviewPage extends Component {
       courseReviews: [],
       profs: []
     };
-    this.loadComponentData = this.loadComponentData.bind(this);
-    this.conditionData = this.conditionData.bind(this);
-    this.renderPageAfterData = this.renderPageAfterData.bind(this);
+    this._loadComponentData = this._loadComponentData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
-    this.loadComponentData();
+    this._loadComponentData();
   }
 
-  loadComponentData() {
+  _loadComponentData() {
     fetch(`/api/courses/${this.courseId}/reviews`, {
       method: 'GET',
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       resJSON.dataLoaded = true;
       this.setState(resJSON);
@@ -49,31 +49,31 @@ class CourseReviewPage extends Component {
     }
   }
 
-  renderPageAfterData() {
+  _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-exclamation-triangle" aria-hidden="true" />
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
             Error in loading up the page
           </p>
         </div>
       );
     } else if (this.state.dataLoaded) {
       return (
-        <div className="main-container">
+        <div className='main-container'>
           <SearchBar />
           <TopRow courseInfo={this.state.courseInfo} courseReviews={this.state.courseReviews} />
-          <NewCourseReviewForm courseId={this.state.courseInfo.id} profs={this.state.profs} reload={this.loadComponentData} />
+          <NewCourseReviewForm courseId={this.state.courseInfo.id} profs={this.state.profs} reload={this._loadComponentData} />
           <CourseReviewRows courseReviews={this.state.courseReviews} />
         </div>
       );
     } else {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-            <span className="sr-only">Loading...</span>
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+            <span className='sr-only'>Loading...</span>
           </p>
         </div>
       );
@@ -82,10 +82,10 @@ class CourseReviewPage extends Component {
 
   render() {
     return (
-      <div className="course-review-page">
+      <div className='course-review-page'>
         <Navbar />
         <LeftSideBar />
-        { this.renderPageAfterData() }
+        { this._renderPageAfterData() }
         <RightSideBar />
         { this.reactAlert.container }
       </div>

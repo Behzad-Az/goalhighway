@@ -5,44 +5,46 @@ import HandleModal from './HandleModal.js';
 class NewReqAssistForm extends Component {
   constructor(props) {
     super(props);
+    this.reactAlert = new ReactAlert();
     this.state = {
       issueDesc: this.props.courseInfo.latestAssistRequest,
       assistReqOpen: this.props.courseInfo.assistReqOpen,
       closureReason: ''
     };
-    this.reactAlert = new ReactAlert();
-    this.handleChange = this.handleChange.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.formFooterOptions = this.formFooterOptions.bind(this);
-    this.updateParentState = this.updateParentState.bind(this);
-    this.handleUpdateRequestAssist = this.handleUpdateRequestAssist.bind(this);
-    this.handleNewRequestAssist = this.handleNewRequestAssist.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._formFooterOptions = this._formFooterOptions.bind(this);
+    this._updateParentState = this._updateParentState.bind(this);
+    this._handleUpdateRequestAssist = this._handleUpdateRequestAssist.bind(this);
+    this._handleNewRequestAssist = this._handleNewRequestAssist.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    nextProps.courseInfo.latestAssistRequest !== this.state.issueDesc ? this.setState({ issueDesc: nextProps.courseInfo.latestAssistRequest }) : '';
-    nextProps.courseInfo.assistReqOpen !== this.state.assistReqOpen ? this.setState({ assistReqOpen: nextProps.courseInfo.assistReqOpen }) : '';
+    this.setState({
+      issueDesc: nextProps.courseInfo.latestAssistRequest,
+      assistReqOpen: nextProps.courseInfo.assistReqOpen
+    });
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.issueDesc &&
            this.state.issueDesc.length <= 400
   }
 
-  formFooterOptions() {
+  _formFooterOptions() {
     if (this.state.assistReqOpen) {
       return (
         <footer className='modal-card-foot'>
           <p className='control'>
-            <button className='button is-primary' disabled={!this.validateForm()} onClick={() => this.handleUpdateRequestAssist('update')}>Update</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={() => this._handleUpdateRequestAssist('update')}>Update</button>
             <span className='select'>
-              <select name='closureReason' onChange={this.handleChange}>
+              <select name='closureReason' onChange={this._handleChange}>
                 <option value=''>-</option>
                 <option value='Resolved on my own'>Resolved on my own</option>
                 <option value='Resolved with tutor'>Resolved with tutor</option>
@@ -50,32 +52,32 @@ class NewReqAssistForm extends Component {
                 <option value='Other'>Other</option>
               </select>
             </span>
-            <button className='button' onClick={() => this.handleUpdateRequestAssist('close')} disabled={!this.state.closureReason}>Close Request</button>
+            <button className='button' onClick={() => this._handleUpdateRequestAssist('close')} disabled={!this.state.closureReason}>Close Request</button>
           </p>
         </footer>
       );
     } else {
       return (
         <footer className='modal-card-foot'>
-          <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewRequestAssist}>Submit</button>
+          <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewRequestAssist}>Submit</button>
           <button className='button' onClick={() => HandleModal('new-request-assist-form')}>Cancel</button>
         </footer>
       );
     }
   }
 
-  updateParentState(action) {
+  _updateParentState(action) {
     let courseInfo = {
       ...this.props.courseInfo,
       subscriptionStatus: true,
       assistReqOpen: action === 'close' ? false : true,
       latestAssistRequest: this.state.issueDesc
     };
-    this.props.updateParentState({ courseInfo });
+    this.props._updateParentState({ courseInfo });
     HandleModal('new-request-assist-form');
   }
 
-  handleUpdateRequestAssist(action) {
+  _handleUpdateRequestAssist(action) {
     let data = {
       action: action,
       issueDesc: this.state.issueDesc,
@@ -93,14 +95,14 @@ class NewReqAssistForm extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { this.updateParentState(action); }
+      if (resJSON) { this._updateParentState(action); }
       else { throw 'Server returned false'; }
     })
     .catch(err => console.error('Unable to update or close assistance request - ', err))
     .then(() => this.setState({ closureReason: '' }));
   }
 
-  handleNewRequestAssist() {
+  _handleNewRequestAssist() {
     let data = {
       issueDesc: this.state.issueDesc
     };
@@ -116,7 +118,7 @@ class NewReqAssistForm extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { this.updateParentState('new'); }
+      if (resJSON) { this._updateParentState('new'); }
       else { throw 'Server returned false'; }
     })
     .catch(err => console.error('Unable to post assistance request - ', err));
@@ -133,10 +135,10 @@ class NewReqAssistForm extends Component {
           </header>
           <section className='modal-card-body'>
             <p className='control'>
-              <textarea className='textarea' name='issueDesc' placeholder='How may one of our tutors assist you?' value={this.state.issueDesc} onChange={this.handleChange} />
+              <textarea className='textarea' name='issueDesc' placeholder='How may one of our tutors assist you?' value={this.state.issueDesc} onChange={this._handleChange} />
             </p>
           </section>
-          { this.formFooterOptions() }
+          { this._formFooterOptions() }
         </div>
       </div>
     );

@@ -45,7 +45,7 @@ class LoginRegisterPage extends Component {
       return (
         <article className="message is-danger">
           <div className="message-header">
-            <p><strong>Invalid entry!</strong>!</p>
+            <strong>Invalid entry!</strong>
             <button className="delete" onClick={() => this.handleBadInput(false, '')} />
           </div>
           <div className="message-body">

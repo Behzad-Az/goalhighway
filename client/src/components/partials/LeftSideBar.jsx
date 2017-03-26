@@ -11,7 +11,7 @@ class LeftSideBar extends Component {
       instName: 'N/A',
       contributionCount: 'N/A'
     };
-    this.conditionData = this.conditionData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
   }
 
   componentWillMount() {
@@ -20,11 +20,11 @@ class LeftSideBar extends Component {
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       resJSON.dataLoaded = true;
       this.setState(resJSON);

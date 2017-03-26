@@ -16,8 +16,8 @@ class IndexPage extends Component {
       updates: '',
       instId: ''
     };
-    this.conditionData = this.conditionData.bind(this);
-    this.renderPageAfterData = this.renderPageAfterData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
@@ -26,11 +26,11 @@ class IndexPage extends Component {
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       resJSON.dataLoaded = true;
       this.setState(resJSON);
@@ -39,19 +39,19 @@ class IndexPage extends Component {
     }
   }
 
-  renderPageAfterData() {
+  _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-exclamation-triangle" aria-hidden="true" />
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
             Error in loading up the page
           </p>
         </div>
       );
     } else if (this.state.dataLoaded) {
       return (
-        <div className="main-container">
+        <div className='main-container'>
           <SearchBar />
           { this.state.courses.map((course, index) =>
             <CourseCard key={index} course={course} updates={this.state.updates.filter(update => update.course_id === course.course_id)} />
@@ -61,10 +61,10 @@ class IndexPage extends Component {
       );
     } else {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-            <span className="sr-only">Loading...</span>
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+            <span className='sr-only'>Loading...</span>
           </p>
         </div>
       );
@@ -73,10 +73,10 @@ class IndexPage extends Component {
 
   render() {
     return (
-      <div className="index-page">
+      <div className='index-page'>
         <Navbar />
         <LeftSideBar />
-        { this.renderPageAfterData() }
+        { this._renderPageAfterData() }
         <RightSideBar />
       </div>
     );

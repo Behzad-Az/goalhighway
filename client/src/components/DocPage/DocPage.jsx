@@ -25,23 +25,23 @@ class DocPage extends Component {
         revisions: []
       }
     };
-    this.loadComponentData = this.loadComponentData.bind(this);
-    this.conditionData = this.conditionData.bind(this);
-    this.updateState = this.updateState.bind(this);
-    this.renderPageAfterData = this.renderPageAfterData.bind(this);
+    this._loadComponentData = this._loadComponentData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._updateState = this._updateState.bind(this);
+    this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
-    this.loadComponentData(this.props.params.course_id, this.props.params.doc_id);
+    this._loadComponentData(this.props.params.course_id, this.props.params.doc_id);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.doc_id !== this.state.docInfo.id || nextProps.params.course_id  !== this.state.courseInfo.id) {
-      this.loadComponentData(nextProps.params.course_id, nextProps.params.doc_id);
+      this._loadComponentData(nextProps.params.course_id, nextProps.params.doc_id);
     }
   }
 
-  loadComponentData(courseId, docId) {
+  _loadComponentData(courseId, docId) {
     courseId = courseId || this.state.courseInfo.id;
     docId = docId || this.state.docInfo.id;
     fetch(`/api/courses/${courseId}/docs/${docId}`, {
@@ -49,11 +49,11 @@ class DocPage extends Component {
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       resJSON.dataLoaded = true;
       this.setState(resJSON);
@@ -62,42 +62,42 @@ class DocPage extends Component {
     }
   }
 
-  updateState(newState) {
+  _updateState(newState) {
     this.setState(newState);
   }
 
-  renderPageAfterData() {
+  _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-exclamation-triangle" aria-hidden="true" />
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
             Error in loading up the page
           </p>
         </div>
       );
     } else if (this.state.dataLoaded) {
       return (
-        <div className="main-container">
+        <div className='main-container'>
           <SearchBar />
           <TopRow courseInfo={this.state.courseInfo} docInfo={this.state.docInfo} />
-          <NewReAssistForm courseInfo={this.state.courseInfo} updateParentState={this.updateState} />
-          <NewRevisionForm docInfo={this.state.docInfo} reload={this.loadComponentData} />
-          <div className="row-container">
-            <h1 className="header">
+          <NewReAssistForm courseInfo={this.state.courseInfo} updateParentState={this._updateState} />
+          <NewRevisionForm docInfo={this.state.docInfo} reload={this._loadComponentData} />
+          <div className='row-container'>
+            <h1 className='header'>
               Document Revisions
-              <i className="fa fa-angle-down" aria-hidden="true" />
+              <i className='fa fa-angle-down' aria-hidden='true' />
             </h1>
-            { this.state.docInfo.revisions.map(rev => <RevisionRow key={rev.id} rev={rev} docInfo={this.state.docInfo} reload={this.loadComponentData} currentUrl={`/courses/${this.state.courseInfo.id}/docs/${this.state.docInfo.id}`} courseInfo={this.state.courseInfo} /> ) }
+            { this.state.docInfo.revisions.map(rev => <RevisionRow key={rev.id} rev={rev} docInfo={this.state.docInfo} reload={this._loadComponentData} currentUrl={`/courses/${this.state.courseInfo.id}/docs/${this.state.docInfo.id}`} courseInfo={this.state.courseInfo} /> ) }
           </div>
         </div>
       );
     } else {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-            <span className="sr-only">Loading...</span>
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+            <span className='sr-only'>Loading...</span>
           </p>
         </div>
       );
@@ -106,10 +106,10 @@ class DocPage extends Component {
 
   render() {
     return (
-      <div className="doc-page">
+      <div className='doc-page'>
         <Navbar />
         <LeftSideBar />
-        { this.renderPageAfterData() }
+        { this._renderPageAfterData() }
         <RightSideBar />
         { this.reactAlert.container }
       </div>

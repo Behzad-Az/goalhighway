@@ -10,19 +10,21 @@ class TopRow extends Component {
       tutorStatus: this.props.courseInfo.tutorStatus,
       assistReqOpen: this.props.courseInfo.assistReqOpen
     };
-    this.handleUnsubscribe = this.handleUnsubscribe.bind(this);
-    this.handleSubscribe = this.handleSubscribe.bind(this);
-    this.handleTutorStatus = this.handleTutorStatus.bind(this);
-    this.createBtnDiv = this.createBtnDiv.bind(this);
+    this._handleUnsubscribe = this._handleUnsubscribe.bind(this);
+    this._handleSubscribe = this._handleSubscribe.bind(this);
+    this._handleTutorStatus = this._handleTutorStatus.bind(this);
+    this._createBtnDiv = this._createBtnDiv.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    nextProps.courseInfo.subscriptionStatus !== this.state.subscriptionStatus ? this.setState({ subscriptionStatus: nextProps.courseInfo.subscriptionStatus }) : '';
-    nextProps.courseInfo.tutorStatus !== this.state.tutorStatus ? this.setState({ tutorStatus: nextProps.courseInfo.tutorStatus }) : '';
-    nextProps.courseInfo.assistReqOpen !== this.state.assistReqOpen ? this.setState({ assistReqOpen: nextProps.courseInfo.assistReqOpen }) : '';
+    this.setState({
+      subscriptionStatus: nextProps.courseInfo.subscriptionStatus,
+      tutorStatus: nextProps.courseInfo.tutorStatus,
+      assistReqOpen: nextProps.courseInfo.assistReqOpen
+    });
   }
 
-  createBtnDiv(dfltClassName, truePhrase, trueCb, trueColor, validation, enable, falsePhrase, falseCb) {
+  _createBtnDiv(dfltClassName, truePhrase, trueCb, trueColor, validation, enable, falsePhrase, falseCb) {
     let className = enable ? dfltClassName : dfltClassName + ' disabled';
     if (validation) {
       return (
@@ -41,7 +43,7 @@ class TopRow extends Component {
     }
   }
 
-  handleUnsubscribe() {
+  _handleUnsubscribe() {
     fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}`, {
       method: 'DELETE',
       credentials: 'same-origin',
@@ -58,7 +60,7 @@ class TopRow extends Component {
     .catch(err => console.error('Unable to unsubscribe - ', err));
   }
 
-  handleSubscribe() {
+  _handleSubscribe() {
     fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}`, {
       method: 'POST',
       credentials: 'same-origin',
@@ -76,7 +78,7 @@ class TopRow extends Component {
     .catch(err => console.error('Unable to subscribe - ', err));
   }
 
-  handleTutorStatus() {
+  _handleTutorStatus() {
     let tutorStatus = !this.state.tutorStatus;
     fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}/tutor`, {
       method: 'POST',
@@ -105,7 +107,7 @@ class TopRow extends Component {
           <button className='button'>Edit Course</button>
         </h1>
         <div className='row-container'>
-          { this.createBtnDiv('fa fa-upload', <p>New<br/>Revision</p>, () => HandleModal('new-revision-form'), 'inherit', true, true) }
+          { this._createBtnDiv('fa fa-upload', <p>New<br/>Revision</p>, () => HandleModal('new-revision-form'), 'inherit', true, true) }
 
           <div className='top-row-star'>
             <Link to={`/courses/${this.props.courseInfo.id}/reviews`}>
@@ -119,15 +121,15 @@ class TopRow extends Component {
             <p>Course<br/>Reviews</p>
           </div>
 
-          { this.createBtnDiv('fa fa-check', <p>Unsubscribe<br/>From Course</p>,
-                              this.handleUnsubscribe, 'green', this.state.subscriptionStatus,
-                              true, <p>Subscribe<br/>To Course</p>, this.handleSubscribe) }
+          { this._createBtnDiv('fa fa-check', <p>Unsubscribe<br/>From Course</p>,
+                              this._handleUnsubscribe, 'green', this.state.subscriptionStatus,
+                              true, <p>Subscribe<br/>To Course</p>, this._handleSubscribe) }
 
-          { this.createBtnDiv('fa fa-slideshare', <p>Click to<br/>Untutor</p>,
-                              this.handleTutorStatus, 'green', this.state.tutorStatus,
-                              this.state.subscriptionStatus, <p>Click to<br/>Tutor</p>, this.handleTutorStatus) }
+          { this._createBtnDiv('fa fa-slideshare', <p>Click to<br/>Untutor</p>,
+                              this._handleTutorStatus, 'green', this.state.tutorStatus,
+                              this.state.subscriptionStatus, <p>Click to<br/>Tutor</p>, this._handleTutorStatus) }
 
-          { this.createBtnDiv('fa fa-bell', <p>Cancel<br/>Request</p>,
+          { this._createBtnDiv('fa fa-bell', <p>Cancel<br/>Request</p>,
                               () => HandleModal('new-request-assist-form'), 'green', this.state.assistReqOpen,
                               this.state.subscriptionStatus, <p>Request<br/>Assistance</p>, () => HandleModal('new-request-assist-form')) }
 

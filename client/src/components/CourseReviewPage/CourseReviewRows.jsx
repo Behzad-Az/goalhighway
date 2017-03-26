@@ -6,14 +6,14 @@ class CourseReviewRows extends Component {
     this.state = {
       sortedBy: ''
     };
-    this.decodeWorkload = this.decodeWorkload.bind(this);
-    this.decodeFairness = this.decodeFairness.bind(this);
-    this.decodeProf = this.decodeProf.bind(this);
-    this.handleSortCritera = this.handleSortCritera.bind(this);
-    this.sortReviews = this.sortReviews.bind(this);
+    this._decodeWorkload = this._decodeWorkload.bind(this);
+    this._decodeFairness = this._decodeFairness.bind(this);
+    this._decodeProf = this._decodeProf.bind(this);
+    this._handleSortCritera = this._handleSortCritera.bind(this);
+    this._sortReviews = this._sortReviews.bind(this);
   }
 
-  decodeWorkload(value) {
+  _decodeWorkload(value) {
     switch(value) {
       case 1:
         return 'Too little';
@@ -26,7 +26,7 @@ class CourseReviewRows extends Component {
     }
   }
 
-  decodeFairness(value) {
+  _decodeFairness(value) {
     switch(value) {
       case 1:
         return 'Too easy';
@@ -39,7 +39,7 @@ class CourseReviewRows extends Component {
     }
   }
 
-  decodeProf(value) {
+  _decodeProf(value) {
     switch(value) {
       case 1:
         return 'Not good';
@@ -56,11 +56,11 @@ class CourseReviewRows extends Component {
     }
   }
 
-  handleSortCritera(e) {
+  _handleSortCritera(e) {
     this.setState({ sortedBy: e.target.value });
   }
 
-  sortReviews(sortedBy) {
+  _sortReviews(sortedBy) {
     switch(sortedBy) {
       case 'date_new_to_old':
         this.props.courseReviews.sort((a, b) => a.review_created_at < b.review_created_at);
@@ -83,12 +83,12 @@ class CourseReviewRows extends Component {
   }
 
   render() {
-    this.sortReviews(this.state.sortedBy);
+    this._sortReviews(this.state.sortedBy);
     return (
       <div className='row-container'>
         <h1 className='header'>
           Previous Reviews:
-          <select className='sort-select' onChange={this.handleSortCritera}>
+          <select className='sort-select' onChange={this._handleSortCritera}>
             <option value={'date_new_to_old'}>Date - New to Old</option>
             <option value={'date_old_to_new'}>Date - Old to New</option>
             <option value={'rating_high_to_low'}>Rating - High to Low</option>
@@ -121,15 +121,15 @@ class CourseReviewRows extends Component {
                   </tr>
                   <tr>
                     <td>Teaching:</td>
-                    <td>{this.decodeProf(review.prof_rating)}</td>
+                    <td>{this._decodeProf(review.prof_rating)}</td>
                   </tr>
                   <tr>
                     <td>Evaluation:</td>
-                    <td>{this.decodeFairness(review.fairness_rating)}</td>
+                    <td>{this._decodeFairness(review.fairness_rating)}</td>
                   </tr>
                   <tr>
                     <td>Workload:</td>
-                    <td>{this.decodeWorkload(review.workload_rating)}</td>
+                    <td>{this._decodeWorkload(review.workload_rating)}</td>
                   </tr>
                   <tr>
                     <td>By:</td>

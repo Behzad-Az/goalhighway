@@ -12,13 +12,12 @@ class NewCourseReviewForm extends Component {
       { value: 'May', label: 'May' }, { value: 'Jun', label: 'Jun' }, { value: 'Jul', label: 'Jul' }, { value: 'Aug', label: 'Aug' },
       { value: 'Sep', label: 'Sep' }, { value: 'Oct', label: 'Oct' }, { value: 'Nov', label: 'Nov' }, { value: 'Dec', label: 'Dec' }
     ];
-
     this.years = [ { value: '', label: 'select year' },
       { value: 2006, label: 2006 }, { value: 2007, label: 2007 }, { value: 2008, label: 2008 }, { value: 2009, label: 2009 },
       { value: 2010, label: 2010 }, { value: 2011, label: 2011 }, { value: 2012, label: 2012 }, { value: 2013, label: 2013 },
       { value: 2014, label: 2014 }, { value: 2015, label: 2015 }, { value: 2016, label: 2016 }, { value: 2017, label: 2017 }
     ];
-
+    this.reactAlert = new ReactAlert();
     this.state = {
       startYear: '',
       startMonth: '',
@@ -30,35 +29,33 @@ class NewCourseReviewForm extends Component {
       reviewDesc: '',
       profName: ''
     };
-
-    this.reactAlert = new ReactAlert();
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSelectProf = this.handleSelectProf.bind(this);
-    this.handleSelectYear = this.handleSelectYear.bind(this);
-    this.handleSelectMonth = this.handleSelectMonth.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.handleNewReview = this.handleNewReview.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._handleSelectProf = this._handleSelectProf.bind(this);
+    this._handleSelectYear = this._handleSelectYear.bind(this);
+    this._handleSelectMonth = this._handleSelectMonth.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._handleNewReview = this._handleNewReview.bind(this);
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
 
-  handleSelectProf(profName) {
+  _handleSelectProf(profName) {
     this.setState({ profName });
   }
 
-  handleSelectYear(startYear) {
+  _handleSelectYear(startYear) {
     this.setState({ startYear });
   }
 
-  handleSelectMonth(startMonth) {
+  _handleSelectMonth(startMonth) {
     this.setState({ startMonth });
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.startYear &&
            this.state.startMonth &&
            this.state.workloadRating &&
@@ -67,7 +64,7 @@ class NewCourseReviewForm extends Component {
            this.state.overallRating;
   }
 
-  handleNewReview() {
+  _handleNewReview() {
     let data = {
       startYear: this.state.startYear,
       startMonth: this.state.startMonth,
@@ -114,25 +111,25 @@ class NewCourseReviewForm extends Component {
             <label className='label'>When did you start?</label>
             <div className='columns'>
               <div className='column is-6'>
-                <SingleSelect disabled={false} initialValue={this.state.startYear} name='startYear' options={this.years} handleChange={this.handleSelectYear} />
+                <SingleSelect disabled={false} initialValue={this.state.startYear} name='startYear' options={this.years} handleChange={this._handleSelectYear} />
               </div>
               <div className='column is-6'>
-                <SingleSelect disabled={false} initialValue={this.state.startMonth} name='startMonth' options={this.months} handleChange={this.handleSelectMonth} />
+                <SingleSelect disabled={false} initialValue={this.state.startMonth} name='startMonth' options={this.months} handleChange={this._handleSelectMonth} />
               </div>
             </div>
 
             <label className='label'>How was the workload?</label>
             <p className='control'>
               <label className='radio option'>
-                <input type='radio' name='workloadRating' value={1} onChange={this.handleChange} />
+                <input type='radio' name='workloadRating' value={1} onChange={this._handleChange} />
                 Too Much
               </label>
               <label className='radio option'>
-                <input type='radio' name='workloadRating' value={2} onChange={this.handleChange} />
+                <input type='radio' name='workloadRating' value={2} onChange={this._handleChange} />
                 Too Little
               </label>
               <label className='radio option'>
-                <input type='radio' name='workloadRating' value={3} onChange={this.handleChange} />
+                <input type='radio' name='workloadRating' value={3} onChange={this._handleChange} />
                 Fair
               </label>
             </p>
@@ -140,15 +137,15 @@ class NewCourseReviewForm extends Component {
             <label className='label'>How was the evaluation?</label>
             <p className='control'>
               <label className='radio option'>
-                <input type='radio' name='fairnessRating' value={1} onChange={this.handleChange} />
+                <input type='radio' name='fairnessRating' value={1} onChange={this._handleChange} />
                 Too Hard
               </label>
               <label className='radio option'>
-                <input type='radio' name='fairnessRating' value={2} onChange={this.handleChange} />
+                <input type='radio' name='fairnessRating' value={2} onChange={this._handleChange} />
                 Too Easy
               </label>
               <label className='radio option'>
-                <input type='radio' name='fairnessRating' value={3} onChange={this.handleChange} />
+                <input type='radio' name='fairnessRating' value={3} onChange={this._handleChange} />
                 Fair
               </label>
             </p>
@@ -156,30 +153,30 @@ class NewCourseReviewForm extends Component {
             <label className='label'>How was the instructor?</label>
             <p className='control'>
               <label className='radio option'>
-                <input type='radio' name='profRating' value={1} onChange={this.handleChange} />
+                <input type='radio' name='profRating' value={1} onChange={this._handleChange} />
                 Not good
               </label>
               <label className='radio option'>
-                <input type='radio' name='profRating' value={2} onChange={this.handleChange} />
+                <input type='radio' name='profRating' value={2} onChange={this._handleChange} />
                 Below average
               </label>
               <label className='radio option'>
-                <input type='radio' name='profRating' value={3} onChange={this.handleChange} />
+                <input type='radio' name='profRating' value={3} onChange={this._handleChange} />
                 Average
               </label>
               <label className='radio option'>
-                <input type='radio' name='profRating' value={4} onChange={this.handleChange} />
+                <input type='radio' name='profRating' value={4} onChange={this._handleChange} />
                 Above average
               </label>
               <label className='radio option'>
-                <input type='radio' name='profRating' value={5} onChange={this.handleChange} />
+                <input type='radio' name='profRating' value={5} onChange={this._handleChange} />
                 Excellent!
               </label>
             </p>
 
             <div className='control'>
               <label className='is-inline-block'>Instructor's name (optional):</label>
-              <AutoSuggestion options={this.props.profs} onChange={this.handleSelectProf} />
+              <AutoSuggestion options={this.props.profs} onChange={this._handleSelectProf} />
             </div>
 
             <p className='control'>
@@ -193,12 +190,12 @@ class NewCourseReviewForm extends Component {
 
             <label className='label'>Feel free to ellaborate (optional):</label>
             <p className='control'>
-              <textarea className='textarea' name='reviewDesc' placeholder='Provide context for your review (optional)' onChange={this.handleChange} />
+              <textarea className='textarea' name='reviewDesc' placeholder='Provide context for your review (optional)' onChange={this._handleChange} />
             </p>
 
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewReview}>Submit</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewReview}>Submit</button>
             <button className='button' onClick={() => HandleModal('new-course-review-form')}>Cancel</button>
           </footer>
         </div>

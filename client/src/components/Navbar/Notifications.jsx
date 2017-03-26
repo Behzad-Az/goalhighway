@@ -9,7 +9,7 @@ class Notifications extends Component {
 
   render() {
     return (
-      <div id="notification-list" className="notification-list">
+      <div id='notification-list' className='notification-list'>
         { this.props.notifications[0] ? this.props.notifications.map((notif, index) => <NotifRow key={index} notif={notif} /> ) : <h1>No notifications are available</h1> }
       </div>
     );
