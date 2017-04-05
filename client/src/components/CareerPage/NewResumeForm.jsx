@@ -74,7 +74,7 @@ class NewResumeForm extends Component {
             <p className='control'>
               <input className='upload' type='file' onChange={this._handleFileChange} />
             </p>
-            <label className='label'>Describe resume's intent (optional):</label>
+            <label className='label'>Resume Intent (Optional):</label>
             <p className='control'>
               <textarea className='textarea' name='intent' placeholder='Example: I intend to use this resume for junior level mechanical engineering jobs' onChange={this._handleChange} />
             </p>

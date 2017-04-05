@@ -26,8 +26,38 @@
         small a { color: $dark-blue; &:hover { color: $pumpkin; } }
       }
     }
+
+    .row-container {
+      margin-bottom: $default_margin;
+      .resumes-row {
+        display: flex; flex-wrap: wrap; flex-direction: row;
+        .resume-index.card {
+          margin: $default_margin/2; width: 230px; height: 100%;
+          .card-content {
+            padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+            .card-image .button { position: absolute; right: -10px; height: 30px; top: -10px; }
+            .card-text {
+              max-height: 300px; overflow: scroll;
+              .name { font-weight: bold; margin: 10px 0; }
+              .date { font-size: 12px; margin: 10px 0; }
+              .description { font-style: italic; margin: 10px 0; }
+              .price span { font-weight: bold; }
+            }
+            .card-image .image { display: block; margin: auto; }
+            .card-foot {
+              line-height: 30px; text-align: center;
+              i { vertical-align: middle; padding: 0 5px; }
+              .text-link { a { color: $dark-blue; } :hover { color: $pumpkin; } }
+            }
+          }
+          .card-footer-item { color: $dark-blue; &:hover{ color: $pumpkin } }
+        }
+      }
+    }
   }
+
   .hamburger { display: none; }
+
   .control-bar {
     display: inline-block; margin-top: $top_margin; width: 250px; float: left; position: fixed; height: calc(100vh - 50px - 30px); overflow: scroll;
     .card-content {

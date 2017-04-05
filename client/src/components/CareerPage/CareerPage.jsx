@@ -5,9 +5,7 @@ import CareerControlBar from './CareerControlBar.jsx';
 import JobRow from './JobRow.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
-import HandleModal from '../partials/HandleModal.js';
-import ResumeRow from './ResumeRow.jsx';
-import NewResumeForm from './NewResumeForm.jsx';
+import ResumesRow from './ResumesRow.jsx';
 
 class CareerPage extends Component {
   constructor(props) {
@@ -74,15 +72,7 @@ class CareerPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <NewResumeForm reload={this._loadComponentData} />
-          <h1 className='header'>
-            My Resumes:
-            <button className='button' onClick={() => HandleModal('new-resume-form')}>New Resume</button>
-          </h1>
-          <div className='resume-rows'>
-            { this.state.resumes.map(resume => <ResumeRow key={resume.id} resume={resume} /> ) }
-            { !this.state.resumes[0] && <p className='message'>Post your resume and request feedback.</p> }
-          </div>
+          <ResumesRow reload={this._loadComponentData} resumes={this.state.resumes} />
           <h1 className='header'>
             Open positions:
           </h1>

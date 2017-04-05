@@ -2,16 +2,15 @@ import React, {Component} from 'react';
 import { Link } from 'react-router';
 import ReactAlert from '../partials/ReactAlert.jsx';
 
-class ItemCard extends Component {
+class ResumeCard extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.state = {
       editCard: false,
-      title: this.props.item.title,
-      itemDesc: this.props.item.item_desc,
+      title: this.props.resume.title,
+      intent: this.props.resume.intent,
       photoPath: '',
-      price: this.props.item.price,
       deleted: false
     };
     this._handleChange = this._handleChange.bind(this);
@@ -31,13 +30,12 @@ class ItemCard extends Component {
   _handleEdit() {
     let data = {
       photoPath: this.state.photoPath,
-      itemDesc: this.state.itemDesc,
+      intent: this.state.intent,
       title: this.state.title,
-      price: this.state.price,
       deleted: this.state.deleted
     };
 
-    fetch(`/api/courses/${this.props.item.course_id}/items/${this.props.item.id}`, {
+    fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
@@ -49,14 +47,14 @@ class ItemCard extends Component {
     .then(response => response.json())
     .then(resJSON => {
       if (resJSON) {
-        let msg = this.state.deleted ? 'Item deleted' : 'Item updated';
+        let msg = this.state.deleted ? 'Resume deleted' : 'Resume updated';
         this.reactAlert.showAlert(msg, 'info');
         this.props.reload();
       } else {
         throw 'Server returned false';
       }
     })
-    .catch(() => this.reactAlert.showAlert('Unable to update item', 'error'))
+    .catch(() => this.reactAlert.showAlert('Unable to update resume', 'error'))
     .then(this._toggleView);
   }
 
@@ -71,52 +69,50 @@ class ItemCard extends Component {
 
   _editCardView() {
     return (
-      <div className='item-index card'>
+      <div className='resume-index card'>
         <div className='card-content'>
-          <label className='label'>Item Title:</label>
+          <label className='label'>Resume Title:</label>
           <p className='control'>
-            <input className='input' type='text' name='title' placeholder='Enter item title here' defaultValue={this.state.title} onChange={this._handleChange} />
+            <input className='input' type='text' name='title' placeholder='Enter resume title here' defaultValue={this.state.title} onChange={this._handleChange} />
           </p>
-          <label className='label'>Item Description:</label>
+          <label className='label'>Resume Intent (Optional):</label>
           <p className='control'>
-            <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' defaultValue={this.state.itemDesc} onChange={this._handleChange} />
+            <textarea className='textarea' name='intent' placeholder='Example: I intend to use this resume for junior level mechanical engineering jobs' defaultValue={this.state.intent} onChange={this._handleChange} />
           </p>
-          <label className='label'>Upload photo (optional but recommended):</label>
+          <label className='label'>Upload new resume:</label>
           <p className='control'>
-            <input className='upload' type='file' name='photoPath' onChange={this._handleChange} />
-          </p>
-          <label className='label'>Item Price:</label>
-          <p className='control has-icon has-icon-left'>
-            <input className='input' type='text' name='price' placeholder='Enter price here' defaultValue={this.props.item.price} onChange={this._handleChange} />
-            <span className='icon is-small'><i className='fa fa-dollar' aria-hidden='true'/></span>
+            <input className='upload' type='file' onChange={this._handleChange} />
           </p>
         </div>
-          <button className='button is-info' onClick={this._handleEdit}>Save</button>
-          <button className='button is-link' onClick={this._toggleView}>Cancel</button>
-          <button className='button is-danger' onClick={this._handleDelete}>Delete</button>
+
+        <footer className='card-footer'>
+          <Link className='card-footer-item' onClick={this._handleEdit}>Save</Link>
+          <Link className='card-footer-item' onClick={this._toggleView}>Cancel</Link>
+          <Link className='card-footer-item' onClick={this._handleDelete}>Delete</Link>
+        </footer>
+
       </div>
     );
   }
 
   _showCardView() {
     return (
-      <div className='item-index card'>
+      <div className='resume-index card'>
         <div className='card-content'>
           <div className='card-image'>
-            { this.props.item.editable && <button className='button is-info' onClick={this._toggleView}>Edit</button> }
+            <button className='button is-info' onClick={this._toggleView}>Edit</button>
             <figure className='image is-96x96'>
               <img src='../../images/camera-logo.png' alt='picture' />
             </figure>
           </div>
           <div className='card-text'>
-            <p className='name title is-6'>{this.props.item.title}</p>
-            <p className='description title is-6'>'{this.props.item.item_desc}'</p>
-            <p className='price title is-6'>$ {this.props.item.price}</p>
-            <p className='date title is-6'>Upload Date: {this.props.item.item_created_at.slice(0, 10)}</p>
+            <p className='name title is-6'>{this.props.resume.title}</p>
+            <p className='description title is-6'>'{this.props.resume.intent}'</p>
+            <p className='date title is-6'>Upload Date: {this.props.resume.resume_created_at.slice(0, 10)}</p>
           </div>
           <p className='card-foot title is-6'>
             <span className='text-link'>
-              <Link>Contact Owner</Link>
+              <Link>Request Review</Link>
             </span>
           </p>
         </div>
@@ -129,4 +125,4 @@ class ItemCard extends Component {
   }
 }
 
-export default ItemCard;
+export default ResumeCard;
