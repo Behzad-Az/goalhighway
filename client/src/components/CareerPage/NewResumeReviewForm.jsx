@@ -45,17 +45,18 @@ class NewResumeReviewForm extends Component {
       }
     })
     .catch(() => this.reactAlert.showAlert('Unable to submit resume review', 'error'))
-    .then(() => HandleModal('new-resume-review-req-form'));
+    .then(() => HandleModal(`new-resume-review-req-form-${this.props.resume.id}`));
   }
 
   render() {
+    let formId = `new-resume-review-req-form-${this.props.resume.id}`;
     return (
-      <div id='new-resume-review-req-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-resume-review-req-form')}></div>
+      <div id={formId} className='modal'>
+        <div className='modal-background' onClick={() => HandleModal(formId)}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>New Resume Review Request</p>
-            <button className='delete' onClick={() => HandleModal('new-resume-review-req-form')}></button>
+            <button className='delete' onClick={() => HandleModal(formId)}></button>
           </header>
           <section className='modal-card-body'>
             <label className='label'>Resume Title:</label>
@@ -69,7 +70,7 @@ class NewResumeReviewForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this.state.resumeTitle} onClick={this._handleNewResumeReviewReq}>Submit</button>
-            <button className='button' onClick={() => HandleModal('new-resume-review-req-form')}>Cancel</button>
+            <button className='button' onClick={() => HandleModal(formId)}>Cancel</button>
           </footer>
         </div>
       </div>

@@ -150,7 +150,7 @@ const postNewFlag = require('./helpers/POST_Routes/postNewFlag.js');
 const postNewInterviewQuestion = require('./helpers/POST_Routes/postNewInterviewQuestion.js');
 const postNewInterviewAnswer = require('./helpers/POST_Routes/postNewInterviewAnswer.js');
 const postNewResume = require('./helpers/POST_Routes/postNewResume.js');
-const postNewResumeReviewReq = require('./helpers/POST_Routes/postNewResumeReviewReq.js');
+const postNewResumeReviewFeed = require('./helpers/POST_Routes/postNewResumeReviewFeed.js');
 
 const updateUserProfile = require('./helpers/UPDATE_Routes/updateUserProfile.js');
 const updateCourseUserTutorStatus = require('./helpers/UPDATE_Routes/updateCourseUserTutorStatus.js');
@@ -162,6 +162,7 @@ const updateResume = require('./helpers/UPDATE_Routes/updateResume.js');
 const deleteRevision = require('./helpers/DELETE_Routes/deleteRevision.js');
 const deleteCourseFeed = require('./helpers/DELETE_Routes/deleteCourseFeed.js');
 const deleteCourseUser = require('./helpers/DELETE_Routes/deleteCourseUser.js');
+const deleteResume = require('./helpers/DELETE_Routes/deleteResume.js');
 const deleteResumeReviewRequest = require('./helpers/DELETE_Routes/deleteResumeReviewRequest.js');
 
 
@@ -290,7 +291,7 @@ app.post('/api/users/:user_id/resumes', upload.single('file'), (req, res) => {
 });
 
 app.post('/api/feed/resumes/:resume_id', (req, res) => {
-  postNewResumeReviewReq(req, res, knex, req.session.user_id);
+  postNewResumeReviewFeed(req, res, knex, req.session.user_id);
 });
 
 app.post('/api/users/:user_id/courses/:course_id/tutorlog', (req, res) => {
@@ -375,6 +376,10 @@ app.delete('/api/courses/:course_id/feed/:feed_id', (req, res) => {
 
 app.delete('/api/users/:user_id/courses/:course_id', (req, res) => {
   deleteCourseUser(req, res, knex, req.session.user_id);
+});
+
+app.delete('/api/users/:user_id/resumes/:resume_id', (req, res) => {
+  deleteResume(req, res, knex, req.session.user_id);
 });
 
 app.delete('/api/feed/resumes/:resume_id', (req, res) => {
