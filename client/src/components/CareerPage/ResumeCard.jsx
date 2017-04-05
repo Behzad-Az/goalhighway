@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 import ReactAlert from '../partials/ReactAlert.jsx';
+import HandleModal from '../partials/HandleModal.js';
+import NewResumeReviewForm from './NewResumeReviewForm.jsx';
 
 const download = require('../../download.js');
 
@@ -14,7 +16,8 @@ class ResumeCard extends Component {
       title: this.props.resume.title,
       intent: this.props.resume.intent,
       file: '',
-      deleted: false
+      deleted: false,
+      reviewReqStatus: this.props.resume.reviewReqStatus
     };
     this._findImageLink = this._findImageLink.bind(this);
     this._handleChange = this._handleChange.bind(this);
@@ -25,6 +28,7 @@ class ResumeCard extends Component {
     this._editCardView = this._editCardView.bind(this);
     this._showCardView = this._showCardView.bind(this);
     this._handleDownload = this._handleDownload.bind(this);
+    this._handleCancelReviewRequest = this._handleCancelReviewRequest.bind(this);
   }
 
   _findImageLink() {
@@ -89,6 +93,23 @@ class ResumeCard extends Component {
     .catch(err => console.error('Unable to download file: - ', err));
   }
 
+  _handleCancelReviewRequest() {
+    fetch(`/api/feed/resumes/${this.props.resume.id}`, {
+      method: 'DELETE',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/string',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) { this.setState({ reviewReqStatus: false }); }
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to cancel review request', 'error'));
+  }
+
   _toggleView() {
     this.setState({ editCard: !this.state.editCard });
   }
@@ -110,13 +131,11 @@ class ResumeCard extends Component {
             <input className='upload' type='file' onChange={this._handleFileChange} />
           </p>
         </div>
-
         <footer className='card-footer'>
           <Link className='card-footer-item' onClick={this._handleEdit}>Save</Link>
           <Link className='card-footer-item' onClick={this._toggleView}>Cancel</Link>
           <Link className='card-footer-item' onClick={this._handleDelete}>Delete</Link>
         </footer>
-
       </div>
     );
   }
@@ -124,6 +143,7 @@ class ResumeCard extends Component {
   _showCardView() {
     return (
       <div className='resume-index card'>
+        <NewResumeReviewForm resume={this.props.resume} updateState={() => this.setState({ reviewReqStatus: true })} />
         <div className='card-content'>
           <div className='card-image'>
             <button className='button is-info' onClick={this._toggleView}>Edit</button>
@@ -138,7 +158,10 @@ class ResumeCard extends Component {
           </div>
           <p className='card-foot title is-6'>
             <span className='text-link'>
-              <Link>Request Review</Link>
+              { this.state.reviewReqStatus ?
+                  <Link onClick={this._handleCancelReviewRequest}>Cancel Review Request</Link> :
+                  <Link onClick={() => HandleModal('new-resume-review-req-form')}>Request Review</Link>
+              }
             </span>
           </p>
         </div>

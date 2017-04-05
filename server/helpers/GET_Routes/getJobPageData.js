@@ -1,6 +1,6 @@
 const getJobPageData = (req, res, knex, user_id, esClient) => {
 
-  let resumes = [];
+  let resumes = [], jobs = [];
 
   const getQueryInfo = () => knex('users')
     .select('job_kind', 'job_distance', 'job_query', 'lat', 'lon')
@@ -10,6 +10,22 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
     .where('user_id', user_id)
     .whereNull('resume_deleted_at')
     .orderBy('resume_created_at', 'desc');
+
+  const getResumeReviewReq = resumeId => knex('feed')
+    .where('type', 'resume_review_request')
+    .andWhere('ref_id', resumeId)
+    .andWhere('ref_table', 'resumes')
+    .whereNull('feed_deleted_at')
+    .count('id as reviewReqStatus');
+
+  const getResumeReviewReqStatus = resume => new Promise((resolve, reject) => {
+    knex('feed').where('type', 'resume_review_request').andWhere('ref_id', resume.id).andWhere('ref_table', 'resumes').whereNull('feed_deleted_at').count('id as reviewReqStatus')
+    .then(result => {
+      resume.reviewReqStatus = parseInt(result[0].reviewReqStatus) ? true : false;
+      resolve();
+    })
+    .catch(err => reject(err));
+  });
 
   const search = (index, body) => esClient.search({index: index, body: body});
 
@@ -26,32 +42,37 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
         bool : {
           must: {
             multi_match: {
-              query: results[0][0].job_query || "",
-              fields: ["pin.title^3", "pin.search_text"],
-              fuzziness: "AUTO"
+              query: results[0][0].job_query || '',
+              fields: ['pin.title^3', 'pin.search_text'],
+              fuzziness: 'AUTO'
             }
           },
           filter: [
             {
               geo_distance : {
                   distance : `${results[0][0].job_distance || 40}km`,
-                  "pin.location" : {
+                  'pin.location' : {
                     lat : results[0][0].lat || 49.198215,
                     lon : results[0][0].lon || -123.007668
                   }
               }
           },
-          { match:  { "pin.kind": results[0][0].job_kind || "internship summer senior junior" } },
-          { type: { value: "job" } }
+          { match:  { 'pin.kind': results[0][0].job_kind || 'internship summer senior junior' } },
+          { type: { value: 'job' } }
           ]
         }
       }
     };
-    return search("search_catalogue", jobSearchBody)
-  }).then(jobs => {
-    res.send({ jobs: jobs.hits.hits, resumes });
-  }).catch(err => {
-    console.error("Error inside getJobPageData.js: ", err);
+    return search('search_catalogue', jobSearchBody)
+  })
+  .then(searchResults => {
+    jobs = searchResults.hits.hits;
+    let promiseArr = resumes.map(resume => getResumeReviewReqStatus(resume));
+    return Promise.all(promiseArr);
+  })
+  .then(() => res.send({ jobs, resumes }))
+  .catch(err => {
+    console.error('Error inside getJobPageData.js: ', err);
     res.send(false);
   });
 

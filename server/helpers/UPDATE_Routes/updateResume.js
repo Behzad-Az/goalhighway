@@ -8,10 +8,12 @@ const updateResume = (req, res, knex, user_id) => {
 
   if (req.file) { updatedResumeObj.file_name = req.file.filename; }
 
-  knex('resumes')
-  .where('id', req.params.resume_id)
-  .andWhere('user_id', user_id)
-  .update(updatedResumeObj)
+  const updateResumeDb = knex('resumes')
+    .where('id', req.params.resume_id)
+    .andWhere('user_id', user_id)
+    .update(updatedResumeObj);
+
+  updateResumeDb()
   .then(() => res.send(true))
   .catch(err => {
     console.error('Error inside updateResume.js', err);
