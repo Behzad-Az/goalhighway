@@ -2,20 +2,21 @@ import React, {Component} from 'react';
 import { Link } from 'react-router';
 import ReactAlert from '../partials/ReactAlert.jsx';
 
+const download = require('../../download.js');
+
 class ResumeCard extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.images = ['pdf.png', 'docx.png', 'xlsx.png', 'zip.png', 'default.png'];
-    this._findImageLink = this._findImageLink.bind(this);
     this.state = {
       editCard: false,
       title: this.props.resume.title,
       intent: this.props.resume.intent,
       file: '',
-      deleted: false,
-      imageLink: this._findImageLink(this.props.resume.file_name)
+      deleted: false
     };
+    this._findImageLink = this._findImageLink.bind(this);
     this._handleChange = this._handleChange.bind(this);
     this._handleFileChange = this._handleFileChange.bind(this);
     this._handleEdit = this._handleEdit.bind(this);
@@ -23,9 +24,11 @@ class ResumeCard extends Component {
     this._toggleView = this._toggleView.bind(this);
     this._editCardView = this._editCardView.bind(this);
     this._showCardView = this._showCardView.bind(this);
+    this._handleDownload = this._handleDownload.bind(this);
   }
 
-  _findImageLink(fileName) {
+  _findImageLink() {
+    let fileName = this.props.resume.file_name;
     let directoryPath = '../../images/';
     let extension = fileName.substr(fileName.lastIndexOf('.') + 1) + '.png';
     return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
@@ -47,6 +50,7 @@ class ResumeCard extends Component {
     if (this.state.file) { data.append('file', this.state.file); }
     data.append('title', this.state.title);
     data.append('intent', this.state.intent);
+    data.append('deleted', this.state.deleted);
 
     fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
       method: 'POST',
@@ -70,6 +74,19 @@ class ResumeCard extends Component {
   _handleDelete() {
     this.state.deleted = true;
     this._handleEdit();
+  }
+
+  _handleDownload() {
+    fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
+    .then(response => {
+      if (response.status === 200) { return response.blob(); }
+      else { throw 'Server returned false.'; }
+    })
+    .then(blob => download(blob))
+    .catch(err => console.error('Unable to download file: - ', err));
   }
 
   _toggleView() {
@@ -110,8 +127,8 @@ class ResumeCard extends Component {
         <div className='card-content'>
           <div className='card-image'>
             <button className='button is-info' onClick={this._toggleView}>Edit</button>
-            <figure className='image is-96x96'>
-              <img src={this.state.imageLink} alt='picture' />
+            <figure className='image is-96x96' onClick={this._handleDownload}>
+              <img src={this._findImageLink()} alt='picture' />
             </figure>
           </div>
           <div className='card-text'>

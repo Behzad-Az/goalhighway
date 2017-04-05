@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
       t.string('file_name', 200).notNullable();
       t.integer('user_id').notNullable().references('users.id');
       t.timestamp('resume_created_at').notNullable().defaultTo(knex.fn.now());
-      t.timestamp('resume_deleted_at').notNullable().defaultTo(knex.fn.now());
+      t.timestamp('resume_deleted_at');
     })
   ]);
 };

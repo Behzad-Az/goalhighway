@@ -129,6 +129,7 @@ const getRightSideBarData = require('./helpers/GET_Routes/getRightSideBarData.js
 const getLeftSideBarData = require('./helpers/GET_Routes/getLeftSideBarData.js');
 const getCompanyPageData = require('./helpers/GET_Routes/getCompanyPageData.js');
 const getFeedPageData = require('./helpers/GET_Routes/getFeedPageData.js');
+const getResumeData = require('./helpers/GET_Routes/getResumeData.js');
 
 const postNewDoc = require('./helpers/POST_Routes/postNewDoc.js');
 const postNewRevision = require('./helpers/POST_Routes/postNewRevision.js');
@@ -236,6 +237,10 @@ app.get('/api/institutions_programs', (req, res) => {
 
 app.get('/api/users/:user_id/feed', (req, res) => {
   getFeedPageData(req, res, knex, req.session.user_id);
+});
+
+app.get('/api/users/:user_id/resumes/:resume_id', (req, res) => {
+  getResumeData(req, res, knex, req.session.user_id);
 });
 
 app.get('/api/chatroom', (req, res) => {

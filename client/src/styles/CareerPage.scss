@@ -43,7 +43,7 @@
               .description { font-style: italic; margin: 10px 0; }
               .price span { font-weight: bold; }
             }
-            .card-image .image { display: block; margin: auto; }
+            .card-image .image { display: block; margin: auto; cursor: pointer; }
             .card-foot {
               line-height: 30px; text-align: center;
               i { vertical-align: middle; padding: 0 5px; }

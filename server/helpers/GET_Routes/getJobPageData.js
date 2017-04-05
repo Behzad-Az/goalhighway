@@ -8,6 +8,7 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
 
   const getUserResumes = () => knex('resumes')
     .where('user_id', user_id)
+    .whereNull('resume_deleted_at')
     .orderBy('resume_created_at', 'desc');
 
   const search = (index, body) => esClient.search({index: index, body: body});
@@ -16,7 +17,6 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
     getQueryInfo(),
     getUserResumes(),
   ])
-  // getQueryInfo()
   .then(results => {
     resumes = results[1];
     let jobSearchBody = {
