@@ -44,18 +44,17 @@ class SearhBar extends Component {
             searchResults.push(
               <p key={index}>
                 <Link onClick={() => this._showSearchResults(false)} to={`/courses/${result._source.course_id}/docs/${result._source.id}`}>
-                <i className='fa fa-file-text' />
-                {result._source.course_name} <i className='fa fa-arrow-right' /> {result._source.title}</Link>
+                <i className='fa fa-file-text' /> {result._source.course_name} <i className='fa fa-arrow-right' /> {result._source.title}</Link>
               </p>);
             break;
           case 'course':
-            searchResults.push(<p key={index}><Link onClick={() => this._showSearchResults(false)} to={`/courses/${result._source.id}`}><i className='fa fa-users' />{result._source.title}</Link></p>);
+            searchResults.push(<p key={index}><Link onClick={() => this._showSearchResults(false)} to={`/courses/${result._source.id}`}><i className='fa fa-users' /> {result._source.title}</Link></p>);
             break;
           case 'institution':
-            searchResults.push(<p key={index}><Link onClick={() => this._showSearchResults(false)} to={`/institutions/${result._source.id}`}><i className='fa fa-graduation-cap' />{result._source.inst_name}</Link></p>);
+            searchResults.push(<p key={index}><Link onClick={() => this._showSearchResults(false)} to={`/institutions/${result._source.id}`}><i className='fa fa-graduation-cap' /> {result._source.inst_name}</Link></p>);
             break;
           case 'company':
-            searchResults.push(<p key={index}><Link onClick={() => this._showSearchResults(false)} to={`/companies/${result._source.id}`}><i className='fa fa-institution' />{result._source.company_name}</Link></p>);
+            searchResults.push(<p key={index}><Link onClick={() => this._showSearchResults(false)} to={`/companies/${result._source.id}`}><i className='fa fa-briefcase' /> {result._source.company_name}</Link></p>);
             break;
         }
       });
