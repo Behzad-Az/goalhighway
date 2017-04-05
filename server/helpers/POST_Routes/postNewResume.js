@@ -10,7 +10,7 @@ const postNewResume = (req, res, knex, user_id) => {
   .insert(newResumeObj)
   .then(() => res.send(true))
   .catch(err => {
-    console.error('Error inside postNewRevision.js', err);
+    console.error('Error inside postNewResume.js', err);
     res.send(false);
   });
 };

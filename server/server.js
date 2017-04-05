@@ -155,6 +155,7 @@ const updateCourseUserTutorStatus = require('./helpers/UPDATE_Routes/updateCours
 const updateTutorLog = require('./helpers/UPDATE_Routes/updateTutorLog.js');
 const updateViewedNotifications = require('./helpers/UPDATE_Routes/updateViewedNotifications.js');
 const updateItemForSale = require('./helpers/UPDATE_Routes/updateItemForSale.js');
+const updateResume = require('./helpers/UPDATE_Routes/updateResume.js');
 
 const deleteRevision = require('./helpers/DELETE_Routes/deleteRevision.js');
 const deleteCourseFeed = require('./helpers/DELETE_Routes/deleteCourseFeed.js');
@@ -343,6 +344,10 @@ app.post('/api/courses/:course_id/items/:item_id', (req, res) => {
 
 app.post('/api/login', (req, res) => {
   postLogin(req, res, knex, bcryptJs);
+});
+
+app.post('/api/users/:user_id/resumes/:resume_id', upload.single('file'), (req, res) => {
+  updateResume(req, res, knex, req.session.user_id);
 });
 
 

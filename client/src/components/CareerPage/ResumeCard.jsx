@@ -6,19 +6,29 @@ class ResumeCard extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
+    this.images = ['pdf.png', 'docx.png', 'xlsx.png', 'zip.png', 'default.png'];
+    this._findImageLink = this._findImageLink.bind(this);
     this.state = {
       editCard: false,
       title: this.props.resume.title,
       intent: this.props.resume.intent,
-      photoPath: '',
-      deleted: false
+      file: '',
+      deleted: false,
+      imageLink: this._findImageLink(this.props.resume.file_name)
     };
     this._handleChange = this._handleChange.bind(this);
+    this._handleFileChange = this._handleFileChange.bind(this);
     this._handleEdit = this._handleEdit.bind(this);
     this._handleDelete = this._handleDelete.bind(this);
     this._toggleView = this._toggleView.bind(this);
     this._editCardView = this._editCardView.bind(this);
     this._showCardView = this._showCardView.bind(this);
+  }
+
+  _findImageLink(fileName) {
+    let directoryPath = '../../images/';
+    let extension = fileName.substr(fileName.lastIndexOf('.') + 1) + '.png';
+    return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
   }
 
   _handleChange(e) {
@@ -27,22 +37,21 @@ class ResumeCard extends Component {
     this.setState(state);
   }
 
+  _handleFileChange(e) {
+    const file = e.target.files[0];
+    this.setState({ file });
+  }
+
   _handleEdit() {
-    let data = {
-      photoPath: this.state.photoPath,
-      intent: this.state.intent,
-      title: this.state.title,
-      deleted: this.state.deleted
-    };
+    let data = new FormData();
+    if (this.state.file) { data.append('file', this.state.file); }
+    data.append('title', this.state.title);
+    data.append('intent', this.state.intent);
 
     fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
       method: 'POST',
       credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      body: data
     })
     .then(response => response.json())
     .then(resJSON => {
@@ -81,7 +90,7 @@ class ResumeCard extends Component {
           </p>
           <label className='label'>Upload new resume:</label>
           <p className='control'>
-            <input className='upload' type='file' onChange={this._handleChange} />
+            <input className='upload' type='file' onChange={this._handleFileChange} />
           </p>
         </div>
 
@@ -102,7 +111,7 @@ class ResumeCard extends Component {
           <div className='card-image'>
             <button className='button is-info' onClick={this._toggleView}>Edit</button>
             <figure className='image is-96x96'>
-              <img src='../../images/camera-logo.png' alt='picture' />
+              <img src={this.state.imageLink} alt='picture' />
             </figure>
           </div>
           <div className='card-text'>
