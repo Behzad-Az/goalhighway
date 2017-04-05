@@ -5,6 +5,9 @@ import CareerControlBar from './CareerControlBar.jsx';
 import JobRow from './JobRow.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
+import HandleModal from '../partials/HandleModal.js';
+import ResumeRow from './ResumeRow.jsx';
+import NewResumeForm from './NewResumeForm.jsx';
 
 class CareerPage extends Component {
   constructor(props) {
@@ -13,49 +16,51 @@ class CareerPage extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      jobs: []
+      jobs: [],
+      resumes: []
     };
-    this.loadComponentData = this.loadComponentData.bind(this);
-    this.conditionData = this.conditionData.bind(this);
-    this.toggleControlBar = this.toggleControlBar.bind(this);
-    this.renderPageAfterData = this.renderPageAfterData.bind(this);
+    this._loadComponentData = this._loadComponentData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._toggleControlBar = this._toggleControlBar.bind(this);
+    this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
-    this.loadComponentData();
+    this._loadComponentData();
   }
 
-  loadComponentData() {
+  _loadComponentData() {
     fetch('/api/users/currentuser/jobs', {
       method: 'GET',
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(response) {
-    if (response) {
-      let jobs = response.map(data => {
+  _conditionData(resJSON) {
+    if (resJSON) {
+      let resumes = resJSON.resumes;
+      let jobs = resJSON.jobs.map(data => {
         return {
           ...data._source.pin,
           tags: data._source.pin.search_text.split(' ')
         };
       });
-      this.setState({ jobs, dataLoaded: true });
+      this.setState({ jobs, resumes, dataLoaded: true });
     } else {
       throw 'Server returned false';
     }
   }
 
-  toggleControlBar() {
+  _toggleControlBar() {
     let controlBar = document.getElementById('control-bar');
     let className = controlBar.getAttribute('class');
     controlBar.className = className.includes(' is-enabled') ? 'card control-bar' : 'card control-bar is-enabled';
   }
 
-  renderPageAfterData() {
+  _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
         <div className='main-container'>
@@ -69,6 +74,15 @@ class CareerPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
+          <NewResumeForm reload={this._loadComponentData} />
+          <h1 className='header'>
+            My Resumes:
+            <button className='button' onClick={() => HandleModal('new-resume-form')}>New Resume</button>
+          </h1>
+          <div className='resume-rows'>
+            { this.state.resumes.map(resume => <ResumeRow key={resume.id} resume={resume} /> ) }
+            { !this.state.resumes[0] && <p className='message'>Post your resume and request feedback.</p> }
+          </div>
           <h1 className='header'>
             Open positions:
           </h1>
@@ -95,10 +109,10 @@ class CareerPage extends Component {
       <div className='career-page'>
         <Navbar />
         <div className='hamburger'>
-          <i className='fa fa-navicon' onClick={this.toggleControlBar} />
+          <i className='fa fa-navicon' onClick={this._toggleControlBar} />
         </div>
-        <CareerControlBar reload={this.loadComponentData} toggleControlBar={this.toggleControlBar} />
-        { this.renderPageAfterData() }
+        <CareerControlBar reload={this._loadComponentData} toggleControlBar={this._toggleControlBar} />
+        { this._renderPageAfterData() }
         <RightSideBar />
         { this.reactAlert.container }
       </div>

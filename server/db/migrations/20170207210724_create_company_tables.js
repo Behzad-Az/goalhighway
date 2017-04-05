@@ -21,7 +21,7 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('interview_answers', t => {
       t.increments('id');
       t.string('answer', 1000).notNullable();
-      t.string('outcome', 20).notNullable().defaultTo("unknown");
+      t.string('outcome', 20).notNullable().defaultTo('unknown');
       t.integer('answer_poster_id').notNullable().references('users.id');
       t.integer('question_id').notNullable().references('interview_questions.id');
       t.timestamp('answer_created_at').notNullable().defaultTo(knex.fn.now());

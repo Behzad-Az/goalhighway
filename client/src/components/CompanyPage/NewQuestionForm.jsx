@@ -9,23 +9,23 @@ class NewQuestionForm extends Component {
       answer: '',
       outcome: ''
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.handleNewInterviewQuestion = this.handleNewInterviewQuestion.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._handleNewInterviewQuestion = this._handleNewInterviewQuestion.bind(this);
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.question &&
            this.props.companyInfo.id
   }
 
-  handleNewInterviewQuestion() {
+  _handleNewInterviewQuestion() {
     let data = {
       question: this.state.question,
       answer: this.state.answer,
@@ -62,18 +62,18 @@ class NewQuestionForm extends Component {
           <section className='modal-card-body'>
             <label className='label'>What question were you asked?</label>
             <p className='control'>
-              <input className='input' type='text' name='question' placeholder='Example: Describe a work conflict and how you dealt with it.' onChange={this.handleChange} />
+              <input className='input' type='text' name='question' placeholder='Example: Describe a work conflict and how you dealt with it.' onChange={this._handleChange} />
             </p>
 
             <label className='label'>What was your answer? (optional)</label>
             <p className='control'>
-              <textarea className='textarea' name='answer' placeholder='Summarize your answer here (optional)' onChange={this.handleChange} />
+              <textarea className='textarea' name='answer' placeholder='Summarize your answer here (optional)' onChange={this._handleChange} />
             </p>
 
             <label className='label'>What was the outcome? (optional)</label>
             <p className='control'>
               <span className='select'>
-                <select className='select' name='outcome' onChange={this.handleChange}>
+                <select className='select' name='outcome' onChange={this._handleChange}>
                   <option value=''>-</option>
                   <option value='Got the job'>Got the job!</option>
                   <option value='Unsuccessful'>Unsuccessful</option>
@@ -85,7 +85,7 @@ class NewQuestionForm extends Component {
 
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewInterviewQuestion}>Submit</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewInterviewQuestion}>Submit</button>
             <button className='button' onClick={() => HandleModal('new-question-form')}>Cancel</button>
           </footer>
         </div>

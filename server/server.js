@@ -103,9 +103,6 @@ const upload = multer({
 });
 
 
-
-
-
 // ***************************************************
 // PORT
 // ***************************************************
@@ -151,6 +148,7 @@ const checkEmailAvailability = require('./helpers/POST_Routes/checkEmailAvailabi
 const postNewFlag = require('./helpers/POST_Routes/postNewFlag.js');
 const postNewInterviewQuestion = require('./helpers/POST_Routes/postNewInterviewQuestion.js');
 const postNewInterviewAnswer = require('./helpers/POST_Routes/postNewInterviewAnswer.js');
+const postNewResume = require('./helpers/POST_Routes/postNewResume.js');
 
 const updateUserProfile = require('./helpers/UPDATE_Routes/updateUserProfile.js');
 const updateCourseUserTutorStatus = require('./helpers/UPDATE_Routes/updateCourseUserTutorStatus.js');
@@ -277,6 +275,10 @@ app.post('/api/courses/:course_id/comments', (req, res) => {
 
 app.post('/api/users/:user_id/courses/:course_id', (req, res) => {
   postNewCourseUser(req, res, knex, req.session.user_id);
+});
+
+app.post('/api/users/:user_id/resumes', upload.single('file'), (req, res) => {
+  req.file ? postNewResume(req, res, knex, req.session.user_id) : res.send(false);
 });
 
 app.post('/api/users/:user_id/courses/:course_id/tutorlog', (req, res) => {

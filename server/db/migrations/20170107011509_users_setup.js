@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('users', (t) => {
       t.increments('id');
       t.string('username', 30).notNullable().unique();
-      t.string('password', 64).notNullable().defaultTo("pswd");
+      t.string('password', 64).notNullable().defaultTo('pswd');
       t.string('email', 30).notNullable().unique();
       t.integer('user_year').notNullable();
       t.integer('inst_prog_id').notNullable().references('institution_program.id');
@@ -15,7 +15,7 @@ exports.up = function(knex, Promise) {
       t.increments('id');
       t.string('type', 50).notNullable();
       t.string('title', 100).notNullable();
-      t.string('rev_desc', 250).notNullable().defaultTo("no desc");
+      t.string('rev_desc', 250).notNullable().defaultTo('no desc');
       t.string('file_name', 200).notNullable();
       t.integer('doc_id').notNullable();
       t.integer('user_id').notNullable().references('users.id').defaultTo(1);
