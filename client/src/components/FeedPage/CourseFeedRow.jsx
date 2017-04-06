@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 
-class ResumeReviewFeedRow extends Component {
+class CourseFeedRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,6 +11,7 @@ class ResumeReviewFeedRow extends Component {
     this._handleFlagClick = this._handleFlagClick.bind(this);
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
     this._renderFlagSelect = this._renderFlagSelect.bind(this);
+    this._decodeDocumentCategory = this._decodeDocumentCategory.bind(this);
   }
 
   _handleFlagClick() {
@@ -51,6 +52,19 @@ class ResumeReviewFeedRow extends Component {
     );
   }
 
+  _decodeDocumentCategory(category) {
+    switch(category) {
+      case 'lecture_note':
+        return ' under Lecture Notes';
+      case 'asg_report':
+        return ' under Assignments & Reports';
+      case 'sample_question':
+        return ' under Sample Questions';
+      default:
+        return '';
+    }
+  }
+
   render() {
     return (
       <article className='media resume-review-row'>
@@ -61,16 +75,16 @@ class ResumeReviewFeedRow extends Component {
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <Link>
-              <button className='button'>Review Resume</button>
+            <Link to={`/courses/${this.props.feed.course_id}`}>
+              <button className='button'>Go to Course Page</button>
             </Link>
             <p>
-              <strong>@{this.props.feed.owner_name} - Resume Review Request</strong>
+              <strong>@{this.props.feed.short_display_name} - New Document!</strong>
               <br />
-              {this.props.feed.additional_info}
+              {this.props.feed.content}{this._decodeDocumentCategory}
               <br />
               <small>
-                <Link>Click here for some tips</Link>
+                <Link>Download Document</Link>
               </small>
               <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
               {this.state.flagRequest && this._renderFlagSelect()}
@@ -82,4 +96,4 @@ class ResumeReviewFeedRow extends Component {
   }
 }
 
-export default ResumeReviewFeedRow;
+export default CourseFeedRow;

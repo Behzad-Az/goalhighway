@@ -92,9 +92,7 @@ class RevisionRow extends Component {
         <div className='column is-3'>Date:<br/>{this.props.rev.created_at.slice(0, 10)}</div>
         <div className='column is-6'>Description:<br/>{this.props.rev.rev_desc}</div>
         <div className='column is-3 buttons'>
-          <figure className='image is-48x48'>
-            <img src='../../../images/pdf.png' alt='download' onClick={this._handleRevisionRequest} />
-          </figure>
+          <i className='fa fa-download' aria-hidden='true' onClick={this._handleRevisionRequest} />
           {this.props.rev.deleteable && <i onClick={this._handleDeletionRequest} className='fa fa-trash' aria-hidden='true' />}
           <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
           {this.state.flagRequest && this._renderFlagSelect()}
