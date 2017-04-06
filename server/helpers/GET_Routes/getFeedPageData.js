@@ -17,23 +17,35 @@ const getFeedPageData = (req, res, knex, user_id) => {
     .select('short_display_name', 'commenter_name', 'category', 'content', 'course_id', 'doc_id', 'tutor_log_id')
     .whereIn('course_id', courseIds);
 
+  const getResumeFeeds = () => knex('resume_review_feed')
+    .where('audience_filter_id', req.session.inst_prog_id)
+    .andWhere('audience_filter_table', 'institution_program')
+    .whereNull('feed_deleted_at');
 
-  Promise.all([
-    getCourseIds(),
-    getInstId()
-  ])
-  .then(results => {
-    let courseIds = results[0].map(course => course.course_id);
-    instId = results[1][0].inst_id;
-    return getCourseFeeds(courseIds);
-  })
-  .then(courseFeeds => {
-    res.send({ courseFeeds, instId });
-  })
+  getResumeFeeds()
+  .then(feeds => res.send({ feeds }))
   .catch(err => {
-    console.error("Error inside getFeedPageData.js: ", err);
+    console.error('Error inside getFeedPageData.js: ', err);
     res.send(false);
   });
+
+
+  // Promise.all([
+  //   getCourseIds(),
+  //   getInstId()
+  // ])
+  // .then(results => {
+  //   let courseIds = results[0].map(course => course.course_id);
+  //   instId = results[1][0].inst_id;
+  //   return getCourseFeeds(courseIds);
+  // })
+  // .then(courseFeeds => {
+  //   res.send({ courseFeeds, instId });
+  // })
+  // .catch(err => {
+  //   console.error("Error inside getFeedPageData.js: ", err);
+  //   res.send(false);
+  // });
 };
 
 module.exports = getFeedPageData;

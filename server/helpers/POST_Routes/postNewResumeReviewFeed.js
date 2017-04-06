@@ -3,7 +3,8 @@ postNewResumeReviewFeed = (req, res, knex, user_id) => {
   const newResumeFeedObj = {
     owner_id: user_id,
     owner_name: req.session.username,
-    content: `Requested a peer review of my resume - '${req.body.resumeTitle}'\n${req.body.additionalInfo}`,
+    title: req.body.title,
+    additional_info: req.body.additionalInfo,
     resume_id: req.params.resume_id,
     audience_filter_id: req.session.inst_prog_id,
     audience_filter_table: 'institution_program'

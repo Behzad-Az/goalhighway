@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 
-class JobRow extends Component {
+class ResumeReviewFeedRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,19 +21,19 @@ class JobRow extends Component {
   _handleFlagSubmit(e) {
     let state = {};
     state[e.target.name] = e.target.value;
-    fetch(`/api/flags/jobs/${this.props.job.id}`, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(state)
-    })
-    .then(response => response.json())
-    .then(resJSON => { if (!resJSON) throw 'Server returned false' })
-    .catch(err => console.error('Unable to post flag - ', err))
-    .then(() => this.setState(state));
+    // fetch(`/api/flags/jobs/${this.props.feed.id}`, {
+    //   method: 'POST',
+    //   credentials: 'same-origin',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(state)
+    // })
+    // .then(response => response.json())
+    // .then(resJSON => { if (!resJSON) throw 'Server returned false' })
+    // .catch(err => console.error('Unable to post flag - ', err))
+    // .then(() => this.setState(state));
   }
 
   _renderFlagSelect() {
@@ -53,7 +53,7 @@ class JobRow extends Component {
 
   render() {
     return (
-      <article className='media job-row'>
+      <article className='media resume-review-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src='http://bulma.io/images/placeholders/128x128.png' />
@@ -61,17 +61,17 @@ class JobRow extends Component {
         </figure>
         <div className='media-content'>
           <div className='content'>
+            <Link>
+              <button className='button'>Company Page</button>
+            </Link>
             <p>
-              <Link to={`/companies/${this.props.job.company_id}`}><button className='button'>Company Page</button></Link>
-              <strong>{this.props.job.title}</strong>
+              <strong>@{this.props.feed.owner_name} - Resume Review Request</strong>
               <br />
-              {this.props.job.company}
+              {this.props.feed.additional_info}
               <br />
-              Job Level: {this.props.job.kind}
-              <br />
-              {this.props.job.tags.map((tag, index) => <span key={index} className='tag'>{tag}</span>)}
-              <br />
-              <small><Link>Apply Now!</Link></small>
+              <small>
+                <Link>Click here for some tips</Link>
+              </small>
               <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
               {this.state.flagRequest && this._renderFlagSelect()}
             </p>
@@ -82,4 +82,4 @@ class JobRow extends Component {
   }
 }
 
-export default JobRow;
+export default ResumeReviewFeedRow;

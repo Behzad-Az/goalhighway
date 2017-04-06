@@ -3,7 +3,8 @@ const getCoursePageData = (req, res, knex, user_id) => {
   let docs, courseInfo, itemsForSale, courseFeed;
 
   const getDocRevisions = doc => new Promise((resolve, reject) => {
-    knex('revisions').where('doc_id', doc.id).whereNull('rev_deleted_at').orderBy('rev_created_at', 'desc').then(revisions => {
+    knex('revisions').where('doc_id', doc.id).whereNull('rev_deleted_at').orderBy('created_at', 'desc')
+    .then(revisions => {
       doc.revisions = revisions;
       doc.title = revisions[0].title;
       doc.type = revisions[0].type;
@@ -16,15 +17,18 @@ const getCoursePageData = (req, res, knex, user_id) => {
   const getDocLikeCount = doc => new Promise((resolve, reject) => {
     knex('doc_user_likes').where('doc_id', doc.id).then(rows => {
       doc.likeCount = rows.reduce((a, b) => {
-        return { like_or_dislike: parseInt(a.like_or_dislike) + parseInt(b.like_or_dislike) };
-      }, {like_or_dislike : 0}).like_or_dislike;
+        return { like_count: parseInt(a.like_count) + parseInt(b.like_count) };
+      }, {like_count : 0}).like_count;
       resolve();
     }).catch(err => {
       reject("could not query like doc count.");
     });
   });
 
-  const getDocs = () => knex('docs').where('course_id', req.params.course_id).whereNull('doc_deleted_at').orderBy('doc_created_at', 'desc');
+  const getDocs = () => knex('docs')
+    .where('course_id', req.params.course_id)
+    .whereNull('doc_deleted_at')
+    .orderBy('created_at', 'desc');
 
   const getCourseInfo = () => knex('courses')
     .innerJoin('institutions', 'inst_id', 'institutions.id')
@@ -40,11 +44,17 @@ const getCoursePageData = (req, res, knex, user_id) => {
     .andWhere('course_id', req.params.course_id)
     .whereNull('closed_at');
 
-  const getItemsForSale = () => knex('items_for_sale').where('course_id', req.params.course_id).whereNull('item_deleted_at');
+  const getItemsForSale = () => knex('items_for_sale')
+    .where('course_id', req.params.course_id)
+    .whereNull('item_deleted_at');
 
-  const getAvgCourseRating = () => knex('course_reviews').where('course_id', req.params.course_id).avg('overall_rating');
+  const getAvgCourseRating = () => knex('course_reviews')
+    .where('course_id', req.params.course_id)
+    .avg('overall_rating');
 
-  const getCourseFeed = () => knex('course_feed').where('course_id', req.params.course_id).orderBy('feed_created_at', 'desc');
+  const getCourseFeed = () => knex('course_feed')
+    .where('course_id', req.params.course_id)
+    .orderBy('created_at', 'desc');
 
   Promise.all([
     getDocs(),

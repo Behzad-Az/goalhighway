@@ -77,8 +77,8 @@ class DocCard extends Component {
           <div className='card-text'>
             <p className='name title is-6'>{this.props.doc.title}</p>
             <p className='description title is-6'>'{this.props.doc.revisions[0].rev_desc}'</p>
-            <p className='date title is-6'>Upload Date: {this.props.doc.doc_created_at.slice(0, 10)}</p>
-            <p className='date title is-6'>Revision: {this.props.doc.revisions.length} - {this.props.doc.revisions[0].rev_created_at.slice(0, 10)}</p>
+            <p className='date title is-6'>Upload Date: {this.props.doc.created_at.slice(0, 10)}</p>
+            <p className='date title is-6'>Revision: {this.props.doc.revisions.length} - {this.props.doc.revisions[0].created_at.slice(0, 10)}</p>
           </div>
           <p className='card-foot title is-6'>
             <i onClick={this._handleLikeSubmission} className='fa fa-thumbs-up' aria-hidden='true' style={{cursor: 'pointer', color: this.state.likeColor}} />

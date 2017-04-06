@@ -89,7 +89,7 @@ class RevisionRow extends Component {
   render() {
     return (
       <div className='revision-row columns'>
-        <div className='column is-3'>Date:<br/>{this.props.rev.rev_created_at.slice(0, 10)}</div>
+        <div className='column is-3'>Date:<br/>{this.props.rev.created_at.slice(0, 10)}</div>
         <div className='column is-6'>Description:<br/>{this.props.rev.rev_desc}</div>
         <div className='column is-3 buttons'>
           <figure className='image is-48x48'>

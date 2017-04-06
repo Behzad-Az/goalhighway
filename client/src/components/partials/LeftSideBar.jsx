@@ -6,7 +6,7 @@ class LeftSideBar extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      userInfo: { username: 'N/A', user_created_at: 'N/A' },
+      userInfo: { username: 'N/A', created_at: 'N/A' },
       progName: 'N/A',
       instName: 'N/A',
       contributionCount: 'N/A'
@@ -52,7 +52,7 @@ class LeftSideBar extends Component {
             <p>{this.state.progName}</p>
             <p>{this.state.instName}</p>
             <p>Contribution: {this.state.contributionCount} <i className='fa fa-star' aria-hidden='true' /></p>
-            <small>Member Since - {this.state.userInfo.user_created_at.slice(0, 10)}</small>
+            <small>Member Since - {this.state.userInfo.created_at.slice(0, 10)}</small>
           </div>
         </div>
       </div>

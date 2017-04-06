@@ -1,15 +1,15 @@
 const postNewLikeDislike = (req, res, knex, user_id) => {
 
-  let like_or_dislike = parseInt(req.body.likeOrDislike);
+  let like_count = parseInt(req.body.likeOrDislike);
 
   let newLikeDislikeObj = {
-    like_or_dislike,
+    like_count,
     doc_id: req.params.doc_id,
     user_id: user_id
   };
 
   const validateLikeOrDislike = () => new Promise((resolve, reject) => {
-    (like_or_dislike === -1 || like_or_dislike === 1) ? resolve() : reject('Invalid like or dislike value');
+    (like_count === -1 || like_count === 1) ? resolve() : reject('Invalid like or dislike value');
   });
 
   const insertLikeOrDislike = () => knex('doc_user_likes').insert(newLikeDislikeObj);

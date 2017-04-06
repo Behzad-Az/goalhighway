@@ -4,7 +4,8 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     if (req.file && req.file.filename) {
       resolve(req.file.filename);
     } else {
-      knex('revisions').where('doc_id', req.params.doc_id).orderBy('rev_created_at', 'desc').limit(1).then(lastRevision => {
+      knex('revisions').where('doc_id', req.params.doc_id).orderBy('created_at', 'desc').limit(1)
+      .then(lastRevision => {
         resolve(lastRevision[0].file_name);
       }).catch(err => {
         reject('could not find the file_name for last revision');

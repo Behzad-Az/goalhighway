@@ -27,7 +27,7 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
     .select('id', 'title', 'type')
     .where('doc_id', doc_id)
     .whereNull('rev_deleted_at')
-    .orderBy('rev_created_at', 'desc');
+    .orderBy('created_at', 'desc');
 
   const deleteDoc = trx => knex('docs')
     .transacting(trx)

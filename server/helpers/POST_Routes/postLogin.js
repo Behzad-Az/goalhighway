@@ -5,7 +5,7 @@ const postLogin = (req, res, knex, bcrypt) => {
 
   const findUser = () => knex('users')
     .innerJoin('institution_program', 'inst_prog_id', 'institution_program.id')
-    .select('users.id', 'username', 'password', 'inst_prog_id', 'inst_id', 'prog_id')
+    .select('users.id', 'username', 'password', 'inst_prog_id', 'inst_id', 'prog_id', 'email', 'user_year')
     .where('username', username);
 
   const verifyPwd = (given, actual) => bcrypt.compare(given, actual);
@@ -25,6 +25,8 @@ const postLogin = (req, res, knex, bcrypt) => {
       req.session.inst_prog_id = currUser.inst_prog_id;
       req.session.inst_id = currUser.inst_id;
       req.session.prog_id = currUser.prog_id;
+      req.session.email = currUser.email;
+      req.session.user_year = currUser.user_year;
       res.send(true);
     } else {
       throw 'Invalid username and password';

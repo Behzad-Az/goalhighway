@@ -3,7 +3,8 @@ const getDocPageData = (req, res, knex, user_id) => {
   let docInfo, courseInfo;
 
   const getDocRevisions = doc => new Promise((resolve, reject) => {
-    knex('revisions').where('doc_id', doc.id).whereNull('rev_deleted_at').orderBy('rev_created_at', 'desc').then(revisions => {
+    knex('revisions').where('doc_id', doc.id).whereNull('rev_deleted_at').orderBy('created_at', 'desc')
+    .then(revisions => {
       revisions.forEach(revision => revision.deleteable = revision.user_id === user_id);
       doc.revisions = revisions;
       doc.title = revisions[0].title;
@@ -19,18 +20,27 @@ const getDocPageData = (req, res, knex, user_id) => {
     .select('inst_display_name', 'short_display_name', 'inst_id', 'courses.id')
     .where('courses.id', req.params.course_id);
 
-  const getCourseUserInfo = () => knex('course_user').where('user_id', user_id).andWhere('course_id', req.params.course_id);
+  const getCourseUserInfo = () => knex('course_user')
+    .where('user_id', user_id)
+    .andWhere('course_id', req.params.course_id);
 
-  const getDocInfo = () => knex('docs').where('course_id', req.params.course_id).andWhere('id', req.params.doc_id).whereNull('doc_deleted_at');
+  const getDocInfo = () => knex('docs')
+    .where('course_id', req.params.course_id)
+    .andWhere('id', req.params.doc_id)
+    .whereNull('doc_deleted_at');
 
   const getTutorLogInfo = () => knex('tutor_log')
     .where('student_id', user_id)
     .andWhere('course_id', req.params.course_id)
     .whereNull('closed_at');
 
-  const getSubscriptionStatus = () => knex('course_user').where('user_id', user_id).andWhere('course_id', req.params.course_id);
+  const getSubscriptionStatus = () => knex('course_user')
+    .where('user_id', user_id)
+    .andWhere('course_id', req.params.course_id);
 
-  const getAvgCourseRating = () => knex('course_reviews').where('course_id', req.params.course_id).avg('overall_rating');
+  const getAvgCourseRating = () => knex('course_reviews')
+    .where('course_id', req.params.course_id)
+    .avg('overall_rating');
 
   Promise.all([
     getDocInfo(),
@@ -44,10 +54,6 @@ const getDocPageData = (req, res, knex, user_id) => {
     let userInfo = results[2][0];
     courseInfo = results[1][0];
     docInfo = results[0][0];
-    // courseInfo.instDisplayName = courseInfo.inst_short_name ?
-    //                          courseInfo.inst_long_name + ` (${courseInfo.inst_short_name})` :
-    //                          courseInfo.inst_long_name;
-    // courseInfo.courseDisplayName = `${courseInfo.prefix} ${courseInfo.suffix}`;
     courseInfo.subscriptionStatus = (userInfo && userInfo.sub_date) || false;
     courseInfo.tutorStatus = (userInfo && userInfo.tutor_status) || false;
     courseInfo.assistReqOpen = (latestTutorLog && !latestTutorLog.closed_at) || false;

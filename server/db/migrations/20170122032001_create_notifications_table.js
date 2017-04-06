@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
   return Promise.all([
-    knex.schema.createTableIfNotExists('notifications', (t) => {
+    knex.schema.createTableIfNotExists('notifications', t => {
       t.increments('id');
       t.string('category', 50).notNullable();
       t.string('content', 400).notNullable();

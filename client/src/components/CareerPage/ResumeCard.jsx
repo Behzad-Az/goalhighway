@@ -16,7 +16,6 @@ class ResumeCard extends Component {
       title: this.props.resume.title,
       intent: this.props.resume.intent,
       file: '',
-      // deleted: false,
       reviewReqStatus: this.props.resume.reviewReqStatus
     };
     this._findImageLink = this._findImageLink.bind(this);
@@ -54,7 +53,6 @@ class ResumeCard extends Component {
     if (this.state.file) { data.append('file', this.state.file); }
     data.append('title', this.state.title);
     data.append('intent', this.state.intent);
-    // data.append('deleted', this.state.deleted);
 
     fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
       method: 'POST',
@@ -64,7 +62,6 @@ class ResumeCard extends Component {
     .then(response => response.json())
     .then(resJSON => {
       if (resJSON) {
-        // let msg = this.state.deleted ? 'Resume deleted' : 'Resume updated';
         this.reactAlert.showAlert('Resume updated', 'info');
         this.props.reload();
       } else {
@@ -76,8 +73,6 @@ class ResumeCard extends Component {
   }
 
   _handleDelete() {
-    // this.state.deleted = true;
-    // this._handleEdit();
     fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
       method: 'DELETE',
       credentials: 'same-origin',
