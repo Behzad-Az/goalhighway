@@ -103,7 +103,6 @@ class TopRow extends Component {
         <h1 className='header'>
           <Link to={`/institutions/${this.props.courseInfo.inst_id}`}>{this.props.courseInfo.inst_display_name} </Link>
           > <span className='course-name'>{this.props.courseInfo.short_display_name} </span><span className='course-desc'>- {this.props.courseInfo.course_desc}</span>
-          <button className='button'>Edit Course</button>
         </h1>
         <div className='row-container'>
           { this._createBtnDiv('fa fa-upload', <p>Upload<br/>Document</p>, () => HandleModal('new-doc-form'), 'inherit', true, true) }

@@ -3,15 +3,13 @@
 
   .main-container {
     padding: $top_margin $default_margin; width: 60%; min-width: 360px; display: inline-block; margin: auto;
+
     .header {
-      background-color: $dark-blue; color: white; padding: 8px; font-weight: bold; margin-bottom: 20px; overflow: hidden;
-      border-radius: 10px;
+      background-color: $dark-blue; color: white; padding: 5px; font-weight: bold; margin-bottom: $default_margin/2; overflow: hidden;
       .fa { float: right; }
-      .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; }
-      .button:hover, .button.is-hovered { font-weight: bold }
-      a { color: white; font-weight: bold; &:hover { color: $peach; } }
       .course-name { font-weight: bold; }
       .course-desc { font-size: 12px; }
+      a { color: white; .course-name { font-weight: bold } .course-desc { font-size: 12px } &:hover { color: $peach; } }
     }
 
     .page-msg {
@@ -20,7 +18,7 @@
     }
 
     .row-container {
-      margin-bottom: $default_margin;
+      margin-bottom: $default_margin/2;
       .top-row-button {
         display: inline-block; width: 16.65%; text-align: center;
         .fa { cursor: pointer; font-size: 35px; }
@@ -32,7 +30,7 @@
     .docs-row, .items-row {
       display: flex; flex-wrap: wrap; flex-direction: row;
       .doc-index.card, .item-index.card {
-        margin: $default_margin/2; width: 230px; height: 100%;
+        margin: 0 $default_margin/4 $default_margin/2 $default_margin/4; width: 230px; height: 100%;
         .card-content {
           padding: 1.5rem 1.5rem 0.5rem 1.5rem;
           .card-image .button { position: absolute; right: -10px; height: 30px; top: -10px; }

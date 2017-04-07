@@ -17,7 +17,7 @@ class DocsRow extends Component {
     return (
       <div className='row-container'>
         <h1 className='header'>
-          { this.props.header }
+          { this.props.header }:
           <i className='fa fa-angle-down' aria-hidden='true' />
         </h1>
         <div className='docs-row'>

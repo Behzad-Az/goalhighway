@@ -10,7 +10,7 @@
 
     .header {
       background-color: $dark-blue; color: white; padding: 5px; font-weight: bold; margin-bottom: $default_margin / 2; overflow: hidden;
-      .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; }
+      .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; &:hover { font-weight: bold } }
     }
 
     .inst-dropdown { margin-bottom: $default_margin; }

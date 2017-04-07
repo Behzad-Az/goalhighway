@@ -47,7 +47,7 @@
             .card-foot {
               line-height: 30px; text-align: center;
               i { vertical-align: middle; padding: 0 5px; }
-              .text-link { a { color: $dark-blue; } :hover { color: $pumpkin; } }
+              a { color: $dark-blue; &:hover { color: $pumpkin; } }
             }
           }
           .card-footer-item { color: $dark-blue; &:hover{ color: $pumpkin } }

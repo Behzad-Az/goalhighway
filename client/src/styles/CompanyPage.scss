@@ -5,12 +5,8 @@
     padding: $top_margin $default_margin; width: 60%; min-width: 360px; display: inline-block; margin: auto;
 
     .header {
-      background-color: $dark-blue; color: white; padding: 8px; font-weight: bold; margin-bottom: 20px; overflow: hidden;
-      border-radius: 10px;
+      background-color: $dark-blue; color: white; padding: 5px; font-weight: bold; margin-bottom: $default_margin / 2; overflow: hidden;
       .fa { float: right; }
-      .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; }
-      .button:hover, .button.is-hovered { font-weight: bold }
-      a { color: white; font-weight: bold; :hover { color: $peach; } }
     }
 
     .page-msg {

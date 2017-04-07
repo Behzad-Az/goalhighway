@@ -108,7 +108,6 @@ class TopRow extends Component {
         </h1>
         <div className='row-container'>
           { this._createBtnDiv('fa fa-upload', <p>New<br/>Revision</p>, () => HandleModal('new-revision-form'), 'inherit', true, true) }
-
           <div className='top-row-star'>
             <Link to={`/courses/${this.props.courseInfo.id}/reviews`}>
               <div className='outer'>

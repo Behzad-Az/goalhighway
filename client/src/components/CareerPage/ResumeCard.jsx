@@ -169,12 +169,10 @@ class ResumeCard extends Component {
             <p className='date title is-6'>Upload Date: {this.props.resume.resume_created_at.slice(0, 10)}</p>
           </div>
           <p className='card-foot title is-6'>
-            <span className='text-link'>
-              { this.state.reviewReqStatus ?
-                  <Link onClick={this._handleCancelReviewRequest}>Cancel Review Request</Link> :
-                  <Link onClick={() => HandleModal(`new-resume-review-req-form-${this.props.resume.id}`)}>Request Review</Link>
-              }
-            </span>
+            { this.state.reviewReqStatus ?
+                <Link onClick={this._handleCancelReviewRequest}>Cancel Review Request</Link> :
+                <Link onClick={() => HandleModal(`new-resume-review-req-form-${this.props.resume.id}`)}>Request Review</Link>
+            }
           </p>
         </div>
       </div>
