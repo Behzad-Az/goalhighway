@@ -19,15 +19,14 @@
         a { color: white; .course-name { font-weight: bold } .course-desc { font-size: 12px } :hover { color: $peach; } }
       }
       .review-row {
-        margin: $default_margin 0; border: 1px #ccc solid; border-radius: 10px;
-        padding: 15px 15px 15px 0;
+        margin: $default_margin 0; border: 1px #ccc solid; border-radius: 10px; padding: 15px 15px 15px 0; background-color: white;
         .meta-info { width: 250px; display: inline-block; td { padding-left: 15px; } }
         .comment { display: inline-block; vertical-align: top; width: 50%; min-width: 150px; padding-left: 15px; font-style: italic; }
       }
     }
 
     .top-row {
-      .review-row { padding: 0; }
+      .review-row { padding: 0; background-color: white; }
       .second-column { padding-left: 15px; }
       th { border-bottom: 1px solid; }
       table { line-height: 25px; }
