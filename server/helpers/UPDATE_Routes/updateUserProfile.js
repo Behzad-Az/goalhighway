@@ -27,10 +27,11 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
   if (req.body.type === "profile") {
     findInstProgId(req.body.instId, req.body.progId)
     .then(instProgId => {
+      inst_prog_id = instProgId[0].id;
       let knexObj = {
         username: req.body.username,
         email: req.body.email,
-        inst_prog_id: instProgId[0].id,
+        inst_prog_id,
         user_year: req.body.userYear
       };
       return knex('users').where('id', user_id).update(knexObj);
