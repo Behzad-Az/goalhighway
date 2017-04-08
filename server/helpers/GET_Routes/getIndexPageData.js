@@ -16,8 +16,7 @@ const getIndexPageData = (req, res, knex, user_id) => {
   findUsersCourses(knex, user_id)
   .then(userCourses => {
     courses = userCourses;
-    let courseIds = userCourses.map(course => course.course_id);
-    return getCourseDocs(courseIds);
+    return getCourseDocs(userCourses.map(course => course.course_id));
   })
   .then(updates => {
     let instId = req.session.inst_id;

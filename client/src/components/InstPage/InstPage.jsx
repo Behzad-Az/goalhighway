@@ -118,7 +118,7 @@ class InstPage extends Component {
             reload={() => this._loadComponentData(this.state.instId)} />
           <FilterInputBox handleFilter={this._handleFilter} />
           <div className='course-rows'>
-            { slicedArr.map((course, index) => <CourseRow key={index} course={course} currUserCourseIds={this.state.currUserCourseIds} userId={this.state.userId} /> )}
+            { slicedArr.map(course => <CourseRow key={course.id} course={course} currUserCourseIds={this.state.currUserCourseIds} userId={this.state.userId} /> )}
             { this.state.dataLoaded && this.state.currInstCourses[0] && <p>Many more courses available. Refine your search please.</p> }
             { this.state.dataLoaded && !this.state.currInstCourses[0] && <p>No courses are available for this institution. Be the first to add one.</p> }
           </div>

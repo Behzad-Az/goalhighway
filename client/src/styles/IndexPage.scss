@@ -1,8 +1,13 @@
 .index-page {
-  background-color: #f5f5f5; padding: 0 $default_margin $default_margin $default_margin; min-height: 100vh; overflow: auto;
+  background-color: #f5f5f5; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
-    padding: $top_margin $default_margin; width: 60%; min-width: 360px; display: inline-block; margin: auto;
+    padding: $top_margin $default_margin $default_margin $default_margin; width: 60%; min-width: 360px; display: inline-block;
+
+    .page-msg {
+      font-size: 16px; text-align: center;
+      .fa, .sr-only { font-size: 16px; padding: 3px }
+    }
 
     .welcome-box {
       padding: $default_margin; background-color: white; border-radius: 20px; margin: auto;
@@ -10,29 +15,26 @@
       .image { max-width: 650px; margin: auto; }
     }
 
-    .page-msg {
-      font-size: 16px; text-align: center;
-      .fa, .sr-only { font-size: 16px; padding: 3px }
+    .header {
+      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
+      .fa { float: right; }
     }
 
     .course-index.card {
-      margin-bottom: $default_margin;
+      margin-bottom: $default_margin/2;
       .card-content {
         .title.header {
-          background-color: $dark-blue; padding: 8px;
-          a { color: white; .course-name { font-weight: bold } .course-desc { font-size: 12px } }
-          :hover { color: $peach; }
+          background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
+          .fa { float: right; }
+          a { color: white; .course-name { font-weight: bold } .course-desc { font-size: 12px } &:hover { color: $peach; } }
         }
-        .doc-type {
-          .header { background-color: $light-blue; color: white; padding: 5px; }
-          .text-link { p { color: $dark-blue; } :hover { color: $pumpkin; } }
-          .doc-container { padding: 5px; }
+        .updates.column {
+          padding-bottom: 0;
+          .header { background-color: $light-blue; color: white; padding: 5px 10px; }
+          a { color: $dark-blue; &:hover { color: $pumpkin; } }
+          .update-row { padding: 0 $default_margin/4 $default_margin/2 $default_margin/4; }
         }
       }
     }
   }
-}
-
-.title:not(:last-child), .subtitle:not(:last-child) {
-  margin-bottom: 0.5em;
 }

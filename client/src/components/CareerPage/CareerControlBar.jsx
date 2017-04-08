@@ -107,7 +107,7 @@ class CareerControlBar extends Component {
 
   filterPreferenceTags() {
     let tempArr = this.state.tagFilterPhrase ? this.preferenceTags.filter(tag => tag.includes(this.state.tagFilterPhrase)) : this.preferenceTags;
-    return tempArr[0] ? tempArr.map((tag, i) => <span key={i} className='tag' onClick={this.moveUpTag}>{tag}</span>) : <p>No matching tags found...</p>;
+    return tempArr[0] ? tempArr.map((tag, index) => <span key={index} className='tag' onClick={this.moveUpTag}>{tag}</span>) : <p>No matching tags found...</p>;
   }
 
   validateForm() {
@@ -203,7 +203,7 @@ class CareerControlBar extends Component {
 
             <label className='label'>My preferenence tages:</label>
             <div className='control'>
-              { this.state.jobQuery.map((tag, i) => <span key={i} className='tag' onClick={() => this.moveDownTag(tag)}>{tag}</span>) }
+              { this.state.jobQuery.map((tag, index) => <span key={index} className='tag' onClick={() => this.moveDownTag(tag)}>{tag}</span>) }
               { !this.state.jobQuery[0] && <p>Select tags from the list below...</p> }
             </div>
 

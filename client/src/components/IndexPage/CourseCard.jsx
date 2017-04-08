@@ -32,21 +32,22 @@ class CourseCard extends Component {
               <span className='course-name'>{this.props.course.short_display_name}</span>
               <span className='course-desc'>{courseDesc}</span>
             </Link>
+            <i className='fa fa-angle-down' aria-hidden='true' />
           </p>
           <div className='columns'>
-            <div className='doc-type sample-questions column is-4'>
+            <div className='updates sample-questions column is-4'>
               <h1 className='header'>Sample Questions</h1>
-              { this.state.sampleQuestionsUpdates.map((update, index) => <ViewUpdate key={index} update={update} courseLink={courseLink} /> )}
+              { this.state.sampleQuestionsUpdates.map(update => <ViewUpdate key={update.id} update={update} courseLink={courseLink} /> )}
               { !this.state.sampleQuestionsUpdates[0] && <p>No updates available yet</p> }
             </div>
-            <div className='doc-type asg-reports column is-4'>
+            <div className='updates asg-reports column is-4'>
               <h1 className='header'>Assignment & Reports</h1>
-              { this.state.asgReportsUpdates.map((update, index) => <ViewUpdate key={index} update={update} courseLink={courseLink} /> )}
+              { this.state.asgReportsUpdates.map(update => <ViewUpdate key={update.id} update={update} courseLink={courseLink} /> )}
               { !this.state.asgReportsUpdates[0] && <p>No updates available yet</p> }
             </div>
-            <div className='doc-type lecture-notes column is-4'>
+            <div className='updates lecture-notes column is-4'>
               <h1 className='header'>Lecture Notes</h1>
-              { this.state.lectureNotesUpdates.map((update, index) => <ViewUpdate key={index} update={update} courseLink={courseLink} /> )}
+              { this.state.lectureNotesUpdates.map(update => <ViewUpdate key={update.id} update={update} courseLink={courseLink} /> )}
               { !this.state.lectureNotesUpdates[0] && <p>No updates available yet</p> }
             </div>
           </div>

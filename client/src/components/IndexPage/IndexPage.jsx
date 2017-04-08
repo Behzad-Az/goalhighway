@@ -53,9 +53,7 @@ class IndexPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          { this.state.courses.map((course, index) =>
-            <CourseCard key={index} course={course} updates={this.state.updates.filter(update => update.course_id === course.course_id)} />
-          )}
+          { this.state.courses.map(course => <CourseCard key={course.id} course={course} updates={this.state.updates.filter(update => update.course_id === course.course_id)} /> ) }
           { this.state.dataLoaded && !this.state.courses[0] && <WelcomeBox instId={this.state.instId} /> }
         </div>
       );
