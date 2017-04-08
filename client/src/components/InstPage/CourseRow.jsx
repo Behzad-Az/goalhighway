@@ -8,7 +8,7 @@ class CourseRow extends Component {
     super(props);
     this.reactAlert = new ReactAlert();
     this.state = {
-      userAlreadySubscribed: this.props.currUserCourseIds.includes(this.props.course.id)
+      alreadySubscribed: this.props.alreadySubscribed
     };
     this._handleRemoval = this._handleRemoval.bind(this);
     this._handleAddition = this._handleAddition.bind(this);
@@ -16,7 +16,7 @@ class CourseRow extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ userAlreadySubscribed: nextProps.currUserCourseIds.includes(nextProps.course.id) });
+    this.setState({ alreadySubscribed: nextProps.alreadySubscribed });
   }
 
   _handleRemoval() {
@@ -56,8 +56,8 @@ class CourseRow extends Component {
   }
 
   _toggleRemoveAdd(removeOrAdd) {
-    let userAlreadySubscribed = !this.state.userAlreadySubscribed;
-    this.setState({userAlreadySubscribed});
+    let alreadySubscribed = !this.state.alreadySubscribed;
+    this.setState({ alreadySubscribed });
     removeOrAdd === 'remove' ? this.reactAlert.showAlert('Unsubscribed from course', 'info') : this.reactAlert.showAlert('Subscribed to course', 'info');
   }
 
@@ -66,7 +66,7 @@ class CourseRow extends Component {
       <div className='course-row'>
         <Link to={`/courses/${this.props.course.id}`}>{this.props.course.short_display_name}</Link>
         <span> - </span>
-        { this.state.userAlreadySubscribed ? <Link onClick={this._handleRemoval}>Remove from my courses</Link> : <Link onClick={this._handleAddition}>Add to my courses</Link> }
+        { this.state.alreadySubscribed ? <Link onClick={this._handleRemoval}>Remove from my courses</Link> : <Link onClick={this._handleAddition}>Add to my courses</Link> }
       </div>
     );
   }

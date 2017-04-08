@@ -1,17 +1,13 @@
 import React, {Component} from 'react';
-
 import Navbar from '../Navbar/Navbar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
+import ReactAlert from '../partials/ReactAlert.jsx';
 import NewCourseForm from './NewCourseForm.jsx';
 import NewInstForm from './NewInstForm.jsx';
-import CourseRow from './CourseRow.jsx';
-import FilterInputBox from './FilterInputBox.jsx';
-
-import SingleSelect from '../partials/SingleSelect.jsx';
-import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
+import CoursesContainer from './CoursesContainer.jsx';
+import TopRow from './TopRow.jsx';
 
 class InstPage extends Component {
   constructor(props) {
@@ -22,7 +18,6 @@ class InstPage extends Component {
       dataLoaded: false,
       pageError: false,
       instId: this.props.params.inst_id,
-      userId: '',
       instList: [],
       currInstCourses: [],
       currUserCourseIds: []
@@ -44,6 +39,7 @@ class InstPage extends Component {
   }
 
   _loadComponentData(instId) {
+    instId = instId || this.state.instId;
     fetch(`/api/institutions/${instId}`, {
       method: 'GET',
       credentials: 'same-origin'
@@ -90,38 +86,15 @@ class InstPage extends Component {
         </div>
       );
     } else if (this.state.dataLoaded) {
-      let slicedArr = this.state.currInstCourses.slice(0, 199);
       return (
         <div className='main-container'>
           <SearchBar />
-          <h1 className='header'>
-            Institution:
-            <button className='button' onClick={() => HandleModal('new-inst-form')}>Don't see your institution?</button>
-          </h1>
-          <div className='inst-dropdown control'>
-            <SingleSelect
-              disabled={false}
-              initialValue={parseInt(this.state.instId)}
-              name='instList'
-              options={this.state.instList}
-              handleChange={this._loadComponentData} />
-          </div>
-          <h1 className='header'>
-            Courses:
-            <button className='button' onClick={() => HandleModal('new-course-form')}>Don't see your course?</button>
-          </h1>
-          <NewCourseForm
-            reload={() => this._loadComponentData(this.state.instId)}
-            instId={this.state.instId}
-            instName={this._findInstName()} />
-          <NewInstForm
-            reload={() => this._loadComponentData(this.state.instId)} />
-          <FilterInputBox handleFilter={this._handleFilter} />
-          <div className='course-rows'>
-            { slicedArr.map(course => <CourseRow key={course.id} course={course} currUserCourseIds={this.state.currUserCourseIds} userId={this.state.userId} /> )}
-            { this.state.dataLoaded && this.state.currInstCourses[0] && <p>Many more courses available. Refine your search please.</p> }
-            { this.state.dataLoaded && !this.state.currInstCourses[0] && <p>No courses are available for this institution. Be the first to add one.</p> }
-          </div>
+          <NewCourseForm reload={this._loadComponentData} instId={this.state.instId} instName={this._findInstName()} />
+          <NewInstForm reload={this._loadComponentData} />
+          <TopRow instId={parseInt(this.state.instId)} instList={this.state.instList} handleChange={this._loadComponentData} />
+          <CoursesContainer courses={this.state.currInstCourses.slice(0, 15)} currUserCourseIds={this.state.currUserCourseIds} handleFilter={this._handleFilter} />
+          { this.state.dataLoaded && this.state.currInstCourses[0] && <p>Many more courses available. Refine your search please.</p> }
+          { this.state.dataLoaded && !this.state.currInstCourses[0] && <p>No courses are available for this institution. Be the first to add one.</p> }
         </div>
       );
     } else {
