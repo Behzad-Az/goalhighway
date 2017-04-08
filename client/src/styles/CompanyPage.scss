@@ -2,10 +2,10 @@
   background-color: #f5f5f5; padding: 0 20px 20px 20px; min-height: 100vh; overflow: auto;
 
   .main-container {
-    padding: $top_margin $default_margin; width: 60%; min-width: 360px; display: inline-block;
+    padding: $top_margin $default_margin $default_margin $default_margin; width: 60%; min-width: 360px; display: inline-block;
 
     .header {
-      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2;
+      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
       .fa { float: right; }
     }
 

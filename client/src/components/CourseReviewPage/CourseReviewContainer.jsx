@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import CourseReviewRow from './CourseReviewRow.jsx';
 
-class CourseReviewRows extends Component {
+class CourseReviewContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +40,7 @@ class CourseReviewRows extends Component {
   render() {
     this._sortReviews(this.state.sortedBy);
     return (
-      <div className='row-container'>
+      <div className='review-container'>
         <h1 className='header'>
           Previous Reviews:
           <select className='sort-select' onChange={this._handleSortCritera}>
@@ -57,4 +57,4 @@ class CourseReviewRows extends Component {
   }
 }
 
-export default CourseReviewRows;
+export default CourseReviewContainer;

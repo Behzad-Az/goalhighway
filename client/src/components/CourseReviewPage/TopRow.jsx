@@ -109,14 +109,14 @@ class TopRow extends Component {
     let profAvgs = this._getProfAvgRatings();
     let overallAvgs = this._getAverageValues();
     return (
-      <div className='top-row row-container'>
+      <div className='top-row'>
         <h1 className='header'>
           <Link to={`/institutions/${this.props.courseInfo.inst_id}`}>{this.props.courseInfo.inst_display_name} </Link>
           > <Link to={`/courses/${this.props.courseInfo.id}`}>{this.props.courseInfo.short_display_name} </Link>
           > <span className='review-name'>Reviews</span>
           <button className='button' onClick={() => HandleModal('new-course-review-form')}>New Review</button>
         </h1>
-        <div className='review-row columns'>
+        <div className='summary columns'>
           <table className='top-row-info column is-6'>
             <thead>
               <tr><th colSpan='2'>Average Ratings:</th></tr>
@@ -173,7 +173,6 @@ class TopRow extends Component {
               </tr>
             </tbody>
           </table>
-
           <table className='top-row-info column is-6'>
             <thead>
               <tr><th colSpan='2'>Previous Instructors:</th></tr>
@@ -182,7 +181,6 @@ class TopRow extends Component {
               {profAvgs}
             </tbody>
           </table>
-
         </div>
       </div>
     );
