@@ -106,33 +106,32 @@ class TopRow extends Component {
           > <span>{this.props.docInfo.title}</span>
           <button className='button'>Edit Course</button>
         </h1>
-        <div className='row-container'>
-          { this._createBtnDiv('fa fa-upload', <p>New<br/>Revision</p>, () => HandleModal('new-revision-form'), 'inherit', true, true) }
-          <div className='top-row-star'>
-            <Link to={`/courses/${this.props.courseInfo.id}/reviews`}>
-              <div className='outer'>
-                <i className='fa fa-star-o' aria-hidden='true' />
-                <div className='inner' style={{ width: `${this.props.courseInfo.avgRating}%` }}>
-                  <i className='fa fa-star' aria-hidden='true' />
-                </div>
+
+        { this._createBtnDiv('fa fa-upload', <p>New<br/>Revision</p>, () => HandleModal('new-revision-form'), 'inherit', true, true) }
+        <div className='top-row-star'>
+          <Link to={`/courses/${this.props.courseInfo.id}/reviews`}>
+            <div className='outer'>
+              <i className='fa fa-star-o' aria-hidden='true' />
+              <div className='inner' style={{ width: `${this.props.courseInfo.avgRating}%` }}>
+                <i className='fa fa-star' aria-hidden='true' />
               </div>
-            </Link>
-            <p>Course<br/>Reviews</p>
-          </div>
-
-          { this._createBtnDiv('fa fa-check', <p>Unsubscribe<br/>From Course</p>,
-                              this._handleUnsubscribe, 'green', this.state.subscriptionStatus,
-                              true, <p>Subscribe<br/>To Course</p>, this._handleSubscribe) }
-
-          { this._createBtnDiv('fa fa-slideshare', <p>Click to<br/>Untutor</p>,
-                              this._handleTutorStatus, 'green', this.state.tutorStatus,
-                              this.state.subscriptionStatus, <p>Click to<br/>Tutor</p>, this._handleTutorStatus) }
-
-          { this._createBtnDiv('fa fa-bell', <p>Cancel<br/>Request</p>,
-                              () => HandleModal('new-request-assist-form'), 'green', this.state.assistReqOpen,
-                              this.state.subscriptionStatus, <p>Request<br/>Assistance</p>, () => HandleModal('new-request-assist-form')) }
-
+            </div>
+          </Link>
+          <p>Course<br/>Reviews</p>
         </div>
+
+        { this._createBtnDiv('fa fa-check', <p>Unsubscribe<br/>From Course</p>,
+                            this._handleUnsubscribe, 'green', this.state.subscriptionStatus,
+                            true, <p>Subscribe<br/>To Course</p>, this._handleSubscribe) }
+
+        { this._createBtnDiv('fa fa-slideshare', <p>Click to<br/>Untutor</p>,
+                            this._handleTutorStatus, 'green', this.state.tutorStatus,
+                            this.state.subscriptionStatus, <p>Click to<br/>Tutor</p>, this._handleTutorStatus) }
+
+        { this._createBtnDiv('fa fa-bell', <p>Cancel<br/>Request</p>,
+                            () => HandleModal('new-request-assist-form'), 'green', this.state.assistReqOpen,
+                            this.state.subscriptionStatus, <p>Request<br/>Assistance</p>, () => HandleModal('new-request-assist-form')) }
+
       </div>
     );
   }

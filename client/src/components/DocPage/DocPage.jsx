@@ -5,7 +5,8 @@ import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import RevisionRow from './RevisionRow.jsx';
+// import RevisionRow from './RevisionRow.jsx';
+import RevisionsContainer from './RevisionsContainer.jsx';
 import NewRevisionForm from './NewRevisionForm.jsx';
 import TopRow from './TopRow.jsx';
 import NewReAssistForm from '../partials/NewReqAssistForm.jsx';
@@ -83,13 +84,12 @@ class DocPage extends Component {
           <TopRow courseInfo={this.state.courseInfo} docInfo={this.state.docInfo} />
           <NewReAssistForm courseInfo={this.state.courseInfo} updateParentState={this._updateState} />
           <NewRevisionForm docInfo={this.state.docInfo} reload={this._loadComponentData} />
-          <div className='row-container'>
-            <h1 className='header'>
-              Document Revisions
-              <i className='fa fa-angle-down' aria-hidden='true' />
-            </h1>
-            { this.state.docInfo.revisions.map(rev => <RevisionRow key={rev.id} rev={rev} docInfo={this.state.docInfo} reload={this._loadComponentData} currentUrl={`/courses/${this.state.courseInfo.id}/docs/${this.state.docInfo.id}`} courseInfo={this.state.courseInfo} /> ) }
-          </div>
+          <RevisionsContainer
+            revs={this.state.docInfo.revisions}
+            docInfo={this.state.docInfo}
+            currentUrl={`/courses/${this.state.courseInfo.id}/docs/${this.state.docInfo.id}`}
+            reload={this._loadComponentData}
+          />
         </div>
       );
     } else {
