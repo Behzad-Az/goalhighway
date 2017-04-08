@@ -4,10 +4,10 @@ import HandleModal from '../partials/HandleModal.js';
 class TopRow extends Component {
   constructor(props) {
     super(props);
-    this.createBtnDiv = this.createBtnDiv.bind(this);
+    this._createBtnDiv = this._createBtnDiv.bind(this);
   }
 
-  createBtnDiv(dfltClassName, truePhrase, trueCb, trueColor, validation, enable, falsePhrase, falseCb) {
+  _createBtnDiv(dfltClassName, truePhrase, trueCb, trueColor, validation, enable, falsePhrase, falseCb) {
     let className = enable ? dfltClassName : dfltClassName + ' disabled';
     if (validation) {
       return (
@@ -32,9 +32,7 @@ class TopRow extends Component {
         <h1 className='header'>
           {this.props.companyInfo.name}
         </h1>
-        <div className='row-container'>
-          { this.createBtnDiv('fa fa-upload', <p>New Interview<br/>Question</p>, () => HandleModal('new-question-form'), 'inherit', true, true) }
-        </div>
+        { this._createBtnDiv('fa fa-upload', <p>New Interview<br/>Question</p>, () => HandleModal('new-question-form'), 'inherit', true, true) }
       </div>
     );
   }

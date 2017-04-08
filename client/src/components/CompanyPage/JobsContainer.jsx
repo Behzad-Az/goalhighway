@@ -10,7 +10,7 @@ class JobsContainer extends Component {
           <i className='fa fa-angle-down' aria-hidden='true' />
         </h1>
         { this.props.jobs.map(job => <JobRow key={job.id} job={job} /> ) }
-        { !this.props.jobs[0] && <p>No jobs matching your search.</p> }
+        { !this.props.jobs[0] && <p>No open position for this company.</p> }
       </div>
     );
   }

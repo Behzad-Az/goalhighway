@@ -8,17 +8,11 @@ class JobRow extends Component {
       flagRequest: false,
       flagReason: ''
     };
-    this.handleFlagClick = this.handleFlagClick.bind(this);
-    this.handleFlagSubmit = this.handleFlagSubmit.bind(this);
-    this.renderFlagSelect = this.renderFlagSelect.bind(this);
+    this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
+    this._renderFlagSelect = this._renderFlagSelect.bind(this);
   }
 
-  handleFlagClick() {
-    let flagRequest = !this.state.flagRequest;
-    this.setState({ flagRequest });
-  }
-
-  handleFlagSubmit(e) {
+  _handleFlagSubmit(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     fetch(`/api/flags/jobs/${this.props.job.id}`, {
@@ -36,11 +30,11 @@ class JobRow extends Component {
     .then(() => this.setState(state));
   }
 
-  renderFlagSelect() {
+  _renderFlagSelect() {
     return (
       <small className='control flag-submission'>
         <span className='select is-small'>
-          <select name='flagReason' onChange={this.handleFlagSubmit}>
+          <select name='flagReason' onChange={this._handleFlagSubmit}>
             <option value=''>select reason</option>
             <option value='expired link'>Expired link</option>
             <option value='poor categorization'>Poor categorization</option>
@@ -69,8 +63,8 @@ class JobRow extends Component {
               {this.props.job.tags.map((tag, index) => <span key={index} className='tag'>{tag}</span>)}
               <br />
               <small><Link>Apply Now!</Link></small>
-              <i className='fa fa-flag' aria-hidden='true' onClick={this.handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-              {this.state.flagRequest && this.renderFlagSelect()}
+              <i className='fa fa-flag' aria-hidden='true' onClick={() => this.setState({ flagRequest: !this.state.flagRequest })} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+              { this.state.flagRequest && this._renderFlagSelect() }
             </p>
           </div>
         </div>

@@ -8,24 +8,24 @@ class NewAnswerForm extends Component {
       answer: '',
       outcome: ''
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.handleNewInterviewAnswer = this.handleNewInterviewAnswer.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._handleNewAnsSubmission = this._handleNewAnsSubmission.bind(this);
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.answer &&
            this.state.outcome &&
            this.props.question.id
   }
 
-  handleNewInterviewAnswer() {
+  _handleNewAnsSubmission() {
     let data = {
       answer: this.state.answer,
       outcome: this.state.outcome
@@ -64,13 +64,13 @@ class NewAnswerForm extends Component {
 
             <label className='label'>What was your answer?</label>
             <p className='control'>
-              <textarea className='textarea' name='answer' placeholder='Summarize your answer here' onChange={this.handleChange} />
+              <textarea className='textarea' name='answer' placeholder='Summarize your answer here' onChange={this._handleChange} />
             </p>
 
             <label className='label'>What was the outcome?</label>
             <p className='control'>
               <span className='select'>
-                <select className='select' name='outcome' onChange={this.handleChange}>
+                <select className='select' name='outcome' onChange={this._handleChange}>
                   <option value=''>-</option>
                   <option value='Got the job'>Got the job!</option>
                   <option value='Unsuccessful'>Unsuccessful</option>
@@ -82,7 +82,7 @@ class NewAnswerForm extends Component {
 
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewInterviewAnswer}>Submit</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewAnsSubmission}>Submit</button>
             <button className='button' onClick={() => HandleModal(this.props.modalId)}>Cancel</button>
           </footer>
         </div>

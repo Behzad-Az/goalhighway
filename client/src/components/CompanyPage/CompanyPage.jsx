@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Navbar from '../Navbar/Navbar.jsx';
 import TopRow from './TopRow.jsx';
+import JobsContainer from './JobsContainer.jsx';
+import QaContainer from './QaContainer.jsx';
 import QaRow from './QaRow.jsx';
 import JobRow from './JobRow.jsx';
 import NewQuestionForm from './NewQuestionForm.jsx';
@@ -15,36 +17,36 @@ class CompanyPage extends Component {
       dataLoaded: false,
       pageError: false,
       companyInfo: {},
-      questions: [],
+      qas: [],
       jobs: []
     };
-    this.loadComponentData = this.loadComponentData.bind(this);
-    this.conditionData = this.conditionData.bind(this);
-    this.renderPageAfterData = this.renderPageAfterData.bind(this);
+    this._loadComponentData = this._loadComponentData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
-    this.loadComponentData(this.props.routeParams.company_id);
+    this._loadComponentData(this.props.routeParams.company_id);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.routeParams.company_id !== this.state.companyInfo.id) {
-      this.loadComponentData(nextProps.routeParams.company_id);
+      this._loadComponentData(nextProps.routeParams.company_id);
     }
   }
 
-  loadComponentData(companyId) {
+  _loadComponentData(companyId) {
     companyId = companyId || this.state.companyInfo.id;
     fetch(`/api/companies/${companyId}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       let jobs = resJSON.jobs.map(data => {
         return {
@@ -60,44 +62,32 @@ class CompanyPage extends Component {
     }
   }
 
-  renderPageAfterData() {
+  _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-exclamation-triangle" aria-hidden="true" />
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
             Error in loading up the page
           </p>
         </div>
       );
     } else if (this.state.dataLoaded) {
       return (
-        <div className="main-container">
+        <div className='main-container'>
           <SearchBar />
           <TopRow companyInfo={this.state.companyInfo} />
-          <NewQuestionForm companyInfo={this.state.companyInfo} reload={this.loadComponentData} />
-          <h1 className="header">
-            Open Positions:
-            <i className="fa fa-angle-down" aria-hidden="true" />
-          </h1>
-          <div className="job-rows">
-            { this.state.jobs.map((job, index) => <JobRow key={index} job={job} />) }
-          </div>
-          <h1 className="header">
-            Interview Questions / Answers:
-            <i className="fa fa-angle-down" aria-hidden="true" />
-          </h1>
-          <div className="qa-rows">
-            { this.state.questions.map((qa, index) => <QaRow key={index} qa={qa} reload={this.loadComponentData} companyId={this.state.companyInfo.id} />) }
-          </div>
+          <NewQuestionForm companyInfo={this.state.companyInfo} reload={this._loadComponentData} />
+          <JobsContainer jobs={this.state.jobs} />
+          <QaContainer qas={this.state.qas} reload={this._loadComponentData} companyId={this.state.companyInfo.id} />
         </div>
       );
     } else {
       return (
-        <div className="main-container">
-          <p className="page-msg">
-            <i className="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-            <span className="sr-only">Loading...</span>
+        <div className='main-container'>
+          <p className='page-msg'>
+            <i className='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+            <span className='sr-only'>Loading...</span>
           </p>
         </div>
       );
@@ -106,10 +96,10 @@ class CompanyPage extends Component {
 
   render() {
     return (
-      <div className="company-page">
+      <div className='company-page'>
         <Navbar />
         <LeftSideBar />
-        { this.renderPageAfterData() }
+        { this._renderPageAfterData() }
         <RightSideBar />
       </div>
     );
