@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import CourseFeed from '../CoursePage/CourseFeed/CourseFeed.jsx';
 
 class RightSideBar extends Component {
   constructor(props) {
@@ -57,7 +56,6 @@ class RightSideBar extends Component {
             <p><i className='fa fa-slideshare' aria-hidden='true' /> {this.state.tutorCount} tutors</p>
             <small>As of - 1 Jan 2016</small>
           </div>
-          <CourseFeed courseFeed={this.state.courseFeeds} />
         </div>
       </div>
     ) : <p></p>;

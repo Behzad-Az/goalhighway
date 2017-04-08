@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactAlert from '../../partials/ReactAlert.jsx';
 
-class CommentRow extends Component {
+class FeedRow extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
@@ -9,7 +9,7 @@ class CommentRow extends Component {
   }
 
   _handleDeletionRequest() {
-    fetch(`/api/courses/${this.props.comment.course_id}/feed/${this.props.comment.id}`, {
+    fetch(`/api/courses/${this.props.feed.course_id}/feed/${this.props.feed.id}`, {
       method: 'DELETE',
       credentials: 'same-origin',
       headers: {
@@ -19,10 +19,7 @@ class CommentRow extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) {
-        this.reactAlert.showAlert('Course feed removed', 'info');
-        this.props.updateCommentsOptimistically(this.props.comment, 'delete');
-      }
+      if (resJSON) { this.reactAlert.showAlert('Course feed removed', 'info'); }
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to remove course feed', 'error'));
@@ -30,7 +27,7 @@ class CommentRow extends Component {
 
   render() {
     return (
-      <article className='media comment-row'>
+      <article className='media feed-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src='http://bulma.io/images/placeholders/128x128.png' />
@@ -39,13 +36,13 @@ class CommentRow extends Component {
         <div className='media-content'>
           <div className='content'>
             <p>
-              <strong>{this.props.comment.commenter_name}</strong>
+              <strong>{this.props.feed.commenter_name}</strong>
               <br />
-              {this.props.comment.content}
+              {this.props.feed.content}
               <br />
               <small><a>Like</a> . </small>
               <small><a>Reply</a> . </small>
-              { this.props.comment.editable && <small><a onClick={this._handleDeletionRequest}>Remove</a> . </small> }
+              { this.props.feed.editable && <small><a onClick={this._handleDeletionRequest}>Remove</a> . </small> }
               <small>3 hrs</small>
             </p>
           </div>
@@ -55,4 +52,4 @@ class CommentRow extends Component {
   }
 }
 
-export default CommentRow;
+export default FeedRow;

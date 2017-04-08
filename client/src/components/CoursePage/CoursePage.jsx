@@ -3,8 +3,8 @@ import Navbar from '../Navbar/Navbar.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
-import DocsRow from './DocsRow.jsx';
-import ItemsRow from './ItemsRow.jsx';
+import DocsContainer from './DocsContainer.jsx';
+import ItemsContainer from './ItemsContainer.jsx';
 import NewDocForm from './NewDocForm.jsx';
 import NewReAssistForm from '../partials/NewReqAssistForm.jsx';
 import NewItemForm from './NewItemForm.jsx';
@@ -30,7 +30,6 @@ class CoursePage extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._updateState = this._updateState.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
@@ -91,11 +90,11 @@ class CoursePage extends Component {
           <NewDocForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
           <NewItemForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
           <NewReAssistForm courseInfo={this.state.courseInfo} updateParentState={this._updateState} />
-          <DocsRow docs={this.state.asgReports} header='Assignments and Reports' />
-          <DocsRow docs={this.state.lectureNotes} header='Lecture Notes' />
-          <DocsRow docs={this.state.sampleQuestions} header='Sample Questions' />
-          <ItemsRow items={this.state.itemsForSale} reload={this._loadComponentData} />
-          <CourseFeed courseId={this.state.courseInfo.id} courseFeed={this.state.courseFeed} />
+          <DocsContainer docs={this.state.asgReports} header='Assignments and Reports' />
+          <DocsContainer docs={this.state.lectureNotes} header='Lecture Notes' />
+          <DocsContainer docs={this.state.sampleQuestions} header='Sample Questions' />
+          <ItemsContainer items={this.state.itemsForSale} reload={this._loadComponentData} />
+          <CourseFeed courseId={this.state.courseInfo.id} courseFeed={this.state.courseFeed} reload={this._loadComponentData} />
         </div>
       );
     } else {
@@ -108,10 +107,6 @@ class CoursePage extends Component {
         </div>
       );
     }
-  }
-
-  _updateState(newState) {
-    this.setState(newState);
   }
 
   render() {

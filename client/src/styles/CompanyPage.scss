@@ -5,8 +5,8 @@
     padding: $top_margin $default_margin; width: 60%; min-width: 360px; display: inline-block;
 
     .header {
-      background-color: $dark-blue; color: white; padding: 5px; font-weight: bold; margin-bottom: $default_margin/2;
-      .fa { float: right; padding-right: 5px; }
+      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2;
+      .fa { float: right; }
     }
 
     .page-msg {

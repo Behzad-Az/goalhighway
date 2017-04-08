@@ -1,11 +1,11 @@
 .course-page {
-  background-color: #f5f5f5; padding: 0 20px 20px 20px; min-height: 100vh; overflow: auto;
+  background-color: #f5f5f5; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
-    padding: $top_margin $default_margin; width: 60%; min-width: 360px; display: inline-block; margin: auto;
+    padding: $top_margin $default_margin; width: 60%; min-width: 360px; display: inline-block;
 
     .header {
-      background-color: $dark-blue; color: white; padding: 5px; font-weight: bold; margin-bottom: $default_margin/2; overflow: hidden;
+      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2;
       .fa { float: right; }
       .course-name { font-weight: bold; }
       .course-desc { font-size: 12px; }
@@ -17,64 +17,58 @@
       .fa, .sr-only { font-size: 16px; padding: 3px }
     }
 
-    .row-container {
+    .top-row {
       margin-bottom: $default_margin/2;
       .top-row-button {
         display: inline-block; width: 16.65%; text-align: center;
-        .fa { cursor: pointer; font-size: 35px; }
+        .fa { cursor: pointer; font-size: 35px; &:hover { transform: scale(1.1); } }
         .fa.disabled { pointer-events: none; cursor: default; opacity: 0.5 }
         p { font-size: 13px; }
       }
+      .top-row-star {
+        display: inline-block; width: 16.65%; text-align: center;
+        a { color: inherit; }
+        .outer {
+          position: relative; display: inline-block; &:hover { transform: scale(1.1); }
+          .inner { display: inline-block; position: absolute; top: 0; left: 0; overflow: hidden; }
+          i { cursor: pointer; font-size: 35px; }
+        }
+      }
     }
 
-    .docs-row, .items-row {
-      display: flex; flex-wrap: wrap; flex-direction: row;
-      .doc-index.card, .item-index.card {
-        margin: 0 $default_margin/4 $default_margin/2 $default_margin/4; width: 230px; height: 100%;
-        .card-content {
-          padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-          .card-image .button { position: absolute; right: -10px; height: 30px; top: -10px; }
-          .card-text {
-            max-height: 300px; overflow: scroll;
-            .name { font-weight: bold; margin: 10px 0; }
-            .date { font-size: 12px; margin: 10px 0; }
-            .description { font-style: italic; margin: 10px 0; }
-            .price span { font-weight: bold; }
-          }
-          .card-image .image { display: block; margin: auto; }
-          .card-foot {
-            line-height: 30px; text-align: center;
-            i { vertical-align: middle; padding: 0 5px; }
-            .text-link { a { color: $dark-blue; } :hover { color: $pumpkin; } }
+    .docs-container, .items-container {
+      margin-bottom: $default_margin/2;
+      .docs-row, .items-row {
+        display: flex; flex-wrap: wrap; flex-direction: row;
+        .doc-index.card, .item-index.card {
+          margin: 0 $default_margin/4 $default_margin/2 $default_margin/4; width: 230px; height: 100%;
+          .card-content {
+            padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+            .card-image .button { position: absolute; right: -10px; height: 30px; top: -10px; }
+            .card-text {
+              max-height: 300px; overflow: scroll;
+              .name { font-weight: bold; margin: 10px 0; }
+              .date { font-size: 12px; margin: 10px 0; }
+              .description { font-style: italic; margin: 10px 0; }
+              .price { font-weight: bold; }
+            }
+            .card-image .image { display: block; margin: auto; }
+            .card-foot {
+              line-height: 30px; text-align: center;
+              i { vertical-align: middle; padding: 0 5px; }
+              a { color: $dark-blue; &:hover { color: $pumpkin; } }
+            }
           }
         }
       }
     }
 
-    .top-row-star {
-      display: inline-block; width: 16.65%; text-align: center;
-      a { color: inherit; }
-      .outer {
-        position: relative; display: inline-block;
-        .inner { display: inline-block; position: absolute; top: 0; left: 0; overflow: hidden; }
-        i { cursor: pointer; font-size: 35px; }
-      }
-    }
-
     .feed-container {
-      padding-top: 0;
-      .feed-rows { padding-top: 15px; }
-      .header { background-color: $dark-blue; color: white; font-weight: bold; margin-bottom: 20px; overflow: hidden; border-radius: 10px; .fa { float: right; } }
-      .button.is-primary { background-color: $dark-blue; }
-      .button.is-primary:hover, .button.is-primary.is-hovered { background-color: darken($dark-blue, 10%); }
+      margin-bottom: $default_margin/2;
+      .button.is-primary { background-color: $dark-blue; &:hover { background-color: darken($dark-blue, 10%) } }
       .char-counter { position: absolute; right: 0; font-size: 12px; }
-      .filter-feed-controls .filter.control {
-          margin: 0; min-width: 25%; max-width: 25%;
-          input { display: block; margin: auto; }
-          .checkbox { text-align: center; display: block; }
-      }
-      hr { margin: 0 0 20px 0; }
+      .feed-row { background-color: white; padding: $default_margin/2; margin: 0; }
+      hr { margin: $default_margin/2 0; }
     }
   }
 }
-

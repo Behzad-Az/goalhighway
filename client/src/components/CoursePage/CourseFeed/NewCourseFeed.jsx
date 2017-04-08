@@ -59,7 +59,7 @@ class NewCourseFeed extends Component {
     })
     .catch(err => console.error('Unable to post new course feed - ', err))
     .then(() => {
-      this.props.updateCommentsOptimistically(this.state, 'new');
+      this.props.reload();
       this._clearForm();
     });
   }
@@ -67,10 +67,6 @@ class NewCourseFeed extends Component {
   render() {
     return (
       <div className='new-course-feed'>
-        <h1 className='header'>
-          Course Feed
-          <i onClick={this.handleModal} className='fa fa-angle-down' aria-hidden='true' />
-        </h1>
         <div className='control is-horizontal'>
           <div className='control is-grouped'>
             <p className='control is-expanded'>
@@ -80,7 +76,6 @@ class NewCourseFeed extends Component {
               <div className='select is-fullwidth'>
                 <select name='category' onChange={this._handleChange} value={this.state.category}>
                   <option value=''>Select Category</option>
-                  { this.props.categories.map((category, index) => <option key={index} value={category.name}>{category.value}</option> )}
                 </select>
               </div>
             </div>

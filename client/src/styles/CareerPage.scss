@@ -5,9 +5,9 @@
     padding: $top_margin $default_margin $default_margin 270px; width: 75%; min-width: 310px; display: inline-block;
 
     .header {
-      background-color: $dark-blue; color: white; padding: 5px; font-weight: bold; margin-bottom: $default_margin/2;
+      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2;
       .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; &:hover { font-weight: bold; } }
-      .fa { float: right; padding-right: 5px; }
+      .fa { float: right; }
     }
 
     .page-msg {
@@ -32,7 +32,7 @@
       .resumes-row {
         display: flex; flex-wrap: wrap; flex-direction: row;
         .resume-index.card {
-          margin: 0 $default_margin/2 $default_margin/2 $default_margin/2; width: 230px; height: 100%;
+          margin: 0 $default_margin/4 $default_margin/2 $default_margin/4; width: 230px; height: 100%;
           .card-content {
             padding: 1.5rem 1.5rem 0.5rem 1.5rem;
             .card-image .button { position: absolute; right: -10px; height: 30px; top: -10px; }
