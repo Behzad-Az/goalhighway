@@ -1,13 +1,4 @@
-$light-blue: #82ABCA;
-$dark-blue: #004E89;
-$eggshell: #EFEFD0;
-$peach: #F7C59F;
-$pumpkin: #FF6B35;
-$bad-red: #9D0600;
-
-$default_margin: 20px;
-$top_margin: 60px;
-
+@import './GlobalStyles';
 @import './navbar';
 @import './IndexPage';
 @import './CoursePage';
@@ -25,4 +16,3 @@ $top_margin: 60px;
 @import './ReactSelect';
 @import './SearchBar';
 @import './AutoSuggestion';
-@import './GlobalStyles';

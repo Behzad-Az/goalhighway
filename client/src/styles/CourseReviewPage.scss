@@ -4,16 +4,16 @@
   .main-container {
     padding: $top_margin $default_margin $default_margin $default_margin; width: 60%; min-width: 360px; display: inline-block;
 
+    .page-msg {
+      font-size: 16px; text-align: center;
+      .fa, .sr-only { font-size: 16px; padding: 3px }
+    }
+
     .header {
       background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
       .sort-select { float: right; height: 20px; }
       .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; &:hover { font-weight: bold } }
       a { color: white; .course-name { font-weight: bold } .course-desc { font-size: 12px } &:hover { color: $peach; } }
-    }
-
-    .page-msg {
-      font-size: 16px; text-align: center;
-      .fa, .sr-only { font-size: 16px; padding: 3px }
     }
 
     .top-row {

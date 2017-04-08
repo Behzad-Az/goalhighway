@@ -5,8 +5,7 @@ import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import ResumeReviewFeedRow from './ResumeReviewFeedRow.jsx';
-import CourseFeedRow from './CourseFeedRow.jsx';
+import FeedsContainer from './FeedsContainer.jsx';
 
 class FeedPage extends Component {
   constructor(props) {
@@ -60,14 +59,7 @@ class FeedPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-            <h1 className='header'>
-              My Feed:
-            </h1>
-            <div className='feed-rows'>
-              { this.state.resumeReviewFeeds.map(feed => <ResumeReviewFeedRow key={feed.id} feed={feed} /> ) }
-              { this.state.courseFeeds.map(feed => <CourseFeedRow key={feed.id} feed={feed} /> ) }
-              { !this.state.resumeReviewFeeds[0] && !this.state.courseFeeds[0] && <p className='message'>No resumeReviewFeeds matching your profile...</p> }
-            </div>
+          <FeedsContainer resumeReviewFeeds={this.state.resumeReviewFeeds} courseFeeds={this.state.courseFeeds} />
         </div>
       );
     } else {

@@ -67,7 +67,7 @@ class CourseFeedRow extends Component {
 
   render() {
     return (
-      <article className='media resume-review-row'>
+      <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src='http://bulma.io/images/placeholders/128x128.png' />
