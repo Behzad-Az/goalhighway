@@ -5,7 +5,8 @@ import CareerControlBar from './CareerControlBar.jsx';
 import JobRow from './JobRow.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
-import ResumesRow from './ResumesRow.jsx';
+import ResumesContainer from './ResumesContainer.jsx';
+import JobsContainer from './JobsContainer.jsx';
 
 class CareerPage extends Component {
   constructor(props) {
@@ -72,14 +73,8 @@ class CareerPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <ResumesRow reload={this._loadComponentData} resumes={this.state.resumes} />
-          <h1 className='header'>
-            Open positions:
-          </h1>
-          <div className='career-rows'>
-            { this.state.jobs.map((job, index) => <JobRow key={index} job={job} /> ) }
-            { !this.state.jobs[0] && <p className='message'>No jobs matching your search...</p> }
-          </div>
+          <ResumesContainer reload={this._loadComponentData} resumes={this.state.resumes} />
+          <JobsContainer jobs={this.state.jobs} />
         </div>
       );
     } else {

@@ -1,11 +1,12 @@
 .career-page {
-  background-color: #f5f5f5; padding: 0 $default_margin $default_margin $default_margin; min-height: 100vh; overflow: auto;
+  background-color: #f5f5f5; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
-    padding: $top_margin $default_margin $default_margin 270px; width: 75%; min-width: 310px; display: inline-block; margin: auto; vertical-align: top;
+    padding: $top_margin $default_margin $default_margin 270px; width: 75%; min-width: 310px; display: inline-block;
+
     .header {
-      background-color: $dark-blue; color: white; padding: 5px; font-weight: bold; margin-bottom: $default_margin / 2; overflow: hidden;
-      .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; }
+      background-color: $dark-blue; color: white; padding: 5px; font-weight: bold; margin-bottom: $default_margin/2;
+      .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; &:hover { font-weight: bold; } }
     }
 
     .page-msg {
@@ -13,9 +14,10 @@
       .fa, .sr-only { font-size: 16px; padding: 3px }
     }
 
-    .career-rows {
+    .jobs-container {
+      margin-bottom: $default_margin/2;
       .job-row {
-        background-color: white; padding: $default_margin/2; margin-top: $default_margin/2; border: 1px darken(#f5f5f5, 20%) solid;
+        background-color: white; padding: $default_margin/2; margin: 0 0 $default_margin/2 0; border: 1px darken(#f5f5f5, 20%) solid;
         .button {  height: 100%; font-size: 10px; color: $dark-blue; float: right; }
         .tag { margin: 3px; background-color: $light-blue; color: white; font-weight: bold; }
         .fa {
@@ -23,16 +25,16 @@
           &:hover { transform: scale(1.1); }
         }
         .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
-        small a { color: $dark-blue; &:hover { color: $pumpkin; } }
+        a { color: $dark-blue; &:hover { color: $pumpkin; } }
       }
     }
 
-    .row-container {
-      margin-bottom: $default_margin;
+    .resumes-container {
+      margin-bottom: $default_margin/2;
       .resumes-row {
         display: flex; flex-wrap: wrap; flex-direction: row;
         .resume-index.card {
-          margin: $default_margin/2; width: 230px; height: 100%;
+          margin: 0 $default_margin/2 $default_margin/2 $default_margin/2; width: 230px; height: 100%;
           .card-content {
             padding: 1.5rem 1.5rem 0.5rem 1.5rem;
             .card-image .button { position: absolute; right: -10px; height: 30px; top: -10px; }
@@ -54,6 +56,7 @@
         }
       }
     }
+
   }
 
   .hamburger { display: none; }
