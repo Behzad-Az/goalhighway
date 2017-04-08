@@ -5,11 +5,10 @@ import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
-// import RevisionRow from './RevisionRow.jsx';
-import RevisionsContainer from './RevisionsContainer.jsx';
-import NewRevisionForm from './NewRevisionForm.jsx';
 import TopRow from './TopRow.jsx';
+import RevisionsContainer from './RevisionsContainer.jsx';
 import NewReAssistForm from '../partials/NewReqAssistForm.jsx';
+import NewRevisionForm from './NewRevisionForm.jsx';
 
 class DocPage extends Component {
   constructor(props) {
