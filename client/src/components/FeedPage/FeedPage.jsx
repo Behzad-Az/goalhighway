@@ -26,7 +26,7 @@ class FeedPage extends Component {
     this._loadComponentData();
   }
 
-  _loadComponentData(courseId, docId) {
+  _loadComponentData() {
     fetch('/api/users/currentuser/feed', {
       method: 'GET',
       credentials: 'same-origin'

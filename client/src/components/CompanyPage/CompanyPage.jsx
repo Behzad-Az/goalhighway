@@ -3,8 +3,6 @@ import Navbar from '../Navbar/Navbar.jsx';
 import TopRow from './TopRow.jsx';
 import JobsContainer from './JobsContainer.jsx';
 import QaContainer from './QaContainer.jsx';
-import QaRow from './QaRow.jsx';
-import JobRow from './JobRow.jsx';
 import NewQuestionForm from './NewQuestionForm.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';

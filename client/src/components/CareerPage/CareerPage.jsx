@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Navbar from '../Navbar/Navbar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import CareerControlBar from './CareerControlBar.jsx';
-import JobRow from './JobRow.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import ResumesContainer from './ResumesContainer.jsx';

@@ -67,7 +67,7 @@ class QaRow extends Component {
               { this.state.flagRequest && this._renderFlagSelect() }
             </p>
             { this.state.showAnswers && <p><button className='button new-answer' onClick={() => HandleModal(modalId)}>Post New Answer</button></p> }
-            { this.state.showAnswers && this.props.qa.answers.map(ans => <AnswerRow key={ans.id} ans={ans} index={index + 1}/>) }
+            { this.state.showAnswers && this.props.qa.answers.map((ans, index) => <AnswerRow key={ans.id} ans={ans} index={index + 1}/>) }
             { this.state.showAnswers && !this.props.qa.answers[0] && <p>No answers provided yet...</p> }
           </div>
         </div>
