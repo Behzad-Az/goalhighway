@@ -1,8 +1,8 @@
 .side-bar {
-  display: inline-block; margin-top: $top_margin;
+  display: inline-block; margin-top: $top_margin; position: fixed;
   .card-content { padding: 15px; }
-  &.right { float: right; width: 25%; }
-  &.left { float: left; width: 15%; }
+  &.right { width: $sidebar_width_right; }
+  &.left { width: $sidebar_width_left; }
   .image {
     &.is-4by3 img { height: 100%; width: auto; padding: 5px; margin: auto; }
     &.inst-logo img { width: 40px; }

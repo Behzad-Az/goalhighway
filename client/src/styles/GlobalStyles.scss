@@ -6,7 +6,10 @@ $pumpkin: #FF6B35;
 $bad-red: #9D0600;
 
 $default_margin: 20px;
+$sidebar_width_right: 270px;
+$sidebar_width_left: 180px;
 $top_margin: 60px;
+$main_container_width: calc(100% - 270px);
 
 body,html {
   margin:0;
