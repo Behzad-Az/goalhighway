@@ -26,6 +26,7 @@ class App extends React.Component {
     })
     .then(response => response.json())
     .then(resJSON => {
+      console.log("userInfo: ", resJSON.userInfo);
       if (!resJSON.authorized) {
         replace('/login');
         callPage();
@@ -37,12 +38,7 @@ class App extends React.Component {
             break;
 
           case '/users/:user_id':
-            if (nextState.params.user_id != resJSON.userInfo.user_id) { replace(`/users/${resJSON.userInfo.user_id}`); }
-            callPage();
-            break;
-
-          case '/users/:user_id/jobs':
-            if (nextState.params.user_id != resJSON.userInfo.user_id) { replace(`/users/${resJSON.userInfo.user_id}/jobs`); }
+            if (nextState.params.user_id != resJSON.userInfo.username) { replace(`/users/${resJSON.userInfo.username}`); }
             callPage();
             break;
 
@@ -65,7 +61,7 @@ class App extends React.Component {
         <Route path={'/courses/:course_id/reviews'} component={CourseReviewPage} onEnter={this.validateAuth} />
         <Route path={'/institutions/:inst_id'} component={InstPage} onEnter={this.validateAuth} />
         <Route path={'/users/:user_id'} component={UserProfilePage} onEnter={this.validateAuth} />
-        <Route path={'/users/:user_id/jobs'} component={CareerPage} onEnter={this.validateAuth} />
+        <Route path={'/jobs'} component={CareerPage} onEnter={this.validateAuth} />
         <Route path={'/companies/:company_id'} component={CompanyPage} onEnter={this.validateAuth} />
         <Route path={'/feed'} component={FeedPage} onEnter={this.validateAuth} />
         <Route path={'/login'} component={RegisterLoginPage} />

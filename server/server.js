@@ -205,7 +205,7 @@ app.get('/api/institutions/:inst_id/courses', (req, res) => {
   getInstCourses(req, res, knex, req.session.user_id);
 });
 
-app.get('/api/users/:user_id/jobs', (req, res) => {
+app.get('/api/jobs', (req, res) => {
   getJobPageData(req, res, knex, req.session.user_id, esClient);
 });
 

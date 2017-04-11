@@ -28,7 +28,7 @@ class CareerPage extends Component {
   }
 
   _loadComponentData() {
-    fetch('/api/users/currentuser/jobs', {
+    fetch('/api/jobs', {
       method: 'GET',
       credentials: 'same-origin'
     })
