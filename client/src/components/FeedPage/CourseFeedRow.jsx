@@ -83,11 +83,11 @@ class CourseFeedRow extends Component {
               <br />
               {this.props.feed.content}{this._decodeDocumentCategory}
               <br />
-              <small>
-                <Link>Download Document</Link>
-              </small>
+              <small><Link>Download Document</Link></small>
               <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-              {this.state.flagRequest && this._renderFlagSelect()}
+              { this.state.flagRequest && this._renderFlagSelect() }
+              <br />
+              <small>{this.props.feed.created_at.slice(0, 10)}</small>
             </p>
           </div>
         </div>

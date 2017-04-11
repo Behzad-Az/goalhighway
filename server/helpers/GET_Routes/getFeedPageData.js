@@ -8,7 +8,7 @@ const getFeedPageData = (req, res, knex, user_id) => {
 
   const getCourseFeeds = courseIds => knex('course_feed')
     .innerJoin('courses', 'course_id', 'courses.id')
-    .select('course_feed.id', 'short_display_name', 'commenter_name', 'category', 'content', 'course_id', 'doc_id', 'tutor_log_id')
+    .select('course_feed.id', 'course_feed.created_at', 'short_display_name', 'commenter_name', 'category', 'content', 'course_id', 'doc_id', 'tutor_log_id')
     .whereIn('course_id', courseIds);
 
   const getResumeFeeds = () => knex('resume_review_feed')
