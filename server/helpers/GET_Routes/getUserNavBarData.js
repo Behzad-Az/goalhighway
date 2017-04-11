@@ -20,7 +20,7 @@ const getUserNavBarData = (req, res, knex, user_id) => {
     res.send({ userInfo, notifications });
   })
   .catch(err => {
-    console.error("Error inside getUserNavBarData.js: ", err);
+    console.error('Error inside getUserNavBarData.js: ', err);
     res.send(false);
   });
 };

@@ -98,7 +98,7 @@ class Navbar extends Component {
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-mobile' to='/jobs'>Jobs</Link>
           </div>
 
-          <Link className='nav-item' onClick={this._showNotifications}>
+          <Link className='nav-item' to='/feed'>
             <i className='fa fa-bell' aria-hidden='true' style={{ color: this.state.unViewedNotif ? '#9D0600' : 'inherit' }}/>
           </Link>
 
@@ -114,12 +114,7 @@ class Navbar extends Component {
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-tablet' to='/jobs'>Jobs</Link>
             <span className='nav-item has-shadow'>Hello: {this.state.userInfo.username}</span>
 
-            <Link className='nav-item is-tab' to='/profile'>
-              <figure className='image is-16x16'>
-                <img src='http://bulma.io/images/jgthms.png' />
-              </figure>
-              Profile
-            </Link>
+            <Link className='nav-item is-tab' to='/profile'>Profile</Link>
             <Link className='nav-item is-tab' onClick={this._handleLogout}>Log out</Link>
           </div>
         </div>

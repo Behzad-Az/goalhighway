@@ -43,18 +43,17 @@ var MultiSelect = React.createClass({
   },
   render () {
     return (
-      <div className="section">
-        <h3 className="section-heading">{this.props.label}</h3>
-        <Select multi simpleValue disabled={this.state.disabled} value={this.state.value} placeholder="Select your favourite(s)" options={this.state.options} onChange={this.handleSelectChange} />
-
-        <div className="checkbox-list">
-          <label className="checkbox">
-            <input type="checkbox" className="checkbox-control" checked={this.state.disabled} onChange={this.toggleDisabled} />
-            <span className="checkbox-label">Disable the control</span>
+      <div className='section'>
+        <h3 className='section-heading'>{this.props.label}</h3>
+        <Select multi simpleValue disabled={this.state.disabled} value={this.state.value} placeholder='Select your favourite(s)' options={this.state.options} onChange={this.handleSelectChange} />
+        <div className='checkbox-list'>
+          <label className='checkbox'>
+            <input type='checkbox' className='checkbox-control' checked={this.state.disabled} onChange={this.toggleDisabled} />
+            <span className='checkbox-label'>Disable the control</span>
           </label>
-          <label className="checkbox">
-            <input type="checkbox" className="checkbox-control" checked={this.state.crazy} onChange={this.toggleChocolate} />
-            <span className="checkbox-label">I don't like Chocolate (disabled the option)</span>
+          <label className='checkbox'>
+            <input type='checkbox' className='checkbox-control' checked={this.state.crazy} onChange={this.toggleChocolate} />
+            <span className='checkbox-label'>I don't like Chocolate (disabled the option)</span>
           </label>
         </div>
       </div>

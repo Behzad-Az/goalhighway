@@ -14,6 +14,7 @@ class RightSideBar extends Component {
       tutorCount: 'N/A'
     };
     this._conditionData = this._conditionData.bind(this);
+    this._commaSeparateNumber = this._commaSeparateNumber.bind(this);
   }
 
   componentWillMount() {
@@ -35,6 +36,10 @@ class RightSideBar extends Component {
     }
   }
 
+  _commaSeparateNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
   render() {
     return this.state.dataLoaded ? (
       <div className='card side-bar right'>
@@ -50,10 +55,10 @@ class RightSideBar extends Component {
             </div>
           </div>
           <div className='content'>
-            <p><i className='fa fa-users' aria-hidden='true' /> {this.state.studentCount} peers</p>
-            <p><i className='fa fa-graduation-cap' aria-hidden='true' /> {this.state.courseCount} courses available</p>
-            <p><i className='fa fa-file' aria-hidden='true' /> {this.state.revCount} files posted.</p>
-            <p><i className='fa fa-slideshare' aria-hidden='true' /> {this.state.tutorCount} tutors</p>
+            <p><i className='fa fa-users' aria-hidden='true' /> {this._commaSeparateNumber(this.state.studentCount)} peers</p>
+            <p><i className='fa fa-graduation-cap' aria-hidden='true' /> {this._commaSeparateNumber(this.state.courseCount)} courses available</p>
+            <p><i className='fa fa-file' aria-hidden='true' /> {this._commaSeparateNumber(this.state.revCount)} files posted.</p>
+            <p><i className='fa fa-slideshare' aria-hidden='true' /> {this._commaSeparateNumber(this.state.tutorCount)} tutors</p>
             <small>As of - 1 Jan 2016</small>
           </div>
         </div>

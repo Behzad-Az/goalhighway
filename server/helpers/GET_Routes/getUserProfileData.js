@@ -14,7 +14,7 @@ const getUserProfileData = (req, res, knex, user_id) => {
     let userInfo = results[0];
     res.send( userInfo );
   }).catch(err => {
-    console.error("Error in getUserProfileData.js: ", err);
+    console.error('Error in getUserProfileData.js: ', err);
     res.send(false);
   });
 

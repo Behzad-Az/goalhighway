@@ -3,7 +3,7 @@ let institutions = [
   { inst_short_name: 'SFU', inst_long_name: 'Simon Fraser University', id: 2 }
 ];
 
-const getInstValue = inst_long_name => inst_long_name.toLowerCase().replace(/ /g, "_");
+const getInstValue = inst_long_name => inst_long_name.toLowerCase().replace(/ /g, '_');
 const getInstDisplayName = (inst_long_name, inst_short_name) => inst_short_name ? inst_long_name + ` (${inst_short_name})` : inst_long_name;
 
 exports.seed = function(knex, Promise) {

@@ -39,7 +39,7 @@ const getLeftSideBarData = (req, res, knex, user_id) => {
     contributionCount = parseInt(results[3][0].count) + parseInt(results[4][0].count) + parseInt(results[5][0].count);
     res.send({ userInfo, progName, instName, contributionCount });
   }).catch(err => {
-    console.error("Error inside getLeftSideBarData.js: ", err);
+    console.error('Error inside getLeftSideBarData.js: ', err);
     res.send(false);
   });
 

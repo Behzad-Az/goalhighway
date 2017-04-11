@@ -26,7 +26,6 @@ class App extends React.Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      console.log("userInfo: ", resJSON.userInfo);
       if (!resJSON.authorized) {
         replace('/login');
         callPage();

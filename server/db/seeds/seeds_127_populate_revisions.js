@@ -2,7 +2,7 @@ const randomNum = (maxNum) => {
   return Math.floor((Math.random() * maxNum) + 1);
 }
 
-const suffix = ["blah", ".xlsx", ".docx", ".pdf", ".zip", ".default"];
+const suffix = ['blah', '.xlsx', '.docx', '.pdf', '.zip', '.default'];
 
 exports.seed = function(knex, Promise) {
   let promiseArr = [];
@@ -35,5 +35,4 @@ exports.seed = function(knex, Promise) {
   }
 
   return Promise.all(promiseArr);
-  // return Promise.all([]);
 };

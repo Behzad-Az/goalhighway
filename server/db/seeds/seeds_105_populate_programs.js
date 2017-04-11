@@ -6,7 +6,7 @@ let programs = [
   { prog_short_name: 'CHEM', prog_long_name: 'Chemical Eng' }
 ];
 
-const getProgValue = prog_long_name => prog_long_name.toLowerCase().replace(/ /g, "_");
+const getProgValue = prog_long_name => prog_long_name.toLowerCase().replace(/ /g, '_');
 const getProgDisplayName = (prog_long_name, prog_short_name) => prog_short_name ? prog_long_name + ` (${prog_short_name})` : prog_long_name;
 
 exports.seed = function(knex, Promise) {

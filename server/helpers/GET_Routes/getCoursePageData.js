@@ -10,7 +10,7 @@ const getCoursePageData = (req, res, knex, user_id) => {
       doc.type = revisions[0].type;
       resolve();
     }).catch(err => {
-      reject("Could not get revisions for course");
+      reject('Could not get revisions for course');
     });
   });
 
@@ -21,7 +21,7 @@ const getCoursePageData = (req, res, knex, user_id) => {
       }, {like_count : 0}).like_count;
       resolve();
     }).catch(err => {
-      reject("could not query like doc count.");
+      reject('could not query like doc count.');
     });
   });
 
@@ -94,7 +94,7 @@ const getCoursePageData = (req, res, knex, user_id) => {
   }).then(() => {
     res.send({ docs, courseInfo, itemsForSale, courseFeed });
   }).catch(err => {
-    console.error("Error inside getCoursePageData.js: ", err);
+    console.error('Error inside getCoursePageData.js: ', err);
     res.send(false);
   });
 

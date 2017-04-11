@@ -23,23 +23,6 @@ const getFeedPageData = (req, res, knex, user_id) => {
     res.send(false);
   });
 
-
-  // Promise.all([
-  //   getCourseIds(),
-  //   getInstId()
-  // ])
-  // .then(results => {
-  //   let courseIds = results[0].map(course => course.course_id);
-  //   instId = results[1][0].inst_id;
-  //   return getCourseFeeds(courseIds);
-  // })
-  // .then(courseFeeds => {
-  //   res.send({ courseFeeds, instId });
-  // })
-  // .catch(err => {
-  //   console.error("Error inside getFeedPageData.js: ", err);
-  //   res.send(false);
-  // });
 };
 
 module.exports = getFeedPageData;

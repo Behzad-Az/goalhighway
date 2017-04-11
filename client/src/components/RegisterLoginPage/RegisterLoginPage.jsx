@@ -27,12 +27,12 @@ class LoginRegisterPage extends Component {
   returnRegisterSuccessMsg() {
     if (this.state.registerSuccessStatus) {
       return (
-        <article className="message is-success">
-          <div className="message-header">
+        <article className='message is-success'>
+          <div className='message-header'>
             <p><strong>Thank you for registring and welcome!</strong>!</p>
-            <button className="delete" onClick={() => this.handleSuccessfulRegister(false)} />
+            <button className='delete' onClick={() => this.handleSuccessfulRegister(false)} />
           </div>
-          <div className="message-body">
+          <div className='message-body'>
             Please login.
           </div>
         </article>
@@ -43,12 +43,12 @@ class LoginRegisterPage extends Component {
   returnErrorMsg() {
     if (this.state.badInputStatus) {
       return (
-        <article className="message is-danger">
-          <div className="message-header">
+        <article className='message is-danger'>
+          <div className='message-header'>
             <strong>Invalid entry!</strong>
-            <button className="delete" onClick={() => this.handleBadInput(false, '')} />
+            <button className='delete' onClick={() => this.handleBadInput(false, '')} />
           </div>
-          <div className="message-body">
+          <div className='message-body'>
             { this.state.errorMsg }
           </div>
         </article>
@@ -58,9 +58,9 @@ class LoginRegisterPage extends Component {
 
   render() {
     return (
-      <div className="register-login-page">
+      <div className='register-login-page'>
         <Login handleBadInput={this.handleBadInput} />
-        <div className="main-container">
+        <div className='main-container'>
           { this.returnErrorMsg() }
           { this.returnRegisterSuccessMsg() }
           <Register handleBadInput={this.handleBadInput} handleSuccessfulRegister={this.handleSuccessfulRegister} />

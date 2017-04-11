@@ -1,5 +1,5 @@
 .search-bar-container {
-  width: 100%; margin: 0 auto 10px; min-width: 360px; padding: 0 0 0 0; background-color: #f5f5f5;
+  width: 100%; margin: 0 auto 10px; min-width: 360px; padding: 0 0 0 0; background-color: $default-bg-color;
   position: relative;
   .search-bar {
     :active, :focus { border-color: $dark-blue; }

@@ -11,7 +11,7 @@ const getDocPageData = (req, res, knex, user_id) => {
       doc.type = revisions[0].type;
       resolve();
     }).catch((err) => {
-      reject("Could not get revisions for course");
+      reject('Could not get revisions for course');
     });
   });
 
@@ -65,7 +65,7 @@ const getDocPageData = (req, res, knex, user_id) => {
   }).then(() => {
     res.send({ docInfo, courseInfo });
   }).catch(err => {
-    console.error("Error inside getDocPageData.js: ", err);
+    console.error('Error inside getDocPageData.js: ', err);
     res.send(false);
   });
 

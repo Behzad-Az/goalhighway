@@ -22,7 +22,7 @@ const getIndexPageData = (req, res, knex, user_id) => {
     let instId = req.session.inst_id;
     res.send({ courses, updates, instId })
   }).catch(err => {
-    console.error("Error inside getIndexPageData.js : ", err);
+    console.error('Error inside getIndexPageData.js : ', err);
     res.send(false);
   });
 

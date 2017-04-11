@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
 
     knex.schema.createTableIfNotExists('institutions', t => {
       t.increments('id');
-      t.string('inst_short_name', 20).notNullable().defaultTo("n/a");
+      t.string('inst_short_name', 20).notNullable().defaultTo('n/a');
       t.string('inst_long_name', 100).notNullable();
       t.string('inst_value', 100).notNullable();
       t.string('inst_display_name', 125).notNullable();
@@ -15,7 +15,7 @@ exports.up = function(knex, Promise) {
 
     knex.schema.createTableIfNotExists('programs', t => {
       t.increments('id');
-      t.string('prog_short_name', 20).notNullable().defaultTo("n/a");
+      t.string('prog_short_name', 20).notNullable().defaultTo('n/a');
       t.string('prog_long_name', 100).notNullable();
       t.string('prog_value', 100).notNullable();
       t.string('prog_display_name', 125).notNullable();
@@ -35,7 +35,7 @@ exports.up = function(knex, Promise) {
       t.string('suffix', 20).notNullable();
       t.string('full_display_name', 300).notNullable();
       t.string('short_display_name', 50).notNullable();
-      t.string('course_desc', 250).notNullable().defaultTo("no desc");
+      t.string('course_desc', 250).notNullable().defaultTo('no desc');
       t.integer('course_year').notNullable();
       t.integer('inst_id').notNullable().references('institutions.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());

@@ -37,10 +37,10 @@ const bulkIndex = function bulkIndex(index, type, data) {
 
 const populate = function populate() {
   const companies = [
-    { id: 1, company_name: "Home Inc." },
-    { id: 2, company_name: "Ballard Power Systems" },
-    { id: 3, company_name: "NCIS Facility - UBC" },
-    { id: 4, company_name: "Apple Inc." }
+    { id: 1, company_name: 'Home Inc.' },
+    { id: 2, company_name: 'Ballard Power Systems' },
+    { id: 3, company_name: 'NCIS Facility - UBC' },
+    { id: 4, company_name: 'Apple Inc.' }
   ];
   console.log(`${companies.length} items parsed from data file`);
   bulkIndex('search_catalogue', 'company', companies);

@@ -23,7 +23,7 @@ const getInstPageData = (req, res, knex, user_id) => {
     let instList = results[2];
     res.send({ currUserCourseIds, currInstCourses, instList, userId });
   }).catch(err => {
-    console.error("Error inside getInstPageData.js: ", err);
+    console.error('Error inside getInstPageData.js: ', err);
     res.send(false)
   });
 };

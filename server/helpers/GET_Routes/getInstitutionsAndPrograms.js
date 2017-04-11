@@ -1,12 +1,8 @@
 const getInstitutionsAndPrograms = (req, res, knex, user_id) => {
 
-  const getAllInstitutions = () => {
-    return knex('institutions');
-  };
+  const getAllInstitutions = () => knex('institutions');
 
-  const getAllPrograms = () => {
-    return knex('programs').innerJoin('institution_program', 'programs.id', 'prog_id');
-  };
+  const getAllPrograms = () => knex('programs').innerJoin('institution_program', 'programs.id', 'prog_id');
 
   Promise.all([
     getAllInstitutions(),
@@ -20,7 +16,7 @@ const getInstitutionsAndPrograms = (req, res, knex, user_id) => {
     });
     res.send(insts);
   }).catch(err => {
-    console.error("Error inside getInstitutionsAndPrograms.js: ", err);
+    console.error('Error inside getInstitutionsAndPrograms.js: ', err);
     res.send(false);
   });
 

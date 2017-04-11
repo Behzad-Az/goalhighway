@@ -23,7 +23,6 @@ const postNewCourseReview = (req, res, knex, user_id) => {
       getProfId()
     ])
     .then(results => {
-      console.log("i'm here 6: ", results[1]);
       if (results[0][0]) { return results[1][0] ? [results[1][0].id] : createNewProf({ inst_id: results[0][0].inst_id, name: req.body.profName }, trx); }
       else { throw 'Could not find valid inst_id'; }
     })

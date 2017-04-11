@@ -25,8 +25,8 @@ const getCompanyPageData = (req, res, knex, user_id, esClient) => {
           filter: {
             bool: {
               must: [
-                { term: { "pin.company_id" : req.params.company_id } },
-                { type: { value : "job" } }
+                { term: { 'pin.company_id' : req.params.company_id } },
+                { type: { value : 'job' } }
               ]
             }
           }
@@ -50,7 +50,7 @@ const getCompanyPageData = (req, res, knex, user_id, esClient) => {
   }).then(() => {
     res.send({ companyInfo, qas, jobs });
   }).catch(err => {
-    console.error("Error inside getCompanyPageData.js: ", err);
+    console.error('Error inside getCompanyPageData.js: ', err);
     res.send(false);
   });
 

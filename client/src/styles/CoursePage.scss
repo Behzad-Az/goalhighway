@@ -1,5 +1,5 @@
 .course-page {
-  background-color: #f5f5f5; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
+  background-color: $default-bg-color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
     padding: $top_margin $default_margin $default_margin $sidebar_width_left + $default_margin; width: $main_container_width; min-width: 360px; display: inline-block;

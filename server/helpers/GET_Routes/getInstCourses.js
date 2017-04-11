@@ -4,7 +4,7 @@ const getInstCourses = (req, res, knex, user_id) => {
                  .then(courses => {
     res.send(courses);
   }).catch(err => {
-    console.error("Error inside getInstCourses.js: ", err);
+    console.error('Error inside getInstCourses.js: ', err);
     res.send(false)
   });
 };

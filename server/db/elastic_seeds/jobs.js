@@ -8,25 +8,25 @@ const esClient = new elasticsearch.Client({
 });
 
 const deleteIndex = {
-  index: "_all"
+  index: '_all'
 };
 
 const newIndex = {
-  index: "search_catalogue",
+  index: 'search_catalogue',
   body: {
-    "mappings": {
-      "job": {
-        "properties": {
-          "pin": {
-            "properties": {
-              "location": { "type": "geo_point" },
-              "id": { "type": "integer" },
-              "title": { "type": "string" },
-              "kind": { "type": "string" },
-              "link": { "type": "string" },
-              "company": { "type": "string" },
-              "company_id": { "type": "integer" },
-              "search_text": { "type": "string" }
+    'mappings': {
+      'job': {
+        'properties': {
+          'pin': {
+            'properties': {
+              'location': { 'type': 'geo_point' },
+              'id': { 'type': 'integer' },
+              'title': { 'type': 'string' },
+              'kind': { 'type': 'string' },
+              'link': { 'type': 'string' },
+              'company': { 'type': 'string' },
+              'company_id': { 'type': 'integer' },
+              'search_text': { 'type': 'string' }
             }
           }
         }
@@ -72,30 +72,3 @@ const populate = function populate() {
 };
 
 esClient.indices.delete(deleteIndex).then(() => esClient.indices.create(newIndex)).then(() => populate());
-
-// {
-//   "query": {
-//     "bool" : {
-//       "must": {
-//         "multi_match": {
-//           "query": "mechanical engineer manufacturing",
-//           "fields": ["pin.title^3", "pin.search_text"],
-//           "fuzziness": "AUTO"
-//         }
-//       },
-//       "filter" : [
-//         {
-//           "geo_distance" : {
-//               "distance" : "200km",
-//               "pin.location" : {
-//                   "lat" : 49.198215,
-//                   "lon" : -123.007668
-//               }
-//           }
-//       },
-//       { "match":  { "pin.kind": "junior internship" }}
-//       ]
-//     }
-//   }
-// }
-

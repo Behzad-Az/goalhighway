@@ -4,7 +4,7 @@ const getLoginCheck = (req, res, knex, user_id) => {
     delete userInfo.cookie;
     res.send({ authorized: true,  userInfo });
   } else {
-    console.error("Error in getLoginCheck.js: user not logged in");
+    console.error('Error in getLoginCheck.js: user not logged in');
     res.send({ authorized: false });
   }
 

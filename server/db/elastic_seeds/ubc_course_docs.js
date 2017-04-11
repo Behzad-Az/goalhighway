@@ -32,7 +32,7 @@ const bulkIndex = function bulkIndex(index, type, data) {
     });
     console.log(`Successfully indexed ${data.length - errorCount} out of ${data.length} items`);
   })
-  .catch(err => console.error("Error inside ubc_course_docs.js seed fine: ", err));
+  .catch(err => console.error('Error inside ubc_course_docs.js seed fine: ', err));
 };
 
 const populate = function populate() {
@@ -45,27 +45,27 @@ const populate = function populate() {
     docs.push({
       id: ++id,
       title: `name_ar_${id}`,
-      kind: "assignment assingments report reports",
+      kind: 'assignment assingments report reports',
       inst_id: 1,
-      inst_name: "University of British Columbia UBC",
+      inst_name: 'University of British Columbia UBC',
       course_id: course.id,
       course_name: course.title
     });
     docs.push({
       id: ++id,
       title: `name_ln_${id}`,
-      kind: "lecture lectures note notes",
+      kind: 'lecture lectures note notes',
       inst_id: 1,
-      inst_name: "University of British Columbia UBC",
+      inst_name: 'University of British Columbia UBC',
       course_id: course.id,
       course_name: course.title
     });
     docs.push({
       id: ++id,
       title: `name_sq_${id}`,
-      kind: "sample question questions quiz quizzes exam exams final finals midterm midterms",
+      kind: 'sample question questions quiz quizzes exam exams final finals midterm midterms',
       inst_id: 1,
-      inst_name: "University of British Columbia UBC",
+      inst_name: 'University of British Columbia UBC',
       course_id: course.id,
       course_name: course.title
     });

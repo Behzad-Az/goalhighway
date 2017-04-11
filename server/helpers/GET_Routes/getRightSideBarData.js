@@ -50,7 +50,7 @@ const getRightSideBarData = (req, res, knex, user_id) => {
     let output = { instName, studentCount, courseCount, tutorCount, revCount, courseFeeds };
     res.send(output);
   }).catch(err => {
-    console.error("Error inside getRightSideBarData.js: ", err);
+    console.error('Error inside getRightSideBarData.js: ', err);
     res.send(false);
   });
 

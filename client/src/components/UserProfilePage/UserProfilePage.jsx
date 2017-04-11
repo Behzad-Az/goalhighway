@@ -45,9 +45,9 @@ class UserProfilePage extends Component {
 
   render() {
     return (
-      <div className="profile-page">
+      <div className='profile-page'>
         <Navbar />
-        <div className="main-container">
+        <div className='main-container'>
           <SearchBar />
           <PersonalInformation userInfo={this.state.userInfo} dataLoaded={this.state.dataLoaded && !this.state.pageError} />
         </div>
