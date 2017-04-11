@@ -52,14 +52,14 @@ class TopRow extends Component {
       profRatingSum[review.name] = profRatingSum[review.name] ? profRatingSum[review.name] + review.prof_rating : review.prof_rating;
       profRatingCount[review.name] = profRatingCount[review.name] ? profRatingCount[review.name] + 1 : 1;
     });
-    return Object.keys(profRatingSum).map((profName, index) =>
+    return Object.keys(profRatingSum)[0] ? Object.keys(profRatingSum).map((profName, index) =>
       <tr key={index}>
         <td>{profName}:</td>
         <td className='second-column'>
-          {this._decodeProf(Math.round(profRatingSum[profName] / profRatingCount[profName]))}
+          { this._decodeProf(Math.round(profRatingSum[profName] / profRatingCount[profName])) }
         </td>
       </tr>
-    );
+    ) : <tr><td>Not</td><td>Available</td></tr>
   }
 
   _decodeWorkload(value) {
@@ -71,7 +71,7 @@ class TopRow extends Component {
       case 3:
         return 'Fair';
       default:
-        return 'unknown';
+        return 'Not Available';
     }
   }
 
@@ -84,7 +84,7 @@ class TopRow extends Component {
       case 3:
         return 'Fair';
       default:
-        return 'unknown';
+        return 'Not Available';
     }
   }
 
@@ -101,7 +101,7 @@ class TopRow extends Component {
       case 5:
         return 'Excellent!';
       default:
-        return 'unknown';
+        return 'Not Available';
     }
   }
 
@@ -178,7 +178,7 @@ class TopRow extends Component {
               <tr><th colSpan='2'>Previous Instructors:</th></tr>
             </thead>
             <tbody>
-              {profAvgs}
+              { profAvgs }
             </tbody>
           </table>
         </div>

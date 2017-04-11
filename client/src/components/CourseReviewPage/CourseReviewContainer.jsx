@@ -44,14 +44,15 @@ class CourseReviewContainer extends Component {
         <h1 className='header'>
           Previous Reviews:
           <select className='sort-select' onChange={this._handleSortCritera}>
-            <option value={'date_new_to_old'}>Date - New to Old</option>
-            <option value={'date_old_to_new'}>Date - Old to New</option>
-            <option value={'rating_high_to_low'}>Rating - High to Low</option>
-            <option value={'rating_low_to_high'}>Rating - Low to High</option>
-            <option value={'instructor_name'}>Instructor Name</option>
+            <option value='date_new_to_old'>Date - New to Old</option>
+            <option value='date_old_to_new'>Date - Old to New</option>
+            <option value='rating_high_to_low'>Rating - High to Low</option>
+            <option value='rating_low_to_high'>Rating - Low to High</option>
+            <option value='instructor_name'>Instructor Name</option>
           </select>
         </h1>
         { this.props.courseReviews.map(review => <CourseReviewRow key={review.id} review={review} /> ) }
+        { !this.props.courseReviews[0] && <p>No review is posted for this course yet.</p> }
       </div>
     );
   }

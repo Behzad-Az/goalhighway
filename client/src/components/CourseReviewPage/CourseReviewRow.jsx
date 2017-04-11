@@ -87,10 +87,6 @@ class CourseReviewRow extends Component {
               <td>{this._decodeWorkload(this.props.review.workload_rating)}</td>
             </tr>
             <tr>
-              <td>By:</td>
-              <td>{this.props.review.reviewer_name || 'anonymous'}</td>
-            </tr>
-            <tr>
               <td>Posted On:</td>
               <td>{this.props.review.review_created_at.slice(0, 10)}</td>
             </tr>

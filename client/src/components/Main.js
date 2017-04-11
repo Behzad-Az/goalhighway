@@ -16,10 +16,10 @@ import FeedPage from './FeedPage/FeedPage.jsx';
 class App extends React.Component {
   constructor() {
     super();
-    this.validateAuth = this.validateAuth.bind(this);
+    this._validateAuth = this._validateAuth.bind(this);
   }
 
-  validateAuth(nextState, replace, callPage) {
+  _validateAuth(nextState, replace, callPage) {
     fetch('/api/login/check', {
       method: 'GET',
       credentials: 'same-origin'
@@ -31,14 +31,10 @@ class App extends React.Component {
         replace('/login');
         callPage();
       } else {
+
         switch (nextState.routes[0].path) {
           case '/':
             replace('/home');
-            callPage();
-            break;
-
-          case '/users/:user_id':
-            if (nextState.params.user_id != resJSON.userInfo.username) { replace(`/users/${resJSON.userInfo.username}`); }
             callPage();
             break;
 
@@ -54,18 +50,18 @@ class App extends React.Component {
   render() {
     return (
       <Router history={browserHistory}>
-        <Route path={'/'} onEnter={this.validateAuth} />
-        <Route path={'/home'} component={IndexPage} onEnter={this.validateAuth} />
-        <Route path={'/courses/:course_id'} component={CoursePage} onEnter={this.validateAuth} />
-        <Route path={'/courses/:course_id/docs/:doc_id'} component={DocPage} onEnter={this.validateAuth} />
-        <Route path={'/courses/:course_id/reviews'} component={CourseReviewPage} onEnter={this.validateAuth} />
-        <Route path={'/institutions/:inst_id'} component={InstPage} onEnter={this.validateAuth} />
-        <Route path={'/users/:user_id'} component={UserProfilePage} onEnter={this.validateAuth} />
-        <Route path={'/jobs'} component={CareerPage} onEnter={this.validateAuth} />
-        <Route path={'/companies/:company_id'} component={CompanyPage} onEnter={this.validateAuth} />
-        <Route path={'/feed'} component={FeedPage} onEnter={this.validateAuth} />
-        <Route path={'/login'} component={RegisterLoginPage} />
-        <Route path={'*'} component={IndexPage} onEnter={this.validateAuth} />
+        <Route path='/' onEnter={this._validateAuth} />
+        <Route path='/login' component={RegisterLoginPage} />
+        <Route path='/home' component={IndexPage} onEnter={this._validateAuth} />
+        <Route path='/profile' component={UserProfilePage} onEnter={this._validateAuth} />
+        <Route path='/jobs' component={CareerPage} onEnter={this._validateAuth} />
+        <Route path='/feed' component={FeedPage} onEnter={this._validateAuth} />
+        <Route path='/courses/:course_id' component={CoursePage} onEnter={this._validateAuth} />
+        <Route path='/courses/:course_id/docs/:doc_id' component={DocPage} onEnter={this._validateAuth} />
+        <Route path='/courses/:course_id/reviews' component={CourseReviewPage} onEnter={this._validateAuth} />
+        <Route path='/institutions/:inst_id' component={InstPage} onEnter={this._validateAuth} />
+        <Route path='/companies/:company_id' component={CompanyPage} onEnter={this._validateAuth} />
+        <Route path='*' component={IndexPage} onEnter={this._validateAuth} />
       </Router>
     );
   }

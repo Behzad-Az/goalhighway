@@ -37,7 +37,7 @@ class LeftSideBar extends Component {
   render() {
     return this.state.dataLoaded ? (
       <div className='card side-bar left'>
-        <Link to='users/currentuser' className='button is-info edit'>Edit</Link>
+        <Link to='/profile' className='button is-info edit'>Edit</Link>
         <div className='card-image'>
           <figure className='image is-4by3'>
             <img src='http://www.free-icons-download.net/images/user-icon-27998.png' alt='Image' />

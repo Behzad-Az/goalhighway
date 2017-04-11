@@ -95,7 +95,7 @@ class Navbar extends Component {
             <Link className='nav-item' to='/home'><img src='../../../images/goalhighway-logo.png' alt='Bulma logo' /></Link>
             <Link id='home-nav-btn' className='nav-item is-tab is-hidden-mobile' to='/home'>Home</Link>
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-mobile' to={`/institutions/${this.state.userInfo.inst_id}`}>Institutions</Link>
-            <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-mobile' to={'/jobs'}>Jobs</Link>
+            <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-mobile' to='/jobs'>Jobs</Link>
           </div>
 
           <Link className='nav-item' onClick={this._showNotifications}>
@@ -111,10 +111,10 @@ class Navbar extends Component {
 
             <Link id='home-nav-btn' className='nav-item is-tab is-hidden-tablet' to='/home'>Home</Link>
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-tablet' to={`/institutions/${this.state.userInfo.inst_id}`}>Institutions</Link>
-            <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-tablet' to={'/jobs'}>Jobs</Link>
+            <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-tablet' to='/jobs'>Jobs</Link>
             <span className='nav-item has-shadow'>Hello: {this.state.userInfo.username}</span>
 
-            <Link className='nav-item is-tab' to={`/users/${this.state.userInfo.id}`}>
+            <Link className='nav-item is-tab' to='/profile'>
               <figure className='image is-16x16'>
                 <img src='http://bulma.io/images/jgthms.png' />
               </figure>

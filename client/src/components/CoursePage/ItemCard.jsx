@@ -81,7 +81,7 @@ class ItemCard extends Component {
           <p className='control'>
             <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' defaultValue={this.state.itemDesc} onChange={this._handleChange} />
           </p>
-          <label className='label'>Upload photo (optional but recommended):</label>
+          <label className='label'>Upload Photo (Recommended):</label>
           <p className='control'>
             <input className='upload' type='file' name='photoPath' onChange={this._handleChange} />
           </p>
@@ -91,9 +91,12 @@ class ItemCard extends Component {
             <span className='icon is-small'><i className='fa fa-dollar' aria-hidden='true'/></span>
           </p>
         </div>
-          <button className='button is-info' onClick={this._handleEdit}>Save</button>
-          <button className='button is-link' onClick={this._toggleView}>Cancel</button>
-          <button className='button is-danger' onClick={this._handleDelete}>Delete</button>
+        <footer className='card-footer'>
+          <Link className='card-footer-item' onClick={this._handleEdit}>Save</Link>
+          <Link className='card-footer-item' onClick={this._toggleView}>Cancel</Link>
+          <Link className='card-footer-item' onClick={this._handleDelete}>Delete</Link>
+        </footer>
+
       </div>
     );
   }

@@ -104,7 +104,6 @@ class TopRow extends Component {
           <Link to={`/institutions/${this.props.courseInfo.inst_id}`}>{this.props.courseInfo.inst_display_name} </Link>
           > <Link to={`/courses/${this.props.courseInfo.id}`}>{this.props.courseInfo.short_display_name} </Link>
           > <span>{this.props.docInfo.title}</span>
-          <button className='button'>Edit Course</button>
         </h1>
 
         { this._createBtnDiv('fa fa-upload', <p>New<br/>Revision</p>, () => HandleModal('new-revision-form'), 'inherit', true, true) }

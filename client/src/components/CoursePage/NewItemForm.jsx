@@ -76,7 +76,7 @@ class NewItemForm extends Component {
             <p className='control'>
               <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' onChange={this._handleChange} />
             </p>
-            <label className='label'>Upload photo (optional but recommended):</label>
+            <label className='label'>Upload photo (Recommended):</label>
             <p className='control'>
               <input className='upload' type='file' name='photoPath' onChange={this._handleChange} />
             </p>
