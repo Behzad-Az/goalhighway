@@ -99,7 +99,7 @@ class Navbar extends Component {
           </div>
 
           <Link className='nav-item' to='/feed'>
-            <i className='fa fa-bell' aria-hidden='true' style={{ color: this.state.unViewedNotif ? '#9D0600' : 'inherit' }}/>
+            <i className='fa fa-feed' aria-hidden='true' style={{ color: this.state.unViewedNotif ? '#9D0600' : 'inherit' }}/>
           </Link>
 
           <span className='nav-toggle' onClick={this._handleHamburger}>

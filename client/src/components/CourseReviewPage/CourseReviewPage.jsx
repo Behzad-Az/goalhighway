@@ -7,17 +7,18 @@ import SearchBar from '../partials/SearchBar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import TopRow from './TopRow.jsx';
 import NewCourseReviewForm from './NewCourseReviewForm.jsx';
-import CourseReviewContainer from './CourseReviewContainer.jsx';
+import CourseReviewsContainer from './CourseReviewsContainer.jsx';
 
 class CourseReviewPage extends Component {
   constructor(props) {
     super(props);
-    this.courseId = this.props.routeParams.course_id;
     this.reactAlert = new ReactAlert();
     this.state = {
       dataLoaded: false,
       pageError: false,
-      courseInfo: {},
+      courseInfo: {
+        id: this.props.routeParams.course_id
+      },
       courseReviews: [],
       profs: []
     };
@@ -31,7 +32,7 @@ class CourseReviewPage extends Component {
   }
 
   _loadComponentData() {
-    fetch(`/api/courses/${this.courseId}/reviews`, {
+    fetch(`/api/courses/${this.state.courseInfo.id}/reviews`, {
       method: 'GET',
       credentials: 'same-origin'
     })
@@ -65,7 +66,7 @@ class CourseReviewPage extends Component {
           <SearchBar />
           <TopRow courseInfo={this.state.courseInfo} courseReviews={this.state.courseReviews} />
           <NewCourseReviewForm courseId={this.state.courseInfo.id} profs={this.state.profs} reload={this._loadComponentData} />
-          <CourseReviewContainer courseReviews={this.state.courseReviews} />
+          <CourseReviewsContainer courseReviews={this.state.courseReviews} />
         </div>
       );
     } else {

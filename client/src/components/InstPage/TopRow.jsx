@@ -13,10 +13,10 @@ class TopRow extends Component {
         <div className='inst-dropdown control'>
           <SingleSelect
             disabled={false}
-            initialValue={this.props.instId}
+            initialValue={parseInt(this.props.instId)}
             name='instList'
             options={this.props.instList}
-            handleChange={this.props.handleChange} />
+            handleChange={this.props.reload} />
         </div>
       </div>
     );

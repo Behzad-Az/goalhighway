@@ -38,10 +38,10 @@ class NewInstForm extends Component {
       province: ''
     };
     this._handleChange = this._handleChange.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.handleCountrySelect = this.handleCountrySelect.bind(this);
-    this.handleProvinceSelect = this.handleProvinceSelect.bind(this);
-    this.handleNewInstPost = this.handleNewInstPost.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._handleCountrySelect = this._handleCountrySelect.bind(this);
+    this._handleProvinceSelect = this._handleProvinceSelect.bind(this);
+    this._handleNewInstPost = this._handleNewInstPost.bind(this);
   }
 
   _handleChange(e) {
@@ -50,21 +50,21 @@ class NewInstForm extends Component {
     this.setState(state);
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.instLongName &&
            this.state.country &&
            this.state.province
   }
 
-  handleCountrySelect(country) {
+  _handleCountrySelect(country) {
     this.setState({ country });
   }
 
-  handleProvinceSelect(province) {
+  _handleProvinceSelect(province) {
     this.setState({ province });
   }
 
-  handleNewInstPost() {
+  _handleNewInstPost() {
     let data = {
       country: this.state.country,
       province:  this.state.province,
@@ -115,14 +115,14 @@ class NewInstForm extends Component {
             </p>
 
             <label className='label'>Country:</label>
-            <SingleSelect disabled={false} initialValue={this.state.country} name='country' options={this.countryList} handleChange={this.handleCountrySelect} />
+            <SingleSelect disabled={false} initialValue={this.state.country} name='country' options={this.countryList} handleChange={this._handleCountrySelect} />
 
             <label className='label'>State / Province:</label>
-            <SingleSelect disabled={false} initialValue={this.state.province} name='province' options={this.provinceList[this.state.country]} handleChange={this.handleProvinceSelect} />
+            <SingleSelect disabled={false} initialValue={this.state.province} name='province' options={this.provinceList[this.state.country]} handleChange={this._handleProvinceSelect} />
 
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleNewInstPost}>Submit</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewInstPost}>Submit</button>
             <button className='button' onClick={() => HandleModal('new-inst-form')}>Cancel</button>
           </footer>
         </div>

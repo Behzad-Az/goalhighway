@@ -34,7 +34,7 @@ class CoursePage extends Component {
   }
 
   componentDidMount() {
-    this._loadComponentData(this.props.routeParams.course_id);
+    this._loadComponentData(this.state.courseInfo.id);
   }
 
   componentWillReceiveProps(nextProps) {

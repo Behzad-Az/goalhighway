@@ -12,7 +12,6 @@ import TopRow from './TopRow.jsx';
 class InstPage extends Component {
   constructor(props) {
     super(props);
-    this.fixedCurrInstCourses = [];
     this.reactAlert = new ReactAlert();
     this.state = {
       dataLoaded: false,
@@ -20,12 +19,15 @@ class InstPage extends Component {
       instId: this.props.params.inst_id,
       instList: [],
       currInstCourses: [],
-      currUserCourseIds: []
+      currUserCourseIds: [],
+      filterPhrase: ''
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
     this._findInstName = this._findInstName.bind(this);
-    this._handleFilter = this._handleFilter.bind(this);
+    this._saveFilterPhrase = this._saveFilterPhrase.bind(this);
+    this._filterCourseList = this._filterCourseList.bind(this);
+    this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
@@ -57,7 +59,6 @@ class InstPage extends Component {
       });
       resJSON.instId = instId;
       resJSON.dataLoaded = true;
-      this.fixedCurrInstCourses = resJSON.currInstCourses;
       this.setState(resJSON);
     } else {
       throw 'Server returned false';
@@ -69,13 +70,16 @@ class InstPage extends Component {
     return inst ? inst.inst_display_name : '';
   }
 
-  _handleFilter(e) {
-    let phrase = new RegExp(e.target.value.toLowerCase());
-    let currInstCourses = this.fixedCurrInstCourses.filter(course => course.full_display_name.toLowerCase().match(phrase));
-    this.setState({ currInstCourses });
+  _saveFilterPhrase(e) {
+    this.setState({ filterPhrase: e.target.value });
   }
 
-  renderPageAfterData() {
+  _filterCourseList() {
+    let phrase = new RegExp(this.state.filterPhrase.toLowerCase());
+    return this.state.currInstCourses.filter(course => course.full_display_name.toLowerCase().match(phrase)).slice(0, 14);
+  }
+
+  _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
         <div className='main-container'>
@@ -91,8 +95,8 @@ class InstPage extends Component {
           <SearchBar />
           <NewCourseForm reload={this._loadComponentData} instId={this.state.instId} instName={this._findInstName()} />
           <NewInstForm reload={this._loadComponentData} />
-          <TopRow instId={parseInt(this.state.instId)} instList={this.state.instList} handleChange={this._loadComponentData} />
-          <CoursesContainer courses={this.state.currInstCourses.slice(0, 15)} currUserCourseIds={this.state.currUserCourseIds} handleFilter={this._handleFilter} />
+          <TopRow instId={this.state.instId} instList={this.state.instList} reload={this._loadComponentData} />
+          <CoursesContainer courses={this._filterCourseList()} currUserCourseIds={this.state.currUserCourseIds} handleFilter={this._saveFilterPhrase} />
           { this.state.dataLoaded && this.state.currInstCourses[0] && <p>Many more courses available. Refine your search please.</p> }
           { this.state.dataLoaded && !this.state.currInstCourses[0] && <p>No courses are available for this institution. Be the first to add one.</p> }
         </div>
@@ -114,7 +118,7 @@ class InstPage extends Component {
       <div className='inst-page'>
         <Navbar />
         <LeftSideBar />
-        { this.renderPageAfterData() }
+        { this._renderPageAfterData() }
         <RightSideBar />
         { this.reactAlert.container }
       </div>

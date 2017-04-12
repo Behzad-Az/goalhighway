@@ -17,16 +17,11 @@ class FeedPage extends Component {
       resumeReviewFeeds: [],
       courseFeeds: []
     };
-    this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
-    this._loadComponentData();
-  }
-
-  _loadComponentData() {
     fetch('/api/users/currentuser/feed', {
       method: 'GET',
       credentials: 'same-origin'

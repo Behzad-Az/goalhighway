@@ -18,7 +18,7 @@ const getFeedPageData = (req, res, knex, user_id) => {
 
   getCourseIds()
   .then(courses => Promise.all([ getCourseFeeds(courses.map(course => course.course_id)), getResumeFeeds() ]))
-  .then(results => res.send({ courseFeeds: results[0], resumeReviewFeeds: results[1] }))
+  .then(results => res.send({ courseFeeds: results[0], resumeReviewFeeds: results[1], instId: req.session.inst_id }))
   .catch(err => {
     console.error('Error inside getFeedPageData.js: ', err);
     res.send(false);

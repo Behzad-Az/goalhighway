@@ -59,7 +59,7 @@ class TopRow extends Component {
           { this._decodeProf(Math.round(profRatingSum[profName] / profRatingCount[profName])) }
         </td>
       </tr>
-    ) : <tr><td>Not</td><td>Available</td></tr>
+    ) : <tr><td>Not</td><td>Available</td></tr>;
   }
 
   _decodeWorkload(value) {

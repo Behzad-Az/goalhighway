@@ -18,10 +18,8 @@ const getIndexPageData = (req, res, knex, user_id) => {
     courses = userCourses;
     return getCourseDocs(userCourses.map(course => course.course_id));
   })
-  .then(updates => {
-    let instId = req.session.inst_id;
-    res.send({ courses, updates, instId })
-  }).catch(err => {
+  .then(updates => res.send({ courses, updates, instId: req.session.inst_id }))
+  .catch(err => {
     console.error('Error inside getIndexPageData.js : ', err);
     res.send(false);
   });

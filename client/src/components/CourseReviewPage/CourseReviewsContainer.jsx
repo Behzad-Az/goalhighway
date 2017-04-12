@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import CourseReviewRow from './CourseReviewRow.jsx';
 
-class CourseReviewContainer extends Component {
+class CourseReviewsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -58,4 +58,4 @@ class CourseReviewContainer extends Component {
   }
 }
 
-export default CourseReviewContainer;
+export default CourseReviewsContainer;

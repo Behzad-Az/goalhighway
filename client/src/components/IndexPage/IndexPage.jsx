@@ -13,7 +13,7 @@ class IndexPage extends Component {
       dataLoaded: false,
       pageError: false,
       courses: [],
-      updates: '',
+      updates: [],
       instId: ''
     };
     this._conditionData = this._conditionData.bind(this);
