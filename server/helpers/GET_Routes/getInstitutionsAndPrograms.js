@@ -7,16 +7,16 @@ const getInstitutionsAndPrograms = (req, res, knex, user_id) => {
   Promise.all([
     getAllInstitutions(),
     getAllPrograms()
-  ]).then(results => {
+  ])
+  .then(results => {
     let insts = results[0];
     let programs = results[1];
-
     insts.forEach(inst => {
       inst.programs = programs.filter(prog => prog.inst_id === inst.id);
     });
-
     res.send(insts);
-  }).catch(err => {
+  })
+  .catch(err => {
     console.error('Error inside getInstitutionsAndPrograms.js: ', err);
     res.send(false);
   });

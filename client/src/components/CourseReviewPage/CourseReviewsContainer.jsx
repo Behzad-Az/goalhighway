@@ -39,7 +39,6 @@ class CourseReviewsContainer extends Component {
 
   render() {
     this._sortReviews();
-    console.log("i'm here 0: ", this.props.courseReviews);
     return (
       <div className='review-container'>
         <h1 className='header'>
