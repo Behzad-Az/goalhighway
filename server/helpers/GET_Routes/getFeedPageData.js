@@ -14,16 +14,26 @@ const getFeedPageData = (req, res, knex, user_id) => {
       'course_feed.doc_id', 'courses.short_display_name'
     )
     .whereIn('courses.id', courseIds)
+    .orderBy('course_feed.created_at', 'desc')
     .limit(200);
 
   const getResumeFeeds = () => knex('resume_review_feed')
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
-    .whereNull('deleted_at');
+    .whereNull('deleted_at')
+    .orderBy('created_at', 'desc');
+
+  const updateUserFeedDate = () => knex('users')
+    .where('id', user_id)
+    .update('last_feed_at', knex.fn.now());
 
   getCourseIds()
   .then(courses => Promise.all([ getCourseFeeds(courses.map(course => course.course_id)), getResumeFeeds() ]))
-  .then(results => res.send({ courseFeeds: results[0], resumeReviewFeeds: results[1], instId: req.session.inst_id }))
+  .then(results => {
+    req.session.unviewed_notif = false;
+    res.send({ courseFeeds: results[0], resumeReviewFeeds: results[1], instId: req.session.inst_id });
+  })
+  .then(() => updateUserFeedDate())
   .catch(err => {
     console.error('Error inside getFeedPageData.js: ', err);
     res.send(false);

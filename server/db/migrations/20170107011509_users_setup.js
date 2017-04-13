@@ -8,6 +8,7 @@ exports.up = function(knex, Promise) {
       t.string('email', 30).notNullable().unique();
       t.integer('user_year').notNullable();
       t.integer('inst_prog_id').notNullable().references('institution_program.id');
+      t.timestamp('last_feed_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
     }),
 

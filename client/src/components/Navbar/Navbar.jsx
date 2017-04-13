@@ -8,7 +8,6 @@ class Navbar extends Component {
       dataLoaded: false,
       pageError: false,
       userInfo: {},
-      unViewedNotif: false,
       hamburgerClass: 'nav-right nav-menu'
     };
     this._conditionData = this._conditionData.bind(this);
@@ -60,7 +59,7 @@ class Navbar extends Component {
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-mobile' to='/jobs'>Jobs</Link>
           </div>
           <Link className='nav-item' to='/feed'>
-            <i className='fa fa-feed' aria-hidden='true' style={{ color: this.state.unViewedNotif ? '#9D0600' : 'inherit' }}/>
+            <i className='fa fa-feed' aria-hidden='true' style={{ color: this.state.userInfo.unviewed_notif ? '#9D0600' : 'inherit' }}/>
           </Link>
           <span className='nav-toggle' onClick={this._handleHamburger}>
             <span/>

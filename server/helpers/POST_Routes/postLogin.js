@@ -12,11 +12,8 @@ const postLogin = (req, res, knex, bcrypt) => {
 
   findUser()
   .then(user => {
-    if (user[0]) {
-      currUser = user[0];
-      return verifyPwd(req.body.password, currUser.password);
-    }
-    else { throw 'User could not be found'; }
+    currUser = user[0];
+    return verifyPwd(req.body.password, currUser.password);
   })
   .then(valid => {
     if (valid) {
@@ -31,7 +28,8 @@ const postLogin = (req, res, knex, bcrypt) => {
     } else {
       throw 'Invalid username and password';
     }
-  }).catch(err => {
+  })
+  .catch(err => {
     console.error('Error inside postLogin.js: ', err);
     res.send(false);
   });

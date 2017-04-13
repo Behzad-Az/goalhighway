@@ -11,6 +11,7 @@ class CourseFeedRow extends Component {
     this._handleFlagClick = this._handleFlagClick.bind(this);
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
     this._renderFlagSelect = this._renderFlagSelect.bind(this);
+    this._prepareFeed = this._prepareFeed.bind(this);
   }
 
   _handleFlagClick() {
@@ -51,47 +52,34 @@ class CourseFeedRow extends Component {
     );
   }
 
-  _decodeCategory() {
-    let output;
+  _prepareFeed() {
     switch(this.props.feed.category) {
       case 'new_asg_report':
-        output = 'New Assingment / Report - ';
-        break;
+        return this._renderDocumentFeed('New Assingment / Report - ');
       case 'new_lecture_note':
-        output = 'New Lecture Note - ';
-        break;
+        return this._renderDocumentFeed('New Lecture Note - ');
       case 'new_sample_question':
-        output = 'New Sample Question - ';
-        break;
+        return this._renderDocumentFeed('New Sample Question - ');
       case 'new_document':
-        output = 'New Document - ';
-        break;
+        return this._renderDocumentFeed('New Document - ');
       case 'revised_asg_report':
-        output = 'Revised Assingment / Report - ';
-        break;
+        return this._renderDocumentFeed('Revised Assingment / Report - ');
       case 'revised_lecture_note':
-        output = 'Revised Lecture Note - ';
-        break;
+        return this._renderDocumentFeed('Revised Lecture Note - ');
       case 'revised_sample_question':
-        output = 'Revised Sample Question - ';
-        break;
+        return this._renderDocumentFeed('Revised Sample Question - ');
       case 'revised_document':
-        output = 'Revised Document - ';
-        break;
+        return this._renderDocumentFeed('Revised Document - ');
       case 'tutor_request':
-        output = 'Tutor Request - ';
-        break;
+        return <p>'Tutor Request - '</p>
       case 'new_comment':
-        output = 'New Comment';
-        break;
+        return this._renderCommentFeed(` - New Comment by ${this.props.feed.commenter_name}`);
       default:
-        output = '';
-        break;
+        return <p></p>;
     }
-    return output;
   }
 
-  render() {
+  _renderDocumentFeed(headerPrefix) {
     return (
       <article className='media course-row'>
         <figure className='media-left'>
@@ -110,21 +98,60 @@ class CourseFeedRow extends Component {
               </strong>
               <br />
               <strong>
-                <Link to={`/courses/${this.props.feed.course_id}/docs/${this.props.feed.doc_id}`}>{this._decodeCategory()}'{this.props.feed.header}'</Link>
+                <Link to={`/courses/${this.props.feed.course_id}/docs/${this.props.feed.doc_id}`}>{headerPrefix}'{this.props.feed.header}'</Link>
               </strong>
               <br />
               {this.props.feed.content}
               <br />
               <small><Link>Download Document</Link></small>
-              <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-              { this.state.flagRequest && this._renderFlagSelect() }
               <br />
-              <small>By {this.props.feed.commenter_name} on {this.props.feed.created_at.slice(0, 10)}</small>
+              <small>
+                By {this.props.feed.commenter_name} on {this.props.feed.created_at.slice(0, 10)}
+                <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                { this.state.flagRequest && this._renderFlagSelect() }
+              </small>
             </p>
           </div>
         </div>
       </article>
     );
+  }
+
+  _renderCommentFeed(header) {
+    return (
+      <article className='media course-row'>
+        <figure className='media-left'>
+          <p className='image is-64x64'>
+            <img src='http://bulma.io/images/placeholders/128x128.png' />
+          </p>
+        </figure>
+        <div className='media-content'>
+          <div className='content'>
+            <Link to={`/courses/${this.props.feed.course_id}`}>
+              <button className='button'>Go to Course Page</button>
+            </Link>
+            <p>
+              <strong>
+                <Link to={`/courses/${this.props.feed.course_id}`}>@{this.props.feed.short_display_name}</Link>
+                {header}
+              </strong>
+              <br />
+              {this.props.feed.content}
+              <br />
+              <small>
+                Posted on {this.props.feed.created_at.slice(0, 10)}
+                <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                { this.state.flagRequest && this._renderFlagSelect() }
+              </small>
+            </p>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  render() {
+    return this._prepareFeed();
   }
 }
 
