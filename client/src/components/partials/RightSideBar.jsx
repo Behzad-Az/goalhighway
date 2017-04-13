@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router';
 
 class RightSideBar extends Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class RightSideBar extends Component {
       pageError: false,
       courseCount: 'N/A',
       courseFeeds: [],
+      instId: '',
       instName: 'N/A',
       revCount: 'N/A',
       studentCount: 'N/A',
@@ -44,6 +46,7 @@ class RightSideBar extends Component {
     return this.state.dataLoaded ? (
       <div className='card side-bar right'>
         <div className='card-content'>
+
           <div className='media'>
             <div className='media-left'>
               <figure className='image inst-logo'>
@@ -51,9 +54,10 @@ class RightSideBar extends Component {
               </figure>
             </div>
             <div className='media-content'>
-              <p className='title is-4'>{this.state.instName}</p>
+              <Link to={`/institutions/${this.state.instId}`} className='title is-4'>{this.state.instName}</Link>
             </div>
           </div>
+
           <div className='content'>
             <p><i className='fa fa-users' aria-hidden='true' /> {this._commaSeparateNumber(this.state.studentCount)} peers</p>
             <p><i className='fa fa-graduation-cap' aria-hidden='true' /> {this._commaSeparateNumber(this.state.courseCount)} courses available</p>
