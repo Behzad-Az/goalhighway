@@ -13,13 +13,13 @@ postNewResumeReviewFeed = (req, res, knex, user_id) => {
   const authenticateRequest = () => knex('resumes')
     .where('id', req.params.resume_id)
     .andWhere('user_id', user_id)
-    .whereNull('resume_deleted_at')
+    .whereNull('deleted_at')
     .count('id as auth');
 
   const checkForDuplicates = () => knex('resume_review_feed')
     .where('resume_id', req.params.resume_id)
     .andWhere('owner_id', user_id)
-    .whereNull('feed_deleted_at')
+    .whereNull('deleted_at')
     .count('id as duplicate');
 
   const postNewResumeFeed = () => knex('resume_review_feed').insert(newResumeFeedObj);

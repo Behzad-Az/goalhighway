@@ -3,7 +3,7 @@ const postNewInterviewAnswer = (req, res, knex, user_id) => {
   let newAnsObj = {
     answer: req.body.answer,
     outcome: req.body.outcome || 'unknown',
-    answer_poster_id: user_id,
+    poster_id: user_id,
     question_id: req.params.question_id
   };
 

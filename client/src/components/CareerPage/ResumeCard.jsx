@@ -166,7 +166,7 @@ class ResumeCard extends Component {
           <div className='card-text'>
             <p className='name title is-6'>{this.props.resume.title}</p>
             <p className='description title is-6'>'{this.props.resume.intent}'</p>
-            <p className='date title is-6'>Upload Date: {this.props.resume.resume_created_at.slice(0, 10)}</p>
+            <p className='date title is-6'>Upload Date: {this.props.resume.created_at.slice(0, 10)}</p>
           </div>
           <p className='card-foot title is-6'>
             { this.state.reviewReqStatus ?

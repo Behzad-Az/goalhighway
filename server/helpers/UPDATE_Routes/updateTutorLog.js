@@ -1,14 +1,14 @@
 const updateTutorLog = (req, res, knex, user_id) => {
 
-  let updatedTutorLogData;
+  let tutorLogObj;
 
   if (req.body.action === 'close') {
-    updatedTutorLogData = {
+    tutorLogObj = {
       closure_reason: req.body.closureReason,
       closed_at: knex.fn.now()
     };
   } else if (req.body.action === 'update') {
-    updatedTutorLogData = {
+    tutorLogObj = {
       issue_desc: req.body.issueDesc
     };
   }
@@ -21,37 +21,18 @@ const updateTutorLog = (req, res, knex, user_id) => {
     .where('tutor_log_id', tutor_log_id)
     .del();
 
-  const updateAssistNotif = tutor_log_id => knex('notifications')
-    .where('tutor_log_id', tutor_log_id)
-    .update({ content: `Requesting peer tutoring: ${req.body.issueDesc}`, unviewed: true });
-
-  const deleteAssistNotif = tutor_log_id => knex('notifications')
-    .where('tutor_log_id', tutor_log_id)
-    .del();
-
   const alterTutorLog = () => knex('tutor_log')
     .where('student_id', user_id)
     .andWhere('course_id', req.params.course_id)
     .whereNull('closed_at')
-    .update(updatedTutorLogData)
+    .update(tutorLogObj)
     .returning('id');
 
   alterTutorLog()
-  .then(id => {
-    res.send(true);
-    if (req.body.action === 'close') {
-      Promise.all([
-        deleteCourseFeed(id[0]),
-        deleteAssistNotif(id[0])
-      ]).then(() => {}).catch(err => console.error("Error inside updateTutorLog.js: ", err));
-    } else if (req.body.action === 'update') {
-      Promise.all([
-        updateCourseFeed(id[0]),
-        updateAssistNotif(id[0])
-      ]).then(() => {}).catch(err => console.error("Error inside updateTutorLog.js: ", err));
-    }
-  }).catch(err => {
-    console.error("Error inside updateTutorLog.js: ", err);
+  .then(id => req.body.action === 'close' ? deleteCourseFeed(id[0]) : updateCourseFeed(id[0]))
+  .then(() => res.send(true))
+  .catch(err => {
+    console.error('Error inside updateTutorLog.js: ', err);
     res.send(false);
   });
 

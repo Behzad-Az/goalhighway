@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
       t.integer('foreign_id').notNullable();
       t.string('foreign_table', 50).notNullable();
       t.integer('flagger_id').notNullable().references('users.id');
-      t.timestamp('flag_created_at').notNullable().defaultTo(knex.fn.now());
+      t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
     })
   ]);
 };

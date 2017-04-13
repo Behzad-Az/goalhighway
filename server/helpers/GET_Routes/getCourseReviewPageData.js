@@ -12,8 +12,9 @@ const getCourseReviewPageData = (req, res, knex, user_id) => {
 
   const getCourseReviews = () => knex('profs')
     .innerJoin('course_reviews', 'profs.id', 'prof_id')
+    .select('course_id', 'course_reviews.created_at', 'fairness_rating', 'course_reviews.id', 'name', 'overall_rating', 'review_desc', 'start_month', 'start_year', 'workload_rating')
     .where('course_id', req.params.course_id)
-    .orderBy('review_created_at', 'desc');
+    .orderBy('course_reviews.created_at', 'desc');
 
   Promise.all([
     getCourseInfo(),

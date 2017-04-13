@@ -9,8 +9,8 @@ const getIndexPageData = (req, res, knex, user_id) => {
     .innerJoin('revisions', 'docs.id', 'doc_id')
     .select('revisions.id', 'type', 'title', 'course_id', 'rev_desc', 'file_name', 'doc_id', 'user_id', 'revisions.created_at')
     .whereIn('course_id', courseIds)
-    .whereNull('rev_deleted_at')
-    .whereNull('doc_deleted_at')
+    .whereNull('revisions.deleted_at')
+    .whereNull('docs.deleted_at')
     .orderBy('revisions.created_at', 'desc');
 
   findUsersCourses(knex, user_id)

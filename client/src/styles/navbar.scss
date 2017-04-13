@@ -2,12 +2,6 @@
   position: fixed; width: calc(100% - 40px);
   .container { margin: 0 $default_margin; max-width: 100%; }
 
-  .notification-list.is-enabled {
-    display: block; position: absolute; background-color: white; left: 200px;
-    top: 50px; z-index: 3; border: $dark-blue 2px solid; padding: $default_margin;
-  }
-
-  .notification-list { display: none; }
   a.nav-item.is-tab.is-active, .nav-item a.is-tab.is-active {
     border-bottom: 3px solid $dark-blue;
     color: $dark-blue;

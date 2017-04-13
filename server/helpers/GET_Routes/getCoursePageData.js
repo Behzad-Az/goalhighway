@@ -3,7 +3,7 @@ const getCoursePageData = (req, res, knex, user_id) => {
   let docs, courseInfo, itemsForSale, courseFeed;
 
   const getDocRevisions = doc => new Promise((resolve, reject) => {
-    knex('revisions').where('doc_id', doc.id).whereNull('rev_deleted_at').orderBy('created_at', 'desc')
+    knex('revisions').where('doc_id', doc.id).whereNull('deleted_at').orderBy('created_at', 'desc')
     .then(revisions => {
       doc.revisions = revisions;
       doc.title = revisions[0].title;
@@ -27,7 +27,7 @@ const getCoursePageData = (req, res, knex, user_id) => {
 
   const getDocs = () => knex('docs')
     .where('course_id', req.params.course_id)
-    .whereNull('doc_deleted_at')
+    .whereNull('deleted_at')
     .orderBy('created_at', 'desc');
 
   const getCourseInfo = () => knex('courses')
@@ -46,7 +46,7 @@ const getCoursePageData = (req, res, knex, user_id) => {
 
   const getItemsForSale = () => knex('items_for_sale')
     .where('course_id', req.params.course_id)
-    .whereNull('item_deleted_at');
+    .whereNull('deleted_at');
 
   const getAvgCourseRating = () => knex('course_reviews')
     .where('course_id', req.params.course_id)

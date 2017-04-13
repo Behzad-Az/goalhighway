@@ -14,7 +14,7 @@ const getFeedPageData = (req, res, knex, user_id) => {
   const getResumeFeeds = () => knex('resume_review_feed')
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
-    .whereNull('feed_deleted_at');
+    .whereNull('deleted_at');
 
   getCourseIds()
   .then(courses => Promise.all([ getCourseFeeds(courses.map(course => course.course_id)), getResumeFeeds() ]))

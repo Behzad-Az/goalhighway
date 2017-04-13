@@ -49,7 +49,7 @@ class AnswerRow extends Component {
         <div className='media-content'>
           <div className='content'>
             <p>
-              <small className='date top-right'>Posted On: {this.props.ans.answer_created_at.slice(0, 10)}</small>
+              <small className='date top-right'>Posted On: {this.props.ans.created_at.slice(0, 10)}</small>
               <strong>
                 Answer #{this.props.index} | Outcome: {this.props.ans.outcome}
               </strong>

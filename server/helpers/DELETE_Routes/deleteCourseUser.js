@@ -11,11 +11,6 @@ const deleteCourseUser = (req, res, knex, user_id) => {
     })
     .returning('id');
 
-  const deleteAssistNotif = (tutor_log_id, trx) => knex('notifications')
-    .transacting(trx)
-    .where('tutor_log_id', tutor_log_id)
-    .del();
-
   const deleteCourseFeed = (tutor_log_id, trx) => knex('course_feed')
     .transacting(trx)
     .where('tutor_log_id', tutor_log_id)
@@ -35,7 +30,7 @@ const deleteCourseUser = (req, res, knex, user_id) => {
 
   knex.transaction(trx => {
     Promise.all([ voidOutstandingAssistRequests(trx), unsubscribeCourseUser(trx) ])
-    .then(results => Promise.all([ deleteCourseFeed(results[0][0] || 0), deleteAssistNotif(results[0][0] || 0) ]))
+    .then(results => deleteCourseFeed(results[0][0] || 0))
     .then(() => trx.commit())
     .catch(err => {
       trx.rollback();

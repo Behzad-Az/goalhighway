@@ -155,7 +155,6 @@ const postNewResumeReviewFeed = require('./helpers/POST_Routes/postNewResumeRevi
 const updateUserProfile = require('./helpers/UPDATE_Routes/updateUserProfile.js');
 const updateCourseUserTutorStatus = require('./helpers/UPDATE_Routes/updateCourseUserTutorStatus.js');
 const updateTutorLog = require('./helpers/UPDATE_Routes/updateTutorLog.js');
-const updateViewedNotifications = require('./helpers/UPDATE_Routes/updateViewedNotifications.js');
 const updateItemForSale = require('./helpers/UPDATE_Routes/updateItemForSale.js');
 const updateResume = require('./helpers/UPDATE_Routes/updateResume.js');
 
@@ -344,10 +343,6 @@ app.post('/api/users/:user_id/courses/:course_id/tutor', (req, res) => {
 
 app.post('/api/users/:user_id/courses/:course_id/tutorlog/update', (req, res) => {
   updateTutorLog(req, res, knex, req.session.user_id);
-});
-
-app.post('/api/users/:user_id/notifications/viewed', (req, res) => {
-  updateViewedNotifications(req, res, knex, req.session.user_id);
 });
 
 app.post('/api/courses/:course_id/items/:item_id', (req, res) => {

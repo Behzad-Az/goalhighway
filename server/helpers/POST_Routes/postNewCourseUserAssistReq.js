@@ -39,13 +39,6 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     .where('course_id', req.params.course_id)
     .andWhere('tutor_status', true);
 
-  const insertTutorNotif = (to_id, notifObj, trx) => {
-    notifObj.to_id = to_id;
-    return knex('notifications')
-      .transacting(trx)
-      .insert(notifObj);
-  };
-
   const verifySubscription = () => knex('course_user')
     .where('course_id', req.params.course_id)
     .andWhere('user_id', user_id)
@@ -80,17 +73,6 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
         tutor_log_id: newTutorLogId
       };
       return insertRelatedCourseFeed(newCourseFeed, trx);
-    })
-    .then(() => {
-      let notifObj = {
-        from_id: user_id,
-        course_id: req.params.course_id,
-        tutor_log_id: newTutorLogId,
-        category: 'tutor_request',
-        content: `Requesting peer tutoring: ${req.body.issueDesc}`,
-      };
-      let promiseArr = courseTutorIds.map(tutorId => insertTutorNotif(tutorId, notifObj, trx));
-      return Promise.all(promiseArr);
     })
     .then(() => trx.commit())
     .catch(err => {

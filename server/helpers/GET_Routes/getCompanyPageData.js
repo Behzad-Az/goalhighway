@@ -2,12 +2,15 @@ const getCompanyPageData = (req, res, knex, user_id, esClient) => {
 
   let companyInfo, qas, jobs;
 
-  const getCompanyProfile = () => knex('companies').where('id', req.params.company_id);
+  const getCompanyProfile = () => knex('companies')
+    .where('id', req.params.company_id);
 
-  const getQuestions = () => knex('interview_questions').where('company_id', req.params.company_id).whereNull('interview_questions.question_deleted_at');
+  const getQuestions = () => knex('interview_questions')
+    .where('company_id', req.params.company_id)
+    .whereNull('deleted_at');
 
   const getAnswers = question => new Promise((resolve, reject) => {
-    knex('interview_answers').where('question_id', question.id).whereNull('interview_answers.answer_deleted_at').then(rows => {
+    knex('interview_answers').where('question_id', question.id).whereNull('deleted_at').then(rows => {
       question.answers = rows;
       resolve();
     }).catch(err => {

@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
       t.integer('audience_filter_id').notNullable();
       t.string('audience_filter_table').notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
-      t.timestamp('feed_deleted_at');
+      t.timestamp('deleted_at');
     })
   ]);
 };

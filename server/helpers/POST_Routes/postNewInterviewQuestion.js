@@ -2,7 +2,7 @@ const posNewInterviewQuestion = (req, res, knex, user_id) => {
 
   let newQestionObj = {
     question: req.body.question,
-    question_poster_id: user_id,
+    poster_id: user_id,
     company_id: req.params.company_id
   };
 
@@ -15,7 +15,7 @@ const posNewInterviewQuestion = (req, res, knex, user_id) => {
       let newAnsObj = {
         answer: req.body.answer,
         outcome: req.body.outcome || 'unknown',
-        answer_poster_id: user_id,
+        poster_id: user_id,
         question_id: questionId
       };
       return knex('interview_answers')

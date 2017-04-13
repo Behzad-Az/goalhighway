@@ -4,7 +4,7 @@ const updateItemForSale = (req, res, knex, user_id) => {
     title: req.body.title,
     item_desc: req.body.itemDesc,
     price: req.body.price,
-    item_deleted_at: req.body.deleted ? knex.fn.now() : null
+    deleted_at: req.body.deleted ? knex.fn.now() : null
   };
 
   if (req.body.photo_path) { updatedItemObj.photo_path = req.body.photoPath; }

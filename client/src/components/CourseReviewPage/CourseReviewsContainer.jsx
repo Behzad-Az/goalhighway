@@ -15,13 +15,13 @@ class CourseReviewsContainer extends Component {
     this.setState({ sortedBy: e.target.value });
   }
 
-  _sortReviews(sortedBy) {
-    switch(sortedBy) {
+  _sortReviews() {
+    switch(this.state.sortedBy) {
       case 'date_new_to_old':
-        this.props.courseReviews.sort((a, b) => a.review_created_at < b.review_created_at);
+        this.props.courseReviews.sort((a, b) => a.created_at < b.created_at);
         break;
       case 'date_old_to_new':
-        this.props.courseReviews.sort((a, b) => a.review_created_at > b.review_created_at);
+        this.props.courseReviews.sort((a, b) => a.created_at > b.created_at);
         break;
       case 'rating_high_to_low':
         this.props.courseReviews.sort((a, b) => a.overall_rating < b.overall_rating);
@@ -38,7 +38,8 @@ class CourseReviewsContainer extends Component {
   }
 
   render() {
-    this._sortReviews(this.state.sortedBy);
+    this._sortReviews();
+    console.log("i'm here 0: ", this.props.courseReviews);
     return (
       <div className='review-container'>
         <h1 className='header'>

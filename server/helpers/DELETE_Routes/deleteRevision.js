@@ -14,25 +14,25 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
   const deleteRev = trx => knex('revisions')
     .transacting(trx)
     .where('id', rev_id)
-    .update({ rev_deleted_at: knex.fn.now() });
+    .update({ deleted_at: knex.fn.now() });
 
   const getRemainingRevCount = trx => knex('revisions')
     .transacting(trx)
     .where('doc_id', doc_id)
-    .whereNull('rev_deleted_at')
+    .whereNull('deleted_at')
     .count('id');
 
   const getDocRevs = trx => knex('revisions')
     .transacting(trx)
     .select('id', 'title', 'type')
     .where('doc_id', doc_id)
-    .whereNull('rev_deleted_at')
+    .whereNull('deleted_at')
     .orderBy('created_at', 'desc');
 
   const deleteDoc = trx => knex('docs')
     .transacting(trx)
     .where('id', doc_id)
-    .update({ doc_deleted_at: knex.fn.now() });
+    .update({ deleted_at: knex.fn.now() });
 
   const deleteObj = { delete: { _index: 'search_catalogue', _type: 'document', _id: doc_id } };
 

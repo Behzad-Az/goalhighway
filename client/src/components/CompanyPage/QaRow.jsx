@@ -58,7 +58,7 @@ class QaRow extends Component {
             <p>
               <strong>{this.props.qa.question}</strong>
               <br />
-              Posted On: {this.props.qa.question_created_at.slice(0, 10)}
+              Posted On: {this.props.qa.created_at.slice(0, 10)}
               <br />
               Like Count: {this.props.qa.like_count}
               <br />

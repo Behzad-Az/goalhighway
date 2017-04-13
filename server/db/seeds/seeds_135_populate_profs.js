@@ -47,14 +47,21 @@ const profs = [
 ];
 
 exports.seed = function(knex, Promise) {
-  let promiseArr = [];
-  profs.forEach(prof => {
+  // let promiseArr = [];
+  let promiseArr = profs.map(prof => {
     let profObj = {
       name: `${prof.prefix} ${prof.first_name} ${prof.last_name}`,
       inst_id: 1
     };
-    promiseArr.push(knex("profs").insert(profObj));
+    return knex('profs').insert(profObj);
   });
-  promiseArr.push(knex("profs").insert({ inst_id: 1, name: "unknown"}));
+  // profs.forEach(prof => {
+  //   let profObj = {
+  //     name: `${prof.prefix} ${prof.first_name} ${prof.last_name}`,
+  //     inst_id: 1
+  //   };
+  //   promiseArr.push(knex("profs").insert(profObj));
+  // });
+  promiseArr.push(knex('profs').insert({ inst_id: 1, name: 'unknown'}));
   return Promise.all(promiseArr);
 };

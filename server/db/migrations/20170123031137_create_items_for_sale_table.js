@@ -9,8 +9,8 @@ exports.up = function(knex, Promise) {
       t.string('price', 50).notNullable().defaultTo('Best offer / negotiable');
       t.integer('course_id').notNullable().references('courses.id');
       t.integer('owner_id').notNullable().references('users.id');
-      t.timestamp('item_created_at').notNullable().defaultTo(knex.fn.now());
-      t.timestamp('item_deleted_at');
+      t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
+      t.timestamp('deleted_at');
     })
   ]);
 };

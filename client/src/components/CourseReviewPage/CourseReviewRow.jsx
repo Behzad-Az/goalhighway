@@ -88,7 +88,7 @@ class CourseReviewRow extends Component {
             </tr>
             <tr>
               <td>Posted On:</td>
-              <td>{this.props.review.review_created_at.slice(0, 10)}</td>
+              <td>{this.props.review.created_at.slice(0, 10)}</td>
             </tr>
           </tbody>
         </table>

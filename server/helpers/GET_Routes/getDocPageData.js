@@ -3,7 +3,7 @@ const getDocPageData = (req, res, knex, user_id) => {
   let docInfo, courseInfo;
 
   const getDocRevisions = doc => new Promise((resolve, reject) => {
-    knex('revisions').where('doc_id', doc.id).whereNull('rev_deleted_at').orderBy('created_at', 'desc')
+    knex('revisions').where('doc_id', doc.id).whereNull('deleted_at').orderBy('created_at', 'desc')
     .then(revisions => {
       revisions.forEach(revision => revision.deleteable = revision.user_id === user_id);
       doc.revisions = revisions;
@@ -27,7 +27,7 @@ const getDocPageData = (req, res, knex, user_id) => {
   const getDocInfo = () => knex('docs')
     .where('course_id', req.params.course_id)
     .andWhere('id', req.params.doc_id)
-    .whereNull('doc_deleted_at');
+    .whereNull('deleted_at');
 
   const getTutorLogInfo = () => knex('tutor_log')
     .where('student_id', user_id)

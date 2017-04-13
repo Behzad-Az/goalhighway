@@ -5,7 +5,8 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('companies', t => {
       t.increments('id');
       t.string('name', 50).notNullable();
-      t.timestamp('flag_created_at').notNullable().defaultTo(knex.fn.now());
+      t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
+      t.timestamp('deleted_at');
     }),
 
     knex.schema.createTableIfNotExists('interview_questions', t => {
@@ -13,19 +14,19 @@ exports.up = function(knex, Promise) {
       t.string('question', 250).notNullable();
       t.integer('like_count').notNullable().defaultTo(0);
       t.integer('company_id').notNullable().references('companies.id');
-      t.integer('question_poster_id').notNullable().references('users.id');
-      t.timestamp('question_created_at').notNullable().defaultTo(knex.fn.now());
-      t.timestamp('question_deleted_at');
+      t.integer('poster_id').notNullable().references('users.id');
+      t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
+      t.timestamp('deleted_at');
     }),
 
     knex.schema.createTableIfNotExists('interview_answers', t => {
       t.increments('id');
       t.string('answer', 1000).notNullable();
       t.string('outcome', 20).notNullable().defaultTo('unknown');
-      t.integer('answer_poster_id').notNullable().references('users.id');
+      t.integer('poster_id').notNullable().references('users.id');
       t.integer('question_id').notNullable().references('interview_questions.id');
-      t.timestamp('answer_created_at').notNullable().defaultTo(knex.fn.now());
-      t.timestamp('answer_deleted_at');
+      t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
+      t.timestamp('deleted_at');
     })
 
   ]);
