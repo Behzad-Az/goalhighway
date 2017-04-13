@@ -15,5 +15,4 @@ exports.seed = function(knex, Promise) {
   });
 
   return Promise.all(promiseArr);
-  // return Promise.all([]);
 };

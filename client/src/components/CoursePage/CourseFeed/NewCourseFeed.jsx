@@ -8,7 +8,6 @@ class NewCourseFeed extends Component {
     this.reactAlert = new ReactAlert();
     this.state = {
       commenterName: '',
-      category: '',
       content: ''
     };
     this._validateForm = this._validateForm.bind(this);
@@ -18,13 +17,12 @@ class NewCourseFeed extends Component {
   }
 
   _validateForm() {
-    return this.state.category && this.state.content && this.state.content.length <= this.maxContentLength;
+    return this.state.content && this.state.content.length <= this.maxContentLength;
   }
 
   _clearForm() {
     this.setState({
       commenterName: '',
-      category: '',
       content: ''
     });
   }
@@ -39,7 +37,6 @@ class NewCourseFeed extends Component {
   _handleSubmit() {
     let data = {
       commenterName: this.state.commenterName,
-      category: this.state.category,
       content: this.state.content
     };
 
@@ -72,13 +69,6 @@ class NewCourseFeed extends Component {
             <p className='control is-expanded'>
               <input className='input' name='commenterName' type='text' placeholder='Name (Optional)' onChange={this._handleChange} value={this.state.commenterName} />
             </p>
-            <div className='control is-expanded'>
-              <div className='select is-fullwidth'>
-                <select name='category' onChange={this._handleChange} value={this.state.category}>
-                  <option value=''>Select Category</option>
-                </select>
-              </div>
-            </div>
           </div>
         </div>
         <div className='control is-horizontal'>

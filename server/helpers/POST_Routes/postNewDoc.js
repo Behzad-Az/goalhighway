@@ -24,6 +24,25 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     .select('institutions.id', 'inst_long_name', 'inst_short_name', 'short_display_name')
     .where('courses.id', newDocObj.course_id);
 
+  const determineCategory = type => {
+    let output;
+    switch(type) {
+      case 'asg_report':
+        output = 'new_asg_report';
+        break;
+      case 'lecture_note':
+        output = 'new_lecture_note';
+        break;
+      case 'sample_question':
+        output = 'new_sample_question';
+        break;
+      default:
+        output = 'new_document';
+        break;
+    }
+    return output;
+  }
+
   const addDocToElasticSearch = esDocObj => {
     let kind;
     const indexObj = {
@@ -69,9 +88,10 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
         commenter_id: 2,
         course_id: newDocObj.course_id,
         doc_id: newRevObj.doc_id,
-        category: newRevObj.type,
+        category: determineCategory(newRevObj.type),
         commenter_name: 'goal_robot',
-        content: `I just got a new document - ${newRevObj.title}`
+        header: newRevObj.title,
+        content: 'New document received.'
       };
       return adminAddToCourseFeed(adminFeedObj, trx);
     })

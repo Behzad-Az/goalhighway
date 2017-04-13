@@ -3,15 +3,6 @@ const randomNum = maxNum => Math.floor((Math.random() * maxNum) + 1);
 
 const suffix = ['blah', '.xlsx', '.docx', '.pdf', '.zip', '.default'];
 
-// let adminFeedObj = {
-//   commenter_id: 2,
-//   course_id: newDocObj.course_id,
-//   doc_id: newRevObj.doc_id,
-//   category: newRevObj.type,
-//   commenter_name: 'goal_robot',
-//   content: `I just got a new document - ${newRevObj.title}`
-// };
-
 exports.seed = function(knex, Promise) {
 
   const insertRev = revObj => knex('revisions').insert(revObj);
@@ -37,6 +28,25 @@ exports.seed = function(knex, Promise) {
         break;
     }
 
+    const determineCategory = type => {
+      let output;
+      switch(type) {
+        case 'asg_report':
+          output = 'new_asg_report';
+          break;
+        case 'lecture_note':
+          output = 'new_lecture_note';
+          break;
+        case 'sample_question':
+          output = 'new_sample_question';
+          break;
+        default:
+          output = 'new_document';
+          break;
+      }
+      return output;
+    }
+
     for(let n = 1; n <= randNum; n++) {
 
       let revObj = {
@@ -50,9 +60,10 @@ exports.seed = function(knex, Promise) {
         commenter_id: 2,
         course_id: Math.ceil(i / 3),
         doc_id: i,
-        category: type,
+        category: determineCategory(type),
         commenter_name: 'goal_robot',
-        content: `I just got a new document - ${title}`
+        header: title,
+        content: 'New document posted.'
       };
 
       promiseArr.push(insertRev(revObj));

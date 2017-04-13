@@ -11,7 +11,6 @@ class CourseFeedRow extends Component {
     this._handleFlagClick = this._handleFlagClick.bind(this);
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
     this._renderFlagSelect = this._renderFlagSelect.bind(this);
-    this._decodeDocumentCategory = this._decodeDocumentCategory.bind(this);
   }
 
   _handleFlagClick() {
@@ -52,17 +51,44 @@ class CourseFeedRow extends Component {
     );
   }
 
-  _decodeDocumentCategory(category) {
-    switch(category) {
-      case 'lecture_note':
-        return ' under Lecture Notes';
-      case 'asg_report':
-        return ' under Assignments & Reports';
-      case 'sample_question':
-        return ' under Sample Questions';
+  _decodeCategory() {
+    let output;
+    switch(this.props.feed.category) {
+      case 'new_asg_report':
+        output = 'New Assingment / Report - ';
+        break;
+      case 'new_lecture_note':
+        output = 'New Lecture Note - ';
+        break;
+      case 'new_sample_question':
+        output = 'New Sample Question - ';
+        break;
+      case 'new_document':
+        output = 'New Document - ';
+        break;
+      case 'revised_asg_report':
+        output = 'Revised Assingment / Report - ';
+        break;
+      case 'revised_lecture_note':
+        output = 'Revised Lecture Note - ';
+        break;
+      case 'revised_sample_question':
+        output = 'Revised Sample Question - ';
+        break;
+      case 'revised_document':
+        output = 'Revised Document - ';
+        break;
+      case 'tutor_request':
+        output = 'Tutor Request - ';
+        break;
+      case 'new_comment':
+        output = 'New Comment';
+        break;
       default:
-        return '';
+        output = '';
+        break;
     }
+    return output;
   }
 
   render() {
@@ -79,9 +105,15 @@ class CourseFeedRow extends Component {
               <button className='button'>Go to Course Page</button>
             </Link>
             <p>
-              <strong>@{this.props.feed.short_display_name} - New Document!</strong>
+              <strong>
+                <Link to={`/courses/${this.props.feed.course_id}`}>@{this.props.feed.short_display_name}</Link>
+              </strong>
               <br />
-              {this.props.feed.content}{this._decodeDocumentCategory}
+              <strong>
+                <Link to={`/courses/${this.props.feed.course_id}/docs/${this.props.feed.doc_id}`}>{this._decodeCategory()}'{this.props.feed.header}'</Link>
+              </strong>
+              <br />
+              {this.props.feed.content}
               <br />
               <small><Link>Download Document</Link></small>
               <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />

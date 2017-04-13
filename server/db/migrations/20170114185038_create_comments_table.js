@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
       t.integer('commenter_id').notNullable().references('users.id');
       t.string('commenter_name', 30).notNullable().defaultTo('anonymous');
       t.string('category', 100).notNullable();
+      t.string('header', 100).notNullable().defaultTo('default header');
       t.string('content', 400).notNullable();
       t.integer('course_id').notNullable().references('courses.id');
       t.integer('doc_id').references('docs.id');

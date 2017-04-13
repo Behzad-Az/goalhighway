@@ -7,9 +7,14 @@ const getFeedPageData = (req, res, knex, user_id) => {
     .whereNull('unsub_date');
 
   const getCourseFeeds = courseIds => knex('course_feed')
-    .innerJoin('courses', 'course_id', 'courses.id')
-    .select('course_feed.id', 'course_feed.created_at', 'short_display_name', 'commenter_name', 'category', 'content', 'course_id', 'doc_id', 'tutor_log_id')
-    .whereIn('course_id', courseIds);
+    .innerJoin('courses', 'course_feed.course_id', 'courses.id')
+    .select(
+      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
+      'course_feed.commenter_name', 'course_feed.category', 'course_feed.content', 'course_feed.header',
+      'course_feed.doc_id', 'courses.short_display_name'
+    )
+    .whereIn('courses.id', courseIds)
+    .limit(200);
 
   const getResumeFeeds = () => knex('resume_review_feed')
     .where('audience_filter_id', req.session.inst_prog_id)

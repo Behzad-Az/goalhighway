@@ -13,6 +13,25 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     }
   });
 
+  const determineCategory = type => {
+    let output;
+    switch(type) {
+      case 'asg_report':
+        output = 'revised_asg_report';
+        break;
+      case 'lecture_note':
+        output = 'revised_lecture_note';
+        break;
+      case 'sample_question':
+        output = 'revised_sample_question';
+        break;
+      default:
+        output = 'revised_document';
+        break;
+    }
+    return output;
+  }
+
   const updateElasticSearch = () => {
     let kind;
     const indexObj = {
@@ -71,9 +90,10 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
         commenter_id: 2,
         course_id: req.params.course_id,
         doc_id: req.params.doc_id,
-        category: req.body.type,
+        category: determineCategory(req.body.type),
         commenter_name: 'goal_robot',
-        content: `I just revised a document - ${req.body.title} - ${req.body.revDesc}`
+        header: req.body.title,
+        content: req.body.revDesc
       };
       return adminAddToCourseFeed(adminFeedObj, trx);
     })
