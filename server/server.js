@@ -123,7 +123,6 @@ const getJobPageData = require('./helpers/GET_Routes/getJobPageData.js');
 const getUserNavBarData = require('./helpers/GET_Routes/getUserNavBarData.js');
 const getInstitutionsAndPrograms = require('./helpers/GET_Routes/getInstitutionsAndPrograms.js');
 const getInstList = require('./helpers/GET_Routes/getInstList.js');
-const getInstCourses = require('./helpers/GET_Routes/getInstCourses.js');
 const getLoginCheck = require('./helpers/GET_Routes/getLoginCheck.js');
 const getRightSideBarData = require('./helpers/GET_Routes/getRightSideBarData.js');
 const getLeftSideBarData = require('./helpers/GET_Routes/getLeftSideBarData.js');
@@ -198,10 +197,6 @@ app.get('/api/institutions', (req, res) => {
 
 app.get('/api/institutions/:inst_id', (req, res) => {
   getInstPageData(req, res, knex, req.session.user_id);
-});
-
-app.get('/api/institutions/:inst_id/courses', (req, res) => {
-  getInstCourses(req, res, knex, req.session.user_id);
 });
 
 app.get('/api/jobs', (req, res) => {
