@@ -63,7 +63,6 @@ class RightSideBar extends Component {
             <p><i className='fa fa-graduation-cap' aria-hidden='true' /> {this._commaSeparateNumber(this.state.courseCount)} courses available</p>
             <p><i className='fa fa-file' aria-hidden='true' /> {this._commaSeparateNumber(this.state.revCount)} files posted.</p>
             <p><i className='fa fa-slideshare' aria-hidden='true' /> {this._commaSeparateNumber(this.state.tutorCount)} tutors</p>
-            <small>As of - 1 Jan 2016</small>
           </div>
         </div>
       </div>

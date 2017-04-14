@@ -6,22 +6,27 @@ const getFeedPageData = (req, res, knex, user_id) => {
     .where('users.id', user_id)
     .whereNull('unsub_date');
 
-  const getCourseFeeds = courseIds => knex('course_feed')
-    .innerJoin('courses', 'course_feed.course_id', 'courses.id')
-    .select(
-      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
-      'course_feed.commenter_name', 'course_feed.category', 'course_feed.content', 'course_feed.header',
-      'course_feed.doc_id', 'courses.short_display_name'
-    )
-    .whereIn('courses.id', courseIds)
-    .orderBy('course_feed.created_at', 'desc')
-    .limit(200);
+  const getCourseFeeds = courseIds => {
+    return knex('course_feed')
+      .innerJoin('courses', 'course_feed.course_id', 'courses.id')
+      .select(
+        'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
+        'course_feed.commenter_name', 'course_feed.category', 'course_feed.content', 'course_feed.header',
+        'course_feed.doc_id', 'courses.short_display_name'
+      )
+      .whereIn('courses.id', courseIds)
+      .orderBy('course_feed.created_at', 'desc')
+      .limit(10)
+      .offset(parseInt(req.query.coursefeedoffset));
+  }
 
   const getResumeFeeds = () => knex('resume_review_feed')
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
     .whereNull('deleted_at')
-    .orderBy('created_at', 'desc');
+    .orderBy('created_at', 'desc')
+    .limit(2)
+    .offset(parseInt(req.query.resumefeedoffset))
 
   const updateUserFeedDate = () => knex('users')
     .where('id', user_id)

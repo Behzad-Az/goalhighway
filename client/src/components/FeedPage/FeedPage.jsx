@@ -15,14 +15,21 @@ class FeedPage extends Component {
       dataLoaded: false,
       pageError: false,
       resumeReviewFeeds: [],
-      courseFeeds: []
+      courseFeeds: [],
+      noMoreFeeds: false
     };
+    this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
+    this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
   }
 
   componentDidMount() {
-    fetch('/api/users/currentuser/feed', {
+    this._loadComponentData();
+  }
+
+  _loadComponentData() {
+    fetch(`/api/users/currentuser/feed?coursefeedoffset=${this.state.courseFeeds.length}&resumefeedoffset=${this.state.resumeReviewFeeds.length}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
@@ -33,10 +40,25 @@ class FeedPage extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      resJSON.dataLoaded = true;
-      this.setState(resJSON);
+      this.setState({
+        courseFeeds: this.state.courseFeeds.concat(resJSON.courseFeeds),
+        resumeReviewFeeds: this.state.resumeReviewFeeds.concat(resJSON.resumeReviewFeeds),
+        dataLoaded: true,
+        noMoreFeeds: !resJSON.courseFeeds.length && !resJSON.resumeReviewFeeds.length
+      });
     } else {
       throw 'Server returned false';
+    }
+  }
+
+  _displayLoadMoreBtn() {
+    let btnContent = this.state.noMoreFeeds && (this.state.courseFeeds.length || this.state.resumeReviewFeeds.length) ? 'No more feed item' : 'Load more feed items';
+    if (this.state.courseFeeds.length || this.state.resumeReviewFeeds.length) {
+      return (
+        <p className='end-msg'>
+          <button className='button' disabled={this.state.noMoreFeeds} onClick={this._loadComponentData}>{btnContent}</button>
+        </p>
+      );
     }
   }
 
@@ -55,6 +77,7 @@ class FeedPage extends Component {
         <div className='main-container'>
           <SearchBar />
           <FeedsContainer resumeReviewFeeds={this.state.resumeReviewFeeds} courseFeeds={this.state.courseFeeds} />
+          { this._displayLoadMoreBtn() }
         </div>
       );
     } else {
