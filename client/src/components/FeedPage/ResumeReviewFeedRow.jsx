@@ -72,8 +72,12 @@ class ResumeReviewFeedRow extends Component {
               <small>
                 <Link>Click here for some tips</Link>
               </small>
-              <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-              {this.state.flagRequest && this._renderFlagSelect()}
+              <br />
+              <small>
+                Posted on {this.props.feed.created_at.slice(0, 10)}
+                <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                {this.state.flagRequest && this._renderFlagSelect()}
+              </small>
             </p>
           </div>
         </div>

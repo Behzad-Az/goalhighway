@@ -1,21 +1,19 @@
 import React, {Component} from 'react';
-
 import Navbar from '../Navbar/Navbar.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../partials/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
-import ReactAlert from '../partials/ReactAlert.jsx';
 import FeedsContainer from './FeedsContainer.jsx';
 
 class FeedPage extends Component {
   constructor(props) {
     super(props);
-    this.reactAlert = new ReactAlert();
     this.state = {
       dataLoaded: false,
       pageError: false,
-      resumeReviewFeeds: [],
-      courseFeeds: [],
+      feeds: [],
+      courseFeedsLength: 0,
+      resumeReviewFeedsLength: 0,
       noMoreFeeds: false
     };
     this._loadComponentData = this._loadComponentData.bind(this);
@@ -29,7 +27,7 @@ class FeedPage extends Component {
   }
 
   _loadComponentData() {
-    fetch(`/api/users/currentuser/feed?coursefeedoffset=${this.state.courseFeeds.length}&resumefeedoffset=${this.state.resumeReviewFeeds.length}`, {
+    fetch(`/api/users/currentuser/feed?coursefeedoffset=${this.state.courseFeedsLength}&resumefeedoffset=${this.state.resumeReviewFeedsLength}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
@@ -41,10 +39,11 @@ class FeedPage extends Component {
   _conditionData(resJSON) {
     if (resJSON) {
       this.setState({
-        courseFeeds: this.state.courseFeeds.concat(resJSON.courseFeeds),
-        resumeReviewFeeds: this.state.resumeReviewFeeds.concat(resJSON.resumeReviewFeeds),
+        courseFeedsLength: this.state.courseFeedsLength + resJSON.feeds.reduce((acc, feed) => feed.type === 'courseFeed' ? acc + 1 : acc, 0),
+        resumeReviewFeedsLength: this.state.resumeReviewFeedsLength + resJSON.feeds.reduce((acc, feed) => feed.type === 'resumeReviewFeed' ? acc + 1 : acc, 0),
+        feeds: this.state.feeds.concat(resJSON.feeds.sort((a, b) => a.created_at <= b.created_at ? 1 : -1)),
         dataLoaded: true,
-        noMoreFeeds: !resJSON.courseFeeds.length && !resJSON.resumeReviewFeeds.length
+        noMoreFeeds: !resJSON.feeds.length
       });
     } else {
       throw 'Server returned false';
@@ -52,8 +51,8 @@ class FeedPage extends Component {
   }
 
   _displayLoadMoreBtn() {
-    let btnContent = this.state.noMoreFeeds && (this.state.courseFeeds.length || this.state.resumeReviewFeeds.length) ? 'No more feed item' : 'Load more feed items';
-    if (this.state.courseFeeds.length || this.state.resumeReviewFeeds.length) {
+    let btnContent = this.state.noMoreFeeds && this.state.feeds.length ? 'No more feed item' : 'Load more feed items';
+    if (this.state.feeds.length) {
       return (
         <p className='end-msg'>
           <button className='button' disabled={this.state.noMoreFeeds} onClick={this._loadComponentData}>{btnContent}</button>
@@ -76,7 +75,7 @@ class FeedPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <FeedsContainer resumeReviewFeeds={this.state.resumeReviewFeeds} courseFeeds={this.state.courseFeeds} />
+          <FeedsContainer feeds={this.state.feeds} />
           { this._displayLoadMoreBtn() }
         </div>
       );
@@ -99,7 +98,6 @@ class FeedPage extends Component {
         <LeftSideBar />
         { this._renderPageAfterData() }
         <RightSideBar />
-        { this.reactAlert.container }
       </div>
     );
   }
