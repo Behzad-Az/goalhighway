@@ -89,7 +89,7 @@ class CoursePage extends Component {
           <TopRow courseInfo={this.state.courseInfo} />
           <NewDocForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
           <NewItemForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
-          <NewReAssistForm courseInfo={this.state.courseInfo} updateParentState={this._updateState} />
+          <NewReAssistForm courseInfo={this.state.courseInfo} reload={this._loadComponentData} />
           <DocsContainer docs={this.state.asgReports} header='Assignments and Reports' />
           <DocsContainer docs={this.state.lectureNotes} header='Lecture Notes' />
           <DocsContainer docs={this.state.sampleQuestions} header='Sample Questions' />

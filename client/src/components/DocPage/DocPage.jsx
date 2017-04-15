@@ -27,7 +27,6 @@ class DocPage extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._updateState = this._updateState.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
@@ -62,10 +61,6 @@ class DocPage extends Component {
     }
   }
 
-  _updateState(newState) {
-    this.setState(newState);
-  }
-
   _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
@@ -81,7 +76,7 @@ class DocPage extends Component {
         <div className='main-container'>
           <SearchBar />
           <TopRow courseInfo={this.state.courseInfo} docInfo={this.state.docInfo} />
-          <NewReAssistForm courseInfo={this.state.courseInfo} updateParentState={this._updateState} />
+          <NewReAssistForm courseInfo={this.state.courseInfo} reload={this._loadComponentData} />
           <NewRevisionForm docInfo={this.state.docInfo} reload={this._loadComponentData} />
           <RevisionsContainer
             revs={this.state.docInfo.revisions}

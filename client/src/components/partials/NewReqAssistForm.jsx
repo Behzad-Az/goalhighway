@@ -14,7 +14,6 @@ class NewReqAssistForm extends Component {
     this._handleChange = this._handleChange.bind(this);
     this._validateForm = this._validateForm.bind(this);
     this._formFooterOptions = this._formFooterOptions.bind(this);
-    this._updateParentState = this._updateParentState.bind(this);
     this._handleUpdateRequestAssist = this._handleUpdateRequestAssist.bind(this);
     this._handleNewRequestAssist = this._handleNewRequestAssist.bind(this);
   }
@@ -34,7 +33,7 @@ class NewReqAssistForm extends Component {
 
   _validateForm() {
     return this.state.issueDesc &&
-           this.state.issueDesc.length <= 400
+           this.state.issueDesc.length <= 400;
   }
 
   _formFooterOptions() {
@@ -66,17 +65,6 @@ class NewReqAssistForm extends Component {
     }
   }
 
-  _updateParentState(action) {
-    let courseInfo = {
-      ...this.props.courseInfo,
-      subscriptionStatus: true,
-      assistReqOpen: action === 'close' ? false : true,
-      latestAssistRequest: this.state.issueDesc
-    };
-    this.props._updateParentState({ courseInfo });
-    HandleModal('new-request-assist-form');
-  }
-
   _handleUpdateRequestAssist(action) {
     let data = {
       action: action,
@@ -95,11 +83,11 @@ class NewReqAssistForm extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { this._updateParentState(action); }
+      if (resJSON) { this.props.reload(); }
       else { throw 'Server returned false'; }
     })
     .catch(err => console.error('Unable to update or close assistance request - ', err))
-    .then(() => this.setState({ closureReason: '' }));
+    .then(() => HandleModal('new-request-assist-form'));
   }
 
   _handleNewRequestAssist() {
@@ -118,10 +106,11 @@ class NewReqAssistForm extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { this._updateParentState('new'); }
+      if (resJSON) { this.props.reload(); }
       else { throw 'Server returned false'; }
     })
-    .catch(err => console.error('Unable to post assistance request - ', err));
+    .catch(err => console.error('Unable to post assistance request - ', err))
+    .then(() => HandleModal('new-request-assist-form'));
   }
 
   render() {
