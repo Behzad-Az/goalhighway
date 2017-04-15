@@ -10,12 +10,12 @@ const getCompanyPageData = (req, res, knex, user_id, esClient) => {
     .whereNull('deleted_at');
 
   const getAnswers = question => new Promise((resolve, reject) => {
-    knex('interview_answers').where('question_id', question.id).whereNull('deleted_at').then(rows => {
+    knex('interview_answers').where('question_id', question.id).whereNull('deleted_at')
+    .then(rows => {
       question.answers = rows;
       resolve(question);
-    }).catch(err => {
-      reject(err);
-    });
+    })
+    .catch(err => reject('Unable to get answers for interview question: ', err));
   });
 
   const getJobs = () => {

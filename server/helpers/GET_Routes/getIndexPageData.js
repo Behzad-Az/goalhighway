@@ -20,9 +20,8 @@ const getIndexPageData = (req, res, knex, user_id) => {
       doc.title = revisions[0].title;
       doc.type = revisions[0].type;
       resolve(doc);
-    }).catch((err) => {
-      reject('Could not get revisions for course');
-    });
+    })
+    .catch(err => reject('Unable to get revisions for doc: ', err));
   });
 
   findUsersCourses(knex, user_id)

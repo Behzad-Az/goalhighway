@@ -12,16 +12,12 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
     .orderBy('created_at', 'desc');
 
   const getResumeReviewReqStatus = resume => new Promise((resolve, reject) => {
-    knex('resume_review_feed')
-    .where('resume_id', resume.id)
-    .andWhere('owner_id', user_id)
-    .whereNull('deleted_at')
-    .count('id as reviewReqStatus')
+    knex('resume_review_feed').where('resume_id', resume.id).andWhere('owner_id', user_id).whereNull('deleted_at').count('id as reviewReqStatus')
     .then(result => {
       resume.reviewReqStatus = parseInt(result[0].reviewReqStatus) ? true : false;
       resolve();
     })
-    .catch(err => reject(err));
+    .catch(err => reject('Unable to get resume review request status: ', err));
   });
 
   const search = (index, body) => esClient.search({index: index, body: body});

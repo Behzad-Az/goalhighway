@@ -9,20 +9,19 @@ const getCoursePageData = (req, res, knex, user_id) => {
       doc.title = revisions[0].title;
       doc.type = revisions[0].type;
       resolve();
-    }).catch(err => {
-      reject('Could not get revisions for course');
-    });
+    })
+    .catch(err => reject('Unable to get revisions for course: ', err));
   });
 
   const getDocLikeCount = doc => new Promise((resolve, reject) => {
-    knex('doc_user_likes').where('doc_id', doc.id).then(rows => {
+    knex('doc_user_likes').where('doc_id', doc.id)
+    .then(rows => {
       doc.likeCount = rows.reduce((a, b) => {
         return { like_count: parseInt(a.like_count) + parseInt(b.like_count) };
       }, {like_count : 0}).like_count;
       resolve();
-    }).catch(err => {
-      reject('could not query like doc count.');
-    });
+    })
+    .catch(err => reject('Unable to get doc like count: ', err));
   });
 
   const getDocs = () => knex('docs')

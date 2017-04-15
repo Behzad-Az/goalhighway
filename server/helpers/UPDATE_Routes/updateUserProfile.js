@@ -5,14 +5,14 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
       googleMapsClient.geocode({
         address: req.body.postalCode
       }, (err, response) => {
-        if (!err && response.json.status === "OK") {
+        if (!err && response.json.status === 'OK') {
           let coordinates = {
             lat: response.json.results[0].geometry.location.lat,
             lon: response.json.results[0].geometry.location.lng
           };
           resolve(coordinates);
         } else {
-          reject("invalid postal code");
+          reject('invalid postal code');
         }
       });
     });
@@ -24,7 +24,7 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
 
   let inst_prog_id;
 
-  if (req.body.type === "profile") {
+  if (req.body.type === 'profile') {
     findInstProgId(req.body.instId, req.body.progId)
     .then(instProgId => {
       inst_prog_id = instProgId[0].id;
@@ -43,10 +43,10 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
       req.session.prog_id = req.body.progId;
       res.send(true);
     }).catch(err => {
-      console.error("Error inside updateUserProfile.js: ", err);
+      console.error('Error inside updateUserProfile.js: ', err);
       res.send(false);
     });
-  } else if (req.body.type === "job") {
+  } else if (req.body.type === 'job') {
     getLocation()
     .then(coordinates => {
       let knexObj = {
@@ -62,7 +62,7 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
     .then(() => {
       res.send(true);
     }).catch(err => {
-      console.error("Error inside updateUserProfile.js: ", err);
+      console.error('Error inside updateUserProfile.js: ', err);
       res.send(false);
     });
   }

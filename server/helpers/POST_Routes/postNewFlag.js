@@ -24,8 +24,7 @@ const postNewFlag = (req, res, knex, user_id) => {
 
   const checkValidity = () => new Promise((resolve, reject) => {
     let tableName = newFlagObj.foreign_table;
-    if (tableFlags[tableName] && tableFlags[tableName].includes(newFlagObj.reason)) { resolve(); }
-    else { reject('Table name or reason does not exist'); }
+    tableFlags[tableName] && tableFlags[tableName].includes(newFlagObj.reason) ? resolve() : reject('Table name or reason does not exist');
   });
 
   checkValidity()
