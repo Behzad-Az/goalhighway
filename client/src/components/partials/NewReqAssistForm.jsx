@@ -50,8 +50,7 @@ class NewReqAssistForm extends Component {
                 <option value='No longer needed'>No longer needed</option>
                 <option value='Other'>Other</option>
               </select>
-            </span>
-            <button className='button' onClick={() => this._handleUpdateRequestAssist('close')} disabled={!this.state.closureReason}>Close Request</button>
+            </span> <button className='button is-warning' onClick={() => this._handleUpdateRequestAssist('close')} disabled={!this.state.closureReason}>Close Request</button>
           </p>
         </footer>
       );

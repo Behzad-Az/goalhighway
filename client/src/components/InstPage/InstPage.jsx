@@ -76,7 +76,7 @@ class InstPage extends Component {
 
   _filterCourseList() {
     let phrase = new RegExp(this.state.filterPhrase.toLowerCase());
-    return this.state.currInstCourses.filter(course => course.full_display_name.toLowerCase().match(phrase)).slice(0, 14);
+    return this.state.currInstCourses.filter(course => course.full_display_name.toLowerCase().match(phrase)).slice(0, 19);
   }
 
   _renderPageAfterData() {
@@ -97,7 +97,7 @@ class InstPage extends Component {
           <NewInstForm reload={this._loadComponentData} />
           <TopRow instId={this.state.instId} instList={this.state.instList} reload={this._loadComponentData} />
           <CoursesContainer courses={this._filterCourseList()} currUserCourseIds={this.state.currUserCourseIds} handleFilter={this._saveFilterPhrase} />
-          { this.state.dataLoaded && this.state.currInstCourses[0] && <p>Many more courses available. Refine your search please.</p> }
+          { this.state.dataLoaded && this.state.currInstCourses[0] && <p>{this.state.currInstCourses.length} courses available at this institution. Search to find your course.</p> }
           { this.state.dataLoaded && !this.state.currInstCourses[0] && <p>No courses are available for this institution. Be the first to add one.</p> }
         </div>
       );

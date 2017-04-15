@@ -11,7 +11,7 @@ class ItemsContainer extends Component {
         </h1>
         <div className='items-row'>
           { this.props.items.map(item => <ItemCard key={item.id} item={item} reload={this.props.reload} /> ) }
-          { !this.props.items[0] && <p>No items for sale or trade yet.</p> }
+          { !this.props.items[0] && <p>No items for sale or trade yet...</p> }
         </div>
       </div>
     );
