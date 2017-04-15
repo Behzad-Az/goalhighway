@@ -1,6 +1,6 @@
 const getCompanyPageData = (req, res, knex, user_id, esClient) => {
 
-  let companyInfo, qas, jobs;
+  let companyInfo, jobs;
 
   const getCompanyProfile = () => knex('companies')
     .where('id', req.params.company_id);
@@ -12,12 +12,11 @@ const getCompanyPageData = (req, res, knex, user_id, esClient) => {
   const getAnswers = question => new Promise((resolve, reject) => {
     knex('interview_answers').where('question_id', question.id).whereNull('deleted_at').then(rows => {
       question.answers = rows;
-      resolve();
+      resolve(question);
     }).catch(err => {
       reject(err);
     });
   });
-
 
   const getJobs = () => {
     const body = {
@@ -44,15 +43,14 @@ const getCompanyPageData = (req, res, knex, user_id, esClient) => {
     getCompanyProfile(),
     getQuestions(),
     getJobs()
-  ]).then(results => {
+  ])
+  .then(results => {
     companyInfo = results[0][0];
-    qas = results[1];
     jobs = results[2].hits.hits;
-    let promiseArr = qas.map(qa => getAnswers(qa));
-    return Promise.all(promiseArr);
-  }).then(() => {
-    res.send({ companyInfo, qas, jobs });
-  }).catch(err => {
+    return Promise.all(results[1].map(qa => getAnswers(qa)));
+  })
+  .then(qas => res.send({ companyInfo, qas, jobs }))
+  .catch(err => {
     console.error('Error inside getCompanyPageData.js: ', err);
     res.send(false);
   });

@@ -1,6 +1,6 @@
 const getDocPageData = (req, res, knex, user_id) => {
 
-  let docInfo, courseInfo;
+  let courseInfo;
 
   const getDocRevisions = doc => new Promise((resolve, reject) => {
     knex('revisions').where('doc_id', doc.id).whereNull('deleted_at').orderBy('created_at', 'desc')
@@ -9,7 +9,7 @@ const getDocPageData = (req, res, knex, user_id) => {
       doc.revisions = revisions;
       doc.title = revisions[0].title;
       doc.type = revisions[0].type;
-      resolve();
+      resolve(doc);
     }).catch((err) => {
       reject('Could not get revisions for course');
     });
@@ -48,23 +48,21 @@ const getDocPageData = (req, res, knex, user_id) => {
     getCourseUserInfo(),
     getTutorLogInfo(),
     getAvgCourseRating()
-  ]).then(results => {
+  ])
+  .then(results => {
     let avgRating = results[4][0] ? Math.round(results[4][0].avg / 5 * 100) : 0;
     let latestTutorLog = results[3][0];
     let userInfo = results[2][0];
     courseInfo = results[1][0];
-    docInfo = results[0][0];
     courseInfo.subscriptionStatus = (userInfo && userInfo.sub_date) || false;
     courseInfo.tutorStatus = (userInfo && userInfo.tutor_status) || false;
     courseInfo.assistReqOpen = (latestTutorLog && !latestTutorLog.closed_at) || false;
     courseInfo.latestAssistRequest = latestTutorLog ? latestTutorLog.issue_desc : '';
     courseInfo.avgRating = avgRating;
-
-    return getDocRevisions(docInfo);
-
-  }).then(() => {
-    res.send({ docInfo, courseInfo });
-  }).catch(err => {
+    return getDocRevisions(results[0][0]);
+  })
+  .then(docInfo => res.send({ docInfo, courseInfo }))
+  .catch(err => {
     console.error('Error inside getDocPageData.js: ', err);
     res.send(false);
   });

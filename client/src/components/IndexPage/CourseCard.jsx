@@ -22,7 +22,6 @@ class CourseCard extends Component {
   }
 
   render() {
-    let courseDesc = ` - ${this.props.course.course_desc}`;
     let courseLink = `/courses/${this.props.course.course_id}`;
     return (
       <div className='course-index card'>
@@ -30,25 +29,25 @@ class CourseCard extends Component {
           <p className='title header is-5'>
             <Link to={courseLink}>
               <span className='course-name'>{this.props.course.short_display_name}</span>
-              <span className='course-desc'>{courseDesc}</span>
+              <span className='course-desc'>{` - ${this.props.course.course_desc}`}</span>
             </Link>
             <i className='fa fa-angle-down' aria-hidden='true' />
           </p>
           <div className='columns'>
             <div className='updates sample-questions column is-4'>
               <h1 className='header'>Sample Questions</h1>
-              { this.state.sampleQuestionsUpdates.map(update => <ViewUpdate key={update.id} update={update} courseLink={courseLink} /> )}
-              { !this.state.sampleQuestionsUpdates[0] && <p>No updates available yet</p> }
+              { this.state.sampleQuestionsUpdates.map(update => <ViewUpdate key={update.id} update={update} docLink={`${courseLink}/docs/${update.id}`} /> )}
+              { !this.state.sampleQuestionsUpdates.length && <p>No updates available yet</p> }
             </div>
             <div className='updates asg-reports column is-4'>
               <h1 className='header'>Assignment & Reports</h1>
-              { this.state.asgReportsUpdates.map(update => <ViewUpdate key={update.id} update={update} courseLink={courseLink} /> )}
-              { !this.state.asgReportsUpdates[0] && <p>No updates available yet</p> }
+              { this.state.asgReportsUpdates.map(update => <ViewUpdate key={update.id} update={update} docLink={`${courseLink}/docs/${update.id}`} /> )}
+              { !this.state.asgReportsUpdates.length && <p>No updates available yet</p> }
             </div>
             <div className='updates lecture-notes column is-4'>
               <h1 className='header'>Lecture Notes</h1>
-              { this.state.lectureNotesUpdates.map(update => <ViewUpdate key={update.id} update={update} courseLink={courseLink} /> )}
-              { !this.state.lectureNotesUpdates[0] && <p>No updates available yet</p> }
+              { this.state.lectureNotesUpdates.map(update => <ViewUpdate key={update.id} update={update} docLink={`${courseLink}/docs/${update.id}`} /> )}
+              { !this.state.lectureNotesUpdates.length && <p>No updates available yet</p> }
             </div>
           </div>
         </div>

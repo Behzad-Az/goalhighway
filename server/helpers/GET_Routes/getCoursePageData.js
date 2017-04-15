@@ -64,7 +64,8 @@ const getCoursePageData = (req, res, knex, user_id) => {
     getItemsForSale(),
     getAvgCourseRating(),
     getCourseFeed()
-  ]).then(results => {
+  ])
+  .then(results => {
     courseFeed = results[6];
     courseFeed.forEach(feed => feed.editable = feed.commenter_id === user_id);
 
@@ -89,11 +90,10 @@ const getCoursePageData = (req, res, knex, user_id) => {
       promiseArr.push(getDocLikeCount(doc));
     });
 
-    return Promise.all(promiseArr)
-
-  }).then(() => {
-    res.send({ docs, courseInfo, itemsForSale, courseFeed });
-  }).catch(err => {
+    return Promise.all(promiseArr);
+  })
+  .then(() => res.send({ docs, courseInfo, itemsForSale, courseFeed }))
+  .catch(err => {
     console.error('Error inside getCoursePageData.js: ', err);
     res.send(false);
   });

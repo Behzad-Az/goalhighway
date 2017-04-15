@@ -25,7 +25,7 @@ const getFeedPageData = (req, res, knex, user_id) => {
     .whereNull('deleted_at')
     .orderBy('created_at', 'desc')
     .limit(2)
-    .offset(parseInt(req.query.resumefeedoffset))
+    .offset(parseInt(req.query.resumefeedoffset));
 
   const updateUserFeedDate = () => knex('users')
     .where('id', user_id)

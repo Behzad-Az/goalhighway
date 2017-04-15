@@ -8,7 +8,7 @@ class RightSideBar extends Component {
       dataLoaded: false,
       pageError: false,
       courseCount: 'N/A',
-      courseFeeds: [],
+      feeds: [],
       instId: '',
       instName: 'N/A',
       revCount: 'N/A',

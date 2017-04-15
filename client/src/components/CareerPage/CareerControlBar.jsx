@@ -101,7 +101,7 @@ class CareerControlBar extends Component {
     let index = jobQuery.find(tag => tag === selectedTag);
     jobQuery.splice(index, 1);
     this.preferenceTags.push(selectedTag);
-    this.preferenceTags.sort((a,b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
+    this.preferenceTags.sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
     this.setState({ jobQuery });
   }
 

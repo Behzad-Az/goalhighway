@@ -64,8 +64,7 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
   })
   .then(searchResults => {
     jobs = searchResults.hits.hits;
-    let promiseArr = resumes.map(resume => getResumeReviewReqStatus(resume));
-    return Promise.all(promiseArr);
+    return Promise.all(resumes.map(resume => getResumeReviewReqStatus(resume)));
   })
   .then(() => res.send({ jobs, resumes }))
   .catch(err => {

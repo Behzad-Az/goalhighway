@@ -18,19 +18,19 @@ class CourseReviewsContainer extends Component {
   _sortReviews() {
     switch(this.state.sortedBy) {
       case 'date_new_to_old':
-        this.props.courseReviews.sort((a, b) => a.created_at < b.created_at);
+        this.props.courseReviews.sort((a, b) => a.created_at <= b.created_at ? 1 : -1);
         break;
       case 'date_old_to_new':
-        this.props.courseReviews.sort((a, b) => a.created_at > b.created_at);
+        this.props.courseReviews.sort((a, b) => a.created_at >= b.created_at ? 1 : -1);
         break;
       case 'rating_high_to_low':
-        this.props.courseReviews.sort((a, b) => a.overall_rating < b.overall_rating);
+        this.props.courseReviews.sort((a, b) => a.overall_rating <= b.overall_rating ? 1 : -1);
         break;
       case 'rating_low_to_high':
-        this.props.courseReviews.sort((a, b) => a.overall_rating > b.overall_rating);
+        this.props.courseReviews.sort((a, b) => a.overall_rating >= b.overall_rating ? 1 : -1);
         break;
       case 'instructor_name':
-        this.props.courseReviews.sort((a, b) => a.name > b.name);
+        this.props.courseReviews.sort((a, b) => a.name.toLowerCase() >= b.name.toLowerCase() ? 1 : -1);
         break;
       default:
         break;

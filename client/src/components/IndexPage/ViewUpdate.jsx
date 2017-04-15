@@ -5,9 +5,11 @@ class ViewUpdate extends Component {
   render() {
     return (
       <div className='update-row'>
-        <Link to={`${this.props.courseLink}/docs/${this.props.update.doc_id}`}>
-          <p>Update: {this.props.update.rev_desc}<br/>document: {this.props.update.title}</p>
-        </Link>
+
+          <Link to={this.props.docLink} className='update-title'>{this.props.update.title}: </Link>
+          <span className='update-desc'>{this.props.update.revisions[0].rev_desc}</span>
+
+
       </div>
     );
   }
