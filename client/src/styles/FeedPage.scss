@@ -19,7 +19,6 @@
       .resume-review-row, .course-row {
         background-color: white; padding: $default_margin/2; margin: 0 0 $default_margin/2 0; border: 1px darken($default-bg-color, 20%) solid;
         .button {  height: 100%; font-size: 10px; color: $dark-blue; float: right; }
-        .tag { margin: 3px; background-color: $light-blue; color: white; font-weight: bold; }
         .fa { font-size: 14px; cursor: pointer; vertical-align: middle; margin-left: 10px; &:hover { transform: scale(1.1); } }
         .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
         a { color: $dark-blue; &:hover { color: $pumpkin; } }

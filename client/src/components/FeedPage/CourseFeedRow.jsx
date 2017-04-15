@@ -12,6 +12,8 @@ class CourseFeedRow extends Component {
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
     this._renderFlagSelect = this._renderFlagSelect.bind(this);
     this._prepareFeed = this._prepareFeed.bind(this);
+    this._renderDocumentFeed = this._renderDocumentFeed.bind(this);
+    this._renderCommentFeed = this._renderCommentFeed.bind(this);
   }
 
   _handleFlagClick() {

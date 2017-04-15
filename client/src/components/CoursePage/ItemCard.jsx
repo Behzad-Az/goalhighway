@@ -96,7 +96,6 @@ class ItemCard extends Component {
           <Link className='card-footer-item' onClick={this._toggleView}>Cancel</Link>
           <Link className='card-footer-item' onClick={this._handleDelete}>Delete</Link>
         </footer>
-
       </div>
     );
   }

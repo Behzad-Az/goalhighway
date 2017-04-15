@@ -5,7 +5,7 @@ import JobsContainer from './JobsContainer.jsx';
 import QaContainer from './QaContainer.jsx';
 import NewQuestionForm from './NewQuestionForm.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
-import RightSideBar from '../partials/RightSideBar.jsx';
+import RightSideBar from '../RightSideBar/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 
 class CompanyPage extends Component {

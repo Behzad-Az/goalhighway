@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Navbar from '../Navbar/Navbar.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
-import RightSideBar from '../partials/RightSideBar.jsx';
+import RightSideBar from '../RightSideBar/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import FeedsContainer from './FeedsContainer.jsx';
 
