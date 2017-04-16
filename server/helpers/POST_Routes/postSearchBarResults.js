@@ -19,9 +19,10 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
             fields: ['kind^5', 'title']
           }
         },
-        filter: {
-          type: { value: 'document' }
-        }
+        filter: [
+          { type: { value: 'document' } },
+          { term: { inst_id: req.session.inst_id } }
+        ]
       }
     }
   };
@@ -38,9 +39,10 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
             fuzziness: 'AUTO'
           }
         },
-        filter: {
-          type: { value: 'course' }
-        }
+        filter: [
+          { type: { value: 'course' } },
+          { term: { inst_id: req.session.inst_id } }
+        ]
       }
     }
   };

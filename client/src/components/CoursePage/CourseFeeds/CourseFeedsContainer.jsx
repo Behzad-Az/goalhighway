@@ -7,7 +7,7 @@ class CourseFeedsContainer extends Component {
     return (
       <div className='feeds-container'>
         <h1 className='header'>
-          Course Feed
+          Course Feed:
           <i className='fa fa-angle-down' aria-hidden='true' />
         </h1>
         <NewCourseFeed courseId={this.props.courseId} reload={this.props.reload} />

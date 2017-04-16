@@ -61,7 +61,6 @@ class RightSideBar extends Component {
     return this.state.dataLoaded ? (
       <div className='card side-bar right'>
         <div className='card-content'>
-
           <div className='media'>
             <div className='media-left'>
               <figure className='image inst-logo'>
@@ -72,22 +71,15 @@ class RightSideBar extends Component {
               <Link to={`/institutions/${this.state.instId}`} className='title is-4'>{this.state.instName}</Link>
             </div>
           </div>
-
           <div className='main content'>
             <p><i className='fa fa-users' aria-hidden='true' /> {this._commaSeparateNumber(this.state.studentCount)} peers</p>
             <p><i className='fa fa-graduation-cap' aria-hidden='true' /> {this._commaSeparateNumber(this.state.courseCount)} courses</p>
             <p><i className='fa fa-file' aria-hidden='true' /> {this._commaSeparateNumber(this.state.revCount)} document revisions</p>
             <p><i className='fa fa-slideshare' aria-hidden='true' /> {this._commaSeparateNumber(this.state.tutorCount)} tutors</p>
           </div>
-
           <hr />
-
           <FeedsContainer feeds={this.state.feeds} />
-
           { this._renderFooter() }
-
-
-
         </div>
       </div>
     ) : <p></p>;
