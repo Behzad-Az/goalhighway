@@ -14,6 +14,7 @@ class CourseFeedRow extends Component {
     this._prepareFeed = this._prepareFeed.bind(this);
     this._renderDocumentFeed = this._renderDocumentFeed.bind(this);
     this._renderCommentFeed = this._renderCommentFeed.bind(this);
+    this._renderTutorFeed = this._renderTutorFeed.bind(this);
   }
 
   _handleFlagClick() {
@@ -73,7 +74,7 @@ class CourseFeedRow extends Component {
       case 'revised_document':
         return this._renderDocumentFeed('Revised Document - ');
       case 'tutor_request':
-        return <p>'Tutor Request - '</p>
+        return this._renderTutorFeed(` - Tutor Request by ${this.props.feed.commenter_name}`);
       case 'new_comment':
         return this._renderCommentFeed(` - New Comment by ${this.props.feed.commenter_name}`);
       default:
@@ -91,8 +92,8 @@ class CourseFeedRow extends Component {
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <Link to={`/courses/${this.props.feed.course_id}`}>
-              <button className='button'>Go to Course Page</button>
+            <Link to={`/courses/${this.props.feed.course_id}/docs/${this.props.feed.doc_id}`}>
+              <button className='button'>Document Details</button>
             </Link>
             <p>
               <strong>
@@ -130,7 +131,40 @@ class CourseFeedRow extends Component {
         <div className='media-content'>
           <div className='content'>
             <Link to={`/courses/${this.props.feed.course_id}`}>
-              <button className='button'>Go to Course Page</button>
+              <button className='button'>Course Details</button>
+            </Link>
+            <p>
+              <strong>
+                <Link to={`/courses/${this.props.feed.course_id}`}>@{this.props.feed.short_display_name}</Link>
+                {header}
+              </strong>
+              <br />
+              {this.props.feed.content}
+              <br />
+              <small>
+                Posted on {this.props.feed.created_at.slice(0, 10)}
+                <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                { this.state.flagRequest && this._renderFlagSelect() }
+              </small>
+            </p>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  _renderTutorFeed(header) {
+    return (
+      <article className='media course-row'>
+        <figure className='media-left'>
+          <p className='image is-64x64'>
+            <img src='http://bulma.io/images/placeholders/128x128.png' />
+          </p>
+        </figure>
+        <div className='media-content'>
+          <div className='content'>
+            <Link>
+              <button className='button'>Answer {this.props.feed.commenter_name}</button>
             </Link>
             <p>
               <strong>

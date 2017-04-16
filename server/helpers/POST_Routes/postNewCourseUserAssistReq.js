@@ -6,8 +6,6 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     issue_desc: req.body.issueDesc
   };
 
-  let newTutorLogId, courseTutorIds;
-
   const closePrevReqIfNecessary = trx => knex('tutor_log')
     .transacting(trx)
     .where('student_id', user_id)
@@ -30,7 +28,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     .insert(tutorLogObj)
     .returning('id');
 
-  const insertRelatedCourseFeed = (courseFeedObj, trx) => knex('course_feed')
+  const addCourseFeed = (courseFeedObj, trx) => knex('course_feed')
     .transacting(trx)
     .insert(courseFeedObj);
 
@@ -61,18 +59,16 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
       getAllCourseTutors()
     ]))
     .then(results => {
-      newTutorLogId = results[1][0];
-      courseTutorIds = results[2].map(tutor => tutor.user_id);
       let userInfo = results[0][0];
       let newCourseFeed = {
         commenter_name: userInfo.username,
         commenter_id: user_id,
         category: 'tutor_request',
-        content: `Requesting peer tutoring: ${req.body.issueDesc}`,
+        content: req.body.issueDesc,
         course_id: req.params.course_id,
-        tutor_log_id: newTutorLogId
+        tutor_log_id: results[1][0]
       };
-      return insertRelatedCourseFeed(newCourseFeed, trx);
+      return addCourseFeed(newCourseFeed, trx);
     })
     .then(() => trx.commit())
     .catch(err => {

@@ -1,7 +1,6 @@
 
 import React from 'react';
 import {Router, Route, browserHistory} from 'react-router';
-
 import IndexPage from './IndexPage/IndexPage.jsx';
 import CoursePage from './CoursePage/CoursePage.jsx';
 import DocPage from './DocPage/DocPage.jsx';
@@ -27,16 +26,18 @@ class App extends React.Component {
     .then(response => response.json())
     .then(resJSON => {
       if (!resJSON.authorized) {
-        replace('/login');
+        if (nextState.routes[0].path !== '/login') { replace('/login'); }
         callPage();
       } else {
-
         switch (nextState.routes[0].path) {
           case '/':
             replace('/home');
             callPage();
             break;
-
+          case '/login':
+            replace('/home');
+            callPage();
+            break;
           default:
             callPage();
             break;
@@ -50,7 +51,7 @@ class App extends React.Component {
     return (
       <Router history={browserHistory}>
         <Route path='/' onEnter={this._validateAuth} />
-        <Route path='/login' component={RegisterLoginPage} />
+        <Route path='/login' component={RegisterLoginPage} onEnter={this._validateAuth} />
         <Route path='/home' component={IndexPage} onEnter={this._validateAuth} />
         <Route path='/profile' component={UserProfilePage} onEnter={this._validateAuth} />
         <Route path='/jobs' component={CareerPage} onEnter={this._validateAuth} />

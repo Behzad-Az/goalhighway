@@ -7,6 +7,7 @@ class CourseFeedRow extends Component {
     this._prepareFeed = this._prepareFeed.bind(this);
     this._renderDocumentFeed = this._renderDocumentFeed.bind(this);
     this._renderCommentFeed = this._renderCommentFeed.bind(this);
+    this._renderTutorFeed = this._renderTutorFeed.bind(this);
   }
 
   _prepareFeed() {
@@ -28,7 +29,7 @@ class CourseFeedRow extends Component {
       case 'revised_document':
         return this._renderDocumentFeed('Revised Document - ');
       case 'tutor_request':
-        return <p>'Tutor Request - '</p>
+        return this._renderTutorFeed(` - Tutor Request by ${this.props.feed.commenter_name}`);
       case 'new_comment':
         return this._renderCommentFeed(` - New Comment by ${this.props.feed.commenter_name}`);
       default:
@@ -48,6 +49,8 @@ class CourseFeedRow extends Component {
             <strong>
               <Link to={`/courses/${this.props.feed.course_id}/docs/${this.props.feed.doc_id}`}>{headerPrefix}'{this.props.feed.header}'</Link>
             </strong>
+            <br />
+            {this.props.feed.content}
             <br />
             <small>
               By {this.props.feed.commenter_name} on {this.props.feed.created_at.slice(0, 10)}
@@ -73,6 +76,30 @@ class CourseFeedRow extends Component {
             <small>
               Posted on {this.props.feed.created_at.slice(0, 10)}
             </small>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  _renderTutorFeed(header) {
+    return (
+      <article className='media course-row'>
+        <div className='media-content'>
+          <div className='content'>
+            <p>
+              <strong>
+                <Link to={`/courses/${this.props.feed.course_id}`}>@{this.props.feed.short_display_name}</Link>
+                {header}
+              </strong>
+              <br />
+              {this.props.feed.content}
+              <br />
+              <small>
+                Posted on {this.props.feed.created_at.slice(0, 10)} |
+                <Link> Answer</Link>
+              </small>
+            </p>
           </div>
         </div>
       </article>
