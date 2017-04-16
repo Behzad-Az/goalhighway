@@ -29,13 +29,13 @@ class UserProfilePage extends Component {
   conditionData(resJSON) {
     if (resJSON) {
       let userInfo = {
-        username: resJSON.username,
-        email: resJSON.email,
-        instDisplayName: resJSON.inst_display_name,
-        instId: resJSON.inst_id,
-        progDisplayName: resJSON.prog_display_name,
-        progId: resJSON.prog_id,
-        userYear: resJSON.user_year
+        username: resJSON.userInfo.username,
+        email: resJSON.userInfo.email,
+        instDisplayName: resJSON.userInfo.inst_display_name,
+        instId: resJSON.userInfo.inst_id,
+        progDisplayName: resJSON.userInfo.prog_display_name,
+        progId: resJSON.userInfo.prog_id,
+        userYear: resJSON.userInfo.user_year
       };
       this.setState({ userInfo, dataLoaded: true });
     } else {

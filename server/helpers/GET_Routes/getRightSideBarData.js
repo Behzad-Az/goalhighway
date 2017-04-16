@@ -22,7 +22,8 @@ const getRightSideBarData = (req, res, knex, user_id) => {
 
   const getRevCount = courseIds => knex('revisions')
     .innerJoin('docs', 'doc_id', 'docs.id')
-    .whereIn('course_id', courseIds)
+    .innerJoin('courses', 'course_id', 'courses.id')
+    .where('inst_id', req.session.inst_id)
     .count('revisions.id as revCount');
 
   const getCourseIds = () => knex('users')

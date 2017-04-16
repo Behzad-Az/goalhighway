@@ -8,10 +8,12 @@ const getResumeData = (req, res, knex, user_id) => {
       const downloadPath = './uploads/' + fileName;
       res.download(downloadPath, 'resume.pdf');
     }
-  }).catch(err => {
+  })
+  .catch(err => {
     console.error('Error inside getResumeData.js: ', err);
     res.download('no_file_could_be_found');
   });
+
 };
 
 module.exports = getResumeData;

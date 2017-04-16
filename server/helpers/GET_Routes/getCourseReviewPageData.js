@@ -20,12 +20,9 @@ const getCourseReviewPageData = (req, res, knex, user_id) => {
     getCourseInfo(),
     getCourseReviews(),
     getProfs()
-  ]).then(results => {
-    let courseInfo = results[0][0];
-    let courseReviews = results[1];
-    let profs = results[2];
-    res.send({ courseInfo, courseReviews, profs });
-  }).catch(err => {
+  ])
+  .then(results => res.send({ courseInfo: results[0][0], courseReviews: results[1], profs: results[0][0] }))
+  .catch(err => {
     console.error('Error inside getCourseReviewPageData.js: ', err);
     res.send(false);
   });

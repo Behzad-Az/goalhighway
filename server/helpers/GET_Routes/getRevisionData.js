@@ -8,10 +8,12 @@ const getRevisionData = (req, res, knex) => {
       const downloadPath = './uploads/' + fileName;
       res.download(downloadPath, 'report.pdf');
     }
-  }).catch(err => {
+  })
+  .catch(err => {
     console.error('Error inside getReivisionData.js: ', err);
     res.download('no_file_could_be_found');
   });
+
 };
 
 module.exports = getRevisionData;

@@ -9,10 +9,9 @@ const getInstitutionsAndPrograms = (req, res, knex, user_id) => {
     getAllPrograms()
   ])
   .then(results => {
-    let insts = results[0];
-    let programs = results[1];
-    insts.forEach(inst => {
-      inst.programs = programs.filter(prog => prog.inst_id === inst.id);
+    let insts = results[0].map(inst => {
+      inst.programs = results[1].filter(prog => prog.inst_id === inst.id);
+      return inst;
     });
     res.send(insts);
   })

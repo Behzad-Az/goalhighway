@@ -14,16 +14,14 @@ const postNewCourseUser = (req, res, knex, user_id) => {
     .select('id').where('user_id', user_id)
     .andWhere('course_id', req.params.course_id);
 
-  const insertOrUpdateCourseUser = cousrse_user_id => {
-    return cousrse_user_id ?
-      knex('course_user')
-        .where('id', cousrse_user_id.id)
-        .update(courseUserInfoObj)
-        .returning('id') :
-      knex('course_user')
-        .insert(courseUserInfoObj)
-        .returning('id');
-  };
+  const insertOrUpdateCourseUser = cousrse_user_id => cousrse_user_id ?
+    knex('course_user')
+      .where('id', cousrse_user_id.id)
+      .update(courseUserInfoObj)
+      .returning('id') :
+    knex('course_user')
+      .insert(courseUserInfoObj)
+      .returning('id');
 
   userAlreadyHasCourse()
   .then(result => insertOrUpdateCourseUser(result[0]))

@@ -32,13 +32,15 @@ const getLeftSideBarData = (req, res, knex, user_id) => {
     getRevCount(),
     getItemCount(),
     getCourseReviewCount()
-  ]).then(results => {
+  ])
+  .then(results => {
     userInfo = results[0][0] ? results[0][0] : { username: 'N/A', created_at: 'N/A' };
     progName = results[1][0] ? results[1][0].prog_long_name : 'N/A';
     instName = results[2][0] ? results[2][0].inst_long_name : 'N/A';
     contributionCount = parseInt(results[3][0].count) + parseInt(results[4][0].count) + parseInt(results[5][0].count);
     res.send({ userInfo, progName, instName, contributionCount });
-  }).catch(err => {
+  })
+  .catch(err => {
     console.error('Error inside getLeftSideBarData.js: ', err);
     res.send(false);
   });

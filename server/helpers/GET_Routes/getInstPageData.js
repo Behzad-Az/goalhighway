@@ -17,8 +17,7 @@ const getInstPageData = (req, res, knex, user_id) => {
   .then(results => res.send({
     currUserCourseIds: results[0].map(course => course.course_id),
     currInstCourses: results[1],
-    instList: results[2],
-    userId: user_id
+    instList: results[2]
   }))
   .catch(err => {
     console.error('Error inside getInstPageData.js: ', err);

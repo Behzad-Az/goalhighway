@@ -1,7 +1,6 @@
 const postLogin = (req, res, knex, bcrypt) => {
 
-  let currUser;
-  const username = req.body.username.toLowerCase();
+  let currUser, username = req.body.username.toLowerCase();
 
   const findUser = () => knex('users')
     .innerJoin('institution_program', 'inst_prog_id', 'institution_program.id')

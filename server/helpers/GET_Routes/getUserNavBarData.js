@@ -31,7 +31,10 @@ const getUserNavBarData = (req, res, knex, user_id) => {
     .where('id', user_id);
 
 
-  Promise.all([ getCourseIds(), getLastUserFeedDate() ])
+  Promise.all([
+    getCourseIds(),
+    getLastUserFeedDate()
+  ])
   .then(results => {
     lastFeedAt = results[1][0].last_feed_at;
     return Promise.all([ getCourseFeeds(results[0].map(course => course.course_id)), getResumeFeeds() ]);
