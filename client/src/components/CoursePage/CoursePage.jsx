@@ -9,7 +9,7 @@ import NewDocForm from './NewDocForm.jsx';
 import NewReAssistForm from '../partials/NewReqAssistForm.jsx';
 import NewItemForm from './NewItemForm.jsx';
 import TopRow from './TopRow.jsx';
-import CourseFeed from './CourseFeed/CourseFeed.jsx';
+import CourseFeedsContainer from './CourseFeeds/CourseFeedsContainer.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
 
 class CoursePage extends Component {
@@ -22,7 +22,7 @@ class CoursePage extends Component {
       courseInfo: {
         id: this.props.routeParams.course_id
       },
-      courseFeed: [],
+      courseFeeds: [],
       itemsForSale: [],
       sampleQuestions: [],
       asgReports: [],
@@ -59,7 +59,7 @@ class CoursePage extends Component {
       let filterDocs = (docs, docType) => docs.filter(doc => doc.type === docType);
       let newState = {
         courseInfo: resJSON.courseInfo,
-        courseFeed: resJSON.courseFeed,
+        courseFeeds: resJSON.courseFeeds,
         itemsForSale: resJSON.itemsForSale,
         sampleQuestions: filterDocs(resJSON.docs, 'sample_question'),
         asgReports: filterDocs(resJSON.docs, 'asg_report'),
@@ -94,7 +94,7 @@ class CoursePage extends Component {
           <DocsContainer docs={this.state.lectureNotes} header='Lecture Notes' />
           <DocsContainer docs={this.state.sampleQuestions} header='Sample Questions' />
           <ItemsContainer items={this.state.itemsForSale} reload={this._loadComponentData} />
-          <CourseFeed courseId={this.state.courseInfo.id} courseFeed={this.state.courseFeed} reload={this._loadComponentData} />
+          <CourseFeedsContainer courseId={this.state.courseInfo.id} courseFeeds={this.state.courseFeeds} reload={this._loadComponentData} />
         </div>
       );
     } else {

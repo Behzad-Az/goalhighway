@@ -1,6 +1,6 @@
 const getCoursePageData = (req, res, knex, user_id) => {
 
-  let docs, courseInfo, itemsForSale, courseFeed;
+  let docs, courseInfo, itemsForSale, courseFeeds;
 
   const getDocRevisions = doc => new Promise((resolve, reject) => {
     knex('revisions').where('doc_id', doc.id).whereNull('deleted_at').orderBy('created_at', 'desc')
@@ -55,6 +55,16 @@ const getCoursePageData = (req, res, knex, user_id) => {
     .where('course_id', req.params.course_id)
     .orderBy('created_at', 'desc');
 
+  const getCourseFeeds = () => knex('course_feed')
+    .innerJoin('courses', 'course_feed.course_id', 'courses.id')
+    .select(
+      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
+      'course_feed.commenter_name', 'course_feed.commenter_id', 'course_feed.category', 'course_feed.content', 'course_feed.header',
+      'course_feed.doc_id', 'courses.short_display_name'
+    )
+    .where('courses.id', req.params.course_id)
+    .orderBy('course_feed.created_at', 'desc');
+
   Promise.all([
     getDocs(),
     getCourseInfo(),
@@ -62,17 +72,20 @@ const getCoursePageData = (req, res, knex, user_id) => {
     getTutorLogInfo(),
     getItemsForSale(),
     getAvgCourseRating(),
-    getCourseFeed()
+    getCourseFeeds()
   ])
   .then(results => {
-    courseFeed = results[6];
-    courseFeed.forEach(feed => feed.editable = feed.commenter_id === user_id);
+    courseFeeds = results[6].map(feed => {
+      feed.editable = feed.commenter_id === user_id;
+      return feed;
+    });
+
+    itemsForSale = results[4].map(item => {
+      item.editable = item.owner_id === user_id;
+      return item;
+    });
 
     let avgRating = results[5][0] ?  Math.round(results[5][0].avg / 5 * 100) : 0;
-
-    itemsForSale = results[4];
-    itemsForSale.forEach(item => item.editable = item.owner_id === user_id);
-
     let latestTutorLog = results[3][0];
     let userInfo = results[2][0];
     courseInfo = results[1][0];
@@ -91,7 +104,7 @@ const getCoursePageData = (req, res, knex, user_id) => {
 
     return Promise.all(promiseArr);
   })
-  .then(() => res.send({ docs, courseInfo, itemsForSale, courseFeed }))
+  .then(() => res.send({ docs, courseInfo, itemsForSale, courseFeeds }))
   .catch(err => {
     console.error('Error inside getCoursePageData.js: ', err);
     res.send(false);

@@ -64,12 +64,18 @@
       }
     }
 
-    .feed-container {
-      margin-bottom: $default_margin/2;
-      .button.is-primary { background-color: $dark-blue; &:hover { background-color: darken($dark-blue, 10%) } }
-      .char-counter { position: absolute; right: 0; font-size: 12px; }
-      .feed-row { background-color: white; padding: $default_margin/2; margin: 0; }
+    .feeds-container {
       hr { margin: $default_margin/2 0; }
+      .char-counter { position: absolute; right: 0; font-size: 12px; }
+      .button.is-primary { background-color: $dark-blue; &:hover { background-color: darken($dark-blue, 10%) } }
+      .feeds-rows { border: 1px darken($default-bg-color, 20%) solid; }
+      .resume-review-row, .course-row {
+        background-color: white; margin: 0; padding: $default_margin/2;
+        .fa { font-size: 14px; cursor: pointer; vertical-align: middle; margin-left: 10px; &:hover { transform: scale(1.1); } }
+        .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
+        a { color: $dark-blue; &:hover { color: $pumpkin; } }
+      }
     }
+
   }
 }

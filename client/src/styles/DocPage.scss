@@ -25,7 +25,7 @@
             display: inline-block; margin-top: 12px; font-size: 25px; margin-left: 15px; cursor: pointer;
             &:hover { transform: scale(1.1); }
           }
-          .control.flag-submission { text-align: center; select { max-width: 110px; } }
+          .control.flag-submission { text-align: right; select { max-width: 110px; } }
         }
       }
     }

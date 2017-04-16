@@ -12,7 +12,7 @@ const getUserNavBarData = (req, res, knex, user_id) => {
     .innerJoin('courses', 'course_feed.course_id', 'courses.id')
     .select(
       'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
-      'course_feed.commenter_name', 'course_feed.category', 'course_feed.content', 'course_feed.header',
+      'course_feed.commenter_name', 'course_feed.commenter_id', 'course_feed.category', 'course_feed.content', 'course_feed.header',
       'course_feed.doc_id', 'courses.short_display_name'
     )
     .whereIn('courses.id', courseIds)
