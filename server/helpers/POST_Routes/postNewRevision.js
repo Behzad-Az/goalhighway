@@ -78,7 +78,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
         type: req.body.type,
         rev_desc: req.body.revDesc,
         doc_id: req.params.doc_id,
-        user_id: user_id,
+        poster_id: user_id,
         file_name: fileName
       };
       return insertNewRevision(newRevObj, trx);

@@ -80,7 +80,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
         rev_desc: req.body.revDesc,
         file_name: req.file.filename,
         doc_id: doc_id[0],
-        user_id: user_id
+        poster_id: user_id
       };
       return insertNewRev(newRevObj, trx);
     })

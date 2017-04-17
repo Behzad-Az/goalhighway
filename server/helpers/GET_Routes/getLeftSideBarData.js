@@ -14,7 +14,7 @@ const getLeftSideBarData = (req, res, knex, user_id) => {
     .where('id', req.session.inst_id);
 
   const getRevCount = () => knex('revisions')
-    .where('user_id', user_id)
+    .where('poster_id', user_id)
     .count('id');
 
   const getItemCount = () => knex('items_for_sale')

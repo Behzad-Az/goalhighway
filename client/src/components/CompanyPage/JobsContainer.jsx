@@ -6,7 +6,7 @@ class JobsContainer extends Component {
     return (
       <div className='jobs-container'>
         <h1 className='header'>
-          Open positions:
+          Open Positions:
           <i className='fa fa-angle-down' aria-hidden='true' />
         </h1>
         { this.props.jobs.map(job => <JobRow key={job.id} job={job} /> ) }

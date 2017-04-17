@@ -7,19 +7,12 @@ exports.up = function(knex, Promise) {
       t.integer('user_id').notNullable().references('users.id');
       t.integer('doc_id').notNullable().references('docs.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
-    }),
-
-    knex.schema.table('docs', t => {
-      t.dropColumn('like_count');
     })
   ]);
 };
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-    knex.schema.dropTable('doc_user_likes'),
-    knex.schema.table('docs', (t) => {
-      t.integer('like_count').notNullable().defaultTo(0);
-    })
+    knex.schema.dropTable('doc_user_likes')
   ]);
 };

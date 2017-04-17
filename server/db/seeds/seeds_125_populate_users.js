@@ -3,6 +3,7 @@ for(let i = 1; i <= 8; i++) {
   users.push({
     username: `user_${i}`,
     email: `e${i}@e.com`,
+    password: 'pwd',
     user_year: i % 4 ? i % 4 : 4,
     inst_prog_id: i
   });

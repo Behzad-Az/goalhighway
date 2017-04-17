@@ -8,7 +8,7 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
 
   const checkIfAuthorized = trx => knex('revisions')
     .transacting(trx)
-    .where('user_id', user_id)
+    .where('poster_id', user_id)
     .andWhere('doc_id', doc_id)
     .andWhere('id', rev_id)
     .count('id as auth');

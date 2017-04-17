@@ -41,6 +41,7 @@ app.use(blacklist, (req, res, next) => {
     res.send(false);
   }
 });
+app.use(express.static('public'))
 
 
 // ***************************************************
