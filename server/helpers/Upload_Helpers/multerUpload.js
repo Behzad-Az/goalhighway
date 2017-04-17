@@ -11,7 +11,7 @@ const getRandomDocName = () => {
 };
 
 const acceptableMimeType = [
-  'image/jepg',
+  'image/jpeg',
   'image/png',
   'image/gif',
   'application/pdf',
@@ -75,6 +75,34 @@ const resumeStorage = multer.diskStorage({
   }
 });
 
+const userProfilePhotoStorage = multer.diskStorage({
+  destination: './public/images/userprofiles/',
+  filename: (req, file, cb) => {
+    let ext = '.unknown';
+    switch (file.mimetype) {
+      case 'image/jpeg':
+        ext = '.jpeg';
+        break;
+      case 'image/png':
+        ext = '.png';
+        break;
+      case 'image/gif':
+        ext = '.gif';
+        break;
+      case 'application/pdf':
+        ext = '.pdf';
+        break;
+      case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+        ext = '.xlsx';
+        break;
+      case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+        ext = '.docx';
+        break;
+    }
+    cb(null, getRandomDocName() + Date.now() + ext);
+  }
+});
+
 const documentUpload = multer({
   storage: documentStorage,
   limits: { fileSize: 20000000, files: 1 },
@@ -91,7 +119,16 @@ const resumeUpload = multer({
   }
 });
 
+const userProfilePhotoUpload = multer({
+  storage: userProfilePhotoStorage,
+  limits: { fileSize: 20000000, files: 1 },
+  fileFilter: (req, file, cb) => {
+    acceptableMimeType.includes(file.mimetype) ? cb(null, true) : cb(null, false, new Error('unknown file type'));
+  }
+});
+
 module.exports = {
   documentUpload,
-  resumeUpload
+  resumeUpload,
+  userProfilePhotoUpload
 };

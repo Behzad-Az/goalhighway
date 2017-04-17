@@ -1,6 +1,6 @@
 const postNewRevision = (req, res, knex, user_id, esClient) => {
 
-  const determineFilePath = () => new Promise((resolve, reject) => {
+  const determineFileName = () => new Promise((resolve, reject) => {
     if (req.file && req.file.filename) {
       resolve(req.file.filename);
     } else {
@@ -71,7 +71,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     .insert(adminFeedObj);
 
   knex.transaction(trx => {
-    determineFilePath()
+    determineFileName()
     .then(fileName => {
       let newRevObj = {
         title: req.body.title,

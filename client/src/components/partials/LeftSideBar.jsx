@@ -7,7 +7,7 @@ class LeftSideBar extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      userInfo: { username: 'N/A', created_at: 'N/A' },
+      userInfo: { username: 'N/A', created_at: 'N/A', photo_name: 'N/A' },
       progName: 'N/A',
       instName: 'N/A',
       contributionCount: 'N/A'
@@ -40,7 +40,7 @@ class LeftSideBar extends Component {
         <Link to='/profile' className='button is-info edit'>Edit</Link>
         <div className='card-image'>
           <figure className='image is-4by3'>
-            <img src='http://www.free-icons-download.net/images/user-icon-27998.png' alt='Image' />
+            <img src={`http://localhost:19001/images/userprofiles/${this.state.userInfo.photo_name}`} alt='Image' />
           </figure>
         </div>
         <div className='card-content'>

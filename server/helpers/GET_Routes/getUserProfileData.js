@@ -5,9 +5,10 @@ const getUserProfileData = (req, res, knex, user_id) => {
     .innerJoin('institutions', 'inst_id', 'institutions.id')
     .innerJoin('programs', 'prog_id', 'programs.id')
     .select(
-      'users.id', 'username', 'email', 'user_year', 'inst_id', 'inst_display_name',
-      'prog_id', 'prog_display_name', 'inst_prog_id', 'postal_code', 'lat', 'lon',
-      'job_kind', 'job_query', 'job_distance'
+      'users.id', 'users.username', 'users.email', 'users.user_year', 'users.inst_prog_id', 'users.photo_name',
+      'users.postal_code', 'users.lat', 'users.lon', 'users.job_kind', 'users.job_query', 'users.job_distance',
+      'institution_program.inst_id', 'institution_program.prog_id',
+      'institutions.inst_display_name', 'programs.prog_display_name'
     )
     .where('users.id', user_id);
 

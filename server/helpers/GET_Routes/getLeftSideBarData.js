@@ -2,7 +2,7 @@ const getLeftSideBarData = (req, res, knex, user_id) => {
   let userInfo, progName, instName, contributionCount;
 
   const getUserInfo = () => knex('users')
-    .select('username', 'created_at')
+    .select('username', 'photo_name', 'created_at')
     .where('id', user_id);
 
   const getProgName = () => knex('programs')

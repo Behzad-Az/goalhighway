@@ -12,6 +12,7 @@ const session = require('express-session');
 const connection = require('./db/knexfile.js').development;
 const knex = require('knex')(connection);
 const fs = require('fs');
+const path = require('path');
 const elasticsearch = require('elasticsearch');
 const esClient = new elasticsearch.Client({
   host: '127.0.0.1:9200',
@@ -41,7 +42,7 @@ app.use(blacklist, (req, res, next) => {
     res.send(false);
   }
 });
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // ***************************************************
@@ -50,6 +51,7 @@ app.use(express.static('public'))
 const multerUpload = require('./helpers/Upload_Helpers/multerUpload.js');
 const documentUpload = multerUpload.documentUpload;
 const resumeUpload = multerUpload.resumeUpload;
+const userProfilePhotoUpload = multerUpload.userProfilePhotoUpload;
 
 // ***************************************************
 // PORT
@@ -276,7 +278,7 @@ app.post('/api/companies/:company_id/questions/:question_id', (req, res) => {
 // ***************************************************
 // ROUTES - UPDATE
 // ***************************************************
-app.post('/api/users/:user_id', (req, res) => {
+app.post('/api/users/:user_id', userProfilePhotoUpload.single('file'), (req, res) => {
   updateUserProfile(req, res, knex, req.session.user_id, googleMapsClient);
 });
 

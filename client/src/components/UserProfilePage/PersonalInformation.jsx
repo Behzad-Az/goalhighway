@@ -19,17 +19,19 @@ class PersonalInformation extends Component {
       progId: '',
       progDisplayName: '',
       editView: false,
-      instProgDropDownList: []
+      instProgDropDownList: [],
+      file: ''
     };
-    this.conditionData = this.conditionData.bind(this);
-    this.showInfo = this.showInfo.bind(this);
-    this.editInfo = this.editInfo.bind(this);
-    this.toggleView = this.toggleView.bind(this);
-    this.handleInstChange = this.handleInstChange.bind(this);
-    this.handleProgChange = this.handleProgChange.bind(this);
-    this.handleUserYearChange = this.handleUserYearChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleUpdateProfile = this.handleUpdateProfile.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._showInfo = this._showInfo.bind(this);
+    this._editInfo = this._editInfo.bind(this);
+    this._toggleView = this._toggleView.bind(this);
+    this._handleInstChange = this._handleInstChange.bind(this);
+    this._handleProgChange = this._handleProgChange.bind(this);
+    this._handleUserYearChange = this._handleUserYearChange.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._handleFileChange = this._handleFileChange.bind(this);
+    this._handleUpdateProfile = this._handleUpdateProfile.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -42,11 +44,11 @@ class PersonalInformation extends Component {
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       let instProgDropDownList = resJSON.map(inst => {
         let value = inst.id;
@@ -64,46 +66,47 @@ class PersonalInformation extends Component {
     }
   }
 
-  handleInstChange(instId, instDisplayName) {
+  _handleInstChange(instId, instDisplayName) {
     this.setState({ instId, instDisplayName });
   }
 
-  handleProgChange(progId, progDisplayName) {
+  _handleProgChange(progId, progDisplayName) {
     this.setState({ progId, progDisplayName });
   }
 
-  handleUserYearChange(userYear) {
+  _handleUserYearChange(userYear) {
     this.setState({ userYear });
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
   }
 
-  toggleView() {
+  _handleFileChange(e) {
+    const file = e.target.files[0];
+    this.setState({ file });
+  }
+
+  _toggleView() {
     this.setState({ editView: !this.state.editView })
   }
 
-  handleUpdateProfile() {
-    let data = {
-      type: 'profile',
-      username: this.state.username.trim().toLowerCase(),
-      email: this.state.email.trim().toLowerCase(),
-      userYear: this.state.userYear,
-      instId: this.state.instId,
-      progId: this.state.progId
-    };
+  _handleUpdateProfile() {
+    let data = new FormData();
+    data.append('file', this.state.file);
+    data.append('type', 'profile');
+    data.append('username', this.state.username.trim().toLowerCase());
+    data.append('email', this.state.email.trim().toLowerCase());
+    data.append('userYear', this.state.userYear);
+    data.append('instId', this.state.instId);
+    data.append('progId', this.state.progId);
 
     fetch('/api/users/currentuser', {
       method: 'POST',
       credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      body: data
     })
     .then(response => response.json())
     .then(resJSON => {
@@ -111,10 +114,37 @@ class PersonalInformation extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Could not save user profile', 'error'))
-    .then(this.toggleView);
+    .then(this._toggleView);
+
+
+    // let data = {
+    //   type: 'profile',
+    //   username: this.state.username.trim().toLowerCase(),
+    //   email: this.state.email.trim().toLowerCase(),
+    //   userYear: this.state.userYear,
+    //   instId: this.state.instId,
+    //   progId: this.state.progId
+    // };
+
+    // fetch('/api/users/currentuser', {
+    //   method: 'POST',
+    //   credentials: 'same-origin',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    // .then(response => response.json())
+    // .then(resJSON => {
+    //   if (resJSON) { this.reactAlert.showAlert('User profile saved', 'info'); }
+    //   else { throw 'Server returned false'; }
+    // })
+    // .catch(() => this.reactAlert.showAlert('Could not save user profile', 'error'))
+    // .then(this._toggleView);
   }
 
-  showInfo() {
+  _showInfo() {
     if (this.props.dataLoaded) {
       return (
         <div className='card'>
@@ -125,7 +155,7 @@ class PersonalInformation extends Component {
             <Link className='card-header-icon'>
               <button
                 className='button is-primary'
-                onClick={this.toggleView}>
+                onClick={this._toggleView}>
                 Edit
               </button>
             </Link>
@@ -176,7 +206,7 @@ class PersonalInformation extends Component {
     }
   }
 
-  editInfo() {
+  _editInfo() {
     let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value === this.state.instId).programs : [];
     if (this.state.dataLoaded && !this.state.pageError) {
       return (
@@ -188,19 +218,26 @@ class PersonalInformation extends Component {
           </header>
 
           <div className='card-content'>
+
+            <div className='control'>
+              <label className='label'>Profile Picture:</label>
+              <input className='upload' type='file' onChange={this._handleFileChange} />
+            </div>
+
             <div className='control'>
               <label className='label'>Username:</label>
               <input type='text' className='input is-primary'
                      placeholder='Enter username' name='username'
                      defaultValue={this.state.username}
-                     onChange={this.handleChange} />
+                     onChange={this._handleChange} />
             </div>
+
             <div className='control'>
               <label className='label'>Email:</label>
               <input type='text' className='input is-primary'
                      placeholder='Enter email' name='email'
                      defaultValue={this.state.email}
-                     onChange={this.handleChange} />
+                     onChange={this._handleChange} />
             </div>
 
             <div className='control'>
@@ -210,7 +247,7 @@ class PersonalInformation extends Component {
                 initialValue={this.state.instId}
                 options={this.state.instProgDropDownList}
                 name='instId'
-                handleChange={this.handleInstChange} />
+                handleChange={this._handleInstChange} />
             </div>
 
             <div className='control'>
@@ -220,7 +257,7 @@ class PersonalInformation extends Component {
                 initialValue={this.state.progId}
                 options={programList}
                 name='progId'
-                handleChange={this.handleProgChange} />
+                handleChange={this._handleProgChange} />
             </div>
 
             <div className='control'>
@@ -230,12 +267,12 @@ class PersonalInformation extends Component {
                 initialValue={this.state.userYear}
                 options={this.academicYears}
                 name='userYear'
-                handleChange={this.handleUserYearChange} />
+                handleChange={this._handleUserYearChange} />
             </div>
           </div>
           <footer className='card-footer'>
-            <Link className='card-footer-item' onClick={this.handleUpdateProfile}>Save</Link>
-            <Link className='card-footer-item' onClick={this.toggleView}>Cancel</Link>
+            <Link className='card-footer-item' onClick={this._handleUpdateProfile}>Save</Link>
+            <Link className='card-footer-item' onClick={this._toggleView}>Cancel</Link>
           </footer>
         </div>
       );
@@ -253,7 +290,7 @@ class PersonalInformation extends Component {
             </div>
           </div>
           <footer className='card-footer'>
-            <Link className='card-footer-item' onClick={this.toggleView}>View Profile</Link>
+            <Link className='card-footer-item' onClick={this._toggleView}>View Profile</Link>
           </footer>
         </div>
       );
@@ -263,7 +300,7 @@ class PersonalInformation extends Component {
   render() {
     return (
       <div className='personal-info-container'>
-        { this.state.editView ? this.editInfo() : this.showInfo() }
+        { this.state.editView ? this._editInfo() : this._showInfo() }
       </div>
     );
   }
