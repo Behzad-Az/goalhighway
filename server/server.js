@@ -43,65 +43,12 @@ app.use(blacklist, (req, res, next) => {
 });
 
 
-
-const multer = require('multer');
-
-const getRandomDocName = () => {
-  let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let length = 4;
-  let randomName = '';
-  for(let i = 0; i < length; i++) {
-    randomName += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return `${randomName}_`;
-};
-
-const acceptableMimeType = [
-  'image/jepg',
-  'image/png',
-  'image/gif',
-  'application/pdf',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-];
-
-const storage = multer.diskStorage({
-  destination: './uploads/',
-  filename: (req, file, cb) => {
-    let ext = '.unknown';
-    switch (file.mimetype) {
-      case 'image/jpeg':
-        ext = '.jpeg';
-        break;
-      case 'image/png':
-        ext = '.png';
-        break;
-      case 'image/gif':
-        ext = '.gif';
-        break;
-      case 'application/pdf':
-        ext = '.pdf';
-        break;
-      case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-        ext = '.xlsx';
-        break;
-      case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-        ext = '.docx';
-        break;
-    }
-
-    cb(null, getRandomDocName() + Date.now() + ext);
-  }
-});
-
-const upload = multer({
-  storage,
-  limits: { fileSize: 20000000, files: 1 },
-  fileFilter: (req, file, cb) => {
-    acceptableMimeType.includes(file.mimetype) ? cb(null, true) : cb(null, false, new Error('unknown file type'));
-  }
-});
-
+// ***************************************************
+// DOCUMENT STORAGE
+// ***************************************************
+const multerUpload = require('./helpers/Upload_Helpers/multerUpload.js');
+const documentUpload = multerUpload.documentUpload;
+const resumeUpload = multerUpload.resumeUpload;
 
 // ***************************************************
 // PORT
@@ -252,7 +199,7 @@ app.post('/api/courses', (req, res) => {
   postNewCourse(req, res, knex, req.session.user_id, esClient);
 });
 
-app.post('/api/courses/:course_id/docs', upload.single('file'), (req, res) => {
+app.post('/api/courses/:course_id/docs', documentUpload.single('file'), (req, res) => {
   req.file ? postNewDoc(req, res, knex, req.session.user_id, esClient) : res.send(false);
 });
 
@@ -264,7 +211,7 @@ app.post('/api/courses/:course_id/reviews', (req, res) => {
   postNewCourseReview(req, res, knex, req.session.user_id);
 });
 
-app.post('/api/courses/:course_id/docs/:doc_id', upload.single('file'), (req, res) => {
+app.post('/api/courses/:course_id/docs/:doc_id', documentUpload.single('file'), (req, res) => {
   postNewRevision(req, res, knex, req.session.user_id, esClient);
 });
 
@@ -280,7 +227,7 @@ app.post('/api/users/:user_id/courses/:course_id', (req, res) => {
   postNewCourseUser(req, res, knex, req.session.user_id);
 });
 
-app.post('/api/users/:user_id/resumes', upload.single('file'), (req, res) => {
+app.post('/api/users/:user_id/resumes', resumeUpload.single('file'), (req, res) => {
   req.file ? postNewResume(req, res, knex, req.session.user_id) : res.send(false);
 });
 
@@ -348,7 +295,7 @@ app.post('/api/login', (req, res) => {
   postLogin(req, res, knex, bcryptJs);
 });
 
-app.post('/api/users/:user_id/resumes/:resume_id', upload.single('file'), (req, res) => {
+app.post('/api/users/:user_id/resumes/:resume_id', resumeUpload.single('file'), (req, res) => {
   updateResume(req, res, knex, req.session.user_id);
 });
 

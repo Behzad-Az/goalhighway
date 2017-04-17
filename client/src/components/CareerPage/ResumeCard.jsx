@@ -159,7 +159,7 @@ class ResumeCard extends Component {
         <div className='card-content'>
           <div className='card-image'>
             <button className='button is-info' onClick={this._toggleView}>Edit</button>
-            <figure className='image is-96x96' onClick={this._handleDownload}>
+            <figure className='image is-64x64' onClick={this._handleDownload}>
               <img src={this._findImageLink()} alt='picture' />
             </figure>
           </div>

@@ -70,9 +70,11 @@ class DocCard extends Component {
       <div className='doc-index card'>
         <div className='card-content'>
           <div className='card-image'>
-            <figure className='image is-64x64'>
-              <img src={this.state.imageLink} alt='doc-type' />
-            </figure>
+            <Link to={`/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}`}>
+              <figure className='image is-64x64'>
+                <img src={this.state.imageLink} alt='doc-type' />
+              </figure>
+            </Link>
           </div>
           <div className='card-text'>
             <p className='name title is-6'>{this.props.doc.title}</p>
