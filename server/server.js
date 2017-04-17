@@ -21,7 +21,7 @@ const esClient = new elasticsearch.Client({
 const googleMapsClient = require('@google/maps').createClient({
   key: 'AIzaSyAf8NX2LPzDPLTwLeHX9IgJ3LuvDQXiiEI'
 });
-const blacklist = ['/api/home', '/api/courses', '/api/users', '/api/docs', '/api/institutions'];
+const blacklist = ['/api/home', '/api/courses', '/api/users', '/api/docs', '/api/institutions', '/images'];
 
 // ***************************************************
 // MIDDLEWARE

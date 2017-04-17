@@ -87,7 +87,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src='http://bulma.io/images/placeholders/128x128.png' />
+            <img src={`http://localhost:19001/images/userprofiles/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -125,7 +125,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src='http://bulma.io/images/placeholders/128x128.png' />
+            <img src={`http://localhost:19001/images/userprofiles/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -158,7 +158,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src='http://bulma.io/images/placeholders/128x128.png' />
+            <img src={`http://localhost:19001/images/userprofiles/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>

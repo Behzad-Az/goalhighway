@@ -13,7 +13,7 @@ exports.up = function(knex, Promise) {
       t.string('job_query', 250);
       t.string('job_kind', 100);
       t.integer('job_distance');
-      t.string('photo_name', 50).notNullable().defaultTo('document.png');
+      t.string('photo_name', 50).notNullable().defaultTo('default_user_photo.png');
       t.timestamp('last_feed_at').notNullable().defaultTo(knex.fn.now());
       t.integer('inst_prog_id').notNullable().references('institution_program.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
