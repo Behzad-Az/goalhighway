@@ -4,16 +4,25 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
   let rev_id = req.params.rev_id;
   let url;
 
+  console.log("i'm here here 7: ", { course_id, doc_id, rev_id });
+
   const checkIfAuthorized = trx => knex('revisions')
     .transacting(trx)
     .where('user_id', user_id)
-    .andWhere('id', rev_id)
+    .andWhere('doc_id', doc_id)
     .andWhere('id', rev_id)
     .count('id as auth');
 
   const deleteRev = trx => knex('revisions')
     .transacting(trx)
     .where('id', rev_id)
+    .andWhere('doc_id', doc_id)
+    .update({ deleted_at: knex.fn.now() });
+
+  const deleteDoc = trx => knex('docs')
+    .transacting(trx)
+    .where('id', doc_id)
+    .andWhere('course_id', course_id)
     .update({ deleted_at: knex.fn.now() });
 
   const getRemainingRevCount = trx => knex('revisions')
@@ -29,14 +38,16 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
     .whereNull('deleted_at')
     .orderBy('created_at', 'desc');
 
-  const deleteDoc = trx => knex('docs')
+  const deleteCourseFeed = trx => knex('course_feed')
     .transacting(trx)
-    .where('id', doc_id)
-    .update({ deleted_at: knex.fn.now() });
+    .andWhere('course_id', course_id)
+    .andWhere('doc_id', doc_id)
+    .andWhere('rev_id', rev_id)
+    .del();
 
-  const deleteObj = { delete: { _index: 'search_catalogue', _type: 'document', _id: doc_id } };
-
-  const deleteElasticDoc = () => esClient.bulk({ body: [deleteObj] });
+  const deleteElasticDoc = () => esClient.bulk({
+    body: [{ delete: { _index: 'search_catalogue', _type: 'document', _id: doc_id } }]
+  });
 
   const updateElasticSearch = (title, type) => {
     const indexObj = {
@@ -72,14 +83,13 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
     return esClient.bulk({ body: [indexObj, bodyObj] });
   };
 
-
   knex.transaction(trx => {
     checkIfAuthorized(trx)
     .then(auth => {
-      if (parseInt(auth[0].auth)) { return getDocRevs(); }
-      else { throw 'user not authorized to delete revision'; }
+      if (parseInt(auth[0].auth)) { return getDocRevs(trx); }
+      else { throw 'User not authorized to delete revision'; }
     })
-    .then(revs => (revs[0].id == rev_id && revs[1]) ? Promise.all([ deleteRev(trx), updateElasticSearch(revs[1].title, revs[1].type) ]) : deleteRev(trx) )
+    .then(revs => revs[0].id == rev_id && revs[1] ? Promise.all([ deleteRev(trx), updateElasticSearch(revs[1].title, revs[1].type), deleteCourseFeed(trx) ]) : Promise.all([ deleteRev(trx), deleteCourseFeed(trx) ]))
     .then(() => getRemainingRevCount(trx))
     .then(revCount => parseInt(revCount[0].count) ? 'no_need_to_delete_doc' : Promise.all([ deleteDoc(trx), deleteElasticDoc() ]))
     .then(deleted => url = deleted === 'no_need_to_delete_doc' ? `/courses/${course_id}/docs/${doc_id}` : `/courses/${course_id}`)

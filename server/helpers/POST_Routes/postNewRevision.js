@@ -63,7 +63,8 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
 
   const insertNewRevision = (newRevObj, trx) => knex('revisions')
     .transacting(trx)
-    .insert(newRevObj);
+    .insert(newRevObj)
+    .returning('id');
 
   const adminAddToCourseFeed = (adminFeedObj, trx) => knex('course_feed')
     .transacting(trx)
@@ -82,11 +83,12 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
       };
       return insertNewRevision(newRevObj, trx);
     })
-    .then(() => {
+    .then(revId => {
       let adminFeedObj = {
         commenter_id: 2,
         course_id: req.params.course_id,
         doc_id: req.params.doc_id,
+        rev_id: revId[0],
         category: determineCategory(req.body.type),
         commenter_name: 'goal_robot',
         header: req.body.title,
