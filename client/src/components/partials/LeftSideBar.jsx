@@ -37,7 +37,6 @@ class LeftSideBar extends Component {
   render() {
     return this.state.dataLoaded ? (
       <div className='card side-bar left'>
-        <Link to='/profile' className='button is-info edit'>Edit</Link>
         <div className='card-image'>
           <figure className='image is-4by3'>
             <img src={`http://localhost:19001/images/userprofiles/${this.state.userInfo.photo_name}`} alt='Image' />
@@ -46,9 +45,10 @@ class LeftSideBar extends Component {
         <div className='card-content'>
           <div className='media'>
             <div className='media-content'>
-              <p className='title is-4'>@{this.state.userInfo.username}</p>
+              <Link to='/profile' className='title is-4'>@{this.state.userInfo.username}</Link>
             </div>
           </div>
+          <hr />
           <div className='content'>
             <p>{this.state.progName}</p>
             <p>{this.state.instName}</p>

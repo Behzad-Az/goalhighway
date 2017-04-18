@@ -16,7 +16,7 @@ class Demo extends React.Component {
   _crop() {
     this.refs.cropper.getCroppedCanvas().toBlob(blob => {
       this.props.formData.set('file', blob, 'new_photo');
-    }, 'image/jpeg');
+    }, 'image/png');
   }
 
   _onChange(e) {

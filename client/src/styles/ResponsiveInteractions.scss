@@ -1,7 +1,8 @@
 $side_hamburger_width: 40px;
 
 @media screen and (max-width: 1145px) {
-  .side-bar { padding: none !important; display: none; }
+  .side-bar.left { padding: none !important; display: none; }
+  .side-bar.right { padding: none !important; display: none; }
   .index-page, .inst-page, .course-page, .doc-page, .course-review-page, .profile-page, .company-page, .feed-page {
     .main-container { display: block; width: 100%; padding: $top_margin 1px $default_margin 1px; }
   }

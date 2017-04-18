@@ -17,7 +17,7 @@
     .feeds-container {
       .resume-review-row, .course-row {
         background-color: white; padding: $default_margin/2; margin: 0 0 $default_margin/2 0; border: 1px darken($default-bg-color, 20%) solid;
-        .media-left .image { overflow: hidden; }
+        .media-left .image { overflow: hidden; border: #bbb solid 2px; border-radius: $default_margin/4; }
         .button {  height: 100%; font-size: 10px; color: $dark-blue; float: right; }
         .fa { font-size: 14px; cursor: pointer; vertical-align: middle; margin-left: 10px; &:hover { transform: scale(1.1); } }
         .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
