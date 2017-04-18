@@ -46,7 +46,7 @@ class LeftSideBar extends Component {
         <div className='card-content'>
           <div className='media'>
             <div className='media-content'>
-              <p className='title is-4'>{this.state.userInfo.username}</p>
+              <p className='title is-4'>@{this.state.userInfo.username}</p>
             </div>
           </div>
           <div className='content'>

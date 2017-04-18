@@ -1,5 +1,7 @@
 const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
 
+  let updatedUserObj;
+
   const getLocation = () => {
     return new Promise((resolve, reject) => {
       googleMapsClient.geocode({
@@ -33,26 +35,30 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
     }
   });
 
-  let inst_prog_id;
+  const knexUpdateUser = updatedObj => knex('users')
+    .where('id', user_id)
+    .update(updatedObj);
 
   if (req.body.type === 'profile') {
     Promise.all([ findInstProgId(req.body.instId, req.body.progId), determinePhotoName() ])
     .then(results => {
-      inst_prog_id = results[0][0].id;
-      let knexObj = {
+      updatedUserObj = {
         username: req.body.username,
         email: req.body.email,
-        inst_prog_id,
+        inst_prog_id: results[0][0].id,
         user_year: req.body.userYear,
         photo_name: results[1]
       };
-      return knex('users').where('id', user_id).update(knexObj);
+      return knexUpdateUser(updatedUserObj);
     })
     .then(() => {
-      req.session.username = req.body.username;
-      req.session.inst_prog_id = inst_prog_id;
+      req.session.username = updatedUserObj.username;
+      req.session.email = updatedUserObj.email;
+      req.session.inst_prog_id = updatedUserObj.inst_prog_id;
       req.session.inst_id = req.body.instId;
       req.session.prog_id = req.body.progId;
+      req.session.user_year = updatedUserObj.user_year;
+      req.session.photo_name = updatedUserObj.photo_name;
       res.send(true);
     }).catch(err => {
       console.error('Error inside updateUserProfile.js: ', err);

@@ -19,10 +19,6 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
       rating: null
     });
 
-  const getUserInfo = () => knex('users')
-    .select('id', 'username')
-    .where('id', user_id);
-
   const insertNewTutorLog = trx => knex('tutor_log')
     .transacting(trx)
     .insert(tutorLogObj)
@@ -31,11 +27,6 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
   const addCourseFeed = (courseFeedObj, trx) => knex('course_feed')
     .transacting(trx)
     .insert(courseFeedObj);
-
-  const getAllCourseTutors = () => knex('course_user')
-    .select('user_id')
-    .where('course_id', req.params.course_id)
-    .andWhere('tutor_status', true);
 
   const verifySubscription = () => knex('course_user')
     .where('course_id', req.params.course_id)
@@ -53,20 +44,16 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
         throw 'User must be subscribed before submitting assistance request.';
       }
     })
-    .then(() => Promise.all([
-      getUserInfo(),
-      insertNewTutorLog(trx),
-      getAllCourseTutors()
-    ]))
-    .then(results => {
-      let userInfo = results[0][0];
+    .then(() => insertNewTutorLog(trx))
+    .then(tutorLogId => {
       let newCourseFeed = {
-        commenter_name: userInfo.username,
+        commenter_name: req.session.username,
         commenter_id: user_id,
         category: 'tutor_request',
+        header: 'tutor_request',
         content: req.body.issueDesc,
         course_id: req.params.course_id,
-        tutor_log_id: results[1][0]
+        tutor_log_id: tutorLogId[0]
       };
       return addCourseFeed(newCourseFeed, trx);
     })

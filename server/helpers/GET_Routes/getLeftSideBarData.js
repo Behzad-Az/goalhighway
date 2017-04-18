@@ -1,9 +1,4 @@
 const getLeftSideBarData = (req, res, knex, user_id) => {
-  let userInfo, progName, instName, contributionCount;
-
-  const getUserInfo = () => knex('users')
-    .select('username', 'photo_name', 'created_at')
-    .where('id', user_id);
 
   const getProgName = () => knex('programs')
     .select('prog_long_name')
@@ -26,7 +21,6 @@ const getLeftSideBarData = (req, res, knex, user_id) => {
     .count('id');
 
   Promise.all([
-    getUserInfo(),
     getProgName(),
     getInstName(),
     getRevCount(),
@@ -34,10 +28,14 @@ const getLeftSideBarData = (req, res, knex, user_id) => {
     getCourseReviewCount()
   ])
   .then(results => {
-    userInfo = results[0][0] ? results[0][0] : { username: 'N/A', created_at: 'N/A' };
-    progName = results[1][0] ? results[1][0].prog_long_name : 'N/A';
-    instName = results[2][0] ? results[2][0].inst_long_name : 'N/A';
-    contributionCount = parseInt(results[3][0].count) + parseInt(results[4][0].count) + parseInt(results[5][0].count);
+    let userInfo = {
+      username: req.session.username,
+      created_at: req.session.created_at,
+      photo_name: req.session.photo_name
+    };
+    let progName = results[0][0] ? results[0][0].prog_long_name : 'N/A';
+    let instName = results[1][0] ? results[1][0].inst_long_name : 'N/A';
+    let contributionCount = parseInt(results[2][0].count) + parseInt(results[3][0].count) + parseInt(results[4][0].count);
     res.send({ userInfo, progName, instName, contributionCount });
   })
   .catch(err => {
