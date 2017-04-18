@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import SingleSelect from '../partials/SingleSelect.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
+import ImageCropper from '../partials/ImageCropper.jsx';
 
 class PersonalInformation extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.academicYears = [ { value: 1, label: 'Year 1'}, { value: 2, label: 'Year 2'}, { value: 2, label: 'Year 2'}, { value: 3, label: 'Year 3'}, { value: 4, label: 'Year 4'}, { value: 5, label: 'Year 5'}, { value: 6, label: 'Year 6'} ];
+    this.formData = new FormData();
     this.state = {
       dataLoaded: false,
       pageError: false,
@@ -19,8 +21,7 @@ class PersonalInformation extends Component {
       progId: '',
       progDisplayName: '',
       editView: false,
-      instProgDropDownList: [],
-      file: ''
+      instProgDropDownList: []
     };
     this._conditionData = this._conditionData.bind(this);
     this._showInfo = this._showInfo.bind(this);
@@ -30,7 +31,7 @@ class PersonalInformation extends Component {
     this._handleProgChange = this._handleProgChange.bind(this);
     this._handleUserYearChange = this._handleUserYearChange.bind(this);
     this._handleChange = this._handleChange.bind(this);
-    this._handleFileChange = this._handleFileChange.bind(this);
+    this._deleteFormData = this._deleteFormData.bind(this);
     this._handleUpdateProfile = this._handleUpdateProfile.bind(this);
   }
 
@@ -84,37 +85,46 @@ class PersonalInformation extends Component {
     this.setState(obj);
   }
 
-  _handleFileChange(e) {
-    const file = e.target.files[0];
-    this.setState({ file });
+  _toggleView() {
+    this.setState({ editView: !this.state.editView });
   }
 
-  _toggleView() {
-    this.setState({ editView: !this.state.editView })
+  _deleteFormData() {
+    this.formData.delete('file');
+    this.formData.delete('type');
+    this.formData.delete('username');
+    this.formData.delete('email');
+    this.formData.delete('instYear');
+    this.formData.delete('instId');
+    this.formData.delete('progId');
   }
 
   _handleUpdateProfile() {
-    let data = new FormData();
-    data.append('file', this.state.file);
-    data.append('type', 'profile');
-    data.append('username', this.state.username.trim().toLowerCase());
-    data.append('email', this.state.email.trim().toLowerCase());
-    data.append('userYear', this.state.userYear);
-    data.append('instId', this.state.instId);
-    data.append('progId', this.state.progId);
+    this.formData.append('type', 'profile');
+    this.formData.append('username', this.state.username.trim().toLowerCase());
+    this.formData.append('email', this.state.email.trim().toLowerCase());
+    this.formData.append('userYear', this.state.userYear);
+    this.formData.append('instId', this.state.instId);
+    this.formData.append('progId', this.state.progId);
 
     fetch('/api/users/currentuser', {
       method: 'POST',
       credentials: 'same-origin',
-      body: data
+      body: this.formData
     })
     .then(response => response.json())
     .then(resJSON => {
       if (resJSON) { this.reactAlert.showAlert('User profile saved', 'info'); }
       else { throw 'Server returned false'; }
     })
-    .catch(() => this.reactAlert.showAlert('Could not save user profile', 'error'))
-    .then(this._toggleView);
+    .catch(() => {
+      this._deleteFormData();
+      this.reactAlert.showAlert('Could not save user profile', 'error');
+    })
+    .then(() => {
+      this._deleteFormData();
+      this._toggleView();
+    });
   }
 
   _showInfo() {
@@ -194,7 +204,7 @@ class PersonalInformation extends Component {
 
             <div className='control'>
               <label className='label'>Profile Picture:</label>
-              <input className='upload' type='file' onChange={this._handleFileChange} />
+              <ImageCropper formData={this.formData} />
             </div>
 
             <div className='control'>
