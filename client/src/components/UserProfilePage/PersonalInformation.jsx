@@ -115,33 +115,6 @@ class PersonalInformation extends Component {
     })
     .catch(() => this.reactAlert.showAlert('Could not save user profile', 'error'))
     .then(this._toggleView);
-
-
-    // let data = {
-    //   type: 'profile',
-    //   username: this.state.username.trim().toLowerCase(),
-    //   email: this.state.email.trim().toLowerCase(),
-    //   userYear: this.state.userYear,
-    //   instId: this.state.instId,
-    //   progId: this.state.progId
-    // };
-
-    // fetch('/api/users/currentuser', {
-    //   method: 'POST',
-    //   credentials: 'same-origin',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-    // .then(response => response.json())
-    // .then(resJSON => {
-    //   if (resJSON) { this.reactAlert.showAlert('User profile saved', 'info'); }
-    //   else { throw 'Server returned false'; }
-    // })
-    // .catch(() => this.reactAlert.showAlert('Could not save user profile', 'error'))
-    // .then(this._toggleView);
   }
 
   _showInfo() {
@@ -270,6 +243,7 @@ class PersonalInformation extends Component {
                 handleChange={this._handleUserYearChange} />
             </div>
           </div>
+
           <footer className='card-footer'>
             <Link className='card-footer-item' onClick={this._handleUpdateProfile}>Save</Link>
             <Link className='card-footer-item' onClick={this._toggleView}>Cancel</Link>
