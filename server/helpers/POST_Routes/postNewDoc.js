@@ -73,25 +73,25 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   knex.transaction(trx => {
     insertNewDoc(newDocObj, trx)
-    .then(doc_id => {
+    .then(docId => {
       newRevObj = {
         title: req.body.title,
         type: req.body.type,
         rev_desc: req.body.revDesc,
         file_name: req.file.filename,
-        doc_id: doc_id[0],
+        doc_id: docId[0],
         poster_id: user_id
       };
       return insertNewRev(newRevObj, trx);
     })
     .then(revId => {
       let adminFeedObj = {
-        commenter_id: 2,
+        commenter_id: user_id,
         course_id: newDocObj.course_id,
         doc_id: newRevObj.doc_id,
         rev_id: revId[0],
         category: determineCategory(newRevObj.type),
-        commenter_name: 'goal_robot',
+        commenter_name: 'Anonymous',
         header: newRevObj.title,
         content: 'New document received.'
       };

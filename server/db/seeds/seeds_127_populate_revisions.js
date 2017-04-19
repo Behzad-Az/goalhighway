@@ -68,7 +68,7 @@ exports.seed = function(knex, Promise) {
         doc_id: i,
         rev_id: k,
         category: determineCategory(type),
-        commenter_name: 'goal_robot',
+        commenter_name: 'Anonymous',
         header: title,
         content: 'New document posted.'
       };

@@ -206,10 +206,6 @@ app.post('/api/courses/:course_id/docs', documentUpload.single('file'), (req, re
   req.file ? postNewDoc(req, res, knex, req.session.user_id, esClient) : res.send(false);
 });
 
-// app.post('/api/courses/:course_id/items', (req, res) => {
-//   postNewItemForSale(req, res, knex, req.session.user_id);
-// });
-
 app.post('/api/courses/:course_id/items', itemForSaleUpload.single('file'), (req, res) => {
   postNewItemForSale(req, res, knex, req.session.user_id);
 });
@@ -294,32 +290,9 @@ app.post('/api/users/:user_id/courses/:course_id/tutorlog/update', (req, res) =>
   updateTutorLog(req, res, knex, req.session.user_id);
 });
 
-// app.post('/api/courses/:course_id/items/:item_id', (req, res) => {
-//   updateItemForSale(req, res, knex, req.session.user_id);
-// });
-
 app.post('/api/courses/:course_id/items/:item_id', itemForSaleUpload.single('file'), (req, res) => {
   updateItemForSale(req, res, knex, req.session.user_id);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.post('/api/login', (req, res) => {
   postLogin(req, res, knex, bcryptJs);

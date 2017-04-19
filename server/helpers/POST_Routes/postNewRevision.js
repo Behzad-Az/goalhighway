@@ -85,12 +85,12 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     })
     .then(revId => {
       let adminFeedObj = {
-        commenter_id: 2,
+        commenter_id: user_id,
         course_id: req.params.course_id,
         doc_id: req.params.doc_id,
         rev_id: revId[0],
         category: determineCategory(req.body.type),
-        commenter_name: 'goal_robot',
+        commenter_name: 'Anonymous',
         header: req.body.title,
         content: req.body.revDesc
       };

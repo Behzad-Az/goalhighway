@@ -10,22 +10,47 @@ const updateItemForSale = (req, res, knex, user_id) => {
     }
   });
 
-  updateItem = itemObj => knex('items_for_sale')
+  const updateItem = (itemObj, trx) => knex('items_for_sale')
+    .transacting(trx)
     .where('id', req.params.item_id)
+    .andWhere('course_id', req.params.course_id)
     .andWhere('owner_id', user_id)
     .update(itemObj);
 
-  determinePhotoName()
-  .then(photo_name => updateItem({
-    title: req.body.title,
-    item_desc: req.body.itemDesc,
-    price: req.body.price,
-    photo_name,
-    deleted_at: req.body.deleted === 'true' ? knex.fn.now() : null
-  }))
+  const updateCourseFeed = (feedObj, trx) => knex('course_feed')
+    .transacting(trx)
+    .where('item_for_sale_id', req.params.item_id)
+    .andWhere('course_id', req.params.course_id)
+    .andWhere('commenter_id', user_id)
+    .update(feedObj);
+
+  knex.transaction(trx => {
+    determinePhotoName()
+    .then(photo_name => {
+      let itemObj = {
+        title: req.body.title,
+        item_desc: req.body.itemDesc,
+        price: req.body.price,
+        photo_name
+      };
+      return updateItem(itemObj, trx);
+    })
+    .then(itemId => {
+      let feedObj = {
+        header: req.body.title,
+        content: `${req.body.itemDesc} - $` + req.body.price
+      };
+      return updateCourseFeed(feedObj, trx);
+    })
+    .then(() => trx.commit())
+    .catch(err => {
+      trx.rollback();
+      throw err;
+    });
+  })
   .then(() => res.send(true))
   .catch(err => {
-    console.error('Error inside updateItemForSale.js: ', err);
+    console.error('Error inside updateItemForSale.js', err);
     res.send(false);
   });
 

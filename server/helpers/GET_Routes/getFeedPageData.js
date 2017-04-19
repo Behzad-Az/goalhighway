@@ -33,8 +33,9 @@ const getFeedPageData = (req, res, knex, user_id) => {
     .update('last_feed_at', knex.fn.now());
 
   const categorizeFeed = (feedArr, feedType) => feedArr.map(feed => {
-    if (feed.commenter_id === 2 && feed.commenter_name === 'goal_robot') { feed.photo_name = 'default_user_photo.png'; }
-    else if (feed.commenter_name === 'Anonymous') { feed.photo_name = 'anonymous_user_photo.png'; }
+    if (feed.commenter_name === 'Anonymous' && feed.category === 'new_comment') { feed.photo_name = 'anonymous_user_photo.png'; }
+    else if (feed.commenter_name === 'Anonymous') { feed.photo_name = 'document.png'; }
+    else if (feed.category === 'new_item_for_sale') { feed.photo_name = 'item_for_sale.png'; }
     feed.type = feedType;
     return feed;
   });
