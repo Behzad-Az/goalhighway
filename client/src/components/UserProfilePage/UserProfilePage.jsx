@@ -11,7 +11,7 @@ class UserProfilePage extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      userInfo: {},
+      userInfo: {}
     };
     this.conditionData = this.conditionData.bind(this);
   }
