@@ -61,6 +61,39 @@ const getCoursePageData = (req, res, knex, user_id) => {
     .where('course_feed.course_id', req.params.course_id)
     .orderBy('course_feed.created_at', 'desc');
 
+  // const categorizeFeed = feedArr => feedArr.map(feed => {
+  //   let documentFeedCategories = [
+  //     'new_asg_report', 'new_lecture_note', 'new_sample_question', 'new_document', 'revised_asg_report',
+  //     'revised_lecture_note', 'revised_sample_question', 'revised_document'
+  //   ];
+  //   if (feed.anonymous && feed.category === 'new_comment') {
+  //     feed.photo_name = 'anonymous_user_photo.png';
+  //     feed.commenter_name = 'Anonymous';
+  //   } else if (feed.anonymous && documentFeedCategories.includes(feed.category)) {
+  //     feed.photo_name = 'document.png';
+  //     feed.commenter_name = 'Anonymous';
+  //   }
+  //   else if (feed.category === 'new_item_for_sale') { feed.photo_name = 'item_for_sale.png'; }
+  //   feed.editable = feed.commenter_id === user_id;
+  //   return feed;
+  // });
+
+  const categorizeFeed = feedArr => feedArr.map(feed => {
+    let documentFeedCategories = [
+      'new_asg_report', 'new_lecture_note', 'new_sample_question', 'new_document', 'revised_asg_report',
+      'revised_lecture_note', 'revised_sample_question', 'revised_document'
+    ];
+    if (feed.anonymous) {
+      feed.commenter_name = 'Anonymous';
+      if (feed.category === 'new_comment') { feed.photo_name = 'anonymous_user_photo.png'; }
+      else if (feed.category === 'new_item_for_sale') { feed.photo_name = 'item_for_sale.png'; }
+      else if (feed.category === 'new_course_review') { feed.photo_name = 'course_review.png'; }
+      else if (documentFeedCategories.includes(feed.category)) { feed.photo_name = 'document.png'; }
+    }
+    feed.editable = feed.commenter_id === user_id;
+    return feed;
+  });
+
   Promise.all([
     getDocs(),
     getCourseInfo(),
@@ -71,16 +104,11 @@ const getCoursePageData = (req, res, knex, user_id) => {
     getCourseFeeds()
   ])
   .then(results => {
-    courseFeeds = results[6].map(feed => {
-      feed.editable = feed.commenter_id === user_id;
-      return feed;
-    });
-
+    courseFeeds = categorizeFeed(results[6]);
     itemsForSale = results[4].map(item => {
       item.editable = item.owner_id === user_id;
       return item;
     });
-
     let avgRating = results[5][0] ?  Math.round(results[5][0].avg / 5 * 100) : 0;
     let latestTutorLog = results[3][0];
     let userInfo = results[2][0];

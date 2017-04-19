@@ -49,8 +49,8 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
       let newCourseFeed = {
         anonymous: false,
         commenter_id: user_id,
-        category: 'tutor_request',
-        header: 'tutor_request',
+        category: 'new_tutor_request',
+        header: 'new_tutor_request',
         content: req.body.issueDesc,
         course_id: req.params.course_id,
         tutor_log_id: tutorLogId[0]

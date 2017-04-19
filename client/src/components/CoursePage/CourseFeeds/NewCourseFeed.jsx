@@ -70,7 +70,7 @@ class NewCourseFeed extends Component {
           <p className='control'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleSubmit}>Post Comment</button>
           </p>
-          <p className='field'>
+          <p className='field anonymous'>
             <input type='checkbox' name='anonymous' checked={this.state.anonymous} onClick={() => this.setState({ anonymous: !this.state.anonymous })} /> Anonymous
           </p>
           <p className='control'>

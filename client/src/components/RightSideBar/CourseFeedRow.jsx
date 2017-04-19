@@ -8,6 +8,12 @@ class CourseFeedRow extends Component {
     this._renderDocumentFeed = this._renderDocumentFeed.bind(this);
     this._renderCommentFeed = this._renderCommentFeed.bind(this);
     this._renderTutorFeed = this._renderTutorFeed.bind(this);
+
+
+
+
+    this._renderItemFeed = this._renderItemFeed.bind(this);
+    this._renderCourseReviewFeed = this._renderCourseReviewFeed.bind(this);
   }
 
   _prepareFeed() {
@@ -21,17 +27,21 @@ class CourseFeedRow extends Component {
       case 'new_document':
         return this._renderDocumentFeed('New Document - ');
       case 'revised_asg_report':
-        return this._renderDocumentFeed('Revised Assingment / Report - ');
+        return this._renderDocumentFeed('Revised Assignment / Report - ');
       case 'revised_lecture_note':
         return this._renderDocumentFeed('Revised Lecture Note - ');
       case 'revised_sample_question':
         return this._renderDocumentFeed('Revised Sample Question - ');
       case 'revised_document':
         return this._renderDocumentFeed('Revised Document - ');
-      case 'tutor_request':
+      case 'new_tutor_request':
         return this._renderTutorFeed(` - Tutor Request by ${this.props.feed.commenter_name}`);
       case 'new_comment':
         return this._renderCommentFeed(` - New Comment by ${this.props.feed.commenter_name}`);
+      case 'new_item_for_sale':
+        return this._renderItemFeed(' - New Item for Sale or Trade!');
+      case 'new_course_review':
+        return this._renderCourseReviewFeed(' - New Course Review!');
       default:
         return <p></p>;
     }
@@ -98,6 +108,54 @@ class CourseFeedRow extends Component {
               <small>
                 Posted on {this.props.feed.created_at.slice(0, 10)} |
                 <Link> Answer</Link>
+              </small>
+            </p>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  _renderItemFeed(header) {
+    return (
+      <article className='media course-row'>
+        <div className='media-content'>
+          <div className='content'>
+            <p>
+              <strong>
+                <Link to={`/courses/${this.props.feed.course_id}`}>@{this.props.feed.short_display_name}</Link>
+                {header}
+              </strong>
+              <br />
+              {this.props.feed.content}
+              <br />
+              <small>
+                Posted on {this.props.feed.created_at.slice(0, 10)} |
+                <Link> Contact Seller</Link>
+              </small>
+            </p>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  _renderCourseReviewFeed(header) {
+    return (
+      <article className='media course-row'>
+        <div className='media-content'>
+          <div className='content'>
+            <p>
+              <strong>
+                <Link to={`/courses/${this.props.feed.course_id}`}>@{this.props.feed.short_display_name}</Link>
+                {header}
+              </strong>
+              <br />
+              {this.props.feed.content}
+              <br />
+              <small>
+                Posted on {this.props.feed.created_at.slice(0, 10)} |
+                <Link> See Details</Link>
               </small>
             </p>
           </div>

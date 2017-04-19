@@ -1,12 +1,21 @@
 const postNewCourseReview = (req, res, knex, user_id) => {
 
-  const getInstId = () => knex('courses')
-    .select('inst_id')
-    .where('id', req.params.course_id);
+  let inst_id;
 
-  const getProfId = () => knex('profs')
+  const getInstId = trx => knex('courses')
+    .transacting(trx)
+    .select('inst_id')
+    .where('id', req.params.course_id)
+    .whereNull('deleted_at')
+    .limit(1);
+
+  const getProfId = (instId, trx) => knex('profs')
+    .transacting(trx)
     .select('id')
-    .where(knex.raw('LOWER("name") = ?', req.body.profName.toLowerCase() || 'unknown'));
+    .where('inst_id', instId)
+    .andWhere(knex.raw('LOWER("name") = ?', req.body.profName.trim().toLowerCase() || 'unknown'))
+    .whereNull('deleted_at')
+    .limit(1);
 
   const createNewProf = (newProfObj, trx) => knex('profs')
     .transacting(trx)
@@ -15,31 +24,46 @@ const postNewCourseReview = (req, res, knex, user_id) => {
 
   const createNewCourseReview = (newCourseReviewObj, trx) => knex('course_reviews')
     .transacting(trx)
-    .insert(newCourseReviewObj);
+    .insert(newCourseReviewObj)
+    .returning('id');
+
+  const adminAddToCourseFeed = (adminFeedObj, trx) => knex('course_feed')
+    .transacting(trx)
+    .insert(adminFeedObj);
 
   knex.transaction(trx => {
-    Promise.all([
-      getInstId(),
-      getProfId()
-    ])
-    .then(results => {
-      if (results[0][0]) { return results[1][0] ? [results[1][0].id] : createNewProf({ inst_id: results[0][0].inst_id, name: req.body.profName }, trx); }
-      else { throw 'Could not find valid inst_id'; }
+    getInstId(trx)
+    .then(instId => {
+      inst_id = instId[0].inst_id;
+      return getProfId(inst_id, trx);
     })
+    .then(profId => profId[0] ? [profId[0].id] : createNewProf({ inst_id, name: req.body.profName.trim() }, trx))
     .then(profId => {
       let courseReviewObj = {
         course_id: req.params.course_id,
         reviewer_id: user_id,
         prof_id: profId[0],
         start_year: req.body.startYear,
-        start_month: req.body.startMonth,
+        start_month: req.body.startMonth.trim(),
         workload_rating: req.body.workloadRating,
         fairness_rating: req.body.fairnessRating,
         prof_rating: req.body.profRating,
         overall_rating: req.body.overallRating,
-        review_desc: req.body.reviewDesc,
+        review_desc: req.body.reviewDesc.trim()
       };
       return createNewCourseReview(courseReviewObj, trx);
+    })
+    .then(reviewId => {
+      let adminFeedObj = {
+        commenter_id: user_id,
+        course_id: req.params.course_id,
+        course_review_id: reviewId[0],
+        category: 'new_course_review',
+        header: 'new_course_review',
+        anonymous: true,
+        content: `Overall Rating: ${req.body.overallRating}/5.`
+      };
+      return adminAddToCourseFeed(adminFeedObj, trx);
     })
     .then(() => trx.commit())
     .catch(err => {

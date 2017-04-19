@@ -39,17 +39,14 @@ const getFeedPageData = (req, res, knex, user_id) => {
       'new_asg_report', 'new_lecture_note', 'new_sample_question', 'new_document', 'revised_asg_report',
       'revised_lecture_note', 'revised_sample_question', 'revised_document'
     ];
-
-    if (feed.anonymous && feed.category === 'new_comment') {
-      feed.photo_name = 'anonymous_user_photo.png';
+    if (feed.anonymous) {
       feed.commenter_name = 'Anonymous';
-    } else if (feed.anonymous && documentFeedCategories.includes(feed.category)) {
-      feed.photo_name = 'document.png';
-      feed.commenter_name = 'Anonymous';
+      if (feed.category === 'new_comment') { feed.photo_name = 'anonymous_user_photo.png'; }
+      else if (feed.category === 'new_item_for_sale') { feed.photo_name = 'item_for_sale.png'; }
+      else if (feed.category === 'new_course_review') { feed.photo_name = 'course_review.png'; }
+      else if (documentFeedCategories.includes(feed.category)) { feed.photo_name = 'document.png'; }
     }
-    else if (feed.category === 'new_item_for_sale') { feed.photo_name = 'item_for_sale.png'; }
     feed.type = feedType;
-
     return feed;
   });
 

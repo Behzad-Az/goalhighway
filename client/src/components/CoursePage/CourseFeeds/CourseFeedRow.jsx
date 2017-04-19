@@ -16,6 +16,8 @@ class CourseFeedRow extends Component {
     this._renderDocumentFeed = this._renderDocumentFeed.bind(this);
     this._renderCommentFeed = this._renderCommentFeed.bind(this);
     this._renderTutorFeed = this._renderTutorFeed.bind(this);
+    this._renderItemFeed = this._renderItemFeed.bind(this);
+    this._renderCourseReviewFeed = this._renderCourseReviewFeed.bind(this);
   }
 
   _handleDeletionRequest() {
@@ -71,17 +73,21 @@ class CourseFeedRow extends Component {
       case 'new_document':
         return this._renderDocumentFeed('New Document - ');
       case 'revised_asg_report':
-        return this._renderDocumentFeed('Revised Assingment / Report - ');
+        return this._renderDocumentFeed('Revised Assignment / Report - ');
       case 'revised_lecture_note':
         return this._renderDocumentFeed('Revised Lecture Note - ');
       case 'revised_sample_question':
         return this._renderDocumentFeed('Revised Sample Question - ');
       case 'revised_document':
         return this._renderDocumentFeed('Revised Document - ');
-      case 'tutor_request':
+      case 'new_tutor_request':
         return this._renderTutorFeed(`Tutor Request by ${this.props.feed.commenter_name}`);
       case 'new_comment':
         return this._renderCommentFeed(`New Comment by ${this.props.feed.commenter_name}`);
+      case 'new_item_for_sale':
+        return this._renderItemFeed('New Item for Sale or Trade!');
+      case 'new_course_review':
+        return this._renderCourseReviewFeed('New Course Review!');
       default:
         return <p></p>;
     }
@@ -92,7 +98,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src='http://bulma.io/images/placeholders/64x64.png' />
+            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -121,7 +127,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src='http://bulma.io/images/placeholders/64x64.png' />
+            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -152,7 +158,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src='http://bulma.io/images/placeholders/64x64.png' />
+            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -162,6 +168,67 @@ class CourseFeedRow extends Component {
             </strong>
             <br />
             {this.props.feed.content}
+            <br />
+            <small><Link>Answer {this.props.feed.commenter_name}</Link></small>
+            <br />
+            <small>
+              Posted on {this.props.feed.created_at.slice(0, 10)} |
+              <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+              { this.state.flagRequest && this._renderFlagSelect() }
+            </small>
+            <br />
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  _renderItemFeed(header) {
+    return (
+      <article className='media course-row'>
+        <figure className='media-left'>
+          <p className='image is-64x64'>
+            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
+          </p>
+        </figure>
+        <div className='media-content'>
+          <div className='content'>
+            <strong>
+              {header}
+            </strong>
+            <br />
+            {this.props.feed.content}
+            <br />
+            <small><Link>Contant Seller</Link></small>
+            <br />
+            <small>
+              Posted on {this.props.feed.created_at.slice(0, 10)}
+              <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+              { this.state.flagRequest && this._renderFlagSelect() }
+            </small>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  _renderCourseReviewFeed(header) {
+    return (
+      <article className='media course-row'>
+        <figure className='media-left'>
+          <p className='image is-64x64'>
+            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
+          </p>
+        </figure>
+        <div className='media-content'>
+          <div className='content'>
+            <strong>
+              {header}
+            </strong>
+            <br />
+            {this.props.feed.content}
+            <br />
+            <small><Link>See Details</Link></small>
             <br />
             <small>
               Posted on {this.props.feed.created_at.slice(0, 10)} |
