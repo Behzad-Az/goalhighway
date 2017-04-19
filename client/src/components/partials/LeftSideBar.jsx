@@ -39,7 +39,7 @@ class LeftSideBar extends Component {
       <div className='card side-bar left'>
         <div className='card-image'>
           <figure className='image is-4by3'>
-            <img src={`http://localhost:19001/images/userprofiles/${this.state.userInfo.photo_name}`} alt='Image' />
+            <img src={`http://localhost:19001/images/userphotos/${this.state.userInfo.photo_name}`} alt='Image' />
           </figure>
         </div>
         <div className='card-content'>

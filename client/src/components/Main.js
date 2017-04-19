@@ -11,8 +11,6 @@ import CareerPage from './CareerPage/CareerPage.jsx';
 import CompanyPage from './CompanyPage/CompanyPage.jsx';
 import FeedPage from './FeedPage/FeedPage.jsx';
 
-import ImageCropper from './partials/ImageCropper.jsx';
-
 class App extends React.Component {
   constructor() {
     super();
@@ -62,7 +60,6 @@ class App extends React.Component {
         <Route path='/courses/:course_id/reviews' component={CourseReviewPage} onEnter={this._validateAuth} />
         <Route path='/institutions/:inst_id' component={InstPage} onEnter={this._validateAuth} />
         <Route path='/companies/:company_id' component={CompanyPage} onEnter={this._validateAuth} />
-        <Route path='/image' component={ImageCropper} />
         <Route path='*' component={IndexPage} onEnter={this._validateAuth} />
       </Router>
     );

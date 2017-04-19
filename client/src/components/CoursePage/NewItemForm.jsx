@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import HandleModal from '../partials/HandleModal.js';
+import ImageCropper from '../partials/ImageCropper.jsx';
 
 class NewItemForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
+    this.formData = new FormData();
     this.state = {
       title: '',
       itemDesc: '',
@@ -14,6 +16,7 @@ class NewItemForm extends Component {
     };
     this._handleChange = this._handleChange.bind(this);
     this._validateForm = this._validateForm.bind(this);
+    this._deleteFormData = this._deleteFormData.bind(this);
     this._handleNewItemPost = this._handleNewItemPost.bind(this);
   }
 
@@ -29,32 +32,36 @@ class NewItemForm extends Component {
            this.state.price;
   }
 
+  _deleteFormData() {
+    this.formData.delete('file');
+    this.formData.delete('title');
+    this.formData.delete('itemDesc');
+    this.formData.delete('price');
+  }
+
   _handleNewItemPost() {
-    let data = {
-      title: this.state.title,
-      itemDesc: this.state.itemDesc,
-      price: this.state.price,
-      photoPath: this.state.photoPath
-    };
+    this.formData.append('title', this.state.title);
+    this.formData.append('itemDesc', this.state.itemDesc);
+    this.formData.append('price', this.state.price);
 
     fetch(`/api/courses/${this.props.courseId}/items`, {
       method: 'POST',
       credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      body: this.formData
     })
     .then(response => response.json())
     .then(resJSON => {
       if (resJSON) {
         this.reactAlert.showAlert('New item posted', 'info');
+        this._deleteFormData();
         this.props.reload();
       }
       else { throw 'Server returned false'; }
     })
-    .catch(() => this.reactAlert.showAlert('error in posting item', 'error'))
+    .catch(() => {
+      this.reactAlert.showAlert('error in posting item', 'error');
+      this._deleteFormData();
+    })
     .then(() => HandleModal('new-item-form'));
   }
 
@@ -76,10 +83,10 @@ class NewItemForm extends Component {
             <p className='control'>
               <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' onChange={this._handleChange} />
             </p>
-            <label className='label'>Upload photo (Recommended):</label>
-            <p className='control'>
-              <input className='upload' type='file' name='photoPath' onChange={this._handleChange} />
-            </p>
+            <div className='control'>
+              <label className='label'>Upload Photo (Recommended):</label>
+              <ImageCropper formData={this.formData} />
+            </div>
             <label className='label'>Item Price:</label>
             <p className='control has-icon has-icon-left'>
               <input className='input' type='text' name='price' placeholder='Enter price here' onChange={this._handleChange} />

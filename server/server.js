@@ -48,10 +48,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ***************************************************
 // DOCUMENT STORAGE
 // ***************************************************
-const multerUpload = require('./helpers/Upload_Helpers/multerUpload.js');
-const documentUpload = multerUpload.documentUpload;
-const resumeUpload = multerUpload.resumeUpload;
-const userProfilePhotoUpload = multerUpload.userProfilePhotoUpload;
+const documentUpload = require('./helpers/Upload_Helpers/documentUpload.js');
+const resumeUpload = require('./helpers/Upload_Helpers/resumeUpload.js');
+const userPhotoUpload = require('./helpers/Upload_Helpers/userPhotoUpload.js');
+const itemForSaleUpload = require('./helpers/Upload_Helpers/itemForSaleUpload.js');
 
 // ***************************************************
 // PORT
@@ -206,7 +206,11 @@ app.post('/api/courses/:course_id/docs', documentUpload.single('file'), (req, re
   req.file ? postNewDoc(req, res, knex, req.session.user_id, esClient) : res.send(false);
 });
 
-app.post('/api/courses/:course_id/items', (req, res) => {
+// app.post('/api/courses/:course_id/items', (req, res) => {
+//   postNewItemForSale(req, res, knex, req.session.user_id);
+// });
+
+app.post('/api/courses/:course_id/items', itemForSaleUpload.single('file'), (req, res) => {
   postNewItemForSale(req, res, knex, req.session.user_id);
 });
 
@@ -278,7 +282,7 @@ app.post('/api/companies/:company_id/questions/:question_id', (req, res) => {
 // ***************************************************
 // ROUTES - UPDATE
 // ***************************************************
-app.post('/api/users/:user_id', userProfilePhotoUpload.single('file'), (req, res) => {
+app.post('/api/users/:user_id', userPhotoUpload.single('file'), (req, res) => {
   updateUserProfile(req, res, knex, req.session.user_id, googleMapsClient);
 });
 
@@ -290,9 +294,32 @@ app.post('/api/users/:user_id/courses/:course_id/tutorlog/update', (req, res) =>
   updateTutorLog(req, res, knex, req.session.user_id);
 });
 
-app.post('/api/courses/:course_id/items/:item_id', (req, res) => {
+// app.post('/api/courses/:course_id/items/:item_id', (req, res) => {
+//   updateItemForSale(req, res, knex, req.session.user_id);
+// });
+
+app.post('/api/courses/:course_id/items/:item_id', itemForSaleUpload.single('file'), (req, res) => {
   updateItemForSale(req, res, knex, req.session.user_id);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.post('/api/login', (req, res) => {
   postLogin(req, res, knex, bcryptJs);

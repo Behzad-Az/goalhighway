@@ -4,8 +4,6 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
   let rev_id = req.params.rev_id;
   let url;
 
-  console.log("i'm here here 7: ", { course_id, doc_id, rev_id });
-
   const checkIfAuthorized = trx => knex('revisions')
     .transacting(trx)
     .where('poster_id', user_id)

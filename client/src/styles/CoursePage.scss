@@ -44,7 +44,7 @@
           margin: 0 $default_margin/4 $default_margin/2 $default_margin/4; width: 230px; height: 100%;
           .card-content {
             padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-            .card-image .button { position: absolute; right: -10px; height: 30px; top: -10px; background-color: $dark-blue; &:hover { background-color: darken($dark-blue, 10%); } }
+            .card-image .item-img { overflow: hidden; border: #bbb solid 2px; border-radius: $default_margin/4; }
             .card-text {
               max-height: 300px; overflow: scroll;
               .name { font-weight: bold; margin: 10px 0; }

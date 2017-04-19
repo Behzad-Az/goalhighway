@@ -71,7 +71,7 @@ class DocCard extends Component {
         <div className='card-content'>
           <div className='card-image'>
             <Link to={`/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}`}>
-              <figure className='image is-64x64'>
+              <figure className='image is-96x96'>
                 <img src={this.state.imageLink} alt='doc-type' />
               </figure>
             </Link>

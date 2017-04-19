@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 import ReactAlert from '../partials/ReactAlert.jsx';
+import ImageCropper from '../partials/ImageCropper.jsx';
 
 class ItemCard extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
+    this.formData = new FormData();
     this.state = {
       editCard: false,
       title: this.props.item.title,
@@ -20,6 +22,7 @@ class ItemCard extends Component {
     this._toggleView = this._toggleView.bind(this);
     this._editCardView = this._editCardView.bind(this);
     this._showCardView = this._showCardView.bind(this);
+    this._deleteFormData = this._deleteFormData.bind(this);
   }
 
   _handleChange(e) {
@@ -29,34 +32,31 @@ class ItemCard extends Component {
   }
 
   _handleEdit() {
-    let data = {
-      photoPath: this.state.photoPath,
-      itemDesc: this.state.itemDesc,
-      title: this.state.title,
-      price: this.state.price,
-      deleted: this.state.deleted
-    };
+    this.formData.append('title', this.state.title);
+    this.formData.append('itemDesc', this.state.itemDesc);
+    this.formData.append('price', this.state.price);
+    this.formData.append('deleted', this.state.deleted);
 
     fetch(`/api/courses/${this.props.item.course_id}/items/${this.props.item.id}`, {
       method: 'POST',
       credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      body: this.formData
     })
     .then(response => response.json())
     .then(resJSON => {
       if (resJSON) {
         let msg = this.state.deleted ? 'Item deleted' : 'Item updated';
         this.reactAlert.showAlert(msg, 'info');
+        this._deleteFormData();
         this.props.reload();
       } else {
         throw 'Server returned false';
       }
     })
-    .catch(() => this.reactAlert.showAlert('Unable to update item', 'error'))
+    .catch(() => {
+      this.reactAlert.showAlert('Unable to update item', 'error');
+      this._deleteFormData();
+    })
     .then(this._toggleView);
   }
 
@@ -69,9 +69,16 @@ class ItemCard extends Component {
     this.setState({ editCard: !this.state.editCard });
   }
 
+  _deleteFormData() {
+    this.formData.delete('file');
+    this.formData.delete('title');
+    this.formData.delete('itemDesc');
+    this.formData.delete('price');
+  }
+
   _editCardView() {
     return (
-      <div className='item-index card'>
+      <div className='item-index card' style={{ minWidth: '300px' }}>
         <div className='card-content'>
           <label className='label'>Item Title:</label>
           <p className='control'>
@@ -81,10 +88,12 @@ class ItemCard extends Component {
           <p className='control'>
             <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' defaultValue={this.state.itemDesc} onChange={this._handleChange} />
           </p>
-          <label className='label'>Upload Photo (Recommended):</label>
-          <p className='control'>
-            <input className='upload' type='file' name='photoPath' onChange={this._handleChange} />
-          </p>
+
+          <div className='control'>
+            <label className='label'>Photo:</label>
+            <ImageCropper formData={this.formData} />
+          </div>
+
           <label className='label'>Item Price:</label>
           <p className='control has-icon has-icon-left'>
             <input className='input' type='text' name='price' placeholder='Enter price here' defaultValue={this.props.item.price} onChange={this._handleChange} />
@@ -105,9 +114,8 @@ class ItemCard extends Component {
       <div className='item-index card'>
         <div className='card-content'>
           <div className='card-image'>
-            { this.props.item.editable && <button className='button is-info' onClick={this._toggleView}>Edit</button> }
-            <figure className='image is-96x96'>
-              <img src='../../images/camera-logo.png' alt='picture' />
+            <figure className='image item-img is-128x128'>
+              <img src={`http://localhost:19001/images/itemsforsale/${this.props.item.photo_name}`} alt='picture' />
             </figure>
           </div>
           <div className='card-text'>
@@ -118,7 +126,7 @@ class ItemCard extends Component {
           </div>
           <p className='card-foot title is-6'>
             <span className='text-link'>
-              <Link>Contact Owner</Link>
+              { this.props.item.editable ? <Link onClick={this._toggleView}>Edit</Link> : <Link>Contact Owner</Link> }
             </span>
           </p>
         </div>
