@@ -43,11 +43,14 @@ const getRightSideBarData = (req, res, knex, user_id) => {
     .orderBy('course_feed.created_at', 'desc')
     .limit(3);
 
-  const getResumeFeeds = () => knex('resume_review_feed')
-    .select('id', 'additional_info', 'created_at', 'commenter_name', 'commenter_id', 'resume_id', 'title')
+  const getResumeFeeds = () => knex('resumes')
+    .innerJoin('users', 'resumes.owner_id', 'users.id')
+    .select('resumes.id', 'resumes.title', 'resumes.intent', 'resumes.created_at', 'users.id as commenter_id', 'users.username', 'users.photo_name')
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
-    .orderBy('created_at', 'desc')
+    .whereNotNull('resumes.review_requested_at')
+    .whereNull('resumes.deleted_at')
+    .orderBy('resumes.review_requested_at', 'desc')
     .limit(3);
 
   const categorizeFeed = (feedArr, feedType) => feedArr.map(feed => {

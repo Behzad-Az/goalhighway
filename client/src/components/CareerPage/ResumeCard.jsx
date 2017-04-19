@@ -16,7 +16,7 @@ class ResumeCard extends Component {
       title: this.props.resume.title,
       intent: this.props.resume.intent,
       file: '',
-      reviewReqStatus: this.props.resume.reviewReqStatus
+      reviewReqStatus: this.props.resume.review_requested_at ? true : false
     };
     this._findImageLink = this._findImageLink.bind(this);
     this._handleChange = this._handleChange.bind(this);

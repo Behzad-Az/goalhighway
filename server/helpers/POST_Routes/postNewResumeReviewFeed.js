@@ -1,40 +1,13 @@
 postNewResumeReviewFeed = (req, res, knex, user_id) => {
 
-  const newResumeFeedObj = {
-    commenter_id: user_id,
-    commenter_name: req.session.username,
-    title: req.body.title,
-    additional_info: req.body.additionalInfo,
-    resume_id: req.params.resume_id,
-    audience_filter_id: req.session.inst_prog_id,
-    audience_filter_table: 'institution_program'
-  };
-
-  const authenticateRequest = () => knex('resumes')
+  const updateResumeDb = () => knex('resumes')
     .where('id', req.params.resume_id)
     .andWhere('owner_id', user_id)
+    .whereNull('review_requested_at')
     .whereNull('deleted_at')
-    .count('id as auth');
+    .update({ review_requested_at: knex.fn.now() });
 
-  const checkForDuplicates = () => knex('resume_review_feed')
-    .where('resume_id', req.params.resume_id)
-    .andWhere('commenter_id', user_id)
-    .count('id as duplicate');
-
-  const postNewResumeFeed = () => knex('resume_review_feed')
-    .insert(newResumeFeedObj);
-
-  Promise.all([
-    authenticateRequest(),
-    checkForDuplicates()
-  ])
-  .then(validations => {
-    if (parseInt(validations[0][0].auth) && !parseInt(validations[1][0].duplicate)) {
-      return postNewResumeFeed();
-    } else {
-      throw 'Unauthorized user or duplicate request.';
-    }
-  })
+  updateResumeDb()
   .then(() => res.send(true))
   .catch(err => {
     console.error('Error inside postNewResumeReviewFeed.js: ', err);

@@ -17,10 +17,12 @@ const getUserNavBarData = (req, res, knex, user_id) => {
     .orderBy('course_feed.created_at', 'desc')
     .limit(1);
 
-  const getResumeFeeds = () => knex('resume_review_feed')
+  const getResumeFeeds = () => knex('resumes')
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
-    .orderBy('created_at', 'desc')
+    .whereNotNull('review_requested_at')
+    .whereNull('deleted_at')
+    .orderBy('review_requested_at', 'desc')
     .limit(1);
 
   const getLastUserFeedDate = () => knex('users')
@@ -38,7 +40,7 @@ const getUserNavBarData = (req, res, knex, user_id) => {
   ]))
   .then(results => {
     let lastCourseFeed = results[0][0] ? results[0][0].created_at : '';
-    let lastResumeFeed = results[1][0] ? results[1][0].created_at : '';
+    let lastResumeFeed = results[1][0] ? results[1][0].review_requested_at : '';
     let lastFeedAt = results[2][0].last_feed_at;
     const userInfo = {
       id: req.session.user_id,

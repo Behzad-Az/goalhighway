@@ -10,40 +10,22 @@ const updateResume = (req, res, knex, user_id) => {
     }
   });
 
-  const updateResumeDb = (resumeObj, trx) => knex('resumes')
-    .transacting(trx)
+  const updateResumeDb = resumeObj => knex('resumes')
     .where('id', req.params.resume_id)
     .andWhere('owner_id', user_id)
+    .whereNull('deleted_at')
     .update(resumeObj);
 
-  const updateReusmeFeed = (resumeFeedObj, trx) => knex('resume_review_feed')
-    .transacting(trx)
-    .where('resume_id', req.params.resume_id)
-    .andWhere('commenter_id', user_id)
-    .update(resumeFeedObj);
-
-  knex.transaction(trx => {
-    determineFileName()
-    .then(file_name => {
-      let resumeObj = {
-        title: req.body.title.trim() || null,
-        intent: req.body.intent.trim() || 'Generic resume - no specifc intent.',
-        file_name
-      };
-      let resumeFeedObj = {
-        commenter_name: req.session.username,
-        title: req.body.title.trim() || null,
-        additional_info: req.body.intent.trim() || 'Generic resume - no specifc intent.',
-        audience_filter_id: req.session.inst_prog_id
-      };
-      return Promise.all([ updateResumeDb(resumeObj, trx), updateReusmeFeed(resumeFeedObj, trx) ]);
-    })
-    .then(() => trx.commit())
-    .catch(err => {
-      trx.rollback();
-      throw err;
-    });
-  })
+  determineFileName()
+  .then(file_name => updateResumeDb({
+    title: req.body.title.trim() || null,
+    intent: req.body.intent.trim() || 'Generic resume - no specifc intent.',
+    file_name,
+    audience_filter_id: req.session.inst_prog_id,
+    audience_filter_id: req.session.inst_prog_id,
+    audience_filter_table: 'institution_program',
+    owner_id: user_id
+  }))
   .then(() => res.send(true))
   .catch(err => {
     console.error('Error inside updateResume.js', err);

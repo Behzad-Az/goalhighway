@@ -5,6 +5,9 @@ const postNewResume = (req, res, knex, user_id) => {
     title: req.body.title.trim() || null,
     intent: req.body.intent.trim() || 'Generic resume - no specifc intent.',
     file_name: req.file.filename || null,
+    audience_filter_id: req.session.inst_prog_id,
+    audience_filter_id: req.session.inst_prog_id,
+    audience_filter_table: 'institution_program',
     owner_id: user_id
   })
   .then(() => res.send(true))
