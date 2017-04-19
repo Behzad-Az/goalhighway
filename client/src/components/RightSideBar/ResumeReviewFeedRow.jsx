@@ -8,10 +8,10 @@ class ResumeReviewFeedRow extends Component {
         <div className='media-content'>
           <div className='content'>
             <strong>
-              <Link>@{this.props.feed.owner_name} - Resume Review Request</Link>
+              <Link>@{this.props.feed.username} - Resume Review Request</Link>
             </strong>
             <br />
-            {this.props.feed.additional_info}
+            {this.props.feed.title} - {this.props.feed.intent}
             <br />
             <small>
               Posted on {this.props.feed.created_at.slice(0, 10)}

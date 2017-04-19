@@ -45,7 +45,7 @@ const getRightSideBarData = (req, res, knex, user_id) => {
 
   const getResumeFeeds = () => knex('resumes')
     .innerJoin('users', 'resumes.owner_id', 'users.id')
-    .select('resumes.id', 'resumes.title', 'resumes.intent', 'resumes.created_at', 'users.id as commenter_id', 'users.username', 'users.photo_name')
+    .select('resumes.id', 'resumes.title', 'resumes.intent', 'resumes.review_requested_at as created_at', 'users.id as commenter_id', 'users.username', 'users.photo_name')
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
     .whereNotNull('resumes.review_requested_at')
