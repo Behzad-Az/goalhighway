@@ -90,7 +90,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
         doc_id: req.params.doc_id,
         rev_id: revId[0],
         category: determineCategory(req.body.type),
-        commenter_name: 'Anonymous',
+        anonymous: true,
         header: req.body.title,
         content: req.body.revDesc
       };

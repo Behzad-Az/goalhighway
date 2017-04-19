@@ -91,7 +91,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
         doc_id: newRevObj.doc_id,
         rev_id: revId[0],
         category: determineCategory(newRevObj.type),
-        commenter_name: 'Anonymous',
+        anonymous: true,
         header: newRevObj.title,
         content: 'New document received.'
       };

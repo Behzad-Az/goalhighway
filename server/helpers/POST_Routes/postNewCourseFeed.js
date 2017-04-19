@@ -1,7 +1,7 @@
 const postNewCourseFeed = (req, res, knex, user_id) => {
 
   let newCommentObj = {
-    commenter_name: req.body.commenterName || 'Anonymous',
+    anonymous: req.body.anonymous,
     category: 'new_comment',
     header: 'new_comment',
     content: req.body.content,

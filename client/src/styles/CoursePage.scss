@@ -66,6 +66,7 @@
 
     .feeds-container {
       hr { margin: $default_margin/2 0; }
+      .anonymous { line-height: 35px; }
       .char-counter { position: absolute; right: 0; font-size: 12px; }
       .button.is-primary { background-color: $dark-blue; &:hover { background-color: darken($dark-blue, 10%) } }
       .feeds-rows { border: 1px darken($default-bg-color, 20%) solid; }

@@ -7,8 +7,8 @@ class NewCourseFeed extends Component {
     this.maxContentLength = 250;
     this.reactAlert = new ReactAlert();
     this.state = {
-      commenterName: '',
-      content: ''
+      content: '',
+      anonymous: false
     };
     this._validateForm = this._validateForm.bind(this);
     this._clearForm = this._clearForm.bind(this);
@@ -22,13 +22,12 @@ class NewCourseFeed extends Component {
 
   _clearForm() {
     this.setState({
-      commenterName: '',
+      anonymous: false,
       content: ''
     });
   }
 
   _handleChange(e) {
-    e.preventDefault();
     let obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
@@ -36,7 +35,7 @@ class NewCourseFeed extends Component {
 
   _handleSubmit() {
     let data = {
-      commenterName: this.state.commenterName,
+      anonymous: this.state.anonymous,
       content: this.state.content
     };
 
@@ -64,21 +63,15 @@ class NewCourseFeed extends Component {
   render() {
     return (
       <div className='new-course-feed'>
-        <div className='control is-horizontal'>
-          <div className='control is-grouped'>
-            <p className='control is-expanded'>
-              <input className='input' name='commenterName' type='text' placeholder='Name (Optional)' onChange={this._handleChange} value={this.state.commenterName} />
-            </p>
-          </div>
-        </div>
-        <div className='control is-horizontal'>
-          <div className='control'>
-            <textarea className='textarea' name='content' placeholder='Type your comment here...' onChange={this._handleChange} value={this.state.content} />
-          </div>
+        <div className='control'>
+          <textarea className='textarea' name='content' placeholder='Type your comment here...' onChange={this._handleChange} value={this.state.content} />
         </div>
         <div className='control is-grouped'>
           <p className='control'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleSubmit}>Post Comment</button>
+          </p>
+          <p className='field'>
+            <input type='checkbox' name='anonymous' checked={this.state.anonymous} onClick={() => this.setState({ anonymous: !this.state.anonymous })} /> Anonymous
           </p>
           <p className='control'>
             <button className='button is-link' onClick={this._clearForm}>Clear</button>

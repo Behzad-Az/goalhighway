@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('course_feed', t => {
       t.increments('id');
       t.integer('commenter_id').notNullable().references('users.id');
-      t.string('commenter_name', 30).notNullable().defaultTo('Anonymous');
+      t.boolean('anonymous').notNullable();
       t.string('category', 100).notNullable();
       t.string('header', 100).notNullable();
       t.string('content', 400).notNullable();

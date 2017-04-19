@@ -112,7 +112,7 @@ class CourseFeedRow extends Component {
               <small><Link>Download Document</Link></small>
               <br />
               <small>
-                By {this.props.feed.commenter_name} on {this.props.feed.created_at.slice(0, 10)}
+                Posted on {this.props.feed.created_at.slice(0, 10)}
                 <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 { this.state.flagRequest && this._renderFlagSelect() }
               </small>

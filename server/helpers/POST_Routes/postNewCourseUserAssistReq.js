@@ -47,7 +47,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     .then(() => insertNewTutorLog(trx))
     .then(tutorLogId => {
       let newCourseFeed = {
-        commenter_name: req.session.username,
+        anonymous: false,
         commenter_id: user_id,
         category: 'tutor_request',
         header: 'tutor_request',

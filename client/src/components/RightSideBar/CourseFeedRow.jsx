@@ -53,7 +53,7 @@ class CourseFeedRow extends Component {
             {this.props.feed.content}
             <br />
             <small>
-              By {this.props.feed.commenter_name} on {this.props.feed.created_at.slice(0, 10)}
+              Posted on {this.props.feed.created_at.slice(0, 10)}
             </small>
           </div>
         </div>

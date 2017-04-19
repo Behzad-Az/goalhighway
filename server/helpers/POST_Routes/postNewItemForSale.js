@@ -27,7 +27,7 @@ const postNewItemForSale = (req, res, knex, user_id) => {
         item_for_sale_id: itemId[0],
         category: 'new_item_for_sale',
         header: newItemObj.title,
-        commenter_name: 'Anonymous',
+        anonymous: true,
         content: `${newItemObj.item_desc} - $` + newItemObj.price
       };
       return adminAddToCourseFeed(adminFeedObj, trx);

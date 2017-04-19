@@ -52,13 +52,13 @@ const getCoursePageData = (req, res, knex, user_id) => {
     .avg('overall_rating');
 
   const getCourseFeeds = () => knex('course_feed')
-    .innerJoin('courses', 'course_feed.course_id', 'courses.id')
+    .innerJoin('users', 'course_feed.commenter_id', 'users.id')
     .select(
       'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
-      'course_feed.commenter_name', 'course_feed.commenter_id', 'course_feed.category', 'course_feed.content', 'course_feed.header',
-      'course_feed.doc_id', 'courses.short_display_name'
+      'course_feed.anonymous', 'course_feed.commenter_id', 'course_feed.category', 'course_feed.content', 'course_feed.header',
+      'course_feed.doc_id', 'users.photo_name', 'users.username as commenter_name'
     )
-    .where('courses.id', req.params.course_id)
+    .where('course_feed.course_id', req.params.course_id)
     .orderBy('course_feed.created_at', 'desc');
 
   Promise.all([

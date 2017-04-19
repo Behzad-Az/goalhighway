@@ -7,17 +7,13 @@ const getUserNavBarData = (req, res, knex, user_id) => {
     .whereNull('unsub_date');
 
   const getCourseFeeds = courseIds => knex('course_feed')
-    .innerJoin('courses', 'course_feed.course_id', 'courses.id')
-    .select(
-      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
-      'course_feed.commenter_name', 'course_feed.commenter_id', 'course_feed.category', 'course_feed.content', 'course_feed.header',
-      'course_feed.doc_id', 'courses.short_display_name'
-    )
-    .whereIn('courses.id', courseIds)
-    .orderBy('course_feed.created_at', 'desc')
+    .select('created_at')
+    .whereIn('course_id', courseIds)
+    .orderBy('created_at', 'desc')
     .limit(1);
 
   const getResumeFeeds = () => knex('resumes')
+    .select('resumes.review_requested_at as created_at')
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
     .whereNotNull('review_requested_at')
@@ -29,19 +25,16 @@ const getUserNavBarData = (req, res, knex, user_id) => {
     .select('last_feed_at')
     .where('id', user_id);
 
-  Promise.all([
-    getCourseIds(),
-    getLastUserFeedDate()
-  ])
-  .then(results => Promise.all([
-    getCourseFeeds(results[0].map(course => course.course_id)),
+  getCourseIds()
+  .then(courseIds => Promise.all([
+    getCourseFeeds(courseIds.map(course => course.course_id)),
     getResumeFeeds(),
     getLastUserFeedDate()
   ]))
   .then(results => {
-    let lastCourseFeed = results[0][0] ? results[0][0].created_at : '';
-    let lastResumeFeed = results[1][0] ? results[1][0].review_requested_at : '';
-    let lastFeedAt = results[2][0].last_feed_at;
+    let lastCourseFeedAt = results[0][0] ? results[0][0].created_at : '';
+    let lastResumeFeedAt = results[1][0] ? results[1][0].created_at : '';
+    let lastSeenAt = results[2][0].last_feed_at;
     const userInfo = {
       id: req.session.user_id,
       username: req.session.username,
@@ -50,7 +43,7 @@ const getUserNavBarData = (req, res, knex, user_id) => {
       inst_prog_id: req.session.inst_prog_id,
       inst_id: req.session.inst_id,
       prog_id: req.session.prog_id,
-      unviewed_notif: lastResumeFeed > lastFeedAt || lastCourseFeed > lastFeedAt
+      unviewed_notif: lastResumeFeedAt > lastSeenAt || lastCourseFeedAt > lastSeenAt
     };
     res.send({ userInfo });
   })

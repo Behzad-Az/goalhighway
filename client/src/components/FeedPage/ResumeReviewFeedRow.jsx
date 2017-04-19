@@ -65,7 +65,7 @@ class ResumeReviewFeedRow extends Component {
               <button className='button'>Review CV</button>
             </Link>
             <p>
-              <strong>@{this.props.feed.username} - CV Review Request</strong>
+              <strong>@{this.props.feed.commenter_name} - CV Review Request</strong>
               <br />
               {this.props.feed.title} - {this.props.feed.intent}
               <br />
