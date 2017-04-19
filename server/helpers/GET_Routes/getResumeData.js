@@ -1,5 +1,5 @@
 const getResumeData = (req, res, knex, user_id) => {
-  knex('resumes').where('id', req.params.resume_id).andWhere('user_id', user_id)
+  knex('resumes').where('id', req.params.resume_id).andWhere('owner_id', user_id)
   .then(resume => {
     if (!resume[0]) {
       throw 'file could not be found';

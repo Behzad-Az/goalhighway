@@ -7,12 +7,12 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
     .where('id', user_id);
 
   const getUserResumes = () => knex('resumes')
-    .where('user_id', user_id)
+    .where('owner_id', user_id)
     .whereNull('deleted_at')
     .orderBy('created_at', 'desc');
 
   const getResumeReviewReqStatus = resume => new Promise((resolve, reject) => {
-    knex('resume_review_feed').where('resume_id', resume.id).andWhere('owner_id', user_id).whereNull('deleted_at').count('id as reviewReqStatus')
+    knex('resume_review_feed').where('resume_id', resume.id).andWhere('commenter_id', user_id).count('id as reviewReqStatus')
     .then(result => {
       resume.reviewReqStatus = parseInt(result[0].reviewReqStatus) ? true : false;
       resolve();

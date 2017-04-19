@@ -1,8 +1,8 @@
 postNewResumeReviewFeed = (req, res, knex, user_id) => {
 
   const newResumeFeedObj = {
-    owner_id: user_id,
-    owner_name: req.session.username,
+    commenter_id: user_id,
+    commenter_name: req.session.username,
     title: req.body.title,
     additional_info: req.body.additionalInfo,
     resume_id: req.params.resume_id,
@@ -12,17 +12,17 @@ postNewResumeReviewFeed = (req, res, knex, user_id) => {
 
   const authenticateRequest = () => knex('resumes')
     .where('id', req.params.resume_id)
-    .andWhere('user_id', user_id)
+    .andWhere('owner_id', user_id)
     .whereNull('deleted_at')
     .count('id as auth');
 
   const checkForDuplicates = () => knex('resume_review_feed')
     .where('resume_id', req.params.resume_id)
-    .andWhere('owner_id', user_id)
-    .whereNull('deleted_at')
+    .andWhere('commenter_id', user_id)
     .count('id as duplicate');
 
-  const postNewResumeFeed = () => knex('resume_review_feed').insert(newResumeFeedObj);
+  const postNewResumeFeed = () => knex('resume_review_feed')
+    .insert(newResumeFeedObj);
 
   Promise.all([
     authenticateRequest(),

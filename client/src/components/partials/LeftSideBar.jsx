@@ -38,9 +38,11 @@ class LeftSideBar extends Component {
     return this.state.dataLoaded ? (
       <div className='card side-bar left'>
         <div className='card-image'>
-          <figure className='image is-4by3'>
-            <img src={`http://localhost:19001/images/userphotos/${this.state.userInfo.photo_name}`} alt='Image' />
-          </figure>
+          <Link to='/profile'>
+            <figure className='image is-4by3'>
+              <img src={`http://localhost:19001/images/userphotos/${this.state.userInfo.photo_name}`} alt='Image' />
+            </figure>
+          </Link>
         </div>
         <div className='card-content'>
           <div className='media'>

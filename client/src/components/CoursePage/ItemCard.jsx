@@ -13,8 +13,7 @@ class ItemCard extends Component {
       title: this.props.item.title,
       itemDesc: this.props.item.item_desc,
       photoPath: '',
-      price: this.props.item.price,
-      deleted: false
+      price: this.props.item.price
     };
     this._handleChange = this._handleChange.bind(this);
     this._handleEdit = this._handleEdit.bind(this);
@@ -35,7 +34,6 @@ class ItemCard extends Component {
     this.formData.append('title', this.state.title);
     this.formData.append('itemDesc', this.state.itemDesc);
     this.formData.append('price', this.state.price);
-    this.formData.append('deleted', this.state.deleted);
 
     fetch(`/api/courses/${this.props.item.course_id}/items/${this.props.item.id}`, {
       method: 'POST',
@@ -45,8 +43,7 @@ class ItemCard extends Component {
     .then(response => response.json())
     .then(resJSON => {
       if (resJSON) {
-        let msg = this.state.deleted ? 'Item deleted' : 'Item updated';
-        this.reactAlert.showAlert(msg, 'info');
+        this.reactAlert.showAlert('Item updated', 'info');
         this._deleteFormData();
         this.props.reload();
       } else {
@@ -61,8 +58,23 @@ class ItemCard extends Component {
   }
 
   _handleDelete() {
-    this.state.deleted = true;
-    this._handleEdit();
+    fetch(`/api/courses/${this.props.item.course_id}/items/${this.props.item.id}`, {
+      method: 'DELETE',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/string',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.reactAlert.showAlert('Item deleted', 'info');
+        this.props.reload();
+      }
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to delete item', 'error'));
   }
 
   _toggleView() {

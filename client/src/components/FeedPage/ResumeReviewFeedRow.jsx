@@ -56,18 +56,18 @@ class ResumeReviewFeedRow extends Component {
       <article className='media resume-review-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src='http://bulma.io/images/placeholders/128x128.png' />
+            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
           <div className='content'>
             <Link>
-              <button className='button'>Review Resume</button>
+              <button className='button'>Review CV</button>
             </Link>
             <p>
-              <strong>@{this.props.feed.owner_name} - Resume Review Request</strong>
+              <strong>@{this.props.feed.owner_name} - CV Review Request</strong>
               <br />
-              {this.props.feed.additional_info}
+              {this.props.feed.title} - {this.props.feed.additional_info}
               <br />
               <small>
                 <Link>Click here for some tips</Link>

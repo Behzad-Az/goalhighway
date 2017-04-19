@@ -20,10 +20,14 @@ const getFeedPageData = (req, res, knex, user_id) => {
     .offset(parseInt(req.query.coursefeedoffset));
 
   const getResumeFeeds = () => knex('resume_review_feed')
-    .select('id', 'additional_info', 'created_at', 'owner_name', 'owner_id', 'resume_id', 'title')
+    .innerJoin('users', 'resume_review_feed.commenter_id', 'users.id')
+    .select(
+      'resume_review_feed.id', 'resume_review_feed.additional_info', 'resume_review_feed.created_at',
+      'resume_review_feed.commenter_name', 'resume_review_feed.commenter_id', 'resume_review_feed.resume_id',
+      'resume_review_feed.title', 'users.photo_name'
+    )
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
-    .whereNull('deleted_at')
     .orderBy('created_at', 'desc')
     .limit(2)
     .offset(parseInt(req.query.resumefeedoffset));

@@ -44,10 +44,9 @@ const getRightSideBarData = (req, res, knex, user_id) => {
     .limit(3);
 
   const getResumeFeeds = () => knex('resume_review_feed')
-    .select('id', 'additional_info', 'created_at', 'owner_name', 'owner_id', 'resume_id', 'title')
+    .select('id', 'additional_info', 'created_at', 'commenter_name', 'commenter_id', 'resume_id', 'title')
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
-    .whereNull('deleted_at')
     .orderBy('created_at', 'desc')
     .limit(3);
 

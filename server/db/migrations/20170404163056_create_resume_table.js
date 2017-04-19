@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
       t.string('title', 50).notNullable();
       t.string('intent', 250).notNullable();
       t.string('file_name', 200).notNullable();
-      t.integer('user_id').notNullable().references('users.id');
+      t.integer('owner_id').notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     })
