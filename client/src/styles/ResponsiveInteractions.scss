@@ -19,6 +19,10 @@ $side_hamburger_width: 40px;
     .control-bar.is-enabled { display: inline-block; position: fixed; margin-left: $side_hamburger_width; width: 250px; z-index: 1; }
   }
 
+  .email-page {
+    .main-container { display: inline-block; width: 100%; }
+  }
+
 }
 
 

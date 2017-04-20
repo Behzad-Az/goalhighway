@@ -4,7 +4,6 @@ import ReactAlert from '../partials/ReactAlert.jsx';
 class CareerControlBar extends Component {
   constructor(props) {
     super(props);
-    this.dataLoaded = false;
     this.preferenceTags = ['aerospace', 'automation', 'automotive', 'design', 'electrical', 'energy', 'engineer', 'instrumentation', 'manufacturing', 'mechanical', 'military', 'mining', 'naval', 'programming', 'project-management', 'QA/QC', 'R&D', 'robotics', 'software'];
     this.reactAlert = new ReactAlert();
     this.state = {
@@ -16,14 +15,14 @@ class CareerControlBar extends Component {
       jobQuery: [],
       tagFilterPhrase: ''
     };
-    this.conditionData = this.conditionData.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleJobKind = this.handleJobKind.bind(this);
-    this.moveUpTag = this.moveUpTag.bind(this);
-    this.moveDownTag = this.moveDownTag.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.handleUpdateSearch = this.handleUpdateSearch.bind(this);
-    this.filterPreferenceTags = this.filterPreferenceTags.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._handleJobKind = this._handleJobKind.bind(this);
+    this._moveUpTag = this._moveUpTag.bind(this);
+    this._moveDownTag = this._moveDownTag.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._handleUpdateSearch = this._handleUpdateSearch.bind(this);
+    this._filterPreferenceTags = this._filterPreferenceTags.bind(this);
   }
 
   componentDidMount() {
@@ -32,11 +31,11 @@ class CareerControlBar extends Component {
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       let jobQuery = resJSON.job_query;
       let jobKind = resJSON.job_kind;
@@ -55,11 +54,11 @@ class CareerControlBar extends Component {
         jobQuery = [];
       }
 
-      this.dataLoaded = true;
       this.setState({
         username: resJSON.username,
         postalCode: resJSON.postal_code ? resJSON.postal_code.toUpperCase() : '',
         jobDistance: resJSON.job_distance ? resJSON.job_distance : '',
+        dataLoaded: true,
         jobKind,
         jobQuery
       });
@@ -68,13 +67,13 @@ class CareerControlBar extends Component {
     }
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let state = {};
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
 
-  handleJobKind(e) {
+  _handleJobKind(e) {
     let jobKind = this.state.jobKind;
     let value = e.target.value;
     if (e.target.checked && !jobKind.includes(value)) {
@@ -86,7 +85,7 @@ class CareerControlBar extends Component {
     this.setState({ jobKind });
   }
 
-  moveUpTag(e) {
+  _moveUpTag(e) {
     let selectedTag = e.target.innerHTML;
     let jobQuery = this.state.jobQuery;
     jobQuery.push(selectedTag);
@@ -96,7 +95,7 @@ class CareerControlBar extends Component {
     this.setState({ jobQuery, tagFilterPhrase });
   }
 
-  moveDownTag(selectedTag) {
+  _moveDownTag(selectedTag) {
     let jobQuery = this.state.jobQuery;
     let index = jobQuery.find(tag => tag === selectedTag);
     jobQuery.splice(index, 1);
@@ -105,19 +104,19 @@ class CareerControlBar extends Component {
     this.setState({ jobQuery });
   }
 
-  filterPreferenceTags() {
+  _filterPreferenceTags() {
     let tempArr = this.state.tagFilterPhrase ? this.preferenceTags.filter(tag => tag.includes(this.state.tagFilterPhrase)) : this.preferenceTags;
-    return tempArr[0] ? tempArr.map((tag, index) => <span key={index} className='tag' onClick={this.moveUpTag}>{tag}</span>) : <p>No matching tags found...</p>;
+    return tempArr[0] ? tempArr.map((tag, index) => <span key={index} className='tag' onClick={this._moveUpTag}>{tag}</span>) : <p>No matching tags found...</p>;
   }
 
-  validateForm() {
+  _validateForm() {
     return this.state.postalCode &&
            this.state.jobDistance &&
            this.state.jobQuery[0] &&
-           this.state.jobKind[0]
+           this.state.jobKind[0];
   }
 
-  handleUpdateSearch() {
+  _handleUpdateSearch() {
     let data = {
       type: 'job',
       postalCode: this.state.postalCode,
@@ -147,7 +146,7 @@ class CareerControlBar extends Component {
   }
 
   render() {
-    return this.dataLoaded ? (
+    return this.state.dataLoaded ? (
       <div id='control-bar' className='card control-bar'>
 
         <div className='card-content'>
@@ -163,12 +162,12 @@ class CareerControlBar extends Component {
             <label className='label'>Search Area:</label>
             <div className='geo-criteria'>
               <p className='control'>
-                <input className='input' type='text' name='postalCode' placeholder='postal code' onChange={this.handleChange} defaultValue={this.state.postalCode} />
+                <input className='input' type='text' name='postalCode' placeholder='postal code' onChange={this._handleChange} defaultValue={this.state.postalCode} />
               </p>
 
               <p className='control'>
                 <span className='select'>
-                  <select name='jobDistance' onChange={this.handleChange} defaultValue={this.state.jobDistance}>
+                  <select name='jobDistance' onChange={this._handleChange} defaultValue={this.state.jobDistance}>
                     <option value=''>Range</option>
                     <option value={10}>10km</option>
                     <option value={20}>20km</option>
@@ -184,41 +183,41 @@ class CareerControlBar extends Component {
             <label className='label'>Categories:</label>
             <p className='categories control'>
               <label className='checkbox'>
-                <input type='checkbox' name='jobKind' value='summer' onChange={this.handleJobKind} checked={this.state.jobKind.includes('summer')} />
+                <input type='checkbox' name='jobKind' value='summer' onChange={this._handleJobKind} checked={this.state.jobKind.includes('summer')} />
                 Summer/Part-Time
               </label>
               <label className='checkbox'>
-                <input type='checkbox' name='jobKind' value='internship' onChange={this.handleJobKind} checked={this.state.jobKind.includes('internship')} />
+                <input type='checkbox' name='jobKind' value='internship' onChange={this._handleJobKind} checked={this.state.jobKind.includes('internship')} />
                 Intern/Coop
               </label>
               <label className='checkbox'>
-                <input type='checkbox' name='jobKind' value='junior' onChange={this.handleJobKind} checked={this.state.jobKind.includes('junior')} />
+                <input type='checkbox' name='jobKind' value='junior' onChange={this._handleJobKind} checked={this.state.jobKind.includes('junior')} />
                 Junior
               </label>
               <label className='checkbox'>
-                <input type='checkbox' name='jobKind' value='senior' onChange={this.handleJobKind} checked={this.state.jobKind.includes('senior')} />
+                <input type='checkbox' name='jobKind' value='senior' onChange={this._handleJobKind} checked={this.state.jobKind.includes('senior')} />
                 Senior
               </label>
             </p>
 
             <label className='label'>My preferenence tages:</label>
             <div className='control'>
-              { this.state.jobQuery.map((tag, index) => <span key={index} className='tag' onClick={() => this.moveDownTag(tag)}>{tag}</span>) }
+              { this.state.jobQuery.map((tag, index) => <span key={index} className='tag' onClick={() => this._moveDownTag(tag)}>{tag}</span>) }
               { !this.state.jobQuery[0] && <p>Select tags from the list below...</p> }
             </div>
 
             <p className='control'>
-              <button className='button is-primary' disabled={!this.validateForm()} onClick={this.handleUpdateSearch}>Update</button>
+              <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleUpdateSearch}>Update</button>
             </p>
 
             <hr />
 
             <p className='control'>
-              <input className='input' type='text' name='tagFilterPhrase' placeholder='search for tags' onChange={this.handleChange}/>
+              <input className='input' type='text' name='tagFilterPhrase' placeholder='search for tags' onChange={this._handleChange}/>
             </p>
 
             <div className='tags-list'>
-              { this.filterPreferenceTags() }
+              { this._filterPreferenceTags() }
             </div>
           </div>
         </div>

@@ -88,7 +88,7 @@ class NewCourseReviewForm extends Component {
     .then(response => response.json())
     .then(resJSON => {
       if (resJSON) {
-        this.reactAlert.showAlert('Successfully posted review', 'info');
+        this.reactAlert.showAlert('review posted', 'info');
         this.props.reload();
       }
       else { throw 'Server returned false'; }
