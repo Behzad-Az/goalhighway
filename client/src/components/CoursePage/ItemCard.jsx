@@ -138,7 +138,7 @@ class ItemCard extends Component {
           </div>
           <p className='card-foot title is-6'>
             <span className='text-link'>
-              { this.props.item.editable ? <Link onClick={this._toggleView}>Edit</Link> : <Link>Contact Owner</Link> }
+              { this.props.item.editable ? <Link onClick={this._toggleView}>Edit</Link> : <Link to={`/emails?toId=${this.props.item.owner_id}&type=itemForSale&objId=${this.props.item.id}`}>Contact Owner</Link> }
             </span>
           </p>
         </div>

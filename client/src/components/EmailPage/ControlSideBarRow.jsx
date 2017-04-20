@@ -8,20 +8,20 @@ class ControlSideBarRow extends Component {
   }
 
   _handleDeletionRequest() {
-    fetch(`/api/courses/${this.props.feed.course_id}/feed/${this.props.feed.id}`, {
-      method: 'DELETE',
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/string',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(resJSON => {
-      if (resJSON) { this.props.reload(); }
-      else { throw 'Server returned false'; }
-    })
-    .catch(() => this.reactAlert.showAlert('Unable to remove course feed', 'error'));
+    // fetch(`/api/courses/${this.props.feed.course_id}/feed/${this.props.feed.id}`, {
+    //   method: 'DELETE',
+    //   credentials: 'same-origin',
+    //   headers: {
+    //     'Accept': 'application/string',
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    // .then(response => response.json())
+    // .then(resJSON => {
+    //   if (resJSON) { this.props.reload(); }
+    //   else { throw 'Server returned false'; }
+    // })
+    // .catch(() => this.reactAlert.showAlert('Unable to remove course feed', 'error'));
   }
 
   _determineEmailPreviewText() {
@@ -34,14 +34,14 @@ class ControlSideBarRow extends Component {
       <article className='media control-sidebar-row' onClick={() => this.props.selectEmail(this.props.email.id)}>
         <figure className='media-left'>
           <p className='image is-48x48'>
-            <img src={`http://localhost:19001/images/userphotos/${this.props.email.photo_name}`} />
+            <img src={`http://localhost:19001/images/userphotos/${this.props.email.conversations[0].photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
           <div className='content'>
             <strong>{this.props.email.subject}</strong>
             <br />
-            <strong>From {this.props.email.sender_name}</strong>
+            <strong>From {this.props.email.conversations[0].sender_name}</strong>
             <br />
             { this._determineEmailPreviewText() }
             <br />

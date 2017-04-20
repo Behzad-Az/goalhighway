@@ -6,7 +6,7 @@
 
     .page-msg {
       font-size: 16px; text-align: center;
-      .fa, .sr-only { font-size: 16px; padding: 3px }
+      .fa, .sr-only { font-size: 16px; padding: 3px; }
     }
 
     .header {
@@ -25,13 +25,11 @@
 
   .hamburger { display: none; }
   .control-sidebar {
-    display: inline-block; margin-top: $top_margin; width: 280px; float: left; position: fixed; height: calc(100vh - 50px - 30px); overflow: scroll;
-    padding: $default_margin/2;
+    display: inline-block; margin-top: $top_margin; width: 280px; float: left; position: fixed; height: calc(100vh - 50px - 30px); overflow: scroll; padding: $default_margin/2;
     .control-sidebar-row {
-      cursor: pointer;
-      margin-top: 0; margin-bottom: 0; padding-top: $default_margin/2; padding-bottom: $default_margin/2;
+      cursor: pointer; margin-top: 0; margin-bottom: 0; padding-top: $default_margin/2; padding-bottom: $default_margin/2;
       &:hover { background-color: #eee; }
-      .media-left .image img { overflow: hidden; border: #bbb solid 2px; border-radius: 50%; }
+      .media-left .image img { overflow: hidden; border: #bbb solid 2px; border-radius: 50%; background-color: white; }
     }
     .title { margin-bottom: 0; }
     hr { margin: $default_margin/2 0 0 0; }

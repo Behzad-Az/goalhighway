@@ -3,7 +3,6 @@ import Navbar from '../Navbar/Navbar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import RightSideBar from '../RightSideBar/RightSideBar.jsx';
-import HandleModal from '../partials/HandleModal.js';
 import NewEmailForm from './NewEmailForm.jsx';
 import ControlSideBar from './ControlSideBar.jsx';
 import ConversationContainer from './ConversationContainer.jsx';
@@ -41,9 +40,13 @@ class EmailPage extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      resJSON.dataLoaded = true;
-      resJSON.currEmailId = resJSON.emails[0] ? resJSON.emails[0].id : '';
-      this.setState(resJSON);
+      resJSON.emails[0] ?
+        this.setState({
+          emails: resJSON.emails.sort((a, b) => a.conversations[0].sent_at <= b.conversations[0].sent_at ? 1 : -1),
+          currEmailId: resJSON.emails[0].id,
+          dataLoaded: true
+        }) :
+        this.setState({ dataLoaded: true });
     } else {
       throw 'Server returned false';
     }
@@ -73,8 +76,7 @@ class EmailPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <NewEmailForm />
-          <button onClick={() => HandleModal('new-email-form')}>Compose</button>
+          <NewEmailForm query={this.props.location.query} />
           { this.state.emails[0] && <ConversationContainer email={this.state.emails.find(email => email.id === this.state.currEmailId)} /> }
         </div>
       );

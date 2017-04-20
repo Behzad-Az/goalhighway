@@ -102,6 +102,7 @@ const postNewInterviewAnswer = require('./helpers/POST_Routes/postNewInterviewAn
 const postNewResume = require('./helpers/POST_Routes/postNewResume.js');
 const postNewResumeReviewFeed = require('./helpers/POST_Routes/postNewResumeReviewFeed.js');
 const postNewEmail = require('./helpers/POST_Routes/postNewEmail.js');
+const postNewEmailConversation = require('./helpers/POST_Routes/postNewEmailConversation.js');
 
 const updateUserProfile = require('./helpers/UPDATE_Routes/updateUserProfile.js');
 const updateCourseUserTutorStatus = require('./helpers/UPDATE_Routes/updateCourseUserTutorStatus.js');
@@ -283,6 +284,10 @@ app.post('/api/companies/:company_id/questions/:question_id', (req, res) => {
 
 app.post('/api/emails', (req, res) => {
   postNewEmail(req, res, knex, req.session.user_id);
+});
+
+app.post('/api/emails/:email_id', (req, res) => {
+  postNewEmailConversation(req, res, knex, req.session.user_id);
 });
 
 

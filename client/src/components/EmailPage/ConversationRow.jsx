@@ -28,11 +28,12 @@ class ConversationRow extends Component {
       <article className='media conversation-row'>
         <figure className='media-left'>
           <p className='image is-48x48'>
-            <img src={`http://localhost:19001/images/userphotos/${this.props.photoName}`} />
+            <img src={`http://localhost:19001/images/userphotos/${this.props.conversation.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
           <div className='content'>
+            <strong>From {this.props.conversation.sender_name}</strong>
             <small>Sent on {this.props.conversation.sent_at.slice(0, 10)}</small>
             <br />
             {this.props.conversation.content}

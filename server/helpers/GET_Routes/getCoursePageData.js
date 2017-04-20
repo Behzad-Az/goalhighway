@@ -44,6 +44,7 @@ const getCoursePageData = (req, res, knex, user_id) => {
     .whereNull('closed_at');
 
   const getItemsForSale = () => knex('items_for_sale')
+    .select('id', 'owner_id', 'course_id', 'price', 'photo_name', 'title', 'item_desc', 'created_at')
     .where('course_id', req.params.course_id)
     .whereNull('deleted_at');
 
