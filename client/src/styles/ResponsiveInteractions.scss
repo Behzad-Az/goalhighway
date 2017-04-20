@@ -7,8 +7,11 @@ $side_hamburger_width: 40px;
     .main-container { display: block; width: 100%; padding: $top_margin 1px $default_margin 1px; }
   }
 
-  .career-page {
-    .main-container { display: inline-block; width: 100%; padding: $top_margin 0px $default_margin $side_hamburger_width+10px; }
+  .career-page, .email-page {
+    .main-container {
+      display: inline-block; width: 100%; padding: $top_margin 0px $default_margin $side_hamburger_width+10px;
+      .search-bar-container { min-width: 300px; }
+    }
     .hamburger {
       display: inline-block; width: $side_hamburger_width;
       background-color: $dark-blue; height: calc(100vh - 50px - 30px); margin-top: $top_margin;
@@ -17,10 +20,6 @@ $side_hamburger_width: 40px;
     }
     .control-bar { display: none; }
     .control-bar.is-enabled { display: inline-block; position: fixed; margin-left: $side_hamburger_width; width: 250px; z-index: 1; }
-  }
-
-  .email-page {
-    .main-container { display: inline-block; width: 100%; }
   }
 
 }

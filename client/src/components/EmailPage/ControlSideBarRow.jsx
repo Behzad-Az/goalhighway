@@ -31,7 +31,7 @@ class ControlSideBarRow extends Component {
 
   render() {
     return (
-      <article className='media control-sidebar-row' onClick={() => this.props.selectEmail(this.props.email.id)}>
+      <article className='media control-bar-row' onClick={() => this.props.selectEmail(this.props.email.id)}>
         <figure className='media-left'>
           <p className='image is-48x48'>
             <img src={`http://localhost:19001/images/userphotos/${this.props.email.conversations[0].photo_name}`} />

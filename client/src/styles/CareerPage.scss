@@ -58,7 +58,6 @@
   }
 
   .hamburger { display: none; }
-
   .control-bar {
     display: inline-block; margin-top: $top_margin; width: 250px; float: left; position: fixed; height: calc(100vh - 50px - 30px); overflow: scroll;
     .card-content {

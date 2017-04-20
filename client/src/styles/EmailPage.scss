@@ -2,7 +2,7 @@
   background-color: $default-bg-color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
-    padding: $top_margin $default_margin $default_margin 300px; width: $main_container_width; min-width: 360px; display: inline-block;
+    padding: $top_margin $default_margin $default_margin 270px; width: $main_container_width; min-width: 360px; display: inline-block;
 
     .page-msg {
       font-size: 16px; text-align: center;
@@ -24,9 +24,9 @@
   }
 
   .hamburger { display: none; }
-  .control-sidebar {
-    display: inline-block; margin-top: $top_margin; width: 280px; float: left; position: fixed; height: calc(100vh - 50px - 30px); overflow: scroll; padding: $default_margin/2;
-    .control-sidebar-row {
+  .control-bar {
+    display: inline-block; margin-top: $top_margin; width: 250px; float: left; position: fixed; height: calc(100vh - 50px - 30px); overflow: scroll; padding: $default_margin/2;
+    .control-bar-row {
       cursor: pointer; margin-top: 0; margin-bottom: 0; padding-top: $default_margin/2; padding-bottom: $default_margin/2;
       &:hover { background-color: #eee; }
       .media-left .image img { overflow: hidden; border: #bbb solid 2px; border-radius: 50%; background-color: white; }
