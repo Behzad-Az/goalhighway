@@ -9,7 +9,7 @@ class NewEmailForm extends Component {
     this.state = {
       subject: '',
       content: '',
-      toId: true
+      toId: 9
     };
     this._handleChange = this._handleChange.bind(this);
     this._validateForm = this._validateForm.bind(this);
@@ -48,7 +48,7 @@ class NewEmailForm extends Component {
     .then(resJSON => {
       if (resJSON) {
         this.reactAlert.showAlert('Email Sent', 'info');
-        this.props.reload();
+        // this.props.reload();
       }
       else { throw 'Server returned false'; }
     })
@@ -62,7 +62,7 @@ class NewEmailForm extends Component {
         <div className='modal-background' onClick={() => HandleModal('new-email-form')}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
-            <p className='modal-card-title'>Compose Email</p>
+            <p className='modal-card-title'>Compose Email:</p>
             <button className='delete' onClick={() => HandleModal('new-email-form')}></button>
           </header>
           <section className='modal-card-body'>

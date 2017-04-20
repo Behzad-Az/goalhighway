@@ -13,31 +13,50 @@ class EmailPage extends Component {
     super(props);
     this.reactAlert = new ReactAlert();
     this.state = {
-      dataLoaded: true,
-      pageError: false
+      dataLoaded: false,
+      pageError: false,
+      emails: [],
+      currEmailId: ''
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._renderPageAfterData = this._renderPageAfterData.bind(this);
     this._toggleControlBar = this._toggleControlBar.bind(this);
+    this._selectEmail = this._selectEmail.bind(this);
+    this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
-
+    this._loadComponentData();
   }
 
   _loadComponentData() {
-
+    fetch('/api/emails', {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this._conditionData(resJSON))
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   _conditionData(resJSON) {
-
+    if (resJSON) {
+      resJSON.dataLoaded = true;
+      resJSON.currEmailId = resJSON.emails[0] ? resJSON.emails[0].id : '';
+      this.setState(resJSON);
+    } else {
+      throw 'Server returned false';
+    }
   }
 
   _toggleControlBar() {
     let controlBar = document.getElementById('control-bar');
     let className = controlBar.getAttribute('class');
     controlBar.className = className.includes(' is-enabled') ? 'card control-bar' : 'card control-bar is-enabled';
+  }
+
+  _selectEmail(currEmailId) {
+   this.setState({ currEmailId });
   }
 
   _renderPageAfterData() {
@@ -56,7 +75,7 @@ class EmailPage extends Component {
           <SearchBar />
           <NewEmailForm />
           <button onClick={() => HandleModal('new-email-form')}>Compose</button>
-          <ConversationContainer />
+          { this.state.emails[0] && <ConversationContainer email={this.state.emails.find(email => email.id === this.state.currEmailId)} /> }
         </div>
       );
     } else {
@@ -78,7 +97,12 @@ class EmailPage extends Component {
         <div className='hamburger'>
           <i className='fa fa-navicon' onClick={this._toggleControlBar} />
         </div>
-        <ControlSideBar reload={this._loadComponentData} toggleControlBar={this._toggleControlBar} />
+        <ControlSideBar
+          reload={this._loadComponentData}
+          toggleControlBar={this._toggleControlBar}
+          emails={this.state.emails}
+          selectEmail={this._selectEmail}
+        />
         { this._renderPageAfterData() }
         <RightSideBar />
         { this.reactAlert.container }

@@ -79,6 +79,7 @@ const getLeftSideBarData = require('./helpers/GET_Routes/getLeftSideBarData.js')
 const getCompanyPageData = require('./helpers/GET_Routes/getCompanyPageData.js');
 const getFeedPageData = require('./helpers/GET_Routes/getFeedPageData.js');
 const getResumeData = require('./helpers/GET_Routes/getResumeData.js');
+const getEmailPageData = require('./helpers/GET_Routes/getEmailPageData.js');
 
 const postNewDoc = require('./helpers/POST_Routes/postNewDoc.js');
 const postNewRevision = require('./helpers/POST_Routes/postNewRevision.js');
@@ -100,6 +101,7 @@ const postNewInterviewQuestion = require('./helpers/POST_Routes/postNewInterview
 const postNewInterviewAnswer = require('./helpers/POST_Routes/postNewInterviewAnswer.js');
 const postNewResume = require('./helpers/POST_Routes/postNewResume.js');
 const postNewResumeReviewFeed = require('./helpers/POST_Routes/postNewResumeReviewFeed.js');
+const postNewEmail = require('./helpers/POST_Routes/postNewEmail.js');
 
 const updateUserProfile = require('./helpers/UPDATE_Routes/updateUserProfile.js');
 const updateCourseUserTutorStatus = require('./helpers/UPDATE_Routes/updateCourseUserTutorStatus.js');
@@ -195,6 +197,10 @@ app.get('/api/chatroom', (req, res) => {
   res.send({text: 'Hello world'});
 });
 
+app.get('/api/emails', (req, res) => {
+  getEmailPageData(req, res, knex, req.session.user_id);
+});
+
 
 // ***************************************************
 // ROUTES - POST
@@ -273,6 +279,10 @@ app.post('/api/companies/:company_id', (req, res) => {
 
 app.post('/api/companies/:company_id/questions/:question_id', (req, res) => {
   postNewInterviewAnswer(req, res, knex, req.session.user_id);
+});
+
+app.post('/api/emails', (req, res) => {
+  postNewEmail(req, res, knex, req.session.user_id);
 });
 
 
