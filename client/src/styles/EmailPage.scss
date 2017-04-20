@@ -9,16 +9,18 @@
       .fa, .sr-only { font-size: 16px; padding: 3px; }
     }
 
-    .header {
-      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
-      .fa { float: right; }
-    }
-
     .conversation-container {
       padding: $default_margin/2;
       .title { margin-bottom: 0; }
+      .actions {
+        float: right;
+        .fa { cursor: pointer; color: #999; margin: 0 $default_margin/4; &:hover { color: $dark-blue; } }
+      }
       hr { margin: $default_margin/2 0; }
-      .conversation-row .media-left .image img { overflow: hidden; border: #bbb solid 2px; border-radius: 50%; }
+      .conversation-row {
+        .email-date { float: right; }
+        .media-left .image img { overflow: hidden; border: #bbb solid 2px; border-radius: 50%; }
+      }
     }
 
   }

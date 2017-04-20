@@ -41,7 +41,7 @@ class ControlSideBarRow extends Component {
           <div className='content'>
             <strong>{this.props.email.subject}</strong>
             <br />
-            <strong>From {this.props.email.conversations[0].sender_name}</strong>
+            <strong>@{this.props.email.conversations[0].sender_name}</strong>
             <br />
             { this._determineEmailPreviewText() }
             <br />

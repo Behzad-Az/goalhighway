@@ -33,8 +33,8 @@ class ConversationRow extends Component {
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <strong>From {this.props.conversation.sender_name}</strong>
-            <small>Sent on {this.props.conversation.sent_at.slice(0, 10)}</small>
+            <small className='email-date'>{this.props.conversation.sent_at.slice(0, 10)}</small>
+            <strong>@{this.props.conversation.sender_name}</strong>
             <br />
             {this.props.conversation.content}
           </div>

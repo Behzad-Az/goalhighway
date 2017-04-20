@@ -9,7 +9,10 @@ class ConversationContainer extends Component {
     return (
       <div className='card conversation-container'>
         <NewReplyForm email={this.props.email} />
-        <button onClick={() => HandleModal('new-reply-form')}>Reply</button>
+        <div className='actions'>
+          <i className='fa fa-mail-reply' onClick={() => HandleModal('new-reply-form')} />
+          <i className='fa fa-trash' />
+        </div>
         <p className='title is-4'>{this.props.email.subject}</p>
         <hr />
         { this.props.email.conversations.map(conversation => <ConversationRow key={conversation.id} conversation={conversation} photoName={this.props.email.photo_name} /> ) }
