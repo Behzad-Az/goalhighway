@@ -44,7 +44,7 @@
           margin: 0 $default_margin/4 $default_margin/2 $default_margin/4; width: 230px; height: 100%;
           .card-content {
             padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-            .card-image .item-img { overflow: hidden; border: #bbb solid 2px; border-radius: $default_margin/4; }
+            .card-image .item-img { overflow: hidden; border: #bbb solid 2px; border-radius: 50% }
             .card-text {
               max-height: 300px; overflow: scroll;
               .name { font-weight: bold; margin: 10px 0; }
@@ -71,7 +71,7 @@
       .button.is-primary { background-color: $dark-blue; &:hover { background-color: darken($dark-blue, 10%) } }
       .feeds-rows { border: 1px darken($default-bg-color, 20%) solid; }
       .course-row {
-        .media-left .image { overflow: hidden; border: #bbb solid 2px; border-radius: $default_margin/4; }
+        .media-left .image { overflow: hidden; border: #bbb solid 2px; border-radius: 50% }
         background-color: white; margin: 0; padding: $default_margin/2;
         .fa { font-size: 14px; cursor: pointer; vertical-align: middle; margin-left: 10px; &:hover { transform: scale(1.1); } }
         .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }

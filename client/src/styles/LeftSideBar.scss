@@ -1,6 +1,6 @@
 .side-bar.left {
   display: inline-block; margin-top: $top_margin; position: fixed; padding: $default_margin/4; width: $sidebar_width_left;
-  .image.is-4by3 img { height: 100%; width: auto; margin: auto; border: #bbb solid 2px; border-radius: $default_margin/2; }
+  .image.is-4by3 img { height: 100%; width: auto; margin: auto; border: #bbb solid 2px; border-radius: 50%; }
   .card-content {
     padding: $default_margin/2 $default_margin/4;
     .media {
