@@ -1,10 +1,10 @@
 const getEmailPageData = (req, res, knex, user_id) => {
 
   const getEmails = () => knex('emails')
-    .select('emails.id', 'emails.subject')
-    .where(function() { this.where('emails.to_id', user_id).orWhere('emails.from_id', user_id) })
-    .whereNull('emails.deleted_at')
-    .orderBy('emails.created_at', 'desc');
+    .select('id', 'subject')
+    .where(function() { this.where('to_id', user_id).orWhere('from_id', user_id) })
+    .whereNull('deleted_at')
+    .orderBy('created_at', 'desc');
 
   const getEmailConversations = email => new Promise((resolve, reject) => {
     knex('email_conversations')
@@ -18,7 +18,6 @@ const getEmailPageData = (req, res, knex, user_id) => {
     )
     .where('emails.id', email.id)
     .whereNull('emails.deleted_at')
-    .whereNull('email_conversations.deleted_at')
     .orderBy('email_conversations.created_at', 'desc')
     .then(coversations => {
       email.conversations = coversations;
@@ -28,10 +27,6 @@ const getEmailPageData = (req, res, knex, user_id) => {
       throw 'No conversations could be found for the email';
     });
   });
-
-  const filterDeletedEmails = emails => {
-
-  };
 
   getEmails()
   .then(emails => Promise.all(emails.map(email => getEmailConversations(email))))

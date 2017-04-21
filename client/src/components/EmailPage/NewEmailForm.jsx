@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 
 class NewEmailForm extends Component {
   constructor(props) {

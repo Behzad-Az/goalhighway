@@ -3,7 +3,6 @@ import Navbar from '../Navbar/Navbar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import RightSideBar from '../RightSideBar/RightSideBar.jsx';
-import NewEmailForm from './NewEmailForm.jsx';
 import ControlSideBar from './ControlSideBar.jsx';
 import ConversationContainer from './ConversationContainer.jsx';
 
@@ -81,7 +80,7 @@ class EmailPage extends Component {
         <div className='main-container'>
           <SearchBar />
           { this.state.emails[0] && <ConversationContainer email={this.state.emails.find(email => email.id === this.state.currEmailId)} reload={this._loadComponentData} /> }
-          { !this.state.emails[0] && <p>No more emails available to view.</p> }
+          { !this.state.emails[0] && <p>No message available to view.</p> }
         </div>
       );
     } else {

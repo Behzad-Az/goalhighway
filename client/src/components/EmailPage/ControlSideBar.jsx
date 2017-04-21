@@ -8,7 +8,7 @@ class ControlSideBar extends Component {
         <p className='title is-4'>Conversations:</p>
         <hr />
         { this.props.emails.map(email => <ControlSideBarRow key={email.id} email={email} selectEmail={this.props.selectEmail} /> ) }
-        { !this.props.emails[0] && <p>No more emails available to view.</p> }
+        { !this.props.emails[0] && <p>No message available to view.</p> }
       </div>
     );
   }

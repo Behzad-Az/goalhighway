@@ -70,7 +70,7 @@ class Navbar extends Component {
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-tablet' to='/jobs'><i className='fa fa-briefcase' aria-hidden='true' />Careers</Link>
             <Link className='nav-item is-tab' to='/emails'><i className='fa fa-envelope' aria-hidden='true' />Messages</Link>
             <Link className='nav-item is-tab' to='/profile'><i className='fa fa-user' aria-hidden='true' />Profile</Link>
-            <Link className='nav-item is-tab' onClick={this._handleLogout}><i className='fa fa-sign-out' aria-hidden='true' />Log out</Link>
+            <Link className='nav-item is-tab' onClick={this._handleLogout}><i className='fa fa-sign-out' aria-hidden='true' />Logout</Link>
           </div>
         </div>
       </nav>
