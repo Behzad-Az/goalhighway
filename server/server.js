@@ -116,6 +116,7 @@ const deleteCourseUser = require('./helpers/DELETE_Routes/deleteCourseUser.js');
 const deleteResume = require('./helpers/DELETE_Routes/deleteResume.js');
 const deleteResumeReviewRequest = require('./helpers/DELETE_Routes/deleteResumeReviewRequest.js');
 const deleteItemForSale = require('./helpers/DELETE_Routes/deleteItemForSale.js');
+const deleteEmail = require('./helpers/DELETE_Routes/deleteEmail.js');
 
 
 // ***************************************************
@@ -344,4 +345,8 @@ app.delete('/api/feed/resumes/:resume_id', (req, res) => {
 
 app.delete('/api/courses/:course_id/items/:item_id', (req, res) => {
   deleteItemForSale(req, res, knex, req.session.user_id);
+});
+
+app.delete('/api/emails/:email_id', (req, res) => {
+  deleteEmail(req, res, knex, req.session.user_id);
 });

@@ -1,24 +1,8 @@
 const getEmailPageData = (req, res, knex, user_id) => {
 
-  // const getEmails = () => knex('emails')
-  //   .innerJoin('users', 'emails.from_id', 'users.id')
-  //   .innerJoin('email_conversations', 'emails.id', 'email_conversations.email_id')
-  //   .select(
-  //     'emails.id', 'emails.from_id', 'emails.subject', 'users.photo_name',
-  //     'email_conversations.content', 'email_conversations.created_at'
-  //   )
-  //   .where('emails.to_id', user_id)
-  //   .whereNull('emails.deleted_at')
-  //   .whereNull('email_conversations.deleted_at')
-  //   .orderBy('email_conversations.created_at', 'desc');
-
-
   const getEmails = () => knex('emails')
-    // .innerJoin('users', 'emails.from_id', 'users.id')
     .select('emails.id', 'emails.subject')
-    // .where(() => this.where('emails.to_id', user_id).orWhere('emails.from_id', user_id))
     .where(function() { this.where('emails.to_id', user_id).orWhere('emails.from_id', user_id) })
-    // .where('emails.to_id', user_id)
     .whereNull('emails.deleted_at')
     .orderBy('emails.created_at', 'desc');
 
@@ -29,6 +13,7 @@ const getEmailPageData = (req, res, knex, user_id) => {
     .select(
       'emails.id', 'emails.from_id', 'emails.to_id', 'emails.subject',
       'email_conversations.id', 'email_conversations.content', 'email_conversations.created_at as sent_at', 'email_conversations.sender_id',
+      'email_conversations.deleted_one', 'email_conversations.deleted_two',
       'users.photo_name', 'users.username as sender_name'
     )
     .where('emails.id', email.id)
@@ -44,9 +29,15 @@ const getEmailPageData = (req, res, knex, user_id) => {
     });
   });
 
+  const filterDeletedEmails = emails => {
+
+  };
+
   getEmails()
   .then(emails => Promise.all(emails.map(email => getEmailConversations(email))))
-  .then(emails => res.send({ emails }))
+  .then(emails => res.send({
+    emails: emails.filter(email => email.conversations[0].deleted_one != user_id && email.conversations[0].deleted_two != user_id)
+  }))
   .catch(err => {
     console.error('Error inside getEmailPageData.js: ', err);
     res.send(false);

@@ -46,7 +46,11 @@ class EmailPage extends Component {
           currEmailId: resJSON.emails[0].id,
           dataLoaded: true
         }) :
-        this.setState({ dataLoaded: true });
+        this.setState({
+          emails: [],
+          currEmailId: '',
+          dataLoaded: true
+        });
     } else {
       throw 'Server returned false';
     }
@@ -76,8 +80,8 @@ class EmailPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <NewEmailForm query={this.props.location.query} />
-          { this.state.emails[0] && <ConversationContainer email={this.state.emails.find(email => email.id === this.state.currEmailId)} /> }
+          { this.state.emails[0] && <ConversationContainer email={this.state.emails.find(email => email.id === this.state.currEmailId)} reload={this._loadComponentData} /> }
+          { !this.state.emails[0] && <p>No more emails available to view.</p> }
         </div>
       );
     } else {
@@ -100,7 +104,6 @@ class EmailPage extends Component {
           <i className='fa fa-navicon' onClick={this._toggleControlBar} />
         </div>
         <ControlSideBar
-          reload={this._loadComponentData}
           toggleControlBar={this._toggleControlBar}
           emails={this.state.emails}
           selectEmail={this._selectEmail}

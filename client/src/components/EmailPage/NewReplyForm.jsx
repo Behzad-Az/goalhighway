@@ -42,7 +42,7 @@ class NewReplyForm extends Component {
     .then(resJSON => {
       if (resJSON) {
         this.reactAlert.showAlert('Email Sent', 'info');
-        // this.props.reload();
+        this.props.reload();
       }
       else { throw 'Server returned false'; }
     })
