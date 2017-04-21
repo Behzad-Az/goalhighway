@@ -55,7 +55,7 @@ exports.seed = function(knex, Promise) {
       let revObj = {
         id: k,
         poster_id: 2,
-        file_name: `file_name${i}_${n}${suffix[randNum]}`,
+        file_name: 'default_file.pdf',
         doc_id: i,
         rev_desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         type,
