@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
-import HandleModal from '../partials/HandleModal.js';
 import AnswerRow from './AnswerRow.jsx';
 import NewAnswerForm from './NewAnswerForm.jsx';
 
@@ -8,12 +7,14 @@ class QaRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showNewAnswerForm: false,
       flagRequest: false,
       flagReason: '',
       showAnswers: false
     };
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
     this._renderFlagSelect = this._renderFlagSelect.bind(this);
+    this._toggleNewAnswerForm = this._toggleNewAnswerForm.bind(this);
   }
 
   _handleFlagSubmit(e) {
@@ -48,11 +49,20 @@ class QaRow extends Component {
     );
   }
 
+  _toggleNewAnswerForm() {
+    this.setState({ showNewAnswerForm: !this.state.showNewAnswerForm });
+  }
+
   render() {
-    const modalId = `new-answer-form-${this.props.qa.id}`;
     return (
       <article className='media qa-row'>
-        <NewAnswerForm question={this.props.qa} modalId={modalId} reload={this.props.reload} companyId={this.props.companyId} />
+        <NewAnswerForm
+          question={this.props.qa}
+          reload={this.props.reload}
+          companyId={this.props.companyId}
+          showModal={this.state.showNewAnswerForm}
+          toggleModal={this._toggleNewAnswerForm}
+        />
         <div className='media-content'>
           <div className='content'>
             <p>
@@ -66,7 +76,7 @@ class QaRow extends Component {
               <i className='fa fa-flag' aria-hidden='true' onClick={() => this.setState({ flagRequest: !this.state.flagRequest })} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
               { this.state.flagRequest && this._renderFlagSelect() }
             </p>
-            { this.state.showAnswers && <p><button className='button new-answer' onClick={() => HandleModal(modalId)}>Post New Answer</button></p> }
+            { this.state.showAnswers && <p><button className='button new-answer' onClick={this._toggleNewAnswerForm}>Post New Answer</button></p> }
             { this.state.showAnswers && this.props.qa.answers.map((ans, index) => <AnswerRow key={ans.id} ans={ans} index={index + 1}/>) }
             { this.state.showAnswers && !this.props.qa.answers[0] && <p>No answers provided yet...</p> }
           </div>

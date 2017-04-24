@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import HandleModal from '../partials/HandleModal.js';
 
 class TopRow extends Component {
   constructor(props) {
@@ -32,7 +31,7 @@ class TopRow extends Component {
         <h1 className='header'>
           {this.props.companyInfo.name}
         </h1>
-        { this._createBtnDiv('fa fa-upload', <p>New Interview<br/>Question</p>, () => HandleModal('new-question-form'), 'inherit', true, true) }
+        { this._createBtnDiv('fa fa-upload', <p>New Interview<br/>Question</p>, this.props.toggleNewQuestionForm, 'inherit', true, true) }
       </div>
     );
   }

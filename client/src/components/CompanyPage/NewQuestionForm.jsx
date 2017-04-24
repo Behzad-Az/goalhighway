@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import HandleModal from '../partials/HandleModal.js';
 
 class NewQuestionForm extends Component {
   constructor(props) {
@@ -22,7 +21,7 @@ class NewQuestionForm extends Component {
 
   _validateForm() {
     return this.state.question &&
-           this.props.companyInfo.id
+           this.props.companyInfo.id;
   }
 
   _handleNewInterviewQuestion() {
@@ -47,29 +46,37 @@ class NewQuestionForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(err => console.error('Unable to post new interview question - ', err))
-    .then(() => HandleModal('new-question-form'));
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id='new-question-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-question-form')}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>{this.props.companyInfo.name} - New Interview Question</p>
-            <button className='delete' onClick={() => HandleModal('new-question-form')}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
             <label className='label'>What question were you asked?</label>
             <p className='control'>
-              <input className='input' type='text' name='question' placeholder='Example: Describe a work conflict and how you dealt with it.' onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text' name='question'
+                placeholder='Example: Describe a work conflict and how you dealt with it.'
+                onChange={this._handleChange}
+              />
             </p>
-
             <label className='label'>What was your answer? (optional)</label>
             <p className='control'>
-              <textarea className='textarea' name='answer' placeholder='Summarize your answer here (optional)' onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='answer'
+                placeholder='Summarize your answer here (optional)'
+                onChange={this._handleChange}
+              />
             </p>
-
             <label className='label'>What was the outcome? (optional)</label>
             <p className='control'>
               <span className='select'>
@@ -82,11 +89,10 @@ class NewQuestionForm extends Component {
                 </select>
               </span>
             </p>
-
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewInterviewQuestion}>Submit</button>
-            <button className='button' onClick={() => HandleModal('new-question-form')}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>

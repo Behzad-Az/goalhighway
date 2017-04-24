@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import HandleModal from '../partials/HandleModal.js';
 
 class NewAnswerForm extends Component {
   constructor(props) {
@@ -22,7 +21,7 @@ class NewAnswerForm extends Component {
   _validateForm() {
     return this.state.answer &&
            this.state.outcome &&
-           this.props.question.id
+           this.props.question.id;
   }
 
   _handleNewAnsSubmission() {
@@ -46,19 +45,19 @@ class NewAnswerForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(err => console.error('Unable to post new interview answer - ', err))
-    .then(() => HandleModal(this.props.modalId));
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id={this.props.modalId} className='modal'>
-        <div className='modal-background' onClick={() => HandleModal(this.props.modalId)}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>
               { this.props.question.question.length > 35 ? `${this.props.question.question.slice(0, 35)}... ` : this.props.question.question } - New Answer
             </p>
-            <button className='delete' onClick={() => HandleModal(this.props.modalId)}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
 
@@ -83,7 +82,7 @@ class NewAnswerForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewAnsSubmission}>Submit</button>
-            <button className='button' onClick={() => HandleModal(this.props.modalId)}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>
