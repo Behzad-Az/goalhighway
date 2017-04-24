@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 import SingleSelect from '../partials/SingleSelect.jsx';
 
 class NewInstForm extends Component {
@@ -90,17 +89,17 @@ class NewInstForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to add new institution', 'error'))
-    .then(() => HandleModal('new-inst-form'));
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id='new-inst-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-inst-form')}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>New Institution</p>
-            <button className='delete' onClick={() => HandleModal('new-inst-form')}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
 
@@ -123,7 +122,7 @@ class NewInstForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewInstPost}>Submit</button>
-            <button className='button' onClick={() => HandleModal('new-inst-form')}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>

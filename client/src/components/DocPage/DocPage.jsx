@@ -6,8 +6,6 @@ import SearchBar from '../partials/SearchBar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import TopRow from './TopRow.jsx';
 import RevisionsContainer from './RevisionsContainer.jsx';
-import NewReAssistForm from '../partials/NewReqAssistForm.jsx';
-import NewRevisionForm from './NewRevisionForm.jsx';
 
 class DocPage extends Component {
   constructor(props) {
@@ -75,8 +73,6 @@ class DocPage extends Component {
         <div className='main-container'>
           <SearchBar />
           <TopRow courseInfo={this.state.courseInfo} docInfo={this.state.docInfo} />
-          <NewReAssistForm courseInfo={this.state.courseInfo} reload={this._loadComponentData} />
-          <NewRevisionForm docInfo={this.state.docInfo} reload={this._loadComponentData} />
           <RevisionsContainer
             revs={this.state.docInfo.revisions}
             docInfo={this.state.docInfo}

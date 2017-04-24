@@ -1,10 +1,16 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
+import NewDocForm from './NewDocForm.jsx';
+import NewReAssistForm from '../partials/NewReqAssistForm.jsx';
+import NewItemForm from './NewItemForm.jsx';
 
 class TopRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showNewDocForm: false,
+      showNewReqAssistForm: false,
+      showNewItemForm: false,
       subscriptionStatus: this.props.courseInfo.subscriptionStatus,
       tutorStatus: this.props.courseInfo.tutorStatus,
       assistReqOpen: this.props.courseInfo.assistReqOpen
@@ -12,6 +18,7 @@ class TopRow extends Component {
     this._handleUnsubscribe = this._handleUnsubscribe.bind(this);
     this._handleSubscribe = this._handleSubscribe.bind(this);
     this._handleTutorStatus = this._handleTutorStatus.bind(this);
+    this._toggleFormModal = this._toggleFormModal.bind(this);
     this._createBtnDiv = this._createBtnDiv.bind(this);
   }
 
@@ -40,6 +47,12 @@ class TopRow extends Component {
         </div>
       );
     }
+  }
+
+  _toggleFormModal(stateName) {
+    let newState = {};
+    newState[stateName] = !this.state[stateName];
+    this.setState(newState);
   }
 
   _handleUnsubscribe() {
@@ -99,13 +112,31 @@ class TopRow extends Component {
   render() {
     return (
       <div className='top-row'>
+        <NewDocForm
+          courseId={this.props.courseInfo.id}
+          reload={this.props.reload}
+          showModal={this.state.showNewDocForm}
+          toggleModal={() => this._toggleFormModal('showNewDocForm')}
+        />
+        <NewReAssistForm
+          courseInfo={this.props.courseInfo}
+          reload={this.props.reload}
+          showModal={this.state.showNewReqAssistForm}
+          toggleModal={() => this._toggleFormModal('showNewReqAssistForm')}
+        />
+        <NewItemForm
+          courseId={this.props.courseInfo.id}
+          reload={this.props.reload}
+          showModal={this.state.showNewItemForm}
+          toggleModal={() => this._toggleFormModal('showNewItemForm')}
+        />
         <h1 className='header'>
           <Link to={`/institutions/${this.props.courseInfo.inst_id}`}>{this.props.courseInfo.inst_display_name} </Link>
           > <span className='course-name'>{this.props.courseInfo.short_display_name} </span><span className='course-desc'>- {this.props.courseInfo.course_desc}</span>
         </h1>
 
         { this._createBtnDiv('fa fa-upload', <p>Upload<br/>Document</p>,
-                            () => this.props.toggleFormModal('showNewDocForm'), 'inherit',
+                            () => this._toggleFormModal('showNewDocForm'), 'inherit',
                             true, true) }
 
         <div className='top-row-star'>
@@ -129,12 +160,12 @@ class TopRow extends Component {
                             this.state.subscriptionStatus, <p>Click to<br/>Tutor</p>, this._handleTutorStatus) }
 
         { this._createBtnDiv('fa fa-bell', <p>Cancel<br/>Request</p>,
-                            () => this.props.toggleFormModal('showNewReqAssistForm'), 'green', this.state.assistReqOpen,
+                            () => this._toggleFormModal('showNewReqAssistForm'), 'green', this.state.assistReqOpen,
                             this.state.subscriptionStatus, <p>Request<br/>Assistance</p>,
-                            () => this.props.toggleFormModal('showNewReqAssistForm')) }
+                            () => this._toggleFormModal('showNewReqAssistForm')) }
 
         { this._createBtnDiv('fa fa-book', <p>Sell/Trade<br/>Items</p>,
-                            () => this.props.toggleFormModal('showNewItemForm'), 'inherit',
+                            () => this._toggleFormModal('showNewItemForm'), 'inherit',
                             true, true) }
 
       </div>

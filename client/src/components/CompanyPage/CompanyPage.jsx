@@ -3,7 +3,6 @@ import Navbar from '../Navbar/Navbar.jsx';
 import TopRow from './TopRow.jsx';
 import JobsContainer from './JobsContainer.jsx';
 import QaContainer from './QaContainer.jsx';
-import NewQuestionForm from './NewQuestionForm.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../RightSideBar/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
@@ -12,7 +11,6 @@ class CompanyPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showNewQuestionForm: false,
       dataLoaded: false,
       pageError: false,
       companyInfo: {},
@@ -21,7 +19,6 @@ class CompanyPage extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._toggleNewQuestionForm = this._toggleNewQuestionForm.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
@@ -62,10 +59,6 @@ class CompanyPage extends Component {
     }
   }
 
-  _toggleNewQuestionForm() {
-    this.setState({ showNewQuestionForm: !this.state.showNewQuestionForm });
-  }
-
   _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
@@ -80,14 +73,8 @@ class CompanyPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <TopRow companyInfo={this.state.companyInfo} toggleNewQuestionForm={this._toggleNewQuestionForm} />
+          <TopRow companyInfo={this.state.companyInfo} reload={this._loadComponentData} />
           <JobsContainer jobs={this.state.jobs} />
-          <NewQuestionForm
-            companyInfo={this.state.companyInfo}
-            reload={this._loadComponentData}
-            showModal={this.state.showNewQuestionForm}
-            toggleModal={this._toggleNewQuestionForm}
-          />
           <QaContainer qas={this.state.qas} reload={this._loadComponentData} companyId={this.state.companyInfo.id} />
         </div>
       );

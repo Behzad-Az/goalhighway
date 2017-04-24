@@ -4,7 +4,7 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
 
   let prefix = req.body.prefix.trim().toUpperCase();
   let suffix = req.body.suffix.trim().toUpperCase();
-  let course_desc = capitalizeFirstLetter(req.body.course_desc);
+  let course_desc = capitalizeFirstLetter(req.body.courseDesc);
 
   const newCourseObj = {
     prefix,
@@ -12,8 +12,8 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
     course_desc,
     full_display_name: `${prefix} ${suffix} - ${course_desc}`,
     short_display_name: `${prefix} ${suffix}`,
-    course_year: req.body.course_year,
-    inst_id: req.body.inst_id
+    course_year: req.body.courseYear,
+    inst_id: req.body.instId
   };
 
   let esBodyObj = {
@@ -37,7 +37,7 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
   const getSearchData = trx => knex('institutions')
     .transacting(trx)
     .select('inst_long_name', 'inst_short_name')
-    .where('id', req.body.inst_id);
+    .where('id', newCourseObj.inst_id);
 
   const addDocToSearchCatalogue = esBodyObj => {
     const indexObj = {
@@ -47,7 +47,7 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
         _id: esBodyObj.id
       }
     };
-    return esClient.bulk({ body: [indexObj, esBodyObj] })
+    return esClient.bulk({ body: [indexObj, esBodyObj] });
   };
 
   knex.transaction(trx => {

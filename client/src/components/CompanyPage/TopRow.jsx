@@ -1,9 +1,18 @@
 import React, {Component} from 'react';
+import NewQuestionForm from './NewQuestionForm.jsx';
 
 class TopRow extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showNewQuestionForm: false
+    };
     this._createBtnDiv = this._createBtnDiv.bind(this);
+    this._toggleNewQuestionForm = this._toggleNewQuestionForm.bind(this);
+  }
+
+  _toggleNewQuestionForm() {
+    this.setState({ showNewQuestionForm: !this.state.showNewQuestionForm });
   }
 
   _createBtnDiv(dfltClassName, truePhrase, trueCb, trueColor, validation, enable, falsePhrase, falseCb) {
@@ -28,10 +37,16 @@ class TopRow extends Component {
   render() {
     return (
       <div className='top-row'>
+        <NewQuestionForm
+          companyInfo={this.props.companyInfo}
+          reload={this.reload}
+          showModal={this.state.showNewQuestionForm}
+          toggleModal={this._toggleNewQuestionForm}
+        />
         <h1 className='header'>
-          {this.props.companyInfo.name}
+          { this.props.companyInfo.name }
         </h1>
-        { this._createBtnDiv('fa fa-upload', <p>New Interview<br/>Question</p>, this.props.toggleNewQuestionForm, 'inherit', true, true) }
+        { this._createBtnDiv('fa fa-upload', <p>New Interview<br/>Question</p>, this._toggleNewQuestionForm, 'inherit', true, true) }
       </div>
     );
   }

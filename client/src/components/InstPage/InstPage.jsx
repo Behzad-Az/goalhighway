@@ -4,8 +4,6 @@ import SearchBar from '../partials/SearchBar.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../RightSideBar/RightSideBar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import NewCourseForm from './NewCourseForm.jsx';
-import NewInstForm from './NewInstForm.jsx';
 import CoursesContainer from './CoursesContainer.jsx';
 import TopRow from './TopRow.jsx';
 
@@ -93,10 +91,19 @@ class InstPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <NewCourseForm reload={this._loadComponentData} instId={this.state.instId} instName={this._findInstName()} />
-          <NewInstForm reload={this._loadComponentData} />
-          <TopRow instId={this.state.instId} instList={this.state.instList} reload={this._loadComponentData} />
-          <CoursesContainer courses={this._filterCourseList()} currUserCourseIds={this.state.currUserCourseIds} handleFilter={this._saveFilterPhrase} />
+          <TopRow
+            instId={parseInt(this.state.instId)}
+            instList={this.state.instList}
+            reload={this._loadComponentData}
+          />
+          <CoursesContainer
+            courses={this._filterCourseList()}
+            currUserCourseIds={this.state.currUserCourseIds}
+            handleFilter={this._saveFilterPhrase}
+            instId={parseInt(this.state.instId)}
+            instName={this._findInstName()}
+            reload={this._loadComponentData}
+          />
           { this.state.dataLoaded && this.state.currInstCourses[0] && <p>{this.state.currInstCourses.length} courses available at this institution. Search to find your course.</p> }
           { this.state.dataLoaded && !this.state.currInstCourses[0] && <p>No courses are available for this institution. Be the first to add one.</p> }
         </div>

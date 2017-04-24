@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 
 class NewDocForm extends Component {
   constructor(props) {
@@ -56,17 +55,17 @@ class NewDocForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to post revision', 'error'))
-    .then(() => HandleModal('new-revision-form'));
+    .then(() => this.props.toggleModal('showNewRevForm'));
   }
 
   render() {
     return (
-      <div id='new-revision-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-revision-form')}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={() => this.props.toggleModal('showNewRevForm')}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>New Revision</p>
-            <button className='delete' onClick={() => HandleModal('new-revision-form')}></button>
+            <button className='delete' onClick={() => this.props.toggleModal('showNewRevForm')}></button>
           </header>
           <section className='modal-card-body'>
             <label className='label'>Document Title (you may revise this):</label>
@@ -95,7 +94,7 @@ class NewDocForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewDocPost}>Submit</button>
-            <button className='button' onClick={() => HandleModal('new-revision-form')}>Cancel</button>
+            <button className='button' onClick={() => this.props.toggleModal('showNewRevForm')}>Cancel</button>
           </footer>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 
 class NewCourseForm extends Component {
   constructor(props) {
@@ -28,16 +27,16 @@ class NewCourseForm extends Component {
            this.state.suffix &&
            this.state.courseDesc &&
            this.state.courseYear &&
-           this.props.instId
+           this.props.instId;
   }
 
   _handleNewCoursePost() {
     let data = {
       prefix: this.state.prefix,
       suffix: this.state.suffix,
-      course_desc: this.state.courseDesc,
-      course_year: this.state.courseYear,
-      inst_id: this.props.instId
+      courseDesc: this.state.courseDesc,
+      courseYear: this.state.courseYear,
+      instId: this.props.instId
     };
 
     fetch('/api/courses', {
@@ -58,17 +57,17 @@ class NewCourseForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to add new course', 'error'))
-    .then(() => HandleModal('new-course-form'));
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id='new-course-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-course-form')}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>{this.props.instName} - New Course</p>
-            <button className='delete' onClick={() => HandleModal('new-course-form')}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
 
@@ -105,7 +104,7 @@ class NewCourseForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewCoursePost}>Submit</button>
-            <button className='button' onClick={() => HandleModal('new-course-form')}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>
