@@ -1,16 +1,20 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
-import HandleModal from '../partials/HandleModal.js';
+import NewCourseReviewForm from './NewCourseReviewForm.jsx';
 
 class TopRow extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showCourseReviewForm: false
+    };
     this._getAverageValues = this._getAverageValues.bind(this);
     this._calcStarPercent = this._calcStarPercent.bind(this);
     this._getProfAvgRatings = this._getProfAvgRatings.bind(this);
     this._decodeProf = this._decodeProf.bind(this);
     this._decodeWorkload = this._decodeWorkload.bind(this);
     this._decodeFairness = this._decodeFairness.bind(this);
+    this._toggleCourseReviewForm = this._toggleCourseReviewForm.bind(this);
   }
 
   _getAverageValues() {
@@ -105,16 +109,27 @@ class TopRow extends Component {
     }
   }
 
+  _toggleCourseReviewForm() {
+    this.setState({ showCourseReviewForm: !this.state.showCourseReviewForm });
+  }
+
   render() {
     let profAvgs = this._getProfAvgRatings();
     let overallAvgs = this._getAverageValues();
     return (
       <div className='top-row'>
+        <NewCourseReviewForm
+          courseId={this.props.courseInfo.id}
+          profs={this.props.profs}
+          reload={this.props.reload}
+          showModal={this.state.showCourseReviewForm}
+          toggleModal={this._toggleCourseReviewForm}
+        />
         <h1 className='header'>
           <Link to={`/institutions/${this.props.courseInfo.inst_id}`}>{this.props.courseInfo.inst_display_name} </Link>
           > <Link to={`/courses/${this.props.courseInfo.id}`}>{this.props.courseInfo.short_display_name} </Link>
           > <span className='review-name'>Reviews</span>
-          <button className='button' onClick={() => HandleModal('new-course-review-form')}>New Review</button>
+          <button className='button' onClick={this._toggleCourseReviewForm}>New Review</button>
         </h1>
         <div className='summary columns'>
           <table className='top-row-info column is-6'>

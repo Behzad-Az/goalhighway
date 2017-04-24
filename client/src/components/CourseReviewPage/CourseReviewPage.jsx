@@ -5,7 +5,6 @@ import RightSideBar from '../RightSideBar/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import TopRow from './TopRow.jsx';
-import NewCourseReviewForm from './NewCourseReviewForm.jsx';
 import CourseReviewsContainer from './CourseReviewsContainer.jsx';
 
 class CourseReviewPage extends Component {
@@ -63,8 +62,12 @@ class CourseReviewPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <TopRow courseInfo={this.state.courseInfo} courseReviews={this.state.courseReviews} />
-          <NewCourseReviewForm courseId={this.state.courseInfo.id} profs={this.state.profs} reload={this._loadComponentData} />
+          <TopRow
+            courseInfo={this.state.courseInfo}
+            courseReviews={this.state.courseReviews}
+            profs={this.state.profs}
+            reload={this._loadComponentData}
+          />
           <CourseReviewsContainer courseReviews={this.state.courseReviews} />
         </div>
       );

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 import AutoSuggestion from '../partials/AutoSuggestion.jsx';
 import SingleSelect from '../partials/SingleSelect.jsx';
 
@@ -94,17 +93,17 @@ class NewCourseReviewForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to post review', 'error'))
-    .then(() => HandleModal('new-course-review-form'));
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id='new-course-review-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-course-review-form')}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>New Course Review</p>
-            <button className='delete' onClick={() => HandleModal('new-course-review-form')}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
 
@@ -196,7 +195,7 @@ class NewCourseReviewForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewReview}>Submit</button>
-            <button className='button' onClick={() => HandleModal('new-course-review-form')}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>
