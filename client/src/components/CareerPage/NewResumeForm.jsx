@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 
 class NewResumeForm extends Component {
   constructor(props) {
@@ -53,17 +52,17 @@ class NewResumeForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to upload resume', 'error'))
-    .then(() => HandleModal('new-resume-form'));
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id='new-resume-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-resume-form')}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>New Resume</p>
-            <button className='delete' onClick={() => HandleModal('new-resume-form')}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
             <label className='label'>Resume Title:</label>
@@ -81,7 +80,7 @@ class NewResumeForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewResumePost}>Submit</button>
-            <button className='button' onClick={() => HandleModal('new-resume-form')}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>

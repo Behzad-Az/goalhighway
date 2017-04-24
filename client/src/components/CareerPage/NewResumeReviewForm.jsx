@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 
 class NewResumeReviewForm extends Component {
   constructor(props) {
@@ -45,32 +44,43 @@ class NewResumeReviewForm extends Component {
       }
     })
     .catch(() => this.reactAlert.showAlert('Unable to submit resume review', 'error'))
-    .then(() => HandleModal(`new-resume-review-req-form-${this.props.resume.id}`));
+    .then(this.props.toggleModal);
   }
 
   render() {
-    let formId = `new-resume-review-req-form-${this.props.resume.id}`;
     return (
-      <div id={formId} className='modal'>
-        <div className='modal-background' onClick={() => HandleModal(formId)}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>New Resume Review Request</p>
-            <button className='delete' onClick={() => HandleModal(formId)}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
             <label className='label'>Resume Title:</label>
             <p className='control'>
-              <input className='input' type='text' name='title' placeholder='Enter resume title here' defaultValue={this.state.title} onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text' name='title'
+                placeholder='Enter resume title here'
+                defaultValue={this.state.title}
+                onChange={this._handleChange}
+              />
             </p>
             <label className='label'>Provide Addtional Info (Recommended):</label>
             <p className='control'>
-              <textarea className='textarea' name='additionalInfo' placeholder='Example: I intend to use this resume for junior level mechanical engineering jobs in aerospace industry.' defaultValue={this.state.additionalInfo} onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='additionalInfo'
+                placeholder='Example: I intend to use this resume for junior level mechanical engineering jobs in aerospace industry.'
+                defaultValue={this.state.additionalInfo}
+                onChange={this._handleChange}
+              />
             </p>
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this.state.title} onClick={this._handleNewResumeReviewReq}>Submit</button>
-            <button className='button' onClick={() => HandleModal(formId)}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>

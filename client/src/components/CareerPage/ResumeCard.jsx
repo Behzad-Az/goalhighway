@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 import NewResumeReviewForm from './NewResumeReviewForm.jsx';
 
 const download = require('../../download.js');
@@ -12,6 +11,7 @@ class ResumeCard extends Component {
     this.reactAlert = new ReactAlert();
     this.images = ['pdf.png', 'docx.png', 'xlsx.png', 'zip.png', 'default.png'];
     this.state = {
+      showNewResumeReviewForm: false,
       editCard: false,
       title: this.props.resume.title,
       intent: this.props.resume.intent,
@@ -21,6 +21,7 @@ class ResumeCard extends Component {
     this._findImageLink = this._findImageLink.bind(this);
     this._handleChange = this._handleChange.bind(this);
     this._handleFileChange = this._handleFileChange.bind(this);
+    this._toggleNewResumeReviewForm = this._toggleNewResumeReviewForm.bind(this);
     this._handleEdit = this._handleEdit.bind(this);
     this._handleDelete = this._handleDelete.bind(this);
     this._toggleView = this._toggleView.bind(this);
@@ -46,6 +47,10 @@ class ResumeCard extends Component {
   _handleFileChange(e) {
     const file = e.target.files[0];
     this.setState({ file });
+  }
+
+  _toggleNewResumeReviewForm() {
+    this.setState({ showNewResumeReviewForm: !this.state.showNewResumeReviewForm });
   }
 
   _handleEdit() {
@@ -155,7 +160,12 @@ class ResumeCard extends Component {
   _showCardView() {
     return (
       <div className='resume-index card'>
-        <NewResumeReviewForm resume={this.props.resume} updateState={() => this.setState({ reviewReqStatus: true })} />
+        <NewResumeReviewForm
+          resume={this.props.resume}
+          updateState={() => this.setState({ reviewReqStatus: true })}
+          showModal={this.state.showNewResumeReviewForm}
+          toggleModal={this._toggleNewResumeReviewForm}
+        />
         <div className='card-content'>
           <div className='card-image'>
             <button className='button is-info' onClick={this._toggleView}>Edit</button>
@@ -171,7 +181,7 @@ class ResumeCard extends Component {
           <p className='card-foot title is-6'>
             { this.state.reviewReqStatus ?
                 <Link onClick={this._handleCancelReviewRequest}>Cancel Review Request</Link> :
-                <Link onClick={() => HandleModal(`new-resume-review-req-form-${this.props.resume.id}`)}>Request Review</Link>
+                <Link onClick={this._toggleNewResumeReviewForm}>Request Review</Link>
             }
           </p>
         </div>
