@@ -69,12 +69,12 @@ class NewEmailForm extends Component {
           </header>
           <section className='modal-card-body'>
 
-            <label className='label'>Email Subject: toId: {this.props.query.toId} objId: {this.props.query.objId} type: {this.props.query.type}</label>
+            <label className='label'>Subject:</label>
             <p className='control'>
               <input className='input' type='text' name='subject' placeholder='Enter email subject here' defaultValue={this.state.subject} onChange={this._handleChange} />
             </p>
 
-            <label className='label'>Email Content:</label>
+            <label className='label'>Content:</label>
             <p className='control'>
               <textarea className='textarea' name='content' placeholder='Enter email message here.' onChange={this._handleChange} />
             </p>
