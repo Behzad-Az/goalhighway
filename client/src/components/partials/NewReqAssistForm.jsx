@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from './ReactAlert.jsx';
-import HandleModal from './HandleModal.js';
 
 class NewReqAssistForm extends Component {
   constructor(props) {
@@ -58,7 +57,7 @@ class NewReqAssistForm extends Component {
       return (
         <footer className='modal-card-foot'>
           <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewRequestAssist}>Submit</button>
-          <button className='button' onClick={() => HandleModal('new-request-assist-form')}>Cancel</button>
+          <button className='button' onClick={this.props.toggleModal}>Cancel</button>
         </footer>
       );
     }
@@ -86,7 +85,7 @@ class NewReqAssistForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(err => console.error('Unable to update or close assistance request - ', err))
-    .then(() => HandleModal('new-request-assist-form'));
+    .then(this.props.toggleModal);
   }
 
   _handleNewRequestAssist() {
@@ -109,17 +108,17 @@ class NewReqAssistForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(err => console.error('Unable to post assistance request - ', err))
-    .then(() => HandleModal('new-request-assist-form'));
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id='new-request-assist-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-request-assist-form')}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>Request Assistance</p>
-            <button className='delete' onClick={() => HandleModal('new-request-assist-form')}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
             <p className='control'>

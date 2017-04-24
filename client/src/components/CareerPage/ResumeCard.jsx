@@ -106,7 +106,7 @@ class ResumeCard extends Component {
       if (response.status === 200) { return response.blob(); }
       else { throw 'Server returned false.'; }
     })
-    .then(blob => download(blob))
+    .then(blob => download(blob, `Resume_${this.props.resume.title}`))
     .catch(err => console.error('Unable to download file: - ', err));
   }
 

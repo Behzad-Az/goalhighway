@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
-import HandleModal from '../partials/HandleModal.js';
 
 class TopRow extends Component {
   constructor(props) {
@@ -105,7 +104,10 @@ class TopRow extends Component {
           > <span className='course-name'>{this.props.courseInfo.short_display_name} </span><span className='course-desc'>- {this.props.courseInfo.course_desc}</span>
         </h1>
 
-        { this._createBtnDiv('fa fa-upload', <p>Upload<br/>Document</p>, () => HandleModal('new-doc-form'), 'inherit', true, true) }
+        { this._createBtnDiv('fa fa-upload', <p>Upload<br/>Document</p>,
+                            () => this.props.toggleFormModal('showNewDocForm'), 'inherit',
+                            true, true) }
+
         <div className='top-row-star'>
           <Link to={`/courses/${this.props.courseInfo.id}/reviews`}>
             <div className='outer'>
@@ -127,10 +129,13 @@ class TopRow extends Component {
                             this.state.subscriptionStatus, <p>Click to<br/>Tutor</p>, this._handleTutorStatus) }
 
         { this._createBtnDiv('fa fa-bell', <p>Cancel<br/>Request</p>,
-                            () => HandleModal('new-request-assist-form'), 'green', this.state.assistReqOpen,
-                            this.state.subscriptionStatus, <p>Request<br/>Assistance</p>, () => HandleModal('new-request-assist-form')) }
+                            () => this.props.toggleFormModal('showNewReqAssistForm'), 'green', this.state.assistReqOpen,
+                            this.state.subscriptionStatus, <p>Request<br/>Assistance</p>,
+                            () => this.props.toggleFormModal('showNewReqAssistForm')) }
 
-        { this._createBtnDiv('fa fa-book', <p>Sell/Trade<br/>Items</p>, () => HandleModal('new-item-form'), 'inherit', true, true) }
+        { this._createBtnDiv('fa fa-book', <p>Sell/Trade<br/>Items</p>,
+                            () => this.props.toggleFormModal('showNewItemForm'), 'inherit',
+                            true, true) }
 
       </div>
     );

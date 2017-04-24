@@ -17,6 +17,9 @@ class CoursePage extends Component {
     super(props);
     this.reactAlert = new ReactAlert();
     this.state = {
+      showNewDocForm: false,
+      showNewReqAssistForm: false,
+      showNewItemForm: false,
       dataLoaded: false,
       pageError: false,
       courseInfo: {
@@ -30,6 +33,7 @@ class CoursePage extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
+    this._toggleFormModal = this._toggleFormModal.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
@@ -72,6 +76,12 @@ class CoursePage extends Component {
     }
   }
 
+  _toggleFormModal(stateName) {
+    let newState = {};
+    newState[stateName] = !this.state[stateName];
+    this.setState(newState);
+  }
+
   _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
@@ -86,10 +96,25 @@ class CoursePage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <TopRow courseInfo={this.state.courseInfo} />
-          <NewDocForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
-          <NewItemForm courseId={this.state.courseInfo.id} reload={this._loadComponentData} />
-          <NewReAssistForm courseInfo={this.state.courseInfo} reload={this._loadComponentData} />
+          <TopRow courseInfo={this.state.courseInfo} toggleFormModal={this._toggleFormModal} />
+          <NewDocForm
+            courseId={this.state.courseInfo.id}
+            reload={this._loadComponentData}
+            showModal={this.state.showNewDocForm}
+            toggleModal={() => this._toggleFormModal('showNewDocForm')}
+          />
+          <NewReAssistForm
+            courseInfo={this.state.courseInfo}
+            reload={this._loadComponentData}
+            showModal={this.state.showNewReqAssistForm}
+            toggleModal={() => this._toggleFormModal('showNewReqAssistForm')}
+          />
+          <NewItemForm
+            courseId={this.state.courseInfo.id}
+            reload={this._loadComponentData}
+            showModal={this.state.showNewItemForm}
+            toggleModal={() => this._toggleFormModal('showNewItemForm')}
+          />
           <DocsContainer docs={this.state.asgReports} header='Assignments and Reports' />
           <DocsContainer docs={this.state.lectureNotes} header='Lecture Notes' />
           <DocsContainer docs={this.state.sampleQuestions} header='Sample Questions' />

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 import ImageCropper from '../partials/ImageCropper.jsx';
 
 class NewItemForm extends Component {
@@ -62,17 +61,17 @@ class NewItemForm extends Component {
       this.reactAlert.showAlert('error in posting item', 'error');
       this._deleteFormData();
     })
-    .then(() => HandleModal('new-item-form'));
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id='new-item-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-item-form')}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>New Item For Sale or Trade</p>
-            <button className='delete' onClick={() => HandleModal('new-item-form')}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
             <label className='label'>Item Title:</label>
@@ -95,7 +94,7 @@ class NewItemForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewItemPost}>Submit</button>
-            <button className='button' onClick={() => HandleModal('new-item-form')}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>
