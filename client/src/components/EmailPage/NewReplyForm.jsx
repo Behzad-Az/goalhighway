@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import HandleModal from '../partials/HandleModal.js';
 
 class NewReplyForm extends Component {
   constructor(props) {
@@ -47,17 +46,17 @@ class NewReplyForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to send email', 'error'))
-    .then(() => HandleModal('new-reply-form'));
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id='new-reply-form' className='modal'>
-        <div className='modal-background' onClick={() => HandleModal('new-reply-form')}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>RE: {this.props.email.subject}</p>
-            <button className='delete' onClick={() => HandleModal('new-reply-form')}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
             <p className='control'>
@@ -66,7 +65,7 @@ class NewReplyForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleSendReply}>Send</button>
-            <button className='button' onClick={() => HandleModal('new-reply-form')}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>

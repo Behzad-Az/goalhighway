@@ -55,17 +55,17 @@ class NewEmailForm extends Component {
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to send email', 'error'))
-    .then(this.props.toggleEmailModal);
+    .then(this.props.toggleModal);
   }
 
   render() {
     return (
-      <div id='new-email-form' className={this.props.query.showEmailModal ? 'modal is-active' : 'modal'}>
-        <div className='modal-background' onClick={this.props.toggleEmailModal}></div>
+      <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
+        <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>Compose Email:</p>
-            <button className='delete' onClick={this.props.toggleEmailModal}></button>
+            <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
 
@@ -82,7 +82,7 @@ class NewEmailForm extends Component {
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleSendEmail}>Submit</button>
-            <button className='button' onClick={this.props.toggleEmailModal}>Cancel</button>
+            <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
       </div>
