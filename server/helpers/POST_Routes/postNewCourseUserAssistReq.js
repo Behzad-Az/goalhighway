@@ -29,7 +29,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     .insert(courseFeedObj);
 
   const verifySubscription = trx => knex('course_user')
-    .transaction(trx)
+    .transacting(trx)
     .where('course_id', req.params.course_id)
     .andWhere('user_id', user_id)
     .whereNotNull('sub_date')

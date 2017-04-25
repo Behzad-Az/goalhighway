@@ -90,7 +90,7 @@ class ResumeReviewFeedRow extends Component {
               {this.props.feed.title} - {this.props.feed.intent}
               <br />
               <small>
-                <Link onClick={this._handleDownload}>Download Resume</Link>
+                <Link onClick={this._handleDownload}>Download CV</Link>
               </small>
               <br />
               <small>

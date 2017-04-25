@@ -13,7 +13,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    // this.handleLogin();
+    this.handleLogin();
   }
 
   handleChange(e) {

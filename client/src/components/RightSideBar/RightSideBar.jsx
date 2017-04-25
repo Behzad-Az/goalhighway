@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 import FeedsContainer from './FeedsContainer.jsx';
+import NewEmailForm from '../EmailPage/NewEmailForm.jsx';
 
 class RightSideBar extends Component {
   constructor(props) {
@@ -8,6 +9,13 @@ class RightSideBar extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
+      emailParams: {
+        toId: '',
+        objId: '',
+        type: '',
+        subject: ''
+      },
+      showNewEmailForm: false,
       courseCount: 'N/A',
       feeds: [],
       instId: '',
@@ -19,6 +27,8 @@ class RightSideBar extends Component {
     this._conditionData = this._conditionData.bind(this);
     this._commaSeparateNumber = this._commaSeparateNumber.bind(this);
     this._renderFooter = this._renderFooter.bind(this);
+    this._composeNewEmail = this._composeNewEmail.bind(this);
+    this._toggleEmailModal = this._toggleEmailModal.bind(this);
   }
 
   componentWillMount() {
@@ -57,9 +67,22 @@ class RightSideBar extends Component {
     }
   }
 
+  _composeNewEmail(emailParams) {
+    this.setState({ emailParams, showNewEmailForm: true });
+  }
+
+  _toggleEmailModal() {
+    this.setState({ showNewEmailForm: !this.state.showNewEmailForm });
+  }
+
   render() {
     return this.state.dataLoaded ? (
       <div className='card side-bar right'>
+        <NewEmailForm
+          emailParams={this.state.emailParams}
+          showModal={this.state.showNewEmailForm}
+          toggleModal={this._toggleEmailModal}
+        />
         <div className='card-content'>
           <div className='media'>
             <div className='media-left'>
@@ -78,7 +101,7 @@ class RightSideBar extends Component {
             <p><i className='fa fa-slideshare' aria-hidden='true' /> {this._commaSeparateNumber(this.state.tutorCount)} tutors</p>
           </div>
           <hr />
-          <FeedsContainer feeds={this.state.feeds} />
+          <FeedsContainer feeds={this.state.feeds} composeNewEmail={this._composeNewEmail} />
           { this._renderFooter() }
         </div>
       </div>

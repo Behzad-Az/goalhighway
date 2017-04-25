@@ -8,10 +8,6 @@ class CourseFeedRow extends Component {
     this._renderDocumentFeed = this._renderDocumentFeed.bind(this);
     this._renderCommentFeed = this._renderCommentFeed.bind(this);
     this._renderTutorFeed = this._renderTutorFeed.bind(this);
-
-
-
-
     this._renderItemFeed = this._renderItemFeed.bind(this);
     this._renderCourseReviewFeed = this._renderCourseReviewFeed.bind(this);
   }
@@ -63,7 +59,7 @@ class CourseFeedRow extends Component {
             {this.props.feed.content}
             <br />
             <small>
-              Posted on {this.props.feed.created_at.slice(0, 10)}
+              {this.props.feed.created_at.slice(0, 10)}
             </small>
           </div>
         </div>
@@ -84,7 +80,7 @@ class CourseFeedRow extends Component {
             {this.props.feed.content}
             <br />
             <small>
-              Posted on {this.props.feed.created_at.slice(0, 10)}
+              {this.props.feed.created_at.slice(0, 10)} | <Link>Reply</Link>
             </small>
           </div>
         </div>
@@ -106,8 +102,11 @@ class CourseFeedRow extends Component {
               {this.props.feed.content}
               <br />
               <small>
-                Posted on {this.props.feed.created_at.slice(0, 10)} |
-                <Link> Answer</Link>
+                {this.props.feed.created_at.slice(0, 10)} | <Link onClick={() => this.props.composeNewEmail({
+                  toId: this.props.feed.commenter_id,
+                  objId: this.props.feed.tutor_log_id,
+                  type: 'tutorReq',
+                  subject: 'RE: 1 on 1 Tutor Request' })}>Answer {this.props.feed.commenter_name}</Link>
               </small>
             </p>
           </div>
@@ -130,8 +129,11 @@ class CourseFeedRow extends Component {
               {this.props.feed.content}
               <br />
               <small>
-                Posted on {this.props.feed.created_at.slice(0, 10)} |
-                <Link> Contact Seller</Link>
+                {this.props.feed.created_at.slice(0, 10)} | <Link onClick={() => this.props.composeNewEmail({
+                  toId: this.props.feed.commenter_id,
+                  objId: this.props.feed.item_for_sale_id,
+                  type: 'itemForSale',
+                  subject: 'RE: Interested in your item for sale / trade' })}>Contact Owner</Link>
               </small>
             </p>
           </div>
@@ -154,8 +156,7 @@ class CourseFeedRow extends Component {
               {this.props.feed.content}
               <br />
               <small>
-                Posted on {this.props.feed.created_at.slice(0, 10)} |
-                <Link> See Details</Link>
+                {this.props.feed.created_at.slice(0, 10)} | <Link to={`/courses/${this.props.feed.course_id}/reviews`}>See Details</Link>
               </small>
             </p>
           </div>

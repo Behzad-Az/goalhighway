@@ -99,7 +99,7 @@ class CourseFeedRow extends Component {
         <div className='media-content'>
           <div className='content'>
             <Link to={`/courses/${this.props.feed.course_id}/docs/${this.props.feed.doc_id}`}>
-              <button className='button'>Document Page</button>
+              <button className='button'>Download Document</button>
             </Link>
             <p>
               <strong>
@@ -113,7 +113,7 @@ class CourseFeedRow extends Component {
               {this.props.feed.content}
               <br />
               <small>
-                <Link to={`/courses/${this.props.feed.course_id}/docs/${this.props.feed.doc_id}`}>Download Document</Link>
+                <Link to={`/courses/${this.props.feed.course_id}/docs/${this.props.feed.doc_id}`}>Document Histroy</Link>
               </small>
               <br />
               <small>
@@ -150,7 +150,7 @@ class CourseFeedRow extends Component {
               {this.props.feed.content}
               <br />
               <small>
-                <Link to={`/courses/${this.props.feed.course_id}`}>Go to Course Page</Link>
+                <Link>Reply</Link>
               </small>
               <br />
               <small>
