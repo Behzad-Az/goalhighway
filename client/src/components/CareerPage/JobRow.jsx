@@ -62,7 +62,7 @@ class JobRow extends Component {
         <div className='media-content'>
           <div className='content'>
             <p>
-              <Link to={`/companies/${this.props.job.company_id}`}><button className='button'>Company Page</button></Link>
+              <Link><button className='button'>Apply Now!</button></Link>
               <strong>{this.props.job.title}</strong>
               <br />
               {this.props.job.company}
@@ -71,7 +71,7 @@ class JobRow extends Component {
               <br />
               {this.props.job.tags.map((tag, index) => <span key={index} className='tag'>{tag}</span>)}
               <br />
-              <small><Link>Apply Now!</Link></small>
+              <small><Link to={`/companies/${this.props.job.company_id}`}>Company Page</Link></small>
               <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
               {this.state.flagRequest && this._renderFlagSelect()}
             </p>

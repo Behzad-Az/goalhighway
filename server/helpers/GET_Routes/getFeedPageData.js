@@ -50,6 +50,7 @@ const getFeedPageData = (req, res, knex, user_id) => {
       else if (documentFeedCategories.includes(feed.category)) { feed.photo_name = 'document.png'; }
     }
     feed.type = feedType;
+    feed.editable = feed.commenter_id === user_id;
     return feed;
   });
 

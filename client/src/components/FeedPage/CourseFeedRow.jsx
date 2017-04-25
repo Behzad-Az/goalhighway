@@ -6,7 +6,9 @@ class CourseFeedRow extends Component {
     super(props);
     this.state = {
       flagRequest: false,
-      flagReason: ''
+      flagReason: '',
+      showReplyBox: false,
+      replyContent: ''
     };
     this._handleFlagClick = this._handleFlagClick.bind(this);
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
@@ -17,6 +19,8 @@ class CourseFeedRow extends Component {
     this._renderTutorFeed = this._renderTutorFeed.bind(this);
     this._renderItemFeed = this._renderItemFeed.bind(this);
     this._renderCourseReviewFeed = this._renderCourseReviewFeed.bind(this);
+    this._displayReplyBox = this._displayReplyBox.bind(this);
+    this._handleReplyChange = this._handleReplyChange.bind(this);
   }
 
   _handleFlagClick() {
@@ -117,9 +121,10 @@ class CourseFeedRow extends Component {
               </small>
               <br />
               <small>
-                Posted on {this.props.feed.created_at.slice(0, 10)}
-                <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-                { this.state.flagRequest && this._renderFlagSelect() }
+                {this.props.feed.created_at.slice(0, 10)}
+                <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                {this.state.flagRequest && this._renderFlagSelect()}
+                <i className='fa fa-heart' aria-hidden='true' />
               </small>
             </p>
           </div>
@@ -150,15 +155,20 @@ class CourseFeedRow extends Component {
               {this.props.feed.content}
               <br />
               <small>
-                <Link>Reply</Link>
+                <Link onClick={() => this.setState({ showReplyBox: !this.state.showReplyBox })}>Comment</Link>
               </small>
               <br />
               <small>
-                Posted on {this.props.feed.created_at.slice(0, 10)}
-                <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-                { this.state.flagRequest && this._renderFlagSelect() }
+                {this.props.feed.created_at.slice(0, 10)}
+                <i className={this.props.feed.editable ? 'fa fa-trash' : 'fa fa-flag'}
+                  aria-hidden='true'
+                  onClick={this._handleFlagClick}
+                  style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                {this.state.flagRequest && this._renderFlagSelect()}
+                <i className='fa fa-heart' aria-hidden='true' />
               </small>
             </p>
+            { this._displayReplyBox() }
           </div>
         </div>
       </article>
@@ -195,9 +205,10 @@ class CourseFeedRow extends Component {
               </small>
               <br />
               <small>
-                Posted on {this.props.feed.created_at.slice(0, 10)}
-                <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-                { this.state.flagRequest && this._renderFlagSelect() }
+                {this.props.feed.created_at.slice(0, 10)}
+                <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                {this.state.flagRequest && this._renderFlagSelect()}
+                <i className='fa fa-heart' aria-hidden='true' />
               </small>
             </p>
           </div>
@@ -236,9 +247,10 @@ class CourseFeedRow extends Component {
               </small>
               <br />
               <small>
-                Posted on {this.props.feed.created_at.slice(0, 10)}
-                <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-                { this.state.flagRequest && this._renderFlagSelect() }
+                {this.props.feed.created_at.slice(0, 10)}
+                <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                {this.state.flagRequest && this._renderFlagSelect()}
+                <i className='fa fa-heart' aria-hidden='true' />
               </small>
             </p>
           </div>
@@ -273,15 +285,32 @@ class CourseFeedRow extends Component {
               </small>
               <br />
               <small>
-                Posted on {this.props.feed.created_at.slice(0, 10)}
-                <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-                { this.state.flagRequest && this._renderFlagSelect() }
+                {this.props.feed.created_at.slice(0, 10)}
+                <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                {this.state.flagRequest && this._renderFlagSelect()}
+                <i className='fa fa-heart' aria-hidden='true' />
               </small>
             </p>
           </div>
         </div>
       </article>
     );
+  }
+
+  _displayReplyBox() {
+    if (this.state.showReplyBox) {
+      return (
+        <p className='control'>
+          <textarea className='textarea' style={{minHeight: '40px'}} name='replyContent' placeholder='Enter your comment here...' onChange={this._handleReplyChange} />
+        </p>
+      );
+    }
+  }
+
+  _handleReplyChange(e) {
+    let state = {};
+    state[e.target.name] = e.target.value;
+    this.setState(state);
   }
 
   render() {
