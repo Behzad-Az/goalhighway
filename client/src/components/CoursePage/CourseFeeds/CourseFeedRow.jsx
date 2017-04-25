@@ -65,27 +65,27 @@ class CourseFeedRow extends Component {
   _prepareFeed() {
     switch(this.props.feed.category) {
       case 'new_asg_report':
-        return this._renderDocumentFeed('New Assingment / Report - ');
+        return this._renderDocumentFeed(`New Assingment / Report - ${this.props.feed.header}`);
       case 'new_lecture_note':
-        return this._renderDocumentFeed('New Lecture Note - ');
+        return this._renderDocumentFeed(`New Lecture Note - ${this.props.feed.header}`);
       case 'new_sample_question':
-        return this._renderDocumentFeed('New Sample Question - ');
+        return this._renderDocumentFeed(`New Sample Question - ${this.props.feed.header}`);
       case 'new_document':
-        return this._renderDocumentFeed('New Document - ');
+        return this._renderDocumentFeed(`New Document - ${this.props.feed.header}`);
       case 'revised_asg_report':
-        return this._renderDocumentFeed('Revised Assignment / Report - ');
+        return this._renderDocumentFeed(`Revised Assignment / Report - ${this.props.feed.header}`);
       case 'revised_lecture_note':
-        return this._renderDocumentFeed('Revised Lecture Note - ');
+        return this._renderDocumentFeed(`Revised Lecture Note - ${this.props.feed.header}`);
       case 'revised_sample_question':
-        return this._renderDocumentFeed('Revised Sample Question - ');
+        return this._renderDocumentFeed(`Revised Sample Question - ${this.props.feed.header}`);
       case 'revised_document':
-        return this._renderDocumentFeed('Revised Document - ');
+        return this._renderDocumentFeed(`Revised Document - ${this.props.feed.header}`);
       case 'new_tutor_request':
         return this._renderTutorFeed(`Tutor Request by ${this.props.feed.commenter_name}`);
       case 'new_comment':
         return this._renderCommentFeed(`New Comment by ${this.props.feed.commenter_name}`);
       case 'new_item_for_sale':
-        return this._renderItemFeed('New Item for Sale or Trade!');
+        return this._renderItemFeed(`New Item for Sale - ${this.props.feed.header}`);
       case 'new_course_review':
         return this._renderCourseReviewFeed('New Course Review!');
       default:
@@ -93,7 +93,7 @@ class CourseFeedRow extends Component {
     }
   }
 
-  _renderDocumentFeed(headerPrefix) {
+  _renderDocumentFeed(header) {
     return (
       <article className='media course-row'>
         <figure className='media-left'>
@@ -104,12 +104,14 @@ class CourseFeedRow extends Component {
         <div className='media-content'>
           <div className='content'>
             <strong>
-              {headerPrefix}'{this.props.feed.header}'
+              {header}
             </strong>
             <br />
             {this.props.feed.content}
             <br />
-            <small><Link>Download Document</Link></small>
+            <small>
+              <Link to={`/courses/${this.props.feed.course_id}/docs/${this.props.feed.doc_id}`}>Download Document</Link>
+            </small>
             <br />
             <small>
               Posted on {this.props.feed.created_at.slice(0, 10)}
@@ -145,8 +147,7 @@ class CourseFeedRow extends Component {
             </small>
             <br />
             <small><a>Reply</a></small>
-            {this.props.feed.editable && <small> . <a onClick={this._handleDeletionRequest}> Remove</a></small>}
-
+            { this.props.feed.editable && <small> . <a onClick={this._handleDeletionRequest}> Remove</a></small> }
           </div>
         </div>
       </article>
@@ -169,10 +170,19 @@ class CourseFeedRow extends Component {
             <br />
             {this.props.feed.content}
             <br />
-            <small><Link>Answer {this.props.feed.commenter_name}</Link></small>
+            <small>
+              <Link
+                onClick={() => this.props.composeNewEmail({
+                  toId: this.props.feed.commenter_id,
+                  objId: this.props.feed.tutor_log_id,
+                  type: 'tutorReq',
+                  subject: 'RE: 1 on 1 Tutor Request' })}
+                >Answer {this.props.feed.commenter_name}
+              </Link>
+            </small>
             <br />
             <small>
-              Posted on {this.props.feed.created_at.slice(0, 10)} |
+              Posted on {this.props.feed.created_at.slice(0, 10)}
               <i className='fa fa-flag expandable' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
               { this.state.flagRequest && this._renderFlagSelect() }
             </small>
@@ -199,7 +209,16 @@ class CourseFeedRow extends Component {
             <br />
             {this.props.feed.content}
             <br />
-            <small><Link>Contant Seller</Link></small>
+            <small>
+              <Link
+                onClick={() => this.props.composeNewEmail({
+                  toId: this.props.feed.commenter_id,
+                  objId: this.props.feed.item_for_sale_id,
+                  type: 'itemForSale',
+                  subject: 'RE: Interested in your item for sale / trade' })}
+                >Contact Owner
+              </Link>
+            </small>
             <br />
             <small>
               Posted on {this.props.feed.created_at.slice(0, 10)}
@@ -228,7 +247,9 @@ class CourseFeedRow extends Component {
             <br />
             {this.props.feed.content}
             <br />
-            <small><Link>See Details</Link></small>
+            <small>
+              <Link to={`/courses/${this.props.feed.course_id}/reviews`}>See Details</Link>
+            </small>
             <br />
             <small>
               Posted on {this.props.feed.created_at.slice(0, 10)} |

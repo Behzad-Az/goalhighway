@@ -98,7 +98,7 @@ class ResumeCard extends Component {
   }
 
   _handleDownload() {
-    fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
+    fetch(`/api/resumes/${this.props.resume.id}`, {
       method: 'GET',
       credentials: 'same-origin'
     })

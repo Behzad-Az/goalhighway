@@ -72,7 +72,7 @@ class DocPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <TopRow courseInfo={this.state.courseInfo} docInfo={this.state.docInfo} />
+          <TopRow courseInfo={this.state.courseInfo} docInfo={this.state.docInfo} reload={this._loadComponentData} />
           <RevisionsContainer
             revs={this.state.docInfo.revisions}
             docInfo={this.state.docInfo}

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 
+const download = require('../../download.js');
+
 class ResumeReviewFeedRow extends Component {
   constructor(props) {
     super(props);
@@ -8,6 +10,7 @@ class ResumeReviewFeedRow extends Component {
       flagRequest: false,
       flagReason: ''
     };
+    this._handleDownload = this._handleDownload.bind(this);
     this._handleFlagClick = this._handleFlagClick.bind(this);
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
     this._renderFlagSelect = this._renderFlagSelect.bind(this);
@@ -36,6 +39,19 @@ class ResumeReviewFeedRow extends Component {
     // .then(() => this.setState(state));
   }
 
+  _handleDownload() {
+    fetch(`/api/resumes/${this.props.feed.id}`, {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
+    .then(response => {
+      if (response.status === 200) { return response.blob(); }
+      else { throw 'Server returned false.'; }
+    })
+    .then(blob => download(blob, `Resume_${this.props.feed.title}`))
+    .catch(err => console.error('Unable to download file: - ', err));
+  }
+
   _renderFlagSelect() {
     return (
       <small className='control flag-submission'>
@@ -61,7 +77,11 @@ class ResumeReviewFeedRow extends Component {
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <Link>
+            <Link onClick={() => this.props.composeNewEmail({
+              toId: this.props.feed.commenter_id,
+              objId: this.props.feed.id,
+              type: 'resumeReview',
+              subject: 'RE: CV Review Request' })} >
               <button className='button'>Review CV</button>
             </Link>
             <p>
@@ -70,7 +90,7 @@ class ResumeReviewFeedRow extends Component {
               {this.props.feed.title} - {this.props.feed.intent}
               <br />
               <small>
-                <Link>Click here for some tips</Link>
+                <Link onClick={this._handleDownload}>Download Resume</Link>
               </small>
               <br />
               <small>

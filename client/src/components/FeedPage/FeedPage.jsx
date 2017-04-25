@@ -3,14 +3,24 @@ import Navbar from '../Navbar/Navbar.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../RightSideBar/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
+import NewEmailForm from '../EmailPage/NewEmailForm.jsx';
+import ReactAlert from '../partials/ReactAlert.jsx';
 import FeedsContainer from './FeedsContainer.jsx';
 
 class FeedPage extends Component {
   constructor(props) {
     super(props);
+    this.reactAlert = new ReactAlert();
     this.state = {
       dataLoaded: false,
       pageError: false,
+      emailParams: {
+        toId: '',
+        objId: '',
+        type: '',
+        subject: ''
+      },
+      showNewEmailForm: false,
       feeds: [],
       courseFeedsLength: 0,
       resumeReviewFeedsLength: 0,
@@ -18,6 +28,8 @@ class FeedPage extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
+    this._composeNewEmail = this._composeNewEmail.bind(this);
+    this._toggleEmailModal = this._toggleEmailModal.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
     this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
   }
@@ -61,6 +73,14 @@ class FeedPage extends Component {
     }
   }
 
+  _composeNewEmail(emailParams) {
+    this.setState({ emailParams, showNewEmailForm: true });
+  }
+
+  _toggleEmailModal() {
+    this.setState({ showNewEmailForm: !this.state.showNewEmailForm });
+  }
+
   _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
@@ -75,7 +95,12 @@ class FeedPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <FeedsContainer feeds={this.state.feeds} />
+          <NewEmailForm
+            emailParams={this.state.emailParams}
+            showModal={this.state.showNewEmailForm}
+            toggleModal={this._toggleEmailModal}
+          />
+          <FeedsContainer feeds={this.state.feeds} composeNewEmail={this._composeNewEmail} />
           { this._displayLoadMoreBtn() }
         </div>
       );
@@ -98,6 +123,7 @@ class FeedPage extends Component {
         <LeftSideBar />
         { this._renderPageAfterData() }
         <RightSideBar />
+        { this.reactAlert.container }
       </div>
     );
   }

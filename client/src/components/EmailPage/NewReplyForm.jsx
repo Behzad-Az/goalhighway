@@ -55,7 +55,7 @@ class NewReplyForm extends Component {
         <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
-            <p className='modal-card-title'>RE: {this.props.email.subject}</p>
+            <p className='modal-card-title'>{this.props.email.subject}</p>
             <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>

@@ -8,6 +8,7 @@ import ItemsContainer from './ItemsContainer.jsx';
 import TopRow from './TopRow.jsx';
 import CourseFeedsContainer from './CourseFeeds/CourseFeedsContainer.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
+import NewEmailForm from '../EmailPage/NewEmailForm.jsx';
 
 class CoursePage extends Component {
   constructor(props) {
@@ -16,6 +17,13 @@ class CoursePage extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
+      emailParams: {
+        toId: '',
+        objId: '',
+        type: '',
+        subject: ''
+      },
+      showNewEmailForm: false,
       courseInfo: {
         id: this.props.routeParams.course_id
       },
@@ -27,6 +35,8 @@ class CoursePage extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
+    this._composeNewEmail = this._composeNewEmail.bind(this);
+    this._toggleEmailModal = this._toggleEmailModal.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
@@ -69,6 +79,14 @@ class CoursePage extends Component {
     }
   }
 
+  _composeNewEmail(emailParams) {
+    this.setState({ emailParams, showNewEmailForm: true });
+  }
+
+  _toggleEmailModal() {
+    this.setState({ showNewEmailForm: !this.state.showNewEmailForm });
+  }
+
   _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
@@ -83,12 +101,26 @@ class CoursePage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
+          <NewEmailForm
+            emailParams={this.state.emailParams}
+            showModal={this.state.showNewEmailForm}
+            toggleModal={this._toggleEmailModal}
+          />
           <TopRow courseInfo={this.state.courseInfo} reload={this._loadComponentData} />
           <DocsContainer docs={this.state.asgReports} header='Assignments and Reports' />
           <DocsContainer docs={this.state.lectureNotes} header='Lecture Notes' />
           <DocsContainer docs={this.state.sampleQuestions} header='Sample Questions' />
-          <ItemsContainer items={this.state.itemsForSale} reload={this._loadComponentData} />
-          <CourseFeedsContainer courseId={this.state.courseInfo.id} courseFeeds={this.state.courseFeeds} reload={this._loadComponentData} />
+          <ItemsContainer
+            items={this.state.itemsForSale}
+            reload={this._loadComponentData}
+            composeNewEmail={this._composeNewEmail}
+          />
+          <CourseFeedsContainer
+            courseId={this.state.courseInfo.id}
+            courseFeeds={this.state.courseFeeds}
+            reload={this._loadComponentData}
+            composeNewEmail={this._composeNewEmail}
+          />
         </div>
       );
     } else {

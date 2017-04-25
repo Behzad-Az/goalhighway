@@ -191,7 +191,7 @@ app.get('/api/users/:user_id/feed', (req, res) => {
   getFeedPageData(req, res, knex, req.session.user_id);
 });
 
-app.get('/api/users/:user_id/resumes/:resume_id', (req, res) => {
+app.get('/api/resumes/:resume_id', (req, res) => {
   getResumeData(req, res, knex, req.session.user_id);
 });
 

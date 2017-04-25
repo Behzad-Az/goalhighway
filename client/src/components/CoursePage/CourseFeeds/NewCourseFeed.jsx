@@ -11,20 +11,12 @@ class NewCourseFeed extends Component {
       anonymous: false
     };
     this._validateForm = this._validateForm.bind(this);
-    this._clearForm = this._clearForm.bind(this);
     this._handleChange = this._handleChange.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
   }
 
   _validateForm() {
     return this.state.content && this.state.content.length <= this.maxContentLength;
-  }
-
-  _clearForm() {
-    this.setState({
-      anonymous: false,
-      content: ''
-    });
   }
 
   _handleChange(e) {
@@ -50,13 +42,16 @@ class NewCourseFeed extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { this.reactAlert.showAlert('New course feed submitted', 'info'); }
+      if (resJSON) {
+        this.reactAlert.showAlert('Comment submitted', 'info');
+        this.setState({ content: '', anonymous: false });
+        this.props.reload();
+      }
       else { throw 'Server returned false'; }
     })
-    .catch(err => console.error('Unable to post new course feed - ', err))
-    .then(() => {
-      this.props.reload();
-      this._clearForm();
+    .catch(err => {
+      this.reactAlert.showAlert('Unable to submit comment', 'error');
+      console.error('Unable to post new course feed - ', err);
     });
   }
 
@@ -72,9 +67,6 @@ class NewCourseFeed extends Component {
           </p>
           <p className='field anonymous'>
             <input type='checkbox' name='anonymous' checked={this.state.anonymous} onClick={() => this.setState({ anonymous: !this.state.anonymous })} /> Anonymous
-          </p>
-          <p className='control'>
-            <button className='button is-link' onClick={this._clearForm}>Clear</button>
           </p>
           <p className='char-counter' style={{color: this.maxContentLength - this.state.content.length < 0 ? 'red' : ''}}>{this.state.content.length}</p>
         </div>

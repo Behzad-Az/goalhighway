@@ -140,7 +140,14 @@ class ItemCard extends Component {
             <span className='text-link'>
               { this.props.item.editable ?
                   <Link onClick={this._toggleView}>Edit</Link> :
-                  <Link onClick={() => this.props.composeNewEmail({ toId: this.props.item.owner_id, objId: this.props.item.id, type: 'itemForSale' })}>Contact Owner</Link> }
+                  <Link
+                    onClick={() => this.props.composeNewEmail({
+                      toId: this.props.item.owner_id,
+                      objId: this.props.item.id,
+                      type: 'itemForSale',
+                      subject: `RE: Item for Sale - ${this.props.item.title}` })}
+                    >Contact Owner
+                  </Link> }
             </span>
           </p>
         </div>

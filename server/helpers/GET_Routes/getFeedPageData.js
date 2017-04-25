@@ -10,7 +10,7 @@ const getFeedPageData = (req, res, knex, user_id) => {
     .innerJoin('courses', 'course_feed.course_id', 'courses.id')
     .innerJoin('users', 'course_feed.commenter_id', 'users.id')
     .select(
-      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
+      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id', 'course_feed.item_for_sale_id', 'course_feed.course_review_id',
       'course_feed.anonymous', 'course_feed.commenter_id', 'course_feed.category', 'course_feed.content', 'course_feed.header',
       'course_feed.doc_id', 'courses.short_display_name', 'users.photo_name', 'users.username as commenter_name'
     )
@@ -21,7 +21,10 @@ const getFeedPageData = (req, res, knex, user_id) => {
 
   const getResumeFeeds = () => knex('resumes')
     .innerJoin('users', 'resumes.owner_id', 'users.id')
-    .select('resumes.id', 'resumes.title', 'resumes.intent', 'resumes.review_requested_at as created_at', 'users.id as commenter_id', 'users.username as commenter_name', 'users.photo_name')
+    .select(
+      'resumes.id', 'resumes.title', 'resumes.intent', 'resumes.review_requested_at as created_at',
+      'users.id as commenter_id', 'users.username as commenter_name', 'users.photo_name'
+    )
     .where('audience_filter_id', req.session.inst_prog_id)
     .andWhere('audience_filter_table', 'institution_program')
     .whereNotNull('resumes.review_requested_at')

@@ -55,29 +55,12 @@ const getCoursePageData = (req, res, knex, user_id) => {
   const getCourseFeeds = () => knex('course_feed')
     .innerJoin('users', 'course_feed.commenter_id', 'users.id')
     .select(
-      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
+      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id', 'course_feed.item_for_sale_id', 'course_feed.course_review_id',
       'course_feed.anonymous', 'course_feed.commenter_id', 'course_feed.category', 'course_feed.content', 'course_feed.header',
       'course_feed.doc_id', 'users.photo_name', 'users.username as commenter_name'
     )
     .where('course_feed.course_id', req.params.course_id)
     .orderBy('course_feed.created_at', 'desc');
-
-  // const categorizeFeed = feedArr => feedArr.map(feed => {
-  //   let documentFeedCategories = [
-  //     'new_asg_report', 'new_lecture_note', 'new_sample_question', 'new_document', 'revised_asg_report',
-  //     'revised_lecture_note', 'revised_sample_question', 'revised_document'
-  //   ];
-  //   if (feed.anonymous && feed.category === 'new_comment') {
-  //     feed.photo_name = 'anonymous_user_photo.png';
-  //     feed.commenter_name = 'Anonymous';
-  //   } else if (feed.anonymous && documentFeedCategories.includes(feed.category)) {
-  //     feed.photo_name = 'document.png';
-  //     feed.commenter_name = 'Anonymous';
-  //   }
-  //   else if (feed.category === 'new_item_for_sale') { feed.photo_name = 'item_for_sale.png'; }
-  //   feed.editable = feed.commenter_id === user_id;
-  //   return feed;
-  // });
 
   const categorizeFeed = feedArr => feedArr.map(feed => {
     let documentFeedCategories = [

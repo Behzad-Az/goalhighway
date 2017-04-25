@@ -28,20 +28,22 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     .transacting(trx)
     .insert(courseFeedObj);
 
-  const verifySubscription = () => knex('course_user')
+  const verifySubscription = trx => knex('course_user')
+    .transaction(trx)
     .where('course_id', req.params.course_id)
     .andWhere('user_id', user_id)
     .whereNotNull('sub_date')
     .whereNull('unsub_date')
+    .limit(1)
     .count('id as subscribed');
 
   knex.transaction(trx => {
-    verifySubscription()
+    verifySubscription(trx)
     .then(result => {
       if (parseInt(result[0].subscribed)) {
         return closePrevReqIfNecessary();
       } else {
-        throw 'User must be subscribed before submitting assistance request.';
+        throw 'User not subscribed to course';
       }
     })
     .then(() => insertNewTutorLog(trx))

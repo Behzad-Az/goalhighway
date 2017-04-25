@@ -9,28 +9,45 @@ const postNewEmail = (req, res, knex, user_id) => {
     .transacting(trx)
     .insert(newConversationObj);
 
-  const determineEmailType = () => new Promise((resolve, reject) => {
-    switch (req.body.type) {
-      case 'itemForSale':
-        resolve('items_for_sale');
-        break;
-      default:
-        reject('Invalid type provided');
-        break;
+  const determineEmailType = trx => {
+    if (req.body.toId == user_id) {
+      throw 'User cannot email self';
+    } else {
+      switch (req.body.type) {
+        case 'itemForSale':
+          return knex('items_for_sale')
+            .transacting(trx)
+            .where('id', req.body.objId)
+            .andWhere('owner_id', req.body.toId)
+            .whereNull('deleted_at')
+            .limit(1)
+            .count('id as verifiedEmail');
+        case 'tutorReq':
+          return knex('tutor_log')
+            .transacting(trx)
+            .where('id', req.body.objId)
+            .andWhere('student_id', req.body.toId)
+            .whereNull('closed_at')
+            .whereNull('closure_reason')
+            .limit(1)
+            .count('id as verifiedEmail');
+        case 'resumeReview':
+          return knex('resumes')
+            .transacting(trx)
+            .where('id', req.body.objId)
+            .andWhere('owner_id', req.body.toId)
+            .whereNull('deleted_at')
+            .whereNotNull('review_requested_at')
+            .limit(1)
+            .count('id as verifiedEmail');
+        default:
+          throw 'Unable to validate email parameters';
+      }
     }
-  });
-
-  const verifyEmailQuery = (tableName, trx) => knex(tableName)
-    .transacting(trx)
-    .where('id', req.body.objId)
-    .andWhere('owner_id', req.body.toId)
-    .whereNull('deleted_at')
-    .limit(1)
-    .count('id as verifiedEmail');
+  };
 
   knex.transaction(trx => {
-    determineEmailType()
-    .then(tableName => verifyEmailQuery(tableName))
+    determineEmailType(trx)
     .then(verifiedEmail => {
       if (parseInt(verifiedEmail[0].verifiedEmail)) {
         let newEmailObj = {
@@ -40,7 +57,7 @@ const postNewEmail = (req, res, knex, user_id) => {
         };
         return insertNewEmail(newEmailObj, trx);
       } else {
-        throw 'Email query not verified.';
+        throw 'Email parameters not valid.';
       }
     })
     .then(emailId => {

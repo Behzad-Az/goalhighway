@@ -36,7 +36,7 @@ const getRightSideBarData = (req, res, knex, user_id) => {
     .innerJoin('courses', 'course_feed.course_id', 'courses.id')
     .innerJoin('users', 'course_feed.commenter_id', 'users.id')
     .select(
-      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id',
+      'course_feed.id', 'course_feed.created_at', 'course_feed.tutor_log_id', 'course_feed.course_id', 'course_feed.item_for_sale_id', 'course_feed.course_review_id',
       'course_feed.anonymous', 'course_feed.commenter_id', 'course_feed.category', 'course_feed.content', 'course_feed.header',
       'course_feed.doc_id', 'courses.short_display_name', 'users.username as commenter_name'
     )
