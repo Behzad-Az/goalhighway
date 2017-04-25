@@ -38,8 +38,10 @@
 
     .docs-container, .items-container {
       margin-bottom: $default_margin/2;
+      .fa { cursor: pointer; }
       .docs-row, .items-row {
         display: flex; flex-wrap: wrap; flex-direction: row;
+        &.is-hidden { display: none; }
         .doc-index.card, .item-index.card {
           margin: 0 $default_margin/4 $default_margin/2 $default_margin/4; width: 230px; height: 100%;
           .card-content {
@@ -66,13 +68,15 @@
 
     .feeds-container {
       hr { margin: $default_margin/2 0; }
+      .fa { cursor: pointer; }
       .anonymous { line-height: 35px; }
       .char-counter { position: absolute; right: 0; font-size: 12px; }
       .button.is-primary { background-color: $dark-blue; &:hover { background-color: darken($dark-blue, 10%) } }
       .feeds-rows { border: 1px darken($default-bg-color, 20%) solid; }
       .course-row {
-        .media-left .image { overflow: hidden; border: #bbb solid 2px; border-radius: 50% }
         background-color: white; margin: 0; padding: $default_margin/2;
+        &.is-hidden { display: none; }
+        .media-left .image { overflow: hidden; border: #bbb solid 2px; border-radius: 50% }
         .fa { font-size: 12px; cursor: pointer; vertical-align: middle; margin-left: $default_margin/2; &:hover { transform: scale(1.1); } }
         .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
         a { color: $dark-blue; &:hover { color: $pumpkin; } }

@@ -1,5 +1,6 @@
 exports.seed = function(knex, Promise) {
   return Promise.all([
+    knex.raw('ALTER SEQUENCE course_feed_replies_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE email_conversations_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE emails_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE company_reviews_id_seq RESTART WITH 1;'),

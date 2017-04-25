@@ -168,8 +168,8 @@ class CourseFeedRow extends Component {
                 <i className='fa fa-heart' aria-hidden='true' />
               </small>
             </p>
-            { this._displayReplyBox() }
           </div>
+          { this._displayReplyBox() }
         </div>
       </article>
     );
@@ -300,9 +300,16 @@ class CourseFeedRow extends Component {
   _displayReplyBox() {
     if (this.state.showReplyBox) {
       return (
-        <p className='control'>
-          <textarea className='textarea' style={{minHeight: '40px'}} name='replyContent' placeholder='Enter your comment here...' onChange={this._handleReplyChange} />
-        </p>
+        <div className='control is-grouped'>
+          <p className='control is-expanded'>
+            <textarea className='textarea' style={{minHeight: '40px'}} name='replyContent' placeholder='Enter your comment here...' onChange={this._handleReplyChange} />
+          </p>
+          <p className='control'>
+            <a className='button is-info'>
+              Send
+            </a>
+          </p>
+        </div>
       );
     }
   }

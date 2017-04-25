@@ -1,5 +1,6 @@
 exports.seed = function(knex, Promise) {
   return Promise.all([
+    knex.raw('delete from course_feed_replies where 1=1'),
     knex.raw('delete from email_conversations where 1=1'),
     knex.raw('delete from emails where 1=1'),
     knex.raw('delete from company_reviews where 1=1'),
