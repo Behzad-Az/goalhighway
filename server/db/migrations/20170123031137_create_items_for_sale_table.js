@@ -3,10 +3,10 @@ exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('items_for_sale', (t) => {
       t.increments('id');
-      t.string('title', 100).notNullable();
-      t.string('item_desc', 400).notNullable();
-      t.string('photo_name', 50).notNullable().defaultTo('default_photo_path');
-      t.string('price', 50).notNullable();
+      t.string('title', 60).notNullable();
+      t.string('item_desc', 250).notNullable();
+      t.string('photo_name', 30).notNullable().unique();
+      t.string('price', 10).notNullable();
       t.integer('course_id').notNullable().references('courses.id');
       t.integer('owner_id').notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());

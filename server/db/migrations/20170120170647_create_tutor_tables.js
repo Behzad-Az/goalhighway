@@ -4,14 +4,14 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('tutor_log', t => {
       t.increments('id');
       t.integer('rating');
-      t.string('feedback', 400);
-      t.string('issue_desc', 400).notNullable();
+      t.string('feedback', 500);
+      t.string('issue_desc', 500).notNullable();
       t.integer('course_id').notNullable().references('courses.id');
       t.integer('tutor_id').references('users.id');
       t.integer('student_id').notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('closed_at');
-      t.string('closure_reason', 50);
+      t.string('closure_reason', 30);
     })
   ]);
 };

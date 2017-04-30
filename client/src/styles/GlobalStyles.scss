@@ -16,4 +16,5 @@ body,html {
   margin:0;
   padding:0;
   font-family: 'Nunito', sans-serif;
+  .char-limit { color: $bad-red; font-size: 12px; padding-left: $default_margin/4; }
 }

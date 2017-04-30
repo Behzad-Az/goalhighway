@@ -4,8 +4,10 @@ import ReactAlert from '../../partials/ReactAlert.jsx';
 class NewCourseFeed extends Component {
   constructor(props) {
     super(props);
-    this.maxContentLength = 250;
     this.reactAlert = new ReactAlert();
+    this.formLimits = {
+      content: 500
+    };
     this.state = {
       content: '',
       anonymous: false
@@ -16,7 +18,7 @@ class NewCourseFeed extends Component {
   }
 
   _validateForm() {
-    return this.state.content && this.state.content.length <= this.maxContentLength;
+    return this.state.content && this.state.content.length <= this.formLimits.content;
   }
 
   _handleChange(e) {
@@ -59,7 +61,12 @@ class NewCourseFeed extends Component {
     return (
       <div className='new-course-feed'>
         <div className='control'>
-          <textarea className='textarea' name='content' placeholder='Type your comment here...' onChange={this._handleChange} value={this.state.content} />
+          <textarea
+            className='textarea'
+            name='content'
+            placeholder='Type your comment here...'
+            onChange={this._handleChange}
+            style={{ borderColor: this.state.content.length > this.formLimits.content ? '#9D0600' : '' }} />
         </div>
         <div className='control is-grouped'>
           <p className='control'>
@@ -68,7 +75,7 @@ class NewCourseFeed extends Component {
           <p className='field anonymous'>
             <input type='checkbox' name='anonymous' checked={this.state.anonymous} onClick={() => this.setState({ anonymous: !this.state.anonymous })} /> Anonymous
           </p>
-          <p className='char-counter' style={{color: this.maxContentLength - this.state.content.length < 0 ? 'red' : ''}}>{this.state.content.length}</p>
+          <p className='char-counter' style={{ color: this.state.content.length > this.formLimits.content ? '#9D0600' : '' }}>{this.state.content.length}</p>
         </div>
       </div>
     );

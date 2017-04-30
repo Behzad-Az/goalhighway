@@ -5,6 +5,9 @@ class NewReqAssistForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
+    this.formLimits = {
+      issueDesc: 500
+    };
     this.state = {
       issueDesc: this.props.courseInfo.latestAssistRequest,
       assistReqOpen: this.props.courseInfo.assistReqOpen,
@@ -32,7 +35,7 @@ class NewReqAssistForm extends Component {
 
   _validateForm() {
     return this.state.issueDesc &&
-           this.state.issueDesc.length <= 400;
+           this.state.issueDesc.length <= this.formLimits.issueDesc;
   }
 
   _formFooterOptions() {
@@ -122,8 +125,15 @@ class NewReqAssistForm extends Component {
           </header>
           <section className='modal-card-body'>
             <p className='control'>
-              <textarea className='textarea' name='issueDesc' placeholder='How may one of our tutors assist you?' value={this.state.issueDesc} onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='issueDesc'
+                placeholder='How may one of our tutors assist you?'
+                value={this.state.issueDesc}
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.issueDesc.length > this.formLimits.issueDesc ? '#9D0600' : '' }} />
             </p>
+            { this.state.issueDesc.length > this.formLimits.issueDesc && <p className='char-limit'>too long!</p> }
           </section>
           { this._formFooterOptions() }
         </div>

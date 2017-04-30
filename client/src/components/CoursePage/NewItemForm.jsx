@@ -7,10 +7,14 @@ class NewItemForm extends Component {
     super(props);
     this.reactAlert = new ReactAlert();
     this.formData = new FormData();
+    this.formLimits = {
+      title: 60,
+      itemDesc: 250,
+      price: 10
+    };
     this.state = {
       title: '',
       itemDesc: '',
-      photoPath: '',
       price: ''
     };
     this._handleChange = this._handleChange.bind(this);
@@ -20,15 +24,18 @@ class NewItemForm extends Component {
   }
 
   _handleChange(e) {
-    let state = {};
-    state[e.target.name] = e.target.value;
-    this.setState(state);
+    let newState = {};
+    newState[e.target.name] = e.target.value;
+    this.setState(newState);
   }
 
   _validateForm() {
     return this.state.title &&
+           this.state.title.length <= this.formLimits.title &&
            this.state.itemDesc &&
-           this.state.price;
+           this.state.itemDesc.length <= this.formLimits.itemDesc &&
+           this.state.price &&
+           this.state.price.length <= this.formLimits.price;
   }
 
   _deleteFormData() {
@@ -74,21 +81,47 @@ class NewItemForm extends Component {
             <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
-            <label className='label'>Item Title:</label>
+            <label className='label'>
+              Item Title:
+              { this.state.title.length > this.formLimits.title && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='title' placeholder='Enter item title here' onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='title'
+                placeholder='Enter item title here'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.title.length > this.formLimits.title ? '#9D0600' : '' }} />
             </p>
-            <label className='label'>Item Description:</label>
+            <label className='label'>
+              Item Description:
+              { this.state.itemDesc.length > this.formLimits.itemDesc && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <textarea className='textarea' name='itemDesc' placeholder='Enter description of item here' onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='itemDesc'
+                placeholder='Enter description of item here'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.itemDesc.length > this.formLimits.itemDesc ? '#9D0600' : '' }} />
             </p>
             <div className='control'>
               <label className='label'>Upload Photo (Recommended):</label>
               <ImageCropper formData={this.formData} />
             </div>
-            <label className='label'>Item Price:</label>
+            <label className='label'>
+              Item Price:
+              { this.state.price.length > this.formLimits.price && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control has-icon has-icon-left'>
-              <input className='input' type='text' name='price' placeholder='Enter price here' onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='price'
+                placeholder='Enter price here'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.price.length > this.formLimits.price ? '#9D0600' : '' }} />
               <span className='icon'><i className='fa fa-dollar' /></span>
             </p>
           </section>

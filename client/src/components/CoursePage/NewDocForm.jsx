@@ -5,6 +5,10 @@ class NewDocForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
+    this.formLimits = {
+      title: 60,
+      revDesc: 250
+    };
     this.state = {
       title: '',
       type: '',
@@ -18,9 +22,9 @@ class NewDocForm extends Component {
   }
 
   _handleChange(e) {
-    let state = {};
-    state[e.target.name] = e.target.value;
-    this.setState(state);
+    let stateObj = {};
+    stateObj[e.target.name] = e.target.value;
+    this.setState(stateObj);
   }
 
   _handleFileChange(e) {
@@ -30,9 +34,11 @@ class NewDocForm extends Component {
 
   _validateForm() {
     return this.state.title &&
+           this.state.title.length <= this.formLimits.title &&
            this.state.revDesc &&
-           this.state.file &&
-           this.state.type;
+           this.state.revDesc.length <= this.formLimits.revDesc &&
+           this.state.type &&
+           this.state.file;
   }
 
   _handleNewDocPost() {
@@ -70,17 +76,35 @@ class NewDocForm extends Component {
             <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
-            <label className='label'>Document Title:</label>
+            <label className='label'>
+              Document Title:
+              { this.state.title.length > this.formLimits.title && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='title' placeholder='Enter document title here' onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='title'
+                placeholder='Enter document title here'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.title.length > this.formLimits.title ? '#9D0600' : '' }} />
             </p>
             <label className='label'>Upload the Document:</label>
             <p className='control'>
               <input className='upload' type='file' onChange={this._handleFileChange} />
             </p>
-            <label className='label'>Revision Comment:</label>
+            <label className='label'>
+              Revision Comment:
+              { this.state.revDesc.length > this.formLimits.revDesc && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='revDesc' placeholder='Enter revision comment here' defaultValue={this.state.revDesc} onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='revDesc'
+                placeholder='Enter revision comment here'
+                defaultValue={this.state.revDesc}
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.revDesc.length > this.formLimits.revDesc ? '#9D0600' : '' }} />
             </p>
             <label className='label'>Select Type of Document:</label>
             <p className='control'>
