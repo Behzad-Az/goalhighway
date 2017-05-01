@@ -1,10 +1,18 @@
 const postNewDoc = (req, res, knex, user_id, esClient) => {
 
-  let newDocObj = {
-    course_id: req.params.course_id
-  };
-
   let newRevObj = {};
+
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      ['asg_report', 'lecture_note', 'sample_question'].includes(req.body.type) &&
+      req.body.title.trim().length <= 60 &&
+      req.body.revDesc.trim().length <= 250
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
 
   const insertNewDoc = (newDocObj, trx) => knex('docs')
     .transacting(trx)
@@ -23,7 +31,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
   const getSearchData = () => knex('courses')
     .innerJoin('institutions', 'inst_id', 'institutions.id')
     .select('institutions.id', 'inst_long_name', 'inst_short_name', 'short_display_name')
-    .where('courses.id', newDocObj.course_id);
+    .where('courses.id', req.params.course_id);
 
   const determineCategory = type => {
     let output;
@@ -72,12 +80,13 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
   };
 
   knex.transaction(trx => {
-    insertNewDoc(newDocObj, trx)
+    validateInputs()
+    .then(() => insertNewDoc({ course_id: req.params.course_id }, trx))
     .then(docId => {
       newRevObj = {
-        title: req.body.title,
+        title: req.body.title.trim(),
         type: req.body.type,
-        rev_desc: req.body.revDesc,
+        rev_desc: req.body.revDesc.trim(),
         file_name: req.file.filename,
         doc_id: docId[0],
         poster_id: user_id
@@ -87,7 +96,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     .then(revId => {
       let adminFeedObj = {
         commenter_id: user_id,
-        course_id: newDocObj.course_id,
+        course_id: req.params.course_id,
         doc_id: newRevObj.doc_id,
         rev_id: revId[0],
         category: determineCategory(newRevObj.type),
@@ -103,7 +112,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
         id: newRevObj.doc_id,
         title: newRevObj.title,
         kind: newRevObj.type,
-        course_id: parseInt(newDocObj.course_id),
+        course_id: req.params.course_id,
         course_name: searchData[0].short_display_name,
         inst_id: searchData[0].id,
         inst_name: `${searchData[0].inst_long_name} ${searchData[0].inst_short_name}`
@@ -113,19 +122,15 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     .then(response => {
       let errorCount = response.items.reduce((count, item) => item.index && item.index.error ? 1 : 0, 0);
       if (errorCount) { throw 'Could not upload to elastic search db'; }
-      else { return; }
+      else { trx.commit(); }
     })
-    .then(() => trx.commit())
     .catch(err => {
+      console.error('Error inside postNewDoc.js: ', err);
       trx.rollback();
-      throw err;
     });
   })
   .then(() => res.send(true))
-  .catch(err => {
-    console.error('Error inside postNewDoc.js', err);
-    res.send(false);
-  });
+  .catch(() => res.send(false));
 
 };
 

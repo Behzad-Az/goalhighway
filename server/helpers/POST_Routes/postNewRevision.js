@@ -1,5 +1,17 @@
 const postNewRevision = (req, res, knex, user_id, esClient) => {
 
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      ['asg_report', 'lecture_note', 'sample_question'].includes(req.body.type) &&
+      req.body.title.trim().length <= 60 &&
+      req.body.revDesc.trim().length <= 250
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
+
   const determineFileName = () => new Promise((resolve, reject) => {
     if (req.file && req.file.filename) {
       resolve(req.file.filename);
@@ -54,7 +66,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     };
     const bodyObj = {
       doc: {
-        title: req.body.title,
+        title: req.body.title.trim(),
         kind
       }
     };
@@ -71,12 +83,13 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     .insert(adminFeedObj);
 
   knex.transaction(trx => {
-    determineFileName()
+    validateInputs()
+    .then(() => determineFileName())
     .then(fileName => {
       let newRevObj = {
-        title: req.body.title,
+        title: req.body.title.trim(),
         type: req.body.type,
-        rev_desc: req.body.revDesc,
+        rev_desc: req.body.revDesc.trim(),
         doc_id: req.params.doc_id,
         poster_id: user_id,
         file_name: fileName
@@ -91,8 +104,8 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
         rev_id: revId[0],
         category: determineCategory(req.body.type),
         anonymous: true,
-        header: req.body.title,
-        content: req.body.revDesc
+        header: req.body.title.trim(),
+        content: req.body.revDesc.trim()
       };
       return adminAddToCourseFeed(adminFeedObj, trx);
     })
@@ -100,19 +113,15 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     .then(response => {
       let errorCount = response.items.reduce((count, item) => item.index && item.index.error ? 1 : 0, 0);
       if (errorCount) { throw 'Could not update elastic search db'; }
-      else { return; }
+      else { trx.commit(); }
     })
-    .then(() => trx.commit())
     .catch(err => {
+      console.error('Error inside postNewRevision.js', err);
       trx.rollback();
-      throw err;
     });
   })
   .then(() => res.send(true))
-  .catch(err => {
-    console.error('Error inside postNewRevision.js', err);
-    res.send(false);
-  });
+  .catch(() => res.send(false));
 
 };
 

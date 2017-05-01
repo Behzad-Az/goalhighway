@@ -9,6 +9,18 @@ const postNewItemForSale = (req, res, knex, user_id) => {
     course_id: req.params.course_id
   };
 
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      req.body.title.trim().length <= 60 &&
+      req.body.itemDesc.trim().length <= 250 &&
+      req.body.price.trim().length <= 10
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
+
   const insertNewItem = (newItemObj, trx) => knex('items_for_sale')
     .transacting(trx)
     .insert(newItemObj)
@@ -19,7 +31,8 @@ const postNewItemForSale = (req, res, knex, user_id) => {
     .insert(adminFeedObj);
 
   knex.transaction(trx => {
-    insertNewItem(newItemObj, trx)
+    validateInputs()
+    .then(() => insertNewItem(newItemObj, trx))
     .then(itemId => {
       let adminFeedObj = {
         commenter_id: user_id,
@@ -34,15 +47,12 @@ const postNewItemForSale = (req, res, knex, user_id) => {
     })
     .then(() => trx.commit())
     .catch(err => {
+      console.error('Error inside postNewItemForSale.js: ', err);
       trx.rollback();
-      throw err;
     });
   })
   .then(() => res.send(true))
-  .catch(err => {
-    console.error('Error inside postNewItemForSale.js', err);
-    res.send(false);
-  });
+  .catch(() => res.send(false));
 
 };
 

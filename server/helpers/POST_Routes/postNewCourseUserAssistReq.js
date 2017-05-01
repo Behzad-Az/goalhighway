@@ -1,10 +1,8 @@
 const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
 
-  let tutorLogObj = {
-    student_id: user_id,
-    course_id: req.params.course_id,
-    issue_desc: req.body.issueDesc
-  };
+  const validateInputs = () => new Promise((resolve, reject) => {
+    req.body.issueDesc.trim().length <= 500 ? resolve() : reject('Invalid form entries');
+  });
 
   const closePrevReqIfNecessary = trx => knex('tutor_log')
     .transacting(trx)
@@ -19,7 +17,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
       rating: null
     });
 
-  const insertNewTutorLog = trx => knex('tutor_log')
+  const insertNewTutorLog = (tutorLogObj, trx) => knex('tutor_log')
     .transacting(trx)
     .insert(tutorLogObj)
     .returning('id');
@@ -38,22 +36,29 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     .count('id as subscribed');
 
   knex.transaction(trx => {
-    verifySubscription(trx)
-    .then(result => {
-      if (parseInt(result[0].subscribed)) {
+    Promise.all([validateInputs(), verifySubscription(trx)])
+    .then(results => {
+      if (parseInt(results[1][0].subscribed)) {
         return closePrevReqIfNecessary();
       } else {
         throw 'User not subscribed to course';
       }
     })
-    .then(() => insertNewTutorLog(trx))
+    .then(() => {
+      let tutorLogObj = {
+        student_id: user_id,
+        course_id: req.params.course_id,
+        issue_desc: req.body.issueDesc.trim()
+      };
+      return insertNewTutorLog(tutorLogObj, trx);
+    })
     .then(tutorLogId => {
       let newCourseFeed = {
         anonymous: false,
         commenter_id: user_id,
         category: 'new_tutor_request',
         header: 'new_tutor_request',
-        content: req.body.issueDesc,
+        content: req.body.issueDesc.trim(),
         course_id: req.params.course_id,
         tutor_log_id: tutorLogId[0]
       };
@@ -61,15 +66,12 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     })
     .then(() => trx.commit())
     .catch(err => {
+      console.error('Error inside postNewCourseUserAssistReq.js: ', err);
       trx.rollback();
-      throw err;
     });
   })
   .then(() => res.send(true))
-  .catch(err => {
-    console.error('Error inside postNewCourseUserAssistReq.js: ', err);
-    res.send(false);
-  });
+  .catch(() => res.send(false));
 
 };
 

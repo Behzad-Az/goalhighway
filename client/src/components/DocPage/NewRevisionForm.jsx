@@ -5,6 +5,10 @@ class NewDocForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
+    this.formLimits = {
+      title: 60,
+      revDesc: 250
+    };
     this.state = {
       title: this.props.docInfo.title,
       type: this.props.docInfo.type,
@@ -30,7 +34,9 @@ class NewDocForm extends Component {
 
   _validateForm() {
     return this.state.title &&
+           this.state.title.length <= this.formLimits.title &&
            this.state.revDesc &&
+           this.state.revDesc.length <= this.formLimits.revDesc &&
            this.state.type;
   }
 
@@ -68,9 +74,19 @@ class NewDocForm extends Component {
             <button className='delete' onClick={() => this.props.toggleModal('showNewRevForm')}></button>
           </header>
           <section className='modal-card-body'>
-            <label className='label'>Document Title (you may revise this):</label>
+            <label className='label'>
+              Document Title (you may revise this):
+              { this.state.title.length > this.formLimits.title && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='title' placeholder='Enter document title here' defaultValue={this.state.title} onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='title'
+                laceholder='Enter document title here'
+                defaultValue={this.state.title}
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.title.length > this.formLimits.title ? '#9D0600' : '' }} />
             </p>
             <label className='label'>Upload the new revision (optional):</label>
             <p className='control'>
@@ -99,9 +115,17 @@ class NewDocForm extends Component {
                   multipart/x-gzip'
                 onChange={this._handleFileChange} />
             </p>
-            <label className='label'>Revision Comment (mandatory):</label>
+            <label className='label'>
+              Revision Comment (mandatory):
+              { this.state.revDesc.length > this.formLimits.revDesc && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='revDesc' placeholder='Enter revision comment here' onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='revDesc'
+                placeholder='Enter revision comment here'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.revDesc.length > this.formLimits.revDesc ? '#9D0600' : '' }} />
             </p>
             <label className='label'>Select Type of Document (you may revise this):</label>
             <p className='control'>
