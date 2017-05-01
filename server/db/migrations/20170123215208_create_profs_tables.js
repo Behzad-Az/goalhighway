@@ -17,7 +17,7 @@ exports.up = function(knex, Promise) {
       t.integer('fairness_rating').notNullable();
       t.integer('prof_rating').notNullable();
       t.integer('overall_rating').notNullable();
-      t.string('review_desc', 400).notNullable().defaultTo('No detail provided.');
+      t.string('review_desc', 500).notNullable();
       t.integer('course_id').notNullable().references('courses.id');
       t.integer('reviewer_id').notNullable().references('users.id');
       t.integer('prof_id').references('profs.id');

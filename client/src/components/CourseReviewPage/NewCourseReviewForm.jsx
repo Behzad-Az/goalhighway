@@ -6,7 +6,7 @@ import SingleSelect from '../partials/SingleSelect.jsx';
 class NewCourseReviewForm extends Component {
   constructor(props) {
     super(props);
-    this.months = [ { value: '', label: 'select month' },
+    this.months = [ { value: '', label: 'select month' }, { value: 'Balls', label: 'Balls' },
       { value: 'Jan', label: 'Jan' }, { value: 'Feb', label: 'Feb' }, { value: 'Mar', label: 'Mar' }, { value: 'Apr', label: 'Apr' },
       { value: 'May', label: 'May' }, { value: 'Jun', label: 'Jun' }, { value: 'Jul', label: 'Jul' }, { value: 'Aug', label: 'Aug' },
       { value: 'Sep', label: 'Sep' }, { value: 'Oct', label: 'Oct' }, { value: 'Nov', label: 'Nov' }, { value: 'Dec', label: 'Dec' }
@@ -16,6 +16,10 @@ class NewCourseReviewForm extends Component {
       { value: 2013, label: 2013 }, { value: 2012, label: 2012 }, { value: 2011, label: 2011 }, { value: 2010, label: 2010 },
       { value: 2009, label: 2009 }, { value: 2008, label: 2008 }, { value: 2007, label: 2007 }, { value: 2006, label: 2006 }
     ];
+    this.formLimits = {
+      reviewDesc: 500,
+      profName: 60
+    };
     this.reactAlert = new ReactAlert();
     this.state = {
       startYear: '',
@@ -47,7 +51,7 @@ class NewCourseReviewForm extends Component {
   }
 
   _handleSelectYear(startYear) {
-    this.setState({ startYear });
+    this.setState({ startYear: startYear });
   }
 
   _handleSelectMonth(startMonth) {
@@ -60,7 +64,9 @@ class NewCourseReviewForm extends Component {
            this.state.workloadRating &&
            this.state.fairnessRating &&
            this.state.profRating &&
-           this.state.overallRating;
+           this.state.overallRating &&
+           this.state.reviewDesc.length <= this.formLimits.reviewDesc &&
+           this.state.profName.length <= this.formLimits.profName;
   }
 
   _handleNewReview() {
@@ -174,7 +180,10 @@ class NewCourseReviewForm extends Component {
             </p>
 
             <div className='control'>
-              <label className='is-inline-block'>Instructor's name (optional):</label>
+              <label className='is-inline-block'>
+                Instructor's name (optional):
+                { this.state.profName.length > this.formLimits.profName && <span className='char-limit'>too long!</span> }
+              </label>
               <AutoSuggestion options={this.props.profs} onChange={this._handleSelectProf} />
             </div>
 
@@ -187,9 +196,17 @@ class NewCourseReviewForm extends Component {
               <i className={ this.state.tempStars >= 5 || this.state.overallRating >= 5 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 5 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 5})} />
             </p>
 
-            <label className='label'>Feel free to ellaborate (optional):</label>
+            <label className='label'>
+              Feel free to ellaborate (optional):
+              { this.state.reviewDesc.length > this.formLimits.reviewDesc && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <textarea className='textarea' name='reviewDesc' placeholder='Provide context for your review (optional)' onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='reviewDesc'
+                placeholder='Provide context for your review (optional)'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.reviewDesc.length > this.formLimits.reviewDesc ? '#9D0600' : '' }} />
             </p>
 
           </section>

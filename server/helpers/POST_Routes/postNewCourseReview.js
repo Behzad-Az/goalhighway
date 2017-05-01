@@ -2,6 +2,23 @@ const postNewCourseReview = (req, res, knex, user_id) => {
 
   let inst_id;
 
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      [2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006].includes(parseInt(req.body.startYear)) &&
+      ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].includes(req.body.startMonth) &&
+      [1, 2, 3].includes(parseInt(req.body.workloadRating)) &&
+      [1, 2, 3].includes(parseInt(req.body.fairnessRating)) &&
+      [1, 2, 3, 4, 5].includes(parseInt(req.body.profRating)) &&
+      [1, 2, 3, 4, 5].includes(parseInt(req.body.overallRating)) &&
+      req.body.reviewDesc.trim().length <= 500 &&
+      req.body.profName.trim().length <= 60
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
+
   const getInstId = trx => knex('courses')
     .transacting(trx)
     .select('inst_id')
@@ -32,7 +49,8 @@ const postNewCourseReview = (req, res, knex, user_id) => {
     .insert(adminFeedObj);
 
   knex.transaction(trx => {
-    getInstId(trx)
+    validateInputs()
+    .then(() => getInstId(trx))
     .then(instId => {
       inst_id = instId[0].inst_id;
       return getProfId(inst_id, trx);
@@ -49,7 +67,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
         fairness_rating: req.body.fairnessRating,
         prof_rating: req.body.profRating,
         overall_rating: req.body.overallRating,
-        review_desc: req.body.reviewDesc.trim()
+        review_desc: req.body.reviewDesc.trim() || 'No detail provided'
       };
       return createNewCourseReview(courseReviewObj, trx);
     })
@@ -67,15 +85,12 @@ const postNewCourseReview = (req, res, knex, user_id) => {
     })
     .then(() => trx.commit())
     .catch(err => {
+      console.error('Error inside postNewCourseReview.js', err);
       trx.rollback();
-      throw err;
     });
   })
   .then(() => res.send(true))
-  .catch(err => {
-    console.error('Error inside postNewCourseReview.js', err);
-    res.send(false);
-  });
+  .catch(() => res.send(false));
 
 };
 
