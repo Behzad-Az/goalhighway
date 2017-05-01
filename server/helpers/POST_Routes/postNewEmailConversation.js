@@ -1,5 +1,16 @@
 const postNewEmailConversation = (req, res, knex, user_id) => {
 
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      req.params.email_id &&
+      req.body.content && req.body.content.trim().length <= 500
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
+
   const verifyEmailQuery = () => knex('emails')
     .where(function() { this.where('emails.to_id', user_id).orWhere('emails.from_id', user_id) })
     .andWhere('id', req.params.email_id)
@@ -10,7 +21,8 @@ const postNewEmailConversation = (req, res, knex, user_id) => {
   const insertNewEmailConversation = newConvObj => knex('email_conversations')
     .insert(newConvObj);
 
-  verifyEmailQuery()
+  validateInputs()
+  .then(() => verifyEmailQuery())
   .then(verifiedEmail => {
     if (parseInt(verifiedEmail[0].verifiedEmail)) {
       return insertNewEmailConversation({

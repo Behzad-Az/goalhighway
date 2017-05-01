@@ -1,7 +1,14 @@
 const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
 
   const validateInputs = () => new Promise((resolve, reject) => {
-    req.body.issueDesc.trim().length <= 500 ? resolve() : reject('Invalid form entries');
+    if (
+      req.params.course_id &&
+      req.body.issueDesc.trim() && req.body.issueDesc.trim().length <= 500
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
   });
 
   const closePrevReqIfNecessary = trx => knex('tutor_log')

@@ -1,7 +1,15 @@
 const postNewCourseFeed = (req, res, knex, user_id) => {
 
   const validateInputs = () => new Promise((resolve, reject) => {
-    req.body.content.trim().length <= 500 ? resolve() : reject('Invalid form entries');
+    if (
+      req.params.course_id &&
+      req.body.content.trim() && req.body.content.trim().length <= 500 &&
+      (req.body.anonymous === false || req.body.anonymous === true)
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
   });
 
   const insertNewFeed = feedObj => knex('course_feed')
@@ -15,7 +23,7 @@ const postNewCourseFeed = (req, res, knex, user_id) => {
     content: req.body.content.trim(),
     commenter_id: user_id,
     course_id: req.params.course_id
-  })
+  }))
   .then(() => res.send(true))
   .catch(err => {
     console.error('Error inside postNewCourseFeed.js: ', err);

@@ -4,6 +4,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
+      req.params.course_id &&
       [2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006].includes(parseInt(req.body.startYear)) &&
       ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].includes(req.body.startMonth) &&
       [1, 2, 3].includes(parseInt(req.body.workloadRating)) &&

@@ -5,6 +5,9 @@ class NewReplyForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
+    this.formLimits = {
+      content: 500
+    };
     this.state = {
       content: ''
     };
@@ -20,7 +23,7 @@ class NewReplyForm extends Component {
   }
 
   _validateForm() {
-    return this.state.content;
+    return this.state.content && this.state.content.length <= this.formLimits.content;
   }
 
   _handleSendReply() {
@@ -60,8 +63,14 @@ class NewReplyForm extends Component {
           </header>
           <section className='modal-card-body'>
             <p className='control'>
-              <textarea className='textarea' name='content' placeholder='Enter email message here.' onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='content'
+                placeholder='Enter email message here.'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.content.length > this.formLimits.content ? '#9D0600' : '' }} />
             </p>
+            { this.state.content.length > this.formLimits.content && <p className='char-limit'>too long!</p> }
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleSendReply}>Send</button>

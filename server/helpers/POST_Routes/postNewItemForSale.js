@@ -1,19 +1,11 @@
 const postNewItemForSale = (req, res, knex, user_id) => {
 
-  let newItemObj = {
-    title: req.body.title.trim(),
-    item_desc: req.body.itemDesc.trim(),
-    price: req.body.price.trim(),
-    photo_name: req.file && req.file.filename ? req.file.filename : 'default_item_for_sale_photo.png',
-    owner_id: user_id,
-    course_id: req.params.course_id
-  };
-
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      req.body.title.trim().length <= 60 &&
-      req.body.itemDesc.trim().length <= 250 &&
-      req.body.price.trim().length <= 10
+      req.params.course_id &&
+      req.body.title.trim() && req.body.title.trim().length <= 60 &&
+      req.body.itemDesc.trim() && req.body.itemDesc.trim().length <= 250 &&
+      req.body.price.trim() && req.body.price.trim().length <= 10
     ) {
       resolve();
     } else {
@@ -32,16 +24,26 @@ const postNewItemForSale = (req, res, knex, user_id) => {
 
   knex.transaction(trx => {
     validateInputs()
-    .then(() => insertNewItem(newItemObj, trx))
+    .then(() => {
+      let newItemObj = {
+        title: req.body.title.trim(),
+        item_desc: req.body.itemDesc.trim(),
+        price: req.body.price.trim(),
+        photo_name: req.file && req.file.filename ? req.file.filename : 'default_item_for_sale_photo.png',
+        owner_id: user_id,
+        course_id: req.params.course_id
+      };
+      return insertNewItem(newItemObj, trx);
+    })
     .then(itemId => {
       let adminFeedObj = {
         commenter_id: user_id,
-        course_id: newItemObj.course_id,
+        course_id: req.params.course_id,
         item_for_sale_id: itemId[0],
         category: 'new_item_for_sale',
-        header: newItemObj.title,
+        header: req.body.title.trim(),
         anonymous: true,
-        content: `${newItemObj.item_desc} - $` + newItemObj.price
+        content: `${req.body.itemDesc.trim()} - $` + req.body.price.trim()
       };
       return adminAddToCourseFeed(adminFeedObj, trx);
     })

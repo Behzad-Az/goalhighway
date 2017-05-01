@@ -1,15 +1,22 @@
 .nav.logged-in {
   position: fixed; width: calc(100% - 40px);
+  // background-color: $dark-blue;
   .container { margin: 0 $default_margin; max-width: 100%; }
 
-  a.nav-item.is-tab.is-active, .nav-item a.is-tab.is-active {
-    border-bottom: 3px solid $dark-blue;
-    color: $dark-blue;
-    padding-bottom: calc(0.5rem - 3px);
+  .nav-item {
+    color: #666;
+    &:hover { border-bottom: 2px solid $dark-blue; color: $dark-blue; }
+    .fa { padding-right: 3px; }
   }
 
-  a.nav-item.is-tab:hover {
-    border-bottom-color: $dark-blue;
-    border-top-color: transparent;
-  }
+  // a.nav-item.is-tab.is-active, .nav-item a.is-tab.is-active {
+  //   border-bottom: 3px solid $dark-blue;
+  //   color: $dark-blue;
+  //   padding-bottom: calc(0.5rem - 3px);
+  // }
+
+  // a.nav-item.is-tab:hover {
+  //   border-bottom-color: $dark-blue;
+  //   border-top-color: transparent;
+  // }
 }

@@ -1,5 +1,19 @@
 const postNewEmail = (req, res, knex, user_id) => {
 
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      req.body.subject && req.body.subject.trim().length <= 60 &&
+      req.body.content && req.body.content.trim().length <= 500 &&
+      req.body.toId &&
+      req.body.objId &&
+      ['itemForSale', 'tutorReq', 'resumeReview'].includes(req.body.type)
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
+
   const insertNewEmail = (newEmailObj, trx) => knex('emails')
     .transacting(trx)
     .insert(newEmailObj)
@@ -47,7 +61,8 @@ const postNewEmail = (req, res, knex, user_id) => {
   };
 
   knex.transaction(trx => {
-    determineEmailType(trx)
+    validateInputs()
+    .then(() => determineEmailType(trx))
     .then(verifiedEmail => {
       if (parseInt(verifiedEmail[0].verifiedEmail)) {
         let newEmailObj = {
@@ -70,15 +85,12 @@ const postNewEmail = (req, res, knex, user_id) => {
     })
     .then(() => trx.commit())
     .catch(err => {
+      console.error('Error inside postNewEmail.js: ', err);
       trx.rollback();
-      throw err;
     });
   })
   .then(() => res.send(true))
-  .catch(err => {
-    console.error('Error inside postNewEmail.js', err);
-    res.send(false);
-  });
+  .catch(err => res.send(false));
 
 };
 

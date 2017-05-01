@@ -4,9 +4,10 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
+      req.params.course_id &&
       ['asg_report', 'lecture_note', 'sample_question'].includes(req.body.type) &&
-      req.body.title.trim().length <= 60 &&
-      req.body.revDesc.trim().length <= 250
+      req.body.title.trim() && req.body.title.trim().length <= 60 &&
+      req.body.revDesc.trim() && req.body.revDesc.trim().length <= 250
     ) {
       resolve();
     } else {

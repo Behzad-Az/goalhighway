@@ -5,6 +5,10 @@ class NewEmailForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
+    this.formLimits = {
+      subject: 60,
+      content: 500
+    };
     this.state = {
       subject: this.props.emailParams.subject,
       content: ''
@@ -28,7 +32,9 @@ class NewEmailForm extends Component {
 
   _validateForm() {
     return this.state.subject &&
+           this.state.subject.length <= this.formLimits.subject &&
            this.state.content &&
+           this.state.content.length <= this.formLimits.content &&
            this.props.emailParams.type &&
            this.props.emailParams.objId &&
            this.props.emailParams.toId;
@@ -73,13 +79,31 @@ class NewEmailForm extends Component {
             <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
-            <label className='label'>Subject:</label>
+            <label className='label'>
+              Subject:
+              { this.state.subject.length > this.formLimits.subject && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='subject' placeholder='Enter email subject here' value={this.state.subject} onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='subject'
+                placeholder='Enter email subject here' v
+                value={this.state.subject}
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.subject.length > this.formLimits.subject ? '#9D0600' : '' }} />
             </p>
-            <label className='label'>Content:</label>
+            <label className='label'>
+              Message:
+              { this.state.content.length > this.formLimits.content && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <textarea className='textarea' name='content' placeholder='Enter email message here.' onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='content'
+                placeholder='Enter email message here.'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.content.length > this.formLimits.content ? '#9D0600' : '' }} />
             </p>
           </section>
           <footer className='modal-card-foot'>
