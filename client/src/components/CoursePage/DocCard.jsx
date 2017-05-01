@@ -5,7 +5,11 @@ class DocCard extends Component {
   constructor(props) {
     super(props);
     this.originalLikeCount = props.doc.likeCount;
-    this.images = ['pdf.png', 'docx.png', 'xlsx.png', 'zip.png', 'default.png'];
+    this.images = [
+      'png.png', 'jpeg.png', 'pdf.png',
+      'doc.png', 'docx.png', 'docm.png', 'xls.png', 'xlsx.png', 'xlsm.png',
+      'ppt.png', 'pptx.png', 'pptm.png', 'zip.png', 'gzip.png', 'default.png'
+    ];
     this._findImageLink = this._findImageLink.bind(this);
     this.state = {
       likeCount: this.props.doc.likeCount,
@@ -19,7 +23,7 @@ class DocCard extends Component {
   }
 
   _findImageLink(fileName) {
-    let directoryPath = '../../images/';
+    let directoryPath = '../../images/doccard_icons/';
     let extension = fileName.substr(fileName.lastIndexOf('.') + 1) + '.png';
     return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
   }

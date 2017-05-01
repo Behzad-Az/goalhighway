@@ -74,7 +74,30 @@ class NewDocForm extends Component {
             </p>
             <label className='label'>Upload the new revision (optional):</label>
             <p className='control'>
-              <input className='upload' type='file' onChange={this._handleFileChange} />
+              <input
+                className='upload'
+                type='file'
+                accept='
+                  image/png,
+                  image/jpeg,
+                  image/pjpeg,
+                  application/pdf,
+                  application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                  application/vnd.ms-word.document.macroEnabled.12,
+                  application/msword,
+                  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                  application/vnd.ms-excel.sheet.macroEnabled.12,
+                  application/vnd.ms-excel,
+                  application/vnd.openxmlformats-officedocument.presentationml.presentation,
+                  application/vnd.ms-powerpoint.presentation.macroEnabled.12,
+                  application/vnd.ms-powerpoint,
+                  application/x-compressed,
+                  application/x-zip-compressed,
+                  application/zip,
+                  multipart/x-zip,
+                  application/x-gzip,
+                  multipart/x-gzip'
+                onChange={this._handleFileChange} />
             </p>
             <label className='label'>Revision Comment (mandatory):</label>
             <p className='control'>

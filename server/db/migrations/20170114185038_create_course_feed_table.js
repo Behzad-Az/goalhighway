@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
       t.increments('id');
       t.integer('commenter_id').notNullable().references('users.id');
       t.boolean('anonymous').notNullable();
-      t.string('category', 30).notNullable();
+      t.string('category', 35).notNullable();
       t.string('header', 60).notNullable();
       t.string('content', 500).notNullable();
       t.integer('course_id').notNullable().references('courses.id');

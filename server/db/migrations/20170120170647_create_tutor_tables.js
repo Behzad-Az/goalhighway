@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
       t.integer('student_id').notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('closed_at');
-      t.string('closure_reason', 30);
+      t.string('closure_reason', 35);
     })
   ]);
 };

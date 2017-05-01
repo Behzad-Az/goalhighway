@@ -13,7 +13,7 @@ exports.up = function(knex, Promise) {
       t.string('job_query', 250);
       t.string('job_kind', 100);
       t.integer('job_distance');
-      t.string('photo_name', 30).notNullable().defaultTo('default_user_photo.png');
+      t.string('photo_name', 35).notNullable().defaultTo('default_user_photo.png');
       t.timestamp('last_feed_at').notNullable().defaultTo(knex.fn.now());
       t.integer('inst_prog_id').notNullable().references('institution_program.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
@@ -23,9 +23,9 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('revisions', t => {
       t.increments('id');
       t.string('title', 60).notNullable();
-      t.string('type', 30).notNullable();
+      t.string('type', 35).notNullable();
       t.string('rev_desc', 250).notNullable();
-      t.string('file_name', 30).notNullable();
+      t.string('file_name', 35).notNullable();
       t.integer('doc_id').notNullable();
       t.integer('poster_id').notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
@@ -40,7 +40,7 @@ exports.up = function(knex, Promise) {
       t.integer('user_id').notNullable().references('users.id');
       t.timestamp('sub_date').defaultTo(knex.fn.now());
       t.timestamp('unsub_date');
-      t.string('unsub_reason', 30);
+      t.string('unsub_reason', 35);
     })
   ]);
 };
