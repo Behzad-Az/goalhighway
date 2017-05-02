@@ -4,22 +4,22 @@ exports.up = function(knex, Promise) {
 
     knex.schema.createTableIfNotExists('institutions', t => {
       t.increments('id');
-      t.string('inst_short_name', 20).notNullable();
-      t.string('inst_long_name', 100).notNullable();
-      t.string('inst_value', 100).notNullable();
-      t.string('inst_display_name', 125).notNullable();
-      t.string('country').notNullable().defaultTo('Canada');
-      t.string('province').notNullable().defaultTo('British Columbia');
+      t.string('inst_short_name', 10).notNullable();
+      t.string('inst_long_name', 60).notNullable();
+      t.string('inst_value', 60).notNullable();
+      t.string('inst_display_name', 75).notNullable();
+      t.string('country', 35).notNullable();
+      t.string('province', 35).notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     }),
 
     knex.schema.createTableIfNotExists('programs', t => {
       t.increments('id');
-      t.string('prog_short_name', 20).notNullable().defaultTo('n/a');
-      t.string('prog_long_name', 100).notNullable();
-      t.string('prog_value', 100).notNullable();
-      t.string('prog_display_name', 125).notNullable();
+      t.string('prog_short_name', 10).notNullable();
+      t.string('prog_long_name', 60).notNullable();
+      t.string('prog_value', 60).notNullable();
+      t.string('prog_display_name', 75).notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     }),
@@ -34,11 +34,11 @@ exports.up = function(knex, Promise) {
 
     knex.schema.createTableIfNotExists('courses', t => {
       t.increments('id');
-      t.string('prefix', 20).notNullable();
-      t.string('suffix', 20).notNullable();
-      t.string('full_display_name', 300).notNullable();
-      t.string('short_display_name', 50).notNullable();
-      t.string('course_desc', 250).notNullable();
+      t.string('prefix', 10).notNullable();
+      t.string('suffix', 10).notNullable();
+      t.string('full_display_name', 130).notNullable();
+      t.string('short_display_name', 25).notNullable();
+      t.string('course_desc', 100).notNullable();
       t.integer('course_year').notNullable();
       t.integer('inst_id').notNullable().references('institutions.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());

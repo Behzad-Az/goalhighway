@@ -5,6 +5,11 @@ class NewCourseForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
+    this.formLimits = {
+      prefix: 10,
+      suffix: 10,
+      courseDesc: 100
+    };
     this.state = {
       prefix: '',
       suffix: '',
@@ -23,9 +28,9 @@ class NewCourseForm extends Component {
   }
 
   _validateForm() {
-    return this.state.prefix &&
-           this.state.suffix &&
-           this.state.courseDesc &&
+    return this.state.prefix && this.state.prefix.length <= this.formLimits.prefix &&
+           this.state.suffix && this.state.suffix.length <= this.formLimits.suffix &&
+           this.state.courseDesc && this.state.courseDesc.length <= this.formLimits.courseDesc &&
            this.state.courseYear &&
            this.props.instId;
   }
@@ -71,19 +76,46 @@ class NewCourseForm extends Component {
           </header>
           <section className='modal-card-body'>
 
-            <label className='label'>Prefix:</label>
+            <label className='label'>
+              Prefix:
+              { this.state.prefix.length > this.formLimits.prefix && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='prefix' placeholder='Example: MATH' onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='prefix'
+                placeholder='Example: MATH'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.prefix.length > this.formLimits.prefix ? '#9D0600' : '' }} />
             </p>
 
-            <label className='label'>Suffix:</label>
+            <label className='label'>
+              Suffix:
+              { this.state.suffix.length > this.formLimits.suffix && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='suffix' placeholder='Example: 101' onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='suffix'
+                placeholder='Example: 101'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.suffix.length > this.formLimits.suffix ? '#9D0600' : '' }} />
             </p>
 
-            <label className='label'>Title:</label>
+            <label className='label'>
+              Title:
+              { this.state.courseDesc.length > this.formLimits.courseDesc && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='courseDesc' placeholder='Example: Introducion to calculus' onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='courseDesc'
+                placeholder='Example: Introducion to calculus'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.courseDesc.length > this.formLimits.courseDesc ? '#9D0600' : '' }} />
             </p>
 
             <label className='label'>Academic Year:</label>

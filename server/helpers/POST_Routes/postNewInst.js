@@ -1,24 +1,35 @@
 const postNewInst = (req, res, knex, user_id, esClient) => {
 
+  const provinceList = {
+      canada: ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador', 'Northwest Territories', 'Nova Scotia', 'Nunavut', 'Saskatchewan', 'Yukon'],
+      united_states: [
+        'AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO',
+        'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY'
+      ]
+    };
+
   const inst_long_name = req.body.instLongName.trim();
   const inst_short_name = req.body.instShortName.trim();
 
-  const newInstObj = {
-    inst_value: inst_long_name.toLowerCase().replace(/ /g, '_'),
-    inst_display_name: inst_short_name ? inst_long_name + ` (${inst_short_name})` : inst_long_name,
-    inst_long_name,
-    inst_short_name,
-    country: req.body.country.trim().toLowerCase(),
-    province: req.body.province.trim().toLowerCase()
-  };
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      inst_long_name && inst_long_name.length <= 60 &&
+      inst_short_name.length <= 10 &&
+      provinceList[req.body.country] && provinceList[req.body.country].includes(req.body.province)
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
 
   const checkForDuplicateInst = () => knex('institutions')
     .where('inst_long_name', inst_long_name)
-    .andWhere('country', newInstObj.country)
-    .andWhere('province', newInstObj.province)
+    .andWhere('country', req.body.country)
+    .andWhere('province', req.body.province)
     .count('id as duplicate');
 
-  const insertInst = trx => knex('institutions')
+  const insertInst = (newInstObj, trx) => knex('institutions')
     .transacting(trx)
     .insert(newInstObj)
     .returning('id');
@@ -35,10 +46,22 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
   };
 
   knex.transaction(trx => {
-    checkForDuplicateInst()
+    validateInputs()
+    .then(() => checkForDuplicateInst())
     .then(count => {
-      if (parseInt(count[0].duplicate)) { throw 'Institution already exists'; }
-      else { return insertInst(trx); }
+      if (parseInt(count[0].duplicate)) {
+        throw 'Institution already exists';
+      } else {
+        let newInstObj = {
+          inst_value: inst_long_name.toLowerCase().replace(/ /g, '_'),
+          inst_display_name: inst_short_name ? inst_long_name + ` (${inst_short_name})` : inst_long_name,
+          inst_long_name,
+          inst_short_name,
+          country: req.body.country,
+          province: req.body.province
+        };
+        return insertInst(newInstObj, trx);
+      }
     })
     .then(instId => {
       const esInstObj = {
@@ -54,15 +77,12 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
     })
     .then(() => trx.commit())
     .catch(err => {
+      console.error('Error inside postNewInst.js: ', err);
       trx.rollback();
-      throw err;
     });
   })
   .then(() => res.send(true))
-  .catch(err => {
-    console.error('Error inside postNewInst.js', err);
-    res.send(false);
-  });
+  .catch(() => res.send(false));
 
 };
 

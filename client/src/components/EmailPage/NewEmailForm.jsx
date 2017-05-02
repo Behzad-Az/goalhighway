@@ -88,7 +88,7 @@ class NewEmailForm extends Component {
                 className='input'
                 type='text'
                 name='subject'
-                placeholder='Enter email subject here' v
+                placeholder='Enter email subject here'
                 value={this.state.subject}
                 onChange={this._handleChange}
                 style={{ borderColor: this.state.subject.length > this.formLimits.subject ? '#9D0600' : '' }} />

@@ -1,55 +1,53 @@
 const postNewUser = (req, res, knex, bcrypt, esClient) => {
 
-  let academicYears = [1, 2, 3, 4, 5, 6];
+  const username = req.body.username.trim().toLowerCase();
+  const email = req.body.email.trim().toLowerCase();
 
   const verifyOtherInputs = () => {
-    let emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    return req.body.username.trim().toLowerCase().length >= 3 && academicYears.includes(parseInt(req.body.userYear)) && req.body.email.trim().toLowerCase().match(emailRegex);
+    const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    return username.length >= 3 && username.length <= 30 &&
+           email.length >= 6 && email.length <= 30 && email.match(emailRegex) &&
+           [1, 2, 3, 4, 5, 6].includes(parseInt(req.body.userYear));
   };
 
-  const verifyInputs = () => new Promise ((resolve, reject) => {
-    let pwd = req.body.password;
-    let pwdConfirm = req.body.passwordConfirm;
+  const validateInputs = () => new Promise ((resolve, reject) => {
+    const pwd = req.body.password;
+    const pwdConfirm = req.body.passwordConfirm;
     if (pwd !== pwdConfirm) {
-      reject('not_matching');
+      reject('password not_matching');
     } else if (pwd.length < 6) {
-      reject('too_short');
+      reject('password too_short');
     } else if (pwd.length > 30) {
-      reject('too_long');
+      reject('password too_long');
     } else if (pwd.search(/\d/) == -1) {
-      reject('no_num');
+      reject('password no_num');
     } else if (pwd.search(/[a-zA-Z]/) == -1) {
-      reject('no_letter');
+      reject('password no_letter');
     } else if (pwd.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1) {
-      reject('bad_char');
+      reject('password bad_char');
     } else if (!verifyOtherInputs()) {
       reject('bad_other_input');
     }
-    resolve('ok');
+    resolve();
   });
 
   const findInstProgId = () => knex('institution_program')
     .select('id')
     .where('inst_id', req.body.instId)
-    .andWhere('prog_id', req.body.progId);
+    .andWhere('prog_id', req.body.progId)
+    .whereNull('deleted_at');
 
   const insertUser = newUserObj => knex('users').insert(newUserObj);
 
-  Promise.all([
-    verifyInputs(req.body.password, req.body.passwordConfirm),
-    bcrypt.hash(req.body.password, 10),
-    findInstProgId()
-  ])
-  .then(results => {
-    let newUserObj = {
-      username: req.body.username.trim().toLowerCase(),
-      email: req.body.email.trim().toLowerCase(),
-      password: results[1],
-      user_year: req.body.userYear,
-      inst_prog_id: results[2][0] && results[2][0].id
-    };
-    return insertUser(newUserObj);
-  })
+  validateInputs()
+  .then(() => Promise.all([ bcrypt.hash(req.body.password, 10), findInstProgId() ]))
+  .then(results => insertUser({
+    username,
+    email,
+    password: results[0],
+    user_year: req.body.userYear,
+    inst_prog_id: results[1][0].id
+  }))
   .then(() => res.send(true))
   .catch(err => {
     console.error('Error inside postNewUser.js: ', err);

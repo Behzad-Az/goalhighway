@@ -30,6 +30,10 @@ class NewInstForm extends Component {
       ]
     };
     this.reactAlert = new ReactAlert();
+    this.formLimits = {
+      instLongName: 60,
+      instShortName: 10
+    };
     this.state = {
       instLongName: '',
       instShortName: '',
@@ -50,9 +54,10 @@ class NewInstForm extends Component {
   }
 
   _validateForm() {
-    return this.state.instLongName &&
+    return this.state.instLongName && this.state.instLongName.length <= this.formLimits.instLongName &&
+           this.state.instShortName.length <= this.formLimits.instShortName &&
            this.state.country &&
-           this.state.province
+           this.state.province;
   }
 
   _handleCountrySelect(country) {
@@ -93,6 +98,7 @@ class NewInstForm extends Component {
   }
 
   render() {
+    console.log("i'm here 0: ", this.state.country, this.state.province);
     return (
       <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
         <div className='modal-background' onClick={this.props.toggleModal}></div>
@@ -103,14 +109,32 @@ class NewInstForm extends Component {
           </header>
           <section className='modal-card-body'>
 
-            <label className='label'>Institution Full Name:</label>
+            <label className='label'>
+              Institution Full Name:
+              { this.state.instLongName.length > this.formLimits.instLongName && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='instLongName' placeholder='Example: University of British Columbia' onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='instLongName'
+                placeholder='Example: University of British Columbia'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.instLongName.length > this.formLimits.instLongName ? '#9D0600' : '' }} />
             </p>
 
-            <label className='label'>Institution Given Name (optional):</label>
+            <label className='label'>
+              Institution Given Name (optional):
+              { this.state.instShortName.length > this.formLimits.instShortName && <span className='char-limit'>too long!</span> }
+            </label>
             <p className='control'>
-              <input className='input' type='text' name='instShortName' placeholder='Example (optional): UBC' onChange={this._handleChange} />
+              <input
+                className='input'
+                type='text'
+                name='instShortName'
+                placeholder='Example (optional): UBC'
+                onChange={this._handleChange}
+                style={{ borderColor: this.state.instShortName.length > this.formLimits.instShortName ? '#9D0600' : '' }} />
             </p>
 
             <label className='label'>Country:</label>
