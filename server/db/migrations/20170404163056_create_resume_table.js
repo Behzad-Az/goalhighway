@@ -3,9 +3,9 @@ exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('resumes', t => {
       t.increments('id');
-      t.string('title', 50).notNullable();
+      t.string('title', 60).notNullable();
       t.string('intent', 250).notNullable();
-      t.string('file_name', 200).notNullable();
+      t.string('file_name', 35).notNullable();
       t.integer('audience_filter_id').notNullable();
       t.string('audience_filter_table').notNullable();
       t.integer('owner_id').notNullable().references('users.id');
