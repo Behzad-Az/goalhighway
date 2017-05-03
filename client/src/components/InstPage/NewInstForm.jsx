@@ -98,7 +98,6 @@ class NewInstForm extends Component {
   }
 
   render() {
-    console.log("i'm here 0: ", this.state.country, this.state.province);
     return (
       <div className={this.props.showModal ? 'modal is-active' : 'modal'}>
         <div className='modal-background' onClick={this.props.toggleModal}></div>

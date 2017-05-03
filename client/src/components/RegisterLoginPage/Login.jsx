@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {browserHistory, Link} from 'react-router';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class Login extends Component {
   constructor(props) {
@@ -14,7 +15,6 @@ class Login extends Component {
     };
     this._handleChange = this._handleChange.bind(this);
     this._handleLogin = this._handleLogin.bind(this);
-    this._validateUsername = this._validateUsername.bind(this);
     this._validateForm = this._validateForm.bind(this);
   }
 
@@ -50,19 +50,11 @@ class Login extends Component {
     .catch(err => console.error('Unable to process login - ', err));
   }
 
-  _validateUsername() {
-    return this.state.username.length <= this.formLimits.username.max &&
-           this.state.username.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1;
-  }
-
-  _validatePassword() {
-    return this.state.password.length <= this.formLimits.password.max &&
-           this.state.password.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1;
-  }
-
   _validateForm() {
-    return this.state.username.length >= this.formLimits.username.min && this._validateUsername () &&
-           this.state.password.length >= this.formLimits.password.min && this._validatePassword();
+    return this.state.username.length >= this.formLimits.username.min &&
+           !InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') &&
+           this.state.password.length >= this.formLimits.password.min &&
+           !InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password');
   }
 
   render() {
@@ -76,7 +68,7 @@ class Login extends Component {
             <div className='credential'>
               <label className='label'>
                 Username:
-                { !this._validateUsername() && <span className='char-limit'>Invalid</span> }
+                { InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') && <span className='char-limit'>Invalid</span> }
               </label>
               <input
                 type='text'
@@ -84,12 +76,12 @@ class Login extends Component {
                 className='input is-primary'
                 placeholder='Enter username'
                 onChange={this._handleChange}
-                style={{ borderColor: !this._validateUsername() ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') ? '#9D0600' : '' }} />
             </div>
             <div className='credential'>
               <label className='label'>
                 Password:
-                { !this._validatePassword() && <span className='char-limit'>Invalid</span> }
+                { InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password') && <span className='char-limit'>Invalid</span> }
               </label>
               <input
                 type='password'
@@ -97,7 +89,7 @@ class Login extends Component {
                 className='input is-primary'
                 placeholder='Enter password'
                 onChange={this._handleChange}
-                style={{ borderColor: !this._validatePassword() ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password') ? '#9D0600' : '' }} />
             </div>
             <button className='button' onClick={this._handleLogin} disabled={!this._validateForm()}>Log in</button>
           </div>

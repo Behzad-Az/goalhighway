@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewCourseForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.formLimits = {
-      prefix: 10,
-      suffix: 10,
-      courseDesc: 100
+      prefix: { min: 3, max: 10 },
+      suffix: { min: 3, max: 10 },
+      courseDesc: { min: 4, max: 100 }
     };
     this.state = {
       prefix: '',
@@ -28,9 +29,12 @@ class NewCourseForm extends Component {
   }
 
   _validateForm() {
-    return this.state.prefix && this.state.prefix.length <= this.formLimits.prefix &&
-           this.state.suffix && this.state.suffix.length <= this.formLimits.suffix &&
-           this.state.courseDesc && this.state.courseDesc.length <= this.formLimits.courseDesc &&
+    return this.state.prefix.length >= this.formLimits.prefix.min &&
+           !InvalidCharChecker(this.state.prefix, this.formLimits.prefix.max, 'coursePrefix') &&
+           this.state.suffix.length >= this.formLimits.suffix.min &&
+           !InvalidCharChecker(this.state.suffix, this.formLimits.suffix.max, 'courseSuffix') &&
+           this.state.courseDesc.length >= this.formLimits.courseDesc.min &&
+           !InvalidCharChecker(this.state.courseDesc, this.formLimits.courseDesc.max, 'courseDesc') &&
            this.state.courseYear &&
            this.props.instId;
   }
@@ -78,7 +82,7 @@ class NewCourseForm extends Component {
 
             <label className='label'>
               Prefix:
-              { this.state.prefix.length > this.formLimits.prefix && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.prefix, this.formLimits.prefix.max, 'coursePrefix') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <input
@@ -87,12 +91,12 @@ class NewCourseForm extends Component {
                 name='prefix'
                 placeholder='Example: MATH'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.prefix.length > this.formLimits.prefix ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.prefix, this.formLimits.prefix.max, 'courseSuffix') ? '#9D0600' : '' }} />
             </p>
 
             <label className='label'>
               Suffix:
-              { this.state.suffix.length > this.formLimits.suffix && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.suffix, this.formLimits.suffix.max, 'coursePrefix') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <input
@@ -101,12 +105,12 @@ class NewCourseForm extends Component {
                 name='suffix'
                 placeholder='Example: 101'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.suffix.length > this.formLimits.suffix ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.suffix, this.formLimits.suffix.max, 'courseSuffix') ? '#9D0600' : '' }} />
             </p>
 
             <label className='label'>
               Title:
-              { this.state.courseDesc.length > this.formLimits.courseDesc && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.courseDesc, this.formLimits.courseDesc.max, 'courseDesc') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <input
@@ -115,7 +119,7 @@ class NewCourseForm extends Component {
                 name='courseDesc'
                 placeholder='Example: Introducion to calculus'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.courseDesc.length > this.formLimits.courseDesc ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.courseDesc, this.formLimits.courseDesc.max, 'courseDesc') ? '#9D0600' : '' }} />
             </p>
 
             <label className='label'>Academic Year:</label>

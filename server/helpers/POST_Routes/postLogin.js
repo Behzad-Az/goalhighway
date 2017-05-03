@@ -6,8 +6,10 @@ const postLogin = (req, res, knex, bcrypt) => {
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      username.length >= 3 && username.length <= 30 && username.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1 &&
-      password.length >= 6 && password.length <= 30 && password.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1
+      username.length >= 3 && username.length <= 30 &&
+      username.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1 &&
+      password.length >= 6 && password.length <= 30 &&
+      password.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1
     ) {
       resolve();
     } else {
