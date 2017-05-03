@@ -5,7 +5,7 @@ const postNewUser = (req, res, knex, bcrypt, esClient) => {
 
   const verifyOtherInputs = () => {
     const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    return username.length >= 3 && username.length <= 30 &&
+    return username.length >= 3 && username.length <= 30 && username.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1 &&
            email.length >= 6 && email.length <= 30 && email.match(emailRegex) &&
            [1, 2, 3, 4, 5, 6].includes(parseInt(req.body.userYear));
   };

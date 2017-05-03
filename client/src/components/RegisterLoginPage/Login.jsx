@@ -4,25 +4,31 @@ import {browserHistory, Link} from 'react-router';
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.formLimits = {
+      username: { min: 3, max: 30 },
+      password: { min: 6, max: 30 }
+    };
     this.state = {
       username: 'behzad',
       password: 'behzad123'
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._handleLogin = this._handleLogin.bind(this);
+    this._validateUsername = this._validateUsername.bind(this);
+    this._validateForm = this._validateForm.bind(this);
   }
 
   componentDidMount() {
-    // this.handleLogin();
+    this._handleLogin();
   }
 
-  handleChange(e) {
-    let obj = {};
-    obj[e.target.name] = e.target.value;
-    this.setState(obj);
+  _handleChange(e) {
+    let newState = {};
+    newState[e.target.name] = e.target.value;
+    this.setState(newState);
   }
 
-  handleLogin() {
+  _handleLogin() {
     let data = {
       username: this.state.username,
       password: this.state.password
@@ -44,6 +50,21 @@ class Login extends Component {
     .catch(err => console.error('Unable to process login - ', err));
   }
 
+  _validateUsername() {
+    return this.state.username.length <= this.formLimits.username.max &&
+           this.state.username.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1;
+  }
+
+  _validatePassword() {
+    return this.state.password.length <= this.formLimits.password.max &&
+           this.state.password.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1;
+  }
+
+  _validateForm() {
+    return this.state.username.length >= this.formLimits.username.min && this._validateUsername () &&
+           this.state.password.length >= this.formLimits.password.min && this._validatePassword();
+  }
+
   render() {
     return (
       <nav className='nav login has-shadow'>
@@ -53,18 +74,32 @@ class Login extends Component {
           </div>
           <div className='nav-item credentials'>
             <div className='credential'>
-              <label className='label'>Username:</label>
-              <input type='text' className='input is-primary'
-                     placeholder='Enter username' name='username'
-                     onChange={this.handleChange} />
+              <label className='label'>
+                Username:
+                { !this._validateUsername() && <span className='char-limit'>Invalid</span> }
+              </label>
+              <input
+                type='text'
+                name='username'
+                className='input is-primary'
+                placeholder='Enter username'
+                onChange={this._handleChange}
+                style={{ borderColor: !this._validateUsername() ? '#9D0600' : '' }} />
             </div>
             <div className='credential'>
-              <label className='label'>Password:</label>
-              <input type='password' className='input is-primary'
-                     placeholder='Enter password' name='password'
-                     onChange={this.handleChange} />
+              <label className='label'>
+                Password:
+                { !this._validatePassword() && <span className='char-limit'>Invalid</span> }
+              </label>
+              <input
+                type='password'
+                name='password'
+                className='input is-primary'
+                placeholder='Enter password'
+                onChange={this._handleChange}
+                style={{ borderColor: !this._validatePassword() ? '#9D0600' : '' }} />
             </div>
-            <button className='button' onClick={this.handleLogin}>Log in</button>
+            <button className='button' onClick={this._handleLogin} disabled={!this._validateForm()}>Log in</button>
           </div>
         </div>
       </nav>
