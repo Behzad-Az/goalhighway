@@ -19,7 +19,7 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
       suffix.length >=3 && suffix.length <= 10 &&
       suffix.search(/[^a-zA-Z0-9]/) == -1 &&
       course_desc.length >= 4 && course_desc.length <= 100 &&
-      course_desc.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
+      course_desc.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       [1, 2, 3, 4, 5, 6].includes(parseInt(req.body.courseYear)) &&
       req.body.instId
     ) {

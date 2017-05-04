@@ -1,10 +1,13 @@
 const postNewCourseFeed = (req, res, knex, user_id) => {
 
+  const content = req.body.content.trim();
+
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      req.params.course_id &&
-      req.body.content.trim() && req.body.content.trim().length <= 500 &&
-      (req.body.anonymous === false || req.body.anonymous === true)
+      content.length >= 3 && content.length <= 500 &&
+      content.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
+      [true, false].includes(req.body.anonymous) &&
+      req.params.course_id
     ) {
       resolve();
     } else {

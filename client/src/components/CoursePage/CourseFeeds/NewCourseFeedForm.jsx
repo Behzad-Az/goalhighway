@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import ReactAlert from '../../partials/ReactAlert.jsx';
+import InvalidCharChecker from '../../partials/InvalidCharChecker.jsx';
 
-class NewCourseFeed extends Component {
+class NewCourseFeedForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.formLimits = {
-      content: 500
+      content: { min: 3, max: 500 }
     };
     this.state = {
       content: '',
@@ -18,7 +19,8 @@ class NewCourseFeed extends Component {
   }
 
   _validateForm() {
-    return this.state.content && this.state.content.length <= this.formLimits.content;
+    return this.state.content.length >= this.formLimits.content.min &&
+           !InvalidCharChecker(this.state.content, this.formLimits.content.max, 'courseFeed');
   }
 
   _handleChange(e) {
@@ -66,7 +68,7 @@ class NewCourseFeed extends Component {
             name='content'
             placeholder='Type your comment here...'
             onChange={this._handleChange}
-            style={{ borderColor: this.state.content.length > this.formLimits.content ? '#9D0600' : '' }} />
+            style={{ borderColor: InvalidCharChecker(this.state.content, this.formLimits.content.max, 'courseFeed') ? '#9D0600' : '' }} />
         </div>
         <div className='control is-grouped'>
           <p className='control'>
@@ -75,11 +77,11 @@ class NewCourseFeed extends Component {
           <p className='field anonymous'>
             <input type='checkbox' name='anonymous' checked={this.state.anonymous} onClick={() => this.setState({ anonymous: !this.state.anonymous })} /> Anonymous
           </p>
-          <p className='char-counter' style={{ color: this.state.content.length > this.formLimits.content ? '#9D0600' : '' }}>{this.state.content.length}</p>
+          <p className='char-counter' style={{ color: this.state.content.length > this.formLimits.content.max ? '#9D0600' : '' }}>{this.state.content.length}</p>
         </div>
       </div>
     );
   }
 }
 
-export default NewCourseFeed;
+export default NewCourseFeedForm;

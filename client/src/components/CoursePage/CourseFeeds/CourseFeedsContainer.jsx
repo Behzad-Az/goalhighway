@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import NewCourseFeed from './NewCourseFeed.jsx';
+import NewCourseFeedForm from './NewCourseFeedForm.jsx';
 import CourseFeedRow from './CourseFeedRow.jsx';
 
 class CourseFeedsContainer extends Component {
@@ -21,7 +21,7 @@ class CourseFeedsContainer extends Component {
             onClick={() => this.setState({ showContainer: !this.state.showContainer })}
           />
         </h1>
-        <NewCourseFeed courseId={this.props.courseId} reload={this.props.reload} />
+        <NewCourseFeedForm courseId={this.props.courseId} reload={this.props.reload} />
         <hr />
         <div className={this.state.showContainer ? 'feeds-rows' : 'feeds-rows is-hidden'}>
           { this.props.courseFeeds.map(feed => <CourseFeedRow key={feed.id} feed={feed} reload={this.props.reload} composeNewEmail={this.props.composeNewEmail} /> ) }

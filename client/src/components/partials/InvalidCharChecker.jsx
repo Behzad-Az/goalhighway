@@ -15,6 +15,9 @@ const InvalidCharChecker = (str, maxChar, type) => {
       regEx = new RegExp(/[^a-zA-Z0-9]/);
       break;
     case 'courseDesc':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
+      break;
+    case 'courseFeed':
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
       break;
     default:
