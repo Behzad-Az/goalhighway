@@ -5,6 +5,7 @@ const updateCourseUserTutorStatus = (req, res, knex, user_id) => {
     .andWhere('user_id', user_id)
     .whereNotNull('sub_date')
     .whereNull('unsub_date')
+    .whereNull('unsub_reason')
     .update({ tutor_status: req.body.tutorStatus });
 
   alterTutorStatus()

@@ -5,9 +5,11 @@ const findUsersCourses = (knex, user_id) => knex('users')
     'courses.id', 'course_id', 'short_display_name', 'full_display_name',
     'course_year', 'course_desc', 'courses.inst_id'
   )
-  .orderBy('prefix')
-  .orderBy('suffix')
-  .where('user_id', user_id)
-  .whereNull('unsub_date');
+  .orderBy('courses.prefix')
+  .orderBy('courses.suffix')
+  .where('course_user.user_id', user_id)
+  .whereNull('course_user.unsub_date')
+  .whereNull('users.deleted_at')
+  .whereNull('courses.deleted_at');
 
 module.exports = findUsersCourses;

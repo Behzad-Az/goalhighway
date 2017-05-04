@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import ReactAlert from './ReactAlert.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewReqAssistForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.formLimits = {
-      issueDesc: 500
+      issueDesc: { min: 4, max: 500 }
     };
     this.state = {
       issueDesc: this.props.courseInfo.latestAssistRequest,
@@ -34,8 +35,8 @@ class NewReqAssistForm extends Component {
   }
 
   _validateForm() {
-    return this.state.issueDesc &&
-           this.state.issueDesc.length <= this.formLimits.issueDesc;
+    return this.state.issueDesc.length >= this.formLimits.issueDesc.min &&
+           !InvalidCharChecker(this.state.issueDesc, this.formLimits.issueDesc.max, 'tutorRequest');
   }
 
   _formFooterOptions() {
@@ -131,9 +132,9 @@ class NewReqAssistForm extends Component {
                 placeholder='How may one of our tutors assist you?'
                 value={this.state.issueDesc}
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.issueDesc.length > this.formLimits.issueDesc ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.issueDesc, this.formLimits.issueDesc.max, 'tutorRequest') ? '#9D0600' : '' }} />
             </p>
-            { this.state.issueDesc.length > this.formLimits.issueDesc && <p className='char-limit'>too long!</p> }
+            { InvalidCharChecker(this.state.issueDesc, this.formLimits.issueDesc.max, 'tutorRequest') && <p className='char-limit'>too long!</p> }
           </section>
           { this._formFooterOptions() }
         </div>

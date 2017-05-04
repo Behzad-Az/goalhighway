@@ -36,7 +36,11 @@ const getCoursePageData = (req, res, knex, user_id) => {
 
   const getCourseUserInfo = () => knex('course_user')
     .where('user_id', user_id)
-    .andWhere('course_id', req.params.course_id);
+    .andWhere('course_id', req.params.course_id)
+    .whereNull('unsub_date')
+    .whereNull('unsub_reason')
+    .orderBy('sub_date')
+    .limit(1);
 
   const getTutorLogInfo = () => knex('tutor_log')
     .where('student_id', user_id)

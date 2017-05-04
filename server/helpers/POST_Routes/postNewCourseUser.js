@@ -1,31 +1,32 @@
 const postNewCourseUser = (req, res, knex, user_id) => {
 
-  let courseUserInfoObj = {
-    user_id: user_id,
-    course_id: req.params.course_id,
-    sub_date: knex.fn.now(),
-    tutor_status: false,
-    tutor_available: false,
-    unsub_date: null,
-    unsub_reason: null
-  };
+  validateInputs = () => new Promise((resolve, reject) => {
+    req.params.course_id ? resolve() : reject('Invalid parameter');
+  });
 
-  const userAlreadyHasCourse = () => knex('course_user')
-    .select('id').where('user_id', user_id)
-    .andWhere('course_id', req.params.course_id);
+  const userAlreadySubscribed = () => knex('course_user')
+    .where('user_id', user_id)
+    .andWhere('course_id', req.params.course_id)
+    .whereNull('unsub_date')
+    .whereNull('unsub_reason')
+    .count('id as subscribed');
 
-  const insertOrUpdateCourseUser = cousrse_user_id => cousrse_user_id ?
-    knex('course_user')
-      .where('id', cousrse_user_id.id)
-      .update(courseUserInfoObj)
-      .returning('id') :
-    knex('course_user')
-      .insert(courseUserInfoObj)
-      .returning('id');
+  const insertNewCourseUser = newCourseUserObj => knex('course_user')
+    .insert(newCourseUserObj);
 
-  userAlreadyHasCourse()
-  .then(result => insertOrUpdateCourseUser(result[0]))
-  .then(id => res.send(true))
+  validateInputs()
+  .then(() => userAlreadySubscribed())
+  .then(result => {
+    if (parseInt(result[0].subscribed)) {
+      throw 'user already subscribed';
+    } else {
+      return insertNewCourseUser({
+        user_id,
+        course_id: req.params.course_id
+      });
+    }
+  })
+  .then(() => res.send(true))
   .catch(err => {
     console.error('Error inside postNewCourseUser.js: ', err);
     res.send(false);

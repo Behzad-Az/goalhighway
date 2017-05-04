@@ -1,9 +1,12 @@
 const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
 
+  const issue_desc = req.body.issueDesc.trim();
+
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      req.params.course_id &&
-      req.body.issueDesc.trim() && req.body.issueDesc.trim().length <= 500
+      issue_desc.length >= 4 && issue_desc.length <= 500 &&
+      issue_desc.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
+      req.params.course_id
     ) {
       resolve();
     } else {
@@ -39,13 +42,15 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     .andWhere('user_id', user_id)
     .whereNotNull('sub_date')
     .whereNull('unsub_date')
+    .whereNull('unsub_reason')
     .limit(1)
     .count('id as subscribed');
 
   knex.transaction(trx => {
-    Promise.all([validateInputs(), verifySubscription(trx)])
-    .then(results => {
-      if (parseInt(results[1][0].subscribed)) {
+    validateInputs()
+    .then(() => verifySubscription(trx))
+    .then(result => {
+      if (parseInt(result[0].subscribed)) {
         return closePrevReqIfNecessary();
       } else {
         throw 'User not subscribed to course';
@@ -55,7 +60,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
       let tutorLogObj = {
         student_id: user_id,
         course_id: req.params.course_id,
-        issue_desc: req.body.issueDesc.trim()
+        issue_desc
       };
       return insertNewTutorLog(tutorLogObj, trx);
     })
@@ -65,7 +70,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
         commenter_id: user_id,
         category: 'new_tutor_request',
         header: 'new_tutor_request',
-        content: req.body.issueDesc.trim(),
+        content: issue_desc,
         course_id: req.params.course_id,
         tutor_log_id: tutorLogId[0]
       };

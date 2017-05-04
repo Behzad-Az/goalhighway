@@ -2,9 +2,10 @@ const getUserNavBarData = (req, res, knex, user_id) => {
 
   const getCourseIds = () => knex('users')
     .innerJoin('course_user', 'users.id', 'user_id')
-    .select('course_id')
+    .select('course_user.course_id')
     .where('users.id', user_id)
-    .whereNull('unsub_date');
+    .whereNull('course_user.unsub_date')
+    .whereNull('course_user.unsub_reason');
 
   const getCourseFeeds = courseIds => knex('course_feed')
     .select('created_at')
