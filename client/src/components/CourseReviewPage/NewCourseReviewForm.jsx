@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import AutoSuggestion from '../partials/AutoSuggestion.jsx';
 import SingleSelect from '../partials/SingleSelect.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewCourseReviewForm extends Component {
   constructor(props) {
     super(props);
-    this.months = [ { value: '', label: 'select month' }, { value: 'Balls', label: 'Balls' },
+    this.months = [ { value: '', label: 'select month' },
       { value: 'Jan', label: 'Jan' }, { value: 'Feb', label: 'Feb' }, { value: 'Mar', label: 'Mar' }, { value: 'Apr', label: 'Apr' },
       { value: 'May', label: 'May' }, { value: 'Jun', label: 'Jun' }, { value: 'Jul', label: 'Jul' }, { value: 'Aug', label: 'Aug' },
       { value: 'Sep', label: 'Sep' }, { value: 'Oct', label: 'Oct' }, { value: 'Nov', label: 'Nov' }, { value: 'Dec', label: 'Dec' }
@@ -17,8 +18,8 @@ class NewCourseReviewForm extends Component {
       { value: 2009, label: 2009 }, { value: 2008, label: 2008 }, { value: 2007, label: 2007 }, { value: 2006, label: 2006 }
     ];
     this.formLimits = {
-      reviewDesc: 500,
-      profName: 60
+      reviewDesc: { min: 3, max: 500 },
+      profName: { min: 3, max: 60 }
     };
     this.reactAlert = new ReactAlert();
     this.state = {
@@ -41,9 +42,9 @@ class NewCourseReviewForm extends Component {
   }
 
   _handleChange(e) {
-    let state = {};
-    state[e.target.name] = e.target.value;
-    this.setState(state);
+    let newState = {};
+    newState[e.target.name] = e.target.value;
+    this.setState(newState);
   }
 
   _handleSelectProf(profName) {
@@ -51,7 +52,7 @@ class NewCourseReviewForm extends Component {
   }
 
   _handleSelectYear(startYear) {
-    this.setState({ startYear: startYear });
+    this.setState({ startYear });
   }
 
   _handleSelectMonth(startMonth) {
@@ -65,8 +66,8 @@ class NewCourseReviewForm extends Component {
            this.state.fairnessRating &&
            this.state.profRating &&
            this.state.overallRating &&
-           this.state.reviewDesc.length <= this.formLimits.reviewDesc &&
-           this.state.profName.length <= this.formLimits.profName;
+           !InvalidCharChecker(this.state.reviewDesc, this.formLimits.reviewDesc.max, 'courseReview') &&
+           !InvalidCharChecker(this.state.profName, this.formLimits.profName.max, 'profName');
   }
 
   _handleNewReview() {
@@ -182,7 +183,7 @@ class NewCourseReviewForm extends Component {
             <div className='control'>
               <label className='is-inline-block'>
                 Instructor's name (optional):
-                { this.state.profName.length > this.formLimits.profName && <span className='char-limit'>too long!</span> }
+                { InvalidCharChecker(this.state.profName, this.formLimits.profName.max, 'profName') && <span className='char-limit'>Invalid</span> }
               </label>
               <AutoSuggestion options={this.props.profs} onChange={this._handleSelectProf} />
             </div>
@@ -198,7 +199,7 @@ class NewCourseReviewForm extends Component {
 
             <label className='label'>
               Feel free to ellaborate (optional):
-              { this.state.reviewDesc.length > this.formLimits.reviewDesc && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.reviewDesc, this.formLimits.reviewDesc.max, 'courseReview') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <textarea
@@ -206,7 +207,7 @@ class NewCourseReviewForm extends Component {
                 name='reviewDesc'
                 placeholder='Provide context for your review (optional)'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.reviewDesc.length > this.formLimits.reviewDesc ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.reviewDesc, this.formLimits.reviewDesc.max, 'courseReview') ? '#9D0600' : '' }} />
             </p>
 
           </section>

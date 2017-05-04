@@ -1,18 +1,22 @@
 const postNewCourseReview = (req, res, knex, user_id) => {
 
+  const profName = req.body.profName.trim() || 'unknown';
+  const review_desc = req.body.reviewDesc.trim() || 'No detail provided.';
   let inst_id;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      req.params.course_id &&
       [2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006].includes(parseInt(req.body.startYear)) &&
       ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].includes(req.body.startMonth) &&
       [1, 2, 3].includes(parseInt(req.body.workloadRating)) &&
       [1, 2, 3].includes(parseInt(req.body.fairnessRating)) &&
       [1, 2, 3, 4, 5].includes(parseInt(req.body.profRating)) &&
       [1, 2, 3, 4, 5].includes(parseInt(req.body.overallRating)) &&
-      req.body.reviewDesc.trim().length <= 500 &&
-      req.body.profName.trim().length <= 60
+      review_desc.length <= 500 &&
+      review_desc.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
+      profName.length <= 60 &&
+      profName.search(/[^a-zA-Z\ \_\-\'\,\.\`]/) &&
+      req.params.course_id
     ) {
       resolve();
     } else {
@@ -31,7 +35,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
     .transacting(trx)
     .select('id')
     .where('inst_id', instId)
-    .andWhere(knex.raw('LOWER("name") = ?', req.body.profName.trim().toLowerCase() || 'unknown'))
+    .andWhere(knex.raw('LOWER("name") = ?', profName.toLowerCase()))
     .whereNull('deleted_at')
     .limit(1);
 
@@ -56,7 +60,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
       inst_id = instId[0].inst_id;
       return getProfId(inst_id, trx);
     })
-    .then(profId => profId[0] ? [profId[0].id] : createNewProf({ inst_id, name: req.body.profName.trim() }, trx))
+    .then(profId => profId[0] ? [profId[0].id] : createNewProf({ inst_id, name: profName }, trx))
     .then(profId => {
       let courseReviewObj = {
         course_id: req.params.course_id,
@@ -68,7 +72,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
         fairness_rating: req.body.fairnessRating,
         prof_rating: req.body.profRating,
         overall_rating: req.body.overallRating,
-        review_desc: req.body.reviewDesc.trim() || 'No detail provided'
+        review_desc
       };
       return createNewCourseReview(courseReviewObj, trx);
     })
