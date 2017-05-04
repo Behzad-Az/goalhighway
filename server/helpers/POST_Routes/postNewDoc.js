@@ -1,13 +1,18 @@
 const postNewDoc = (req, res, knex, user_id, esClient) => {
 
+  const title = req.body.title.trim();
+  const rev_desc = req.body.revDesc.trim();
+
   let newRevObj = {};
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      req.params.course_id &&
+      title.length >= 3 && title.length <= 60 &&
+      title.search(/[^a-zA-Z0-9\ \&\*\#\(\)\_\-\\/\\:\"\'\,\.\[\]\|]/) == -1 &&
+      rev_desc.length >= 3 && rev_desc.length <= 25 &&
+      rev_desc.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       ['asg_report', 'lecture_note', 'sample_question'].includes(req.body.type) &&
-      req.body.title.trim() && req.body.title.trim().length <= 60 &&
-      req.body.revDesc.trim() && req.body.revDesc.trim().length <= 250
+      req.params.course_id
     ) {
       resolve();
     } else {

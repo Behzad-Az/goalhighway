@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewDocForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.formLimits = {
-      title: 60,
-      revDesc: 250
+      title: { min: 3, max: 60 },
+      revDesc: { min: 3, max: 250 }
     };
     this.state = {
       title: '',
@@ -33,10 +34,10 @@ class NewDocForm extends Component {
   }
 
   _validateForm() {
-    return this.state.title &&
-           this.state.title.length <= this.formLimits.title &&
-           this.state.revDesc &&
-           this.state.revDesc.length <= this.formLimits.revDesc &&
+    return this.state.title.length >= this.formLimits.title.min &&
+           !InvalidCharChecker(this.state.title, this.formLimits.title.max, 'revTitle') &&
+           this.state.revDesc.length >= this.formLimits.revDesc.min, 'revDesc' &&
+           !InvalidCharChecker(this.state.revDesc, this.formLimits.revDesc.max, 'revDesc') &&
            this.state.type &&
            this.state.file;
   }
@@ -78,7 +79,7 @@ class NewDocForm extends Component {
           <section className='modal-card-body'>
             <label className='label'>
               Document Title:
-              { this.state.title.length > this.formLimits.title && <span className='char-limit'>too long!</span> }
+              {  InvalidCharChecker(this.state.title, this.formLimits.title.max, 'revTitle') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <input
@@ -87,7 +88,7 @@ class NewDocForm extends Component {
                 name='title'
                 placeholder='Enter document title here'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.title.length > this.formLimits.title ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.title, this.formLimits.title.max, 'revTitle') ? '#9D0600' : '' }} />
             </p>
             <label className='label'>Upload the Document:</label>
             <p className='control'>
@@ -118,7 +119,7 @@ class NewDocForm extends Component {
             </p>
             <label className='label'>
               Revision Comment:
-              { this.state.revDesc.length > this.formLimits.revDesc && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.revDesc, this.formLimits.revDesc.max, 'revTitle') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <textarea
@@ -127,7 +128,7 @@ class NewDocForm extends Component {
                 placeholder='Enter revision comment here'
                 defaultValue={this.state.revDesc}
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.revDesc.length > this.formLimits.revDesc ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.revDesc, this.formLimits.revDesc.max, 'revTitle') ? '#9D0600' : '' }} />
             </p>
             <label className='label'>Select Type of Document:</label>
             <p className='control'>

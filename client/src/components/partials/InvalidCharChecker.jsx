@@ -29,6 +29,12 @@ const InvalidCharChecker = (str, maxChar, type) => {
     case 'tutorRequest':
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
       break;
+    case 'revTitle':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \&\*\#\(\)\_\-\\/\\:\"\'\,\.\[\]\|]/);
+      break;
+    case 'revDesc':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
+
     default:
       regEx = 'iL5mdXEbyY';
       break;
