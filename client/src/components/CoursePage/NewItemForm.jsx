@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import ImageCropper from '../partials/ImageCropper.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewItemForm extends Component {
   constructor(props) {
@@ -8,9 +9,9 @@ class NewItemForm extends Component {
     this.reactAlert = new ReactAlert();
     this.formData = new FormData();
     this.formLimits = {
-      title: 60,
-      itemDesc: 250,
-      price: 10
+      title: { min: 3, max: 60 },
+      itemDesc: { min: 3, max: 250 },
+      price: { min: 1, max: 10 }
     };
     this.state = {
       title: '',
@@ -30,12 +31,12 @@ class NewItemForm extends Component {
   }
 
   _validateForm() {
-    return this.state.title &&
-           this.state.title.length <= this.formLimits.title &&
-           this.state.itemDesc &&
-           this.state.itemDesc.length <= this.formLimits.itemDesc &&
-           this.state.price &&
-           this.state.price.length <= this.formLimits.price;
+    return this.state.title.length >= this.formLimits.title.min &&
+           !InvalidCharChecker(this.state.title, this.formLimits.title.max, 'itemTitle') &&
+           this.state.itemDesc.length >= this.formLimits.itemDesc.min &&
+           !InvalidCharChecker(this.state.itemDesc, this.formLimits.itemDesc.max, 'itemDesc') &&
+           this.state.price.length >= this.formLimits.price.min &&
+           !InvalidCharChecker(this.state.price, this.formLimits.price.max, 'itemPrice');
   }
 
   _deleteFormData() {
@@ -83,7 +84,7 @@ class NewItemForm extends Component {
           <section className='modal-card-body'>
             <label className='label'>
               Item Title:
-              { this.state.title.length > this.formLimits.title && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.title, this.formLimits.title.max, 'itemTitle') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <input
@@ -92,11 +93,11 @@ class NewItemForm extends Component {
                 name='title'
                 placeholder='Enter item title here'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.title.length > this.formLimits.title ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.title, this.formLimits.title.max, 'itemTitle') ? '#9D0600' : '' }} />
             </p>
             <label className='label'>
               Item Description:
-              { this.state.itemDesc.length > this.formLimits.itemDesc && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.itemDesc, this.formLimits.itemDesc.max, 'itemDesc') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <textarea
@@ -104,7 +105,7 @@ class NewItemForm extends Component {
                 name='itemDesc'
                 placeholder='Enter description of item here'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.itemDesc.length > this.formLimits.itemDesc ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.itemDesc, this.formLimits.itemDesc.max, 'itemDesc') ? '#9D0600' : '' }} />
             </p>
             <div className='control'>
               <label className='label'>Upload Photo (Recommended):</label>
@@ -112,7 +113,7 @@ class NewItemForm extends Component {
             </div>
             <label className='label'>
               Item Price:
-              { this.state.price.length > this.formLimits.price && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.price, this.formLimits.price.max, 'itemPrice') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control has-icon has-icon-left'>
               <input
@@ -121,7 +122,7 @@ class NewItemForm extends Component {
                 name='price'
                 placeholder='Enter price here'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.price.length > this.formLimits.price ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.price, this.formLimits.price.max, 'itemPrice') ? '#9D0600' : '' }} />
               <span className='icon'><i className='fa fa-dollar' /></span>
             </p>
           </section>

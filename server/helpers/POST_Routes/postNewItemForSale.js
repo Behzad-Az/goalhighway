@@ -1,11 +1,18 @@
 const postNewItemForSale = (req, res, knex, user_id) => {
 
+  const title = req.body.title.trim();
+  const item_desc = req.body.itemDesc.trim();
+  const price = req.body.price.trim();
+
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      req.params.course_id &&
-      req.body.title.trim() && req.body.title.trim().length <= 60 &&
-      req.body.itemDesc.trim() && req.body.itemDesc.trim().length <= 250 &&
-      req.body.price.trim() && req.body.price.trim().length <= 10
+      title.length >= 3 && title.length <= 60 &&
+      title.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      item_desc.length >= 3 && item_desc.length <= 250 &&
+      item_desc.search(/[^a-zA-Z0-9\ \#\&\*\$\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      price.length >= 1 && price.length <= 10 &&
+      price.search(/[^a-zA-Z0-9\ \$\*\(\)\_\-\,\.\[\]]/) == -1 &&
+      req.params.course_id
     ) {
       resolve();
     } else {
@@ -26,9 +33,9 @@ const postNewItemForSale = (req, res, knex, user_id) => {
     validateInputs()
     .then(() => {
       let newItemObj = {
-        title: req.body.title.trim(),
-        item_desc: req.body.itemDesc.trim(),
-        price: req.body.price.trim(),
+        title,
+        item_desc,
+        price,
         photo_name: req.file && req.file.filename ? req.file.filename : 'default_item_for_sale_photo.png',
         owner_id: user_id,
         course_id: req.params.course_id
@@ -41,9 +48,9 @@ const postNewItemForSale = (req, res, knex, user_id) => {
         course_id: req.params.course_id,
         item_for_sale_id: itemId[0],
         category: 'new_item_for_sale',
-        header: req.body.title.trim(),
+        header: title,
         anonymous: true,
-        content: `${req.body.itemDesc.trim()} - $` + req.body.price.trim()
+        content: `${item_desc} - $` + price
       };
       return adminAddToCourseFeed(adminFeedObj, trx);
     })

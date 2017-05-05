@@ -32,7 +32,10 @@ class Demo extends React.Component {
   render() {
     return (
       <div className='box'>
-        <input type='file' onChange={this._onChange} />
+        <input
+          type='file'
+          onChange={this._onChange}
+          accept='image/png, image/jpeg, image/pjpeg' />
         { this.state.pictureSelected &&
           <CropperJS
             style={{ height: 400, width: '100%' }}
