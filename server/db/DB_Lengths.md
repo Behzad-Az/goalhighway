@@ -1,4 +1,10 @@
 Checked Files:
+-------------------------------------------------------
+
+POST ROUTES:
+-------------------------------------------------------
+checkEmailAvailability.js
+checkUsernameAvailability.js
 postLogin.js | Login.jsx
 postNewCourse.js | NewCourseForm.jsx
 postNewCourseFeed.js | NewCourseFeedForm.jsx
@@ -19,3 +25,7 @@ postNewResume.js | NewResumeForm.jsx
 postNewResumeReviewFeed.js
 postNewRevision.js | NewRevisionForm.jsx
 postNewUser.js | Register.jsx
+
+UPDATE ROUTES:
+-------------------------------------------------------
+updateCourseUserTutorStatus.js
