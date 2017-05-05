@@ -65,9 +65,9 @@ const documentStorage = multer.diskStorage({
         ext = '.docm';
         break;
       case 'application/msword':
-        ext = 'doc';
+        ext = '.doc';
         break;
-        case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+      case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
         ext = '.pptx';
         break;
       case 'application/vnd.ms-powerpoint.presentation.macroEnabled.12':

@@ -14,3 +14,5 @@ postNewInst.js | NewInstForm.jsx
 postNewInterviewAnswer.js | NewAnswerForm.jsx
 posNewInterviewQuestion.js | NewQuestionForm.jsx
 postNewItemForSale.js | NewItemForm.jsx
+SKIPPED: postNewLikeDislike.js
+postNewResume.js | NewResumeForm.jsx

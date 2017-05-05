@@ -54,13 +54,19 @@ const InvalidCharChecker = (str, maxChar, type) => {
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
       break;
     case 'itemTitle':
-      regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
+      regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\$\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
       break;
     case 'itemDesc':
       regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\$\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
       break;
     case 'itemPrice':
       regEx = new RegExp(/[^a-zA-Z0-9\ \$\*\(\)\_\-\,\.\[\]]/);
+      break;
+    case 'resumeTitle':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
+      break;
+    case 'resumeIntent':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
       break;
     default:
       regEx = 'iL5mdXEbyY';

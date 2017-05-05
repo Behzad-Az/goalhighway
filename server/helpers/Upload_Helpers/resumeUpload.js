@@ -11,10 +11,13 @@ const getRandomDocName = () => {
 };
 
 const acceptableMimeType = [
-  'image/jpeg',
   'image/png',
+  'image/jpeg',
+  'image/pjpeg',
   'application/pdf',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-word.document.macroEnabled.12',
+  'application/msword'
 ];
 
 const resumeStorage = multer.diskStorage({
@@ -22,11 +25,14 @@ const resumeStorage = multer.diskStorage({
   filename: (req, file, cb) => {
     let ext = '.unknown';
     switch (file.mimetype) {
+      case 'image/png':
+        ext = '.png';
+        break;
       case 'image/jpeg':
         ext = '.jpeg';
         break;
-      case 'image/png':
-        ext = '.png';
+      case 'image/pjpeg':
+        ext = '.jpeg';
         break;
       case 'application/pdf':
         ext = '.pdf';
@@ -34,8 +40,14 @@ const resumeStorage = multer.diskStorage({
       case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
         ext = '.docx';
         break;
+      case 'application/vnd.ms-word.document.macroEnabled.12':
+        ext = '.docm';
+        break;
+      case 'application/msword':
+        ext = '.doc';
+        break;
       default:
-       new Error('unknown file type');
+        new Error('unknown file type');
     }
     cb(null, getRandomDocName() + Date.now() + ext);
   }
