@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewReplyForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.formLimits = {
-      content: 500
+      content: { min: 3, max: 500 }
     };
     this.state = {
       content: ''
@@ -23,7 +24,9 @@ class NewReplyForm extends Component {
   }
 
   _validateForm() {
-    return this.state.content && this.state.content.length <= this.formLimits.content;
+    return this.state.content.length >= this.formLimits.content.min &&
+           !InvalidCharChecker(this.state.content, this.formLimits.content.max, 'emailContent') &&
+           this.props.email.id;
   }
 
   _handleSendReply() {
@@ -68,9 +71,9 @@ class NewReplyForm extends Component {
                 name='content'
                 placeholder='Enter email message here.'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.content.length > this.formLimits.content ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.content, this.formLimits.content.max, 'emailContent') ? '#9D0600' : '' }} />
             </p>
-            { this.state.content.length > this.formLimits.content && <p className='char-limit'>too long!</p> }
+            { InvalidCharChecker(this.state.content, this.formLimits.content.max, 'emailContent') && <p className='char-limit'>Invalid</p> }
           </section>
           <footer className='modal-card-foot'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleSendReply}>Send</button>

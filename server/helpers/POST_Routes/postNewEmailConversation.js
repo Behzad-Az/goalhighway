@@ -1,9 +1,12 @@
 const postNewEmailConversation = (req, res, knex, user_id) => {
 
+  const content = req.body.content.trim();
+
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      req.params.email_id &&
-      req.body.content && req.body.content.trim().length <= 500
+      content.length >= 3 && content.length <= 500 &&
+      content.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
+      req.params.email_id
     ) {
       resolve();
     } else {
@@ -27,7 +30,7 @@ const postNewEmailConversation = (req, res, knex, user_id) => {
     if (parseInt(verifiedEmail[0].verifiedEmail)) {
       return insertNewEmailConversation({
         sender_id: user_id,
-        content: req.body.content.trim(),
+        content,
         email_id: req.params.email_id
       });
     } else {
