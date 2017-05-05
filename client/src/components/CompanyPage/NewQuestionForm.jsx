@@ -14,6 +14,7 @@ class NewQuestionForm extends Component {
       outcome: ''
     };
     this._handleChange = this._handleChange.bind(this);
+    this._validateAnswer = this._validateAnswer.bind(this);
     this._validateForm = this._validateForm.bind(this);
     this._handleNewInterviewQuestion = this._handleNewInterviewQuestion.bind(this);
   }
@@ -24,17 +25,18 @@ class NewQuestionForm extends Component {
     this.setState(state);
   }
 
+  _validateAnswer() {
+    if (this.state.answer) {
+      return this.state.answer.length >= this.formLimits.answer.min &&
+             !InvalidCharChecker(this.state.answer, this.formLimits.answer.max, 'interviewAnswer') &&
+             this.state.outcome;
+    } else {
+      return true;
+    }
+  }
+
   _validateForm() {
-    const validateAnswer = () => {
-      if (this.state.answer) {
-        return this.state.answer.length >= this.formLimits.answer.min &&
-               !InvalidCharChecker(this.state.answer, this.formLimits.answer.max, 'interviewAnswer') &&
-               this.state.outcome;
-      } else {
-        return true;
-      }
-    };
-    return validateAnswer() &&
+    return this._validateAnswer() &&
            this.state.question.length >= this.formLimits.question.min &&
            !InvalidCharChecker(this.state.question, this.formLimits.question.max, 'interviewQuestion') &&
            this.props.companyInfo.id;
