@@ -39,7 +39,7 @@ class TopRow extends Component {
       <div className='top-row'>
         <NewQuestionForm
           companyInfo={this.props.companyInfo}
-          reload={this.reload}
+          reload={this.props.reload}
           showModal={this.state.showNewQuestionForm}
           toggleModal={this._toggleNewQuestionForm}
         />

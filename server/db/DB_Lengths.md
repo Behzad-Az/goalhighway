@@ -12,3 +12,4 @@ SKIPPED: postNewFeedReply.js
 SKIPPED: postNewFlag.js
 postNewInst.js | NewInstForm.jsx
 postNewInterviewAnswer.js | NewAnswerForm.jsx
+posNewInterviewQuestion.js | NewQuestionForm.jsx

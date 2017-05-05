@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewQuestionForm extends Component {
   constructor(props) {
     super(props);
+    this.formLimits = {
+      question: { min: 5, max: 250 },
+      answer: { min: 5, max: 500 }
+    };
     this.state = {
       question: '',
       answer: '',
@@ -20,7 +25,18 @@ class NewQuestionForm extends Component {
   }
 
   _validateForm() {
-    return this.state.question &&
+    const validateAnswer = () => {
+      if (this.state.answer) {
+        return this.state.answer.length >= this.formLimits.answer.min &&
+               !InvalidCharChecker(this.state.answer, this.formLimits.answer.max, 'interviewAnswer') &&
+               this.state.outcome;
+      } else {
+        return true;
+      }
+    };
+    return validateAnswer() &&
+           this.state.question.length >= this.formLimits.question.min &&
+           !InvalidCharChecker(this.state.question, this.formLimits.question.max, 'interviewQuestion') &&
            this.props.companyInfo.id;
   }
 
@@ -59,23 +75,29 @@ class NewQuestionForm extends Component {
             <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
-            <label className='label'>What question were you asked?</label>
+            <label className='label'>
+              What question were you asked?
+              { InvalidCharChecker(this.state.question, this.formLimits.question.max, 'interviewQuestion') && <span className='char-limit'>Invalid</span> }
+            </label>
             <p className='control'>
               <input
                 className='input'
                 type='text' name='question'
                 placeholder='Example: Describe a work conflict and how you dealt with it.'
                 onChange={this._handleChange}
-              />
+                style={{ borderColor: InvalidCharChecker(this.state.question, this.formLimits.question.max, 'interviewQuestion') ? '#9D0600' : '' }} />
             </p>
-            <label className='label'>What was your answer? (optional)</label>
+            <label className='label'>
+              What was your answer? (optional)
+              { InvalidCharChecker(this.state.answer, this.formLimits.answer.max, 'interviewAnswer') && <span className='char-limit'>Invalid</span> }
+            </label>
             <p className='control'>
               <textarea
                 className='textarea'
                 name='answer'
                 placeholder='Summarize your answer here (optional)'
                 onChange={this._handleChange}
-              />
+                style={{ borderColor: InvalidCharChecker(this.state.answer, this.formLimits.answer.max, 'interviewAnswer') ? '#9D0600' : '' }} />
             </p>
             <label className='label'>What was the outcome? (optional)</label>
             <p className='control'>

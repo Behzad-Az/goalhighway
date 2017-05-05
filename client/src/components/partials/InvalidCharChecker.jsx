@@ -50,6 +50,9 @@ const InvalidCharChecker = (str, maxChar, type) => {
     case 'interviewAnswer':
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
       break;
+    case 'interviewQuestion':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
+      break;
     default:
       regEx = 'iL5mdXEbyY';
       break;
