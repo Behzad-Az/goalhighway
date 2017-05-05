@@ -1,34 +1,28 @@
-const postNewUser = (req, res, knex, bcrypt, esClient) => {
+const postNewUser = (req, res, knex, bcrypt) => {
 
   const username = req.body.username.trim().toLowerCase();
+  const pwd = req.body.password.trim();
+  const pwdConfirm = req.body.passwordConfirm.trim();
   const email = req.body.email.trim().toLowerCase();
-
-  const verifyOtherInputs = () => {
-    const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    return username.length >= 3 && username.length <= 30 && username.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1 &&
-           email.length >= 6 && email.length <= 30 && email.match(emailRegex) &&
-           [1, 2, 3, 4, 5, 6].includes(parseInt(req.body.userYear));
-  };
+  const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
   const validateInputs = () => new Promise ((resolve, reject) => {
-    const pwd = req.body.password;
-    const pwdConfirm = req.body.passwordConfirm;
-    if (pwd !== pwdConfirm) {
-      reject('password not_matching');
-    } else if (pwd.length < 6) {
-      reject('password too_short');
-    } else if (pwd.length > 30) {
-      reject('password too_long');
-    } else if (pwd.search(/\d/) == -1) {
-      reject('password no_num');
-    } else if (pwd.search(/[a-zA-Z]/) == -1) {
-      reject('password no_letter');
-    } else if (pwd.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) != -1) {
-      reject('password bad_char');
-    } else if (!verifyOtherInputs()) {
-      reject('bad_other_input');
+    if (
+      pwd === pwdConfirm &&
+      pwd.length >= 6 && pwd.length <= 30 &&
+      pwd.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1 &&
+      pwd.search(/\d/) != -1 &&
+      pwd.search(/[a-zA-Z]/) != -1 &&
+      username.length >= 3 && username.length <= 30 &&
+      username.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1 &&
+      email.length >= 6 && email.length <= 30 &&
+      email.match(emailRegex) &&
+      [1, 2, 3, 4, 5, 6].includes(parseInt(req.body.userYear))
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
     }
-    resolve();
   });
 
   const findInstProgId = () => knex('institution_program')
@@ -37,10 +31,11 @@ const postNewUser = (req, res, knex, bcrypt, esClient) => {
     .andWhere('prog_id', req.body.progId)
     .whereNull('deleted_at');
 
-  const insertUser = newUserObj => knex('users').insert(newUserObj);
+  const insertUser = newUserObj => knex('users')
+    .insert(newUserObj);
 
   validateInputs()
-  .then(() => Promise.all([ bcrypt.hash(req.body.password, 10), findInstProgId() ]))
+  .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId() ]))
   .then(results => insertUser({
     username,
     email,

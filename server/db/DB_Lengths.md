@@ -18,3 +18,4 @@ SKIPPED: postNewLikeDislike.js
 postNewResume.js | NewResumeForm.jsx
 postNewResumeReviewFeed.js
 postNewRevision.js | NewRevisionForm.jsx
+postNewUser.js | Register.jsx

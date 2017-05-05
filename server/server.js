@@ -256,7 +256,7 @@ app.post('/api/institutions', (req, res) => {
 });
 
 app.post('/api/register', (req, res) => {
-  postNewUser(req, res, knex, bcryptJs, esClient);
+  postNewUser(req, res, knex, bcryptJs);
 });
 
 app.post('/api/searchbar', (req, res) => {

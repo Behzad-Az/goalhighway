@@ -1,11 +1,19 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 import SingleSelect from '../partials/SingleSelect.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.academicYears = [ { value: 1, label: 'Year 1'}, { value: 2, label: 'Year 2'}, { value: 3, label: 'Year 3'}, { value: 4, label: 'Year 4'}, { value: 5, label: 'Year 5'}, { value: 6, label: 'Year 6'} ];
+    this.emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    this.formLimits = {
+      username: { min: 3, max: 30 },
+      password: { min: 6, max: 30 },
+      passwordConfirm: { min: 6, max: 30 },
+      email: { min: 6, max: 30 }
+    };
     this.state = {
       dataLoaded: false,
       pageError: false,
@@ -20,15 +28,18 @@ class Register extends Component {
       usernameAvaialble: false,
       emailAvaialble: false
     };
-    this.conditionData = this.conditionData.bind(this);
-    this.handleInstChange = this.handleInstChange.bind(this);
-    this.handleProgChange = this.handleProgChange.bind(this);
-    this.handleUserYearChange = this.handleUserYearChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.getUserAvailability = this.getUserAvailability.bind(this);
-    this.getEmailAvailability = this.getEmailAvailability.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.handleRegister = this.handleRegister.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._handleInstChange = this._handleInstChange.bind(this);
+    this._handleProgChange = this._handleProgChange.bind(this);
+    this._handleUserYearChange = this._handleUserYearChange.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._getUserAvailability = this._getUserAvailability.bind(this);
+    this._getEmailAvailability = this._getEmailAvailability.bind(this);
+    this._validateUsername = this._validateUsername.bind(this);
+    this._validatePassword = this._validatePassword.bind(this);
+    this._validateEmail = this._validateEmail.bind(this);
+    this._validateForm = this._validateForm.bind(this);
+    this._handleRegister = this._handleRegister.bind(this);
   }
 
   componentDidMount() {
@@ -37,11 +48,11 @@ class Register extends Component {
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this.conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  conditionData(resJSON) {
+  _conditionData(resJSON) {
     if (resJSON) {
       let instProgDropDownList = resJSON.map(inst => {
         let value = inst.id;
@@ -59,27 +70,27 @@ class Register extends Component {
     }
   }
 
-  handleInstChange(instId) {
+  _handleInstChange(instId) {
     this.setState({ instId });
   }
 
-  handleProgChange(progId) {
+  _handleProgChange(progId) {
     this.setState({ progId });
   }
 
-  handleUserYearChange(userYear) {
+  _handleUserYearChange(userYear) {
     this.setState({ userYear });
   }
 
-  handleChange(e) {
+  _handleChange(e) {
     let obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
   }
 
-  getUserAvailability(e) {
-    let username = e.target.value.toLowerCase();
-    if (username.length > 2) {
+  _getUserAvailability(e) {
+    let username = e.target.value.toLowerCase().trim();
+    if (this._validateUsername(username)) {
       fetch('/api/username_availability', {
         method: 'POST',
         credentials: 'same-origin',
@@ -96,10 +107,9 @@ class Register extends Component {
     }
   }
 
-  getEmailAvailability(e) {
-    let email = e.target.value.toLowerCase();
-    let emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    if (email.length > 5 && email.match(emailRegex)) {
+  _getEmailAvailability(e) {
+    let email = e.target.value.toLowerCase().trim();
+    if (this._validateEmail(email)) {
       fetch('/api/email_availability', {
         method: 'POST',
         credentials: 'same-origin',
@@ -116,20 +126,42 @@ class Register extends Component {
     }
   }
 
-  validateForm() {
-    return this.state.username &&
-           this.state.email &&
-           this.state.password &&
-           this.state.passwordConfirm &&
+  _validateUsername(username) {
+    return username.length >= this.formLimits.username.min &&
+           !InvalidCharChecker(username, this.formLimits.username.max, 'username');
+  }
+
+  _validatePassword() {
+    return this.state.password.length >= this.formLimits.password.min &&
+           this.state.password.search(/\d/) != -1 &&
+           this.state.password.search(/[a-zA-Z]/) != -1 &&
+           !InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password');
+  }
+
+  _validatePasswordConfirm() {
+    return this._validatePassword() &&
+           this.state.passwordConfirm === this.state.password;
+  }
+
+  _validateEmail(email) {
+    return email.length >= this.formLimits.email.min &&
+           email.length <= this.formLimits.email.max &&
+           email.match(this.emailRegex);
+  }
+
+  _validateForm() {
+    return this._validateUsername(this.state.username) &&
+           this._validatePassword() &&
+           this._validatePasswordConfirm() &&
+           this._validateEmail(this.state.email) &&
            this.state.instId &&
            this.state.progId &&
            this.state.userYear &&
            this.state.emailAvaialble &&
-           this.state.usernameAvaialble &&
-           this.state.password === this.state.passwordConfirm;
+           this.state.usernameAvaialble;
   }
 
-  handleRegister() {
+  _handleRegister() {
     let data = {
       username: this.state.username,
       email: this.state.email,
@@ -168,47 +200,88 @@ class Register extends Component {
 
         <div className='card-content'>
           <div className='control'>
-            <label className='label'>Username: {this.state.usernameAvaialble && <i className='fa fa-check' />}</label>
-            <input type='text' className='input is-primary'
-                   placeholder='Enter username' name='username'
-                   onChange={this.getUserAvailability} />
+            <label className='label'>
+              Username: { this.state.usernameAvaialble && <i className='fa fa-check' /> }
+            </label>
+            <input
+              type='text'
+              className='input is-primary'
+              placeholder='Enter username'
+              name='username'
+              onChange={this._getUserAvailability} />
           </div>
           <div className='control'>
-            <label className='label'>Email: {this.state.emailAvaialble && <i className='fa fa-check' />}</label>
-            <input type='email' className='input is-primary'
-                   placeholder='Enter email' name='email'
-                   onChange={this.getEmailAvailability} />
+            <label className='label'>
+              Email: { this.state.emailAvaialble && <i className='fa fa-check' /> }
+            </label>
+            <input
+              type='email'
+              className='input is-primary'
+              placeholder='Enter email'
+              name='email'
+              onChange={this._getEmailAvailability} />
           </div>
           <div className='control'>
-            <label className='label'>Password:</label>
-            <input type='password' className='input is-primary'
-                   placeholder='Enter password' name='password'
-                   onChange={this.handleChange} />
+            <label className='label'>
+              Password: { this._validatePassword() && <i className='fa fa-check' /> }
+            </label>
+            <input
+              type='password'
+              className='input is-primary'
+              placeholder='minium six characters | one letter | one digit'
+              name='password'
+              onChange={this._handleChange} />
           </div>
           <div className='control'>
-            <label className='label'>Confirm Password:</label>
-            <input type='password' className='input is-primary'
-                   placeholder='Enter password' name='passwordConfirm'
-                   onChange={this.handleChange} />
+            <label className='label'>
+              Confirm Password: { this._validatePasswordConfirm() && <i className='fa fa-check' /> }
+            </label>
+            <input
+            type='password'
+            className='input is-primary'
+            placeholder='minium six characters | one letter | one digit'
+            name='passwordConfirm'
+            onChange={this._handleChange} />
           </div>
 
           <div className='control'>
-            <label className='label'>Primary Institution:</label>
-            <SingleSelect disabled={false} initialValue={this.state.instId} options={this.state.instProgDropDownList} name='instId' handleChange={this.handleInstChange} />
+            <label className='label'>
+              Primary Institution: { this.state.instId && <i className='fa fa-check' /> }
+            </label>
+            <SingleSelect
+              disabled={false}
+              initialValue={this.state.instId}
+              options={this.state.instProgDropDownList}
+              name='instId'
+              handleChange={this._handleInstChange} />
           </div>
 
           <div className='control'>
-            <label className='label'>Primary Program:</label>
-            <SingleSelect disabled={false} initialValue={this.state.progId} options={programList} name='progId' handleChange={this.handleProgChange} />
+            <label className='label'>
+              Primary Program: { this.state.progId && <i className='fa fa-check' /> }
+            </label>
+            <SingleSelect
+              disabled={false}
+              initialValue={this.state.progId}
+              options={programList}
+              name='progId'
+              handleChange={this._handleProgChange} />
           </div>
 
           <div className='control'>
-            <label className='label'>Primary Academic Year:</label>
-            <SingleSelect disabled={false} initialValue={this.state.userYear} options={this.academicYears} name='userYear' handleChange={this.handleUserYearChange} />
+            <label className='label'>
+              Primary Academic Year: { this.state.userYear && <i className='fa fa-check' /> }
+            </label>
+            <SingleSelect
+              disabled={false}
+              initialValue={this.state.userYear}
+              options={this.academicYears}
+              name='userYear'
+              handleChange={this._handleUserYearChange} />
           </div>
         </div>
         <footer className='card-footer'>
-          <Link className='card-footer-item' onClick={this.handleRegister}>Register!</Link>
+          <Link className='card-footer-item button is-link' onClick={this._handleRegister} disabled={!this._validateForm()}>Register!</Link>
         </footer>
       </div>
     );

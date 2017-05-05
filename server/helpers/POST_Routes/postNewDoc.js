@@ -2,8 +2,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   const title = req.body.title.trim();
   const rev_desc = req.body.revDesc.trim();
-
-  let newRevObj = {};
+  let doc_id;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
@@ -89,7 +88,8 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     validateInputs()
     .then(() => insertNewDoc({ course_id: req.params.course_id }, trx))
     .then(docId => {
-      newRevObj = {
+      doc_id = docId[0];
+      let newRevObj = {
         title,
         type: req.body.type,
         rev_desc,
@@ -103,9 +103,9 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
       let adminFeedObj = {
         commenter_id: user_id,
         course_id: req.params.course_id,
-        doc_id: newRevObj.doc_id,
+        doc_id,
         rev_id: revId[0],
-        category: determineCategory(newRevObj.type),
+        category: determineCategory(req.body.type),
         anonymous: true,
         header: title,
         content: 'New document received.'
@@ -115,9 +115,9 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     .then(() => getSearchData())
     .then(searchData => {
       let esDocObj = {
-        id: newRevObj.doc_id,
+        id: doc_id,
         title,
-        kind: newRevObj.type,
+        kind: req.body.type,
         course_id: req.params.course_id,
         course_name: searchData[0].short_display_name,
         inst_id: searchData[0].id,
