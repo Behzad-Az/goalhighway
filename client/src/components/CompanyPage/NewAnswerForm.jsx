@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewAnswerForm extends Component {
   constructor(props) {
     super(props);
+    this.formLimits = {
+      answer: { min: 5, max: 500 }
+    };
     this.state = {
       answer: '',
       outcome: ''
@@ -19,8 +23,10 @@ class NewAnswerForm extends Component {
   }
 
   _validateForm() {
-    return this.state.answer &&
+    return this.state.answer.length >= this.formLimits.answer.min &&
+           !InvalidCharChecker(this.state.answer, this.formLimits.answer.max, 'interviewAnswer') &&
            this.state.outcome &&
+           this.props.companyId &&
            this.props.question.id;
   }
 
@@ -61,9 +67,17 @@ class NewAnswerForm extends Component {
           </header>
           <section className='modal-card-body'>
 
-            <label className='label'>What was your answer?</label>
+            <label className='label'>
+              What was your answer?
+              { InvalidCharChecker(this.state.answer, this.formLimits.answer.max, 'interviewAnswer') && <span className='char-limit'>Invalid</span> }
+            </label>
             <p className='control'>
-              <textarea className='textarea' name='answer' placeholder='Summarize your answer here' onChange={this._handleChange} />
+              <textarea
+                className='textarea'
+                name='answer'
+                placeholder='Summarize your answer here'
+                onChange={this._handleChange}
+                style={{ borderColor: InvalidCharChecker(this.state.answer, this.formLimits.answer.max, 'interviewAnswer') ? '#9D0600' : '' }} />
             </p>
 
             <label className='label'>What was the outcome?</label>
@@ -73,7 +87,7 @@ class NewAnswerForm extends Component {
                   <option value=''>-</option>
                   <option value='Got the job'>Got the job!</option>
                   <option value='Unsuccessful'>Unsuccessful</option>
-                  <option value='Unknown'>Don't know</option>
+                  <option value='Unknown'>Don't know yet</option>
                   <option value='Unknown'>Rather not say</option>
                 </select>
               </span>

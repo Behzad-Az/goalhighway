@@ -11,3 +11,4 @@ postNewEmailConversation.js | NewReplyForm.jsx
 SKIPPED: postNewFeedReply.js
 SKIPPED: postNewFlag.js
 postNewInst.js | NewInstForm.jsx
+postNewInterviewAnswer.js | NewAnswerForm.jsx
