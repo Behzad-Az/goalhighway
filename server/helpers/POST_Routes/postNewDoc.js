@@ -8,7 +8,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       title.length >= 3 && title.length <= 60 &&
-      title.search(/[^a-zA-Z0-9\ \&\*\#\(\)\_\-\\/\\:\"\'\,\.\[\]\|]/) == -1 &&
+      title.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       rev_desc.length >= 3 && rev_desc.length <= 25 &&
       rev_desc.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       ['asg_report', 'lecture_note', 'sample_question'].includes(req.body.type) &&

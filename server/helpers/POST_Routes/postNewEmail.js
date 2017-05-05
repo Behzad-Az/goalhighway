@@ -1,12 +1,17 @@
 const postNewEmail = (req, res, knex, user_id) => {
 
+  const subject = req.body.subject.trim();
+  const content = req.body.content.trim();
+
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      req.body.subject && req.body.subject.trim().length <= 60 &&
-      req.body.content && req.body.content.trim().length <= 500 &&
+      subject.length >= 3 && subject.length <= 60 &&
+      subject.search(/[^a-zA-Z0-9\ \!\@\$\#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      content.length >= 3 && content.length <= 500 &&
+      content.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
+      ['itemForSale', 'tutorReq', 'resumeReview'].includes(req.body.type) &&
       req.body.toId &&
-      req.body.objId &&
-      ['itemForSale', 'tutorReq', 'resumeReview'].includes(req.body.type)
+      req.body.objId
     ) {
       resolve();
     } else {
@@ -66,7 +71,7 @@ const postNewEmail = (req, res, knex, user_id) => {
     .then(verifiedEmail => {
       if (parseInt(verifiedEmail[0].verifiedEmail)) {
         let newEmailObj = {
-          subject: req.body.subject.trim(),
+          subject,
           to_id: req.body.toId,
           from_id: user_id,
         };
@@ -77,7 +82,7 @@ const postNewEmail = (req, res, knex, user_id) => {
     })
     .then(emailId => {
       let newConversationObj = {
-        content: req.body.content.trim(),
+        content,
         sender_id: user_id,
         email_id: emailId[0]
       };

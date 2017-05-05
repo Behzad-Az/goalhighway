@@ -30,11 +30,17 @@ const InvalidCharChecker = (str, maxChar, type) => {
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
       break;
     case 'revTitle':
-      regEx = new RegExp(/[^a-zA-Z0-9\ \&\*\#\(\)\_\-\\/\\:\"\'\,\.\[\]\|]/);
+      regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
       break;
     case 'revDesc':
       regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
-
+      break;
+    case 'emailSubject':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\$\#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
+      break;
+    case 'emailContent':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
+      break;
     default:
       regEx = 'iL5mdXEbyY';
       break;

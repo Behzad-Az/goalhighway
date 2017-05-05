@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewEmailForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.formLimits = {
-      subject: 60,
-      content: 500
+      subject: { min: 3, max: 60 },
+      content: { min: 3, max: 500 }
     };
     this.state = {
       subject: this.props.emailParams.subject,
@@ -31,10 +32,10 @@ class NewEmailForm extends Component {
   }
 
   _validateForm() {
-    return this.state.subject &&
-           this.state.subject.length <= this.formLimits.subject &&
-           this.state.content &&
-           this.state.content.length <= this.formLimits.content &&
+    return this.state.subject.length >= this.formLimits.subject.min &&
+           !InvalidCharChecker(this.state.subject, this.formLimits.subject.max, 'emailSubject') &&
+           this.state.content.length >= this.formLimits.content.min &&
+           !InvalidCharChecker(this.state.content, this.formLimits.content.max, 'emailContent') &&
            this.props.emailParams.type &&
            this.props.emailParams.objId &&
            this.props.emailParams.toId;
@@ -81,7 +82,7 @@ class NewEmailForm extends Component {
           <section className='modal-card-body'>
             <label className='label'>
               Subject:
-              { this.state.subject.length > this.formLimits.subject && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.subject, this.formLimits.subject.max, 'emailSubject') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <input
@@ -91,11 +92,11 @@ class NewEmailForm extends Component {
                 placeholder='Enter email subject here'
                 value={this.state.subject}
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.subject.length > this.formLimits.subject ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.subject, this.formLimits.subject.max, 'emailSubject') ? '#9D0600' : '' }} />
             </p>
             <label className='label'>
               Message:
-              { this.state.content.length > this.formLimits.content && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.content, this.formLimits.content.max, 'emailContent') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <textarea
@@ -103,7 +104,7 @@ class NewEmailForm extends Component {
                 name='content'
                 placeholder='Enter email message here.'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.content.length > this.formLimits.content ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.content, this.formLimits.content.max, 'emailContent') ? '#9D0600' : '' }} />
             </p>
           </section>
           <footer className='modal-card-foot'>
