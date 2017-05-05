@@ -9,7 +9,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     if (
       title.length >= 3 && title.length <= 60 &&
       title.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
-      rev_desc.length >= 3 && rev_desc.length <= 25 &&
+      rev_desc.length >= 3 && rev_desc.length <= 250 &&
       rev_desc.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       ['asg_report', 'lecture_note', 'sample_question'].includes(req.body.type) &&
       req.params.course_id
@@ -90,9 +90,9 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     .then(() => insertNewDoc({ course_id: req.params.course_id }, trx))
     .then(docId => {
       newRevObj = {
-        title: req.body.title.trim(),
+        title,
         type: req.body.type,
-        rev_desc: req.body.revDesc.trim(),
+        rev_desc,
         file_name: req.file.filename,
         doc_id: docId[0],
         poster_id: user_id
@@ -107,7 +107,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
         rev_id: revId[0],
         category: determineCategory(newRevObj.type),
         anonymous: true,
-        header: newRevObj.title,
+        header: title,
         content: 'New document received.'
       };
       return adminAddToCourseFeed(adminFeedObj, trx);
@@ -116,7 +116,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     .then(searchData => {
       let esDocObj = {
         id: newRevObj.doc_id,
-        title: newRevObj.title,
+        title,
         kind: newRevObj.type,
         course_id: req.params.course_id,
         course_name: searchData[0].short_display_name,

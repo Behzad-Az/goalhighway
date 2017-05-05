@@ -1,11 +1,17 @@
 const postNewRevision = (req, res, knex, user_id, esClient) => {
 
+  const title = req.body.title.trim();
+  const rev_desc = req.body.revDesc.trim();
+
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
-      req.params.course_id && req.params.doc_id &&
+      title.length >= 3 && title.length <= 60 &&
+      title.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      rev_desc.length >= 3 && rev_desc.length <= 250 &&
+      rev_desc.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       ['asg_report', 'lecture_note', 'sample_question'].includes(req.body.type) &&
-      req.body.title.trim() && req.body.title.trim().length <= 60 &&
-      req.body.revDesc.trim() && req.body.revDesc.trim().length <= 250
+      req.params.course_id &&
+      req.params.doc_id
     ) {
       resolve();
     } else {
@@ -67,7 +73,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     };
     const bodyObj = {
       doc: {
-        title: req.body.title.trim(),
+        title,
         kind
       }
     };
@@ -86,14 +92,14 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
   knex.transaction(trx => {
     validateInputs()
     .then(() => determineFileName())
-    .then(fileName => {
+    .then(file_name => {
       let newRevObj = {
-        title: req.body.title.trim(),
+        title,
         type: req.body.type,
-        rev_desc: req.body.revDesc.trim(),
+        rev_desc,
         doc_id: req.params.doc_id,
         poster_id: user_id,
-        file_name: fileName
+        file_name
       };
       return insertNewRevision(newRevObj, trx);
     })
@@ -105,8 +111,8 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
         rev_id: revId[0],
         category: determineCategory(req.body.type),
         anonymous: true,
-        header: req.body.title.trim(),
-        content: req.body.revDesc.trim()
+        header: title,
+        content: rev_desc
       };
       return adminAddToCourseFeed(adminFeedObj, trx);
     })

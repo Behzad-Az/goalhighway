@@ -1,4 +1,8 @@
-postNewResumeReviewFeed = (req, res, knex, user_id) => {
+const postNewResumeReviewFeed = (req, res, knex, user_id) => {
+
+  const validateInputs = () => new Promise((resolve, reject) => {
+    req.params.resume_id ? resolve() : reject('Invalid form entries');
+  });
 
   const updateResumeDb = () => knex('resumes')
     .where('id', req.params.resume_id)
@@ -7,7 +11,8 @@ postNewResumeReviewFeed = (req, res, knex, user_id) => {
     .whereNull('deleted_at')
     .update({ review_requested_at: knex.fn.now() });
 
-  updateResumeDb()
+  validateInputs()
+  .then(() => updateResumeDb())
   .then(() => res.send(true))
   .catch(err => {
     console.error('Error inside postNewResumeReviewFeed.js: ', err);

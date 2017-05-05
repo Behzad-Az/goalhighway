@@ -39,7 +39,8 @@ class NewDocForm extends Component {
            this.state.revDesc.length >= this.formLimits.revDesc.min, 'revDesc' &&
            !InvalidCharChecker(this.state.revDesc, this.formLimits.revDesc.max, 'revDesc') &&
            this.state.type &&
-           this.state.file;
+           this.state.file &&
+           this.props.courseId;
   }
 
   _handleNewDocPost() {
@@ -79,7 +80,7 @@ class NewDocForm extends Component {
           <section className='modal-card-body'>
             <label className='label'>
               Document Title:
-              {  InvalidCharChecker(this.state.title, this.formLimits.title.max, 'revTitle') && <span className='char-limit'>Invalid</span> }
+              { InvalidCharChecker(this.state.title, this.formLimits.title.max, 'revTitle') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <input
