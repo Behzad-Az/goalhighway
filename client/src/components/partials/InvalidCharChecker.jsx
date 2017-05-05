@@ -41,6 +41,12 @@ const InvalidCharChecker = (str, maxChar, type) => {
     case 'emailContent':
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
       break;
+    case 'instLongName':
+      regEx = new RegExp(/[^a-zA-Z\ \-\'\.]/);
+      break;
+    case 'instShortName':
+      regEx = new RegExp(/[^a-zA-Z\ \-\'\.]/);
+      break;
     default:
       regEx = 'iL5mdXEbyY';
       break;

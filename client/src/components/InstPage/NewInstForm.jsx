@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import SingleSelect from '../partials/SingleSelect.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewInstForm extends Component {
   constructor(props) {
@@ -31,8 +32,8 @@ class NewInstForm extends Component {
     };
     this.reactAlert = new ReactAlert();
     this.formLimits = {
-      instLongName: 60,
-      instShortName: 10
+      instLongName: { min: 5, max: 60 },
+      instShortName: { min: 2, max: 10 }
     };
     this.state = {
       instLongName: '',
@@ -54,8 +55,10 @@ class NewInstForm extends Component {
   }
 
   _validateForm() {
-    return this.state.instLongName && this.state.instLongName.length <= this.formLimits.instLongName &&
-           this.state.instShortName.length <= this.formLimits.instShortName &&
+    return this.state.instLongName.length >= this.formLimits.instLongName.min &&
+           !InvalidCharChecker(this.state.instLongName, this.formLimits.instLongName.max, 'instLongName') &&
+           this.state.instShortName.length >= this.formLimits.instShortName.min &&
+           !InvalidCharChecker(this.state.instShortName, this.formLimits.instShortName.max, 'instShortName') &&
            this.state.country &&
            this.state.province;
   }
@@ -110,7 +113,7 @@ class NewInstForm extends Component {
 
             <label className='label'>
               Institution Full Name:
-              { this.state.instLongName.length > this.formLimits.instLongName && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.instLongName, this.formLimits.instLongName.max, 'instLongName') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <input
@@ -119,12 +122,12 @@ class NewInstForm extends Component {
                 name='instLongName'
                 placeholder='Example: University of British Columbia'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.instLongName.length > this.formLimits.instLongName ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.instLongName, this.formLimits.instLongName.max, 'instLongName') ? '#9D0600' : '' }} />
             </p>
 
             <label className='label'>
               Institution Given Name (optional):
-              { this.state.instShortName.length > this.formLimits.instShortName && <span className='char-limit'>too long!</span> }
+              { InvalidCharChecker(this.state.instShortName, this.formLimits.instShortName.max, 'instShortName') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <input
@@ -133,7 +136,7 @@ class NewInstForm extends Component {
                 name='instShortName'
                 placeholder='Example (optional): UBC'
                 onChange={this._handleChange}
-                style={{ borderColor: this.state.instShortName.length > this.formLimits.instShortName ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.instShortName, this.formLimits.instShortName.max, 'instShortName') ? '#9D0600' : '' }} />
             </p>
 
             <label className='label'>Country:</label>
