@@ -7,7 +7,7 @@ class NewCourseFeedForm extends Component {
     super(props);
     this.reactAlert = new ReactAlert();
     this.formLimits = {
-      content: { min: 3, max: 500 }
+      content: { min: 3, max: 535 }
     };
     this.state = {
       content: '',

@@ -69,7 +69,7 @@ class NewReqAssistForm extends Component {
 
   _handleUpdateRequestAssist(action) {
     let data = {
-      action: action,
+      action,
       issueDesc: this.state.issueDesc,
       closureReason: this.state.closureReason
     };

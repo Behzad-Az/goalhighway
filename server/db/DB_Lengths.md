@@ -31,3 +31,4 @@ UPDATE ROUTES:
 updateCourseUserTutorStatus.js
 updateItemForSale.js | itemCard.jsx
 updateResume.js | ResumeCard.jsx
+updateTutorLog.js | NewReqAssistForm.jsx
