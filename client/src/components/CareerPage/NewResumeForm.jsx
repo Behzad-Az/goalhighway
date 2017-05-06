@@ -13,7 +13,8 @@ class NewResumeForm extends Component {
     this.state = {
       title: '',
       intent: 'Generic resume - no specific intent.',
-      file: ''
+      file: '',
+      editCardErro: ''
     };
     this._handleChange = this._handleChange.bind(this);
     this._handleFileChange = this._handleFileChange.bind(this);
@@ -102,7 +103,7 @@ class NewResumeForm extends Component {
                 onChange={this._handleFileChange} />
             </p>
             <label className='label'>
-              Resume Intent (Optional):
+              Resume Intent:
               { InvalidCharChecker(this.state.intent, this.formLimits.intent.max, 'resumeIntent') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
@@ -116,7 +117,7 @@ class NewResumeForm extends Component {
             </p>
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewResumePost}>Submit</button>
+            <button className='button is-primary' onClick={this._handleNewResumePost}>Submit</button>
             <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>

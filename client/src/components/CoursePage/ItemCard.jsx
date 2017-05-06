@@ -47,9 +47,7 @@ class ItemCard extends Component {
   }
 
   _handleEdit() {
-    if (!this._validateForm()) {
-      this.setState({ editCardError: 'Please fill all the fields correctly.' });
-    } else {
+    if (this._validateForm()) {
       this.formData.append('title', this.state.title);
       this.formData.append('itemDesc', this.state.itemDesc);
       this.formData.append('price', this.state.price);
@@ -74,6 +72,8 @@ class ItemCard extends Component {
         this._deleteFormData();
       })
       .then(this._toggleView);
+    } else {
+      this.setState({ editCardError: 'Please fill all the fields correctly.' });
     }
   }
 

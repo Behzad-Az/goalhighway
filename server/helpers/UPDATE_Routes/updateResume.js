@@ -1,5 +1,22 @@
 const updateResume = (req, res, knex, user_id) => {
 
+  const title = req.body.title.trim();
+  const intent = req.body.intent.trim();
+
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      title.length >= 3 && title.length <= 60 &&
+      title.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      intent.length >= 3 && intent.length <= 250 &&
+      intent.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      req.session.inst_prog_id
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
+
   const determineFileName = () => new Promise((resolve, reject) => {
     if (req.file && req.file.filename) {
       resolve(req.file.filename);
@@ -16,19 +33,17 @@ const updateResume = (req, res, knex, user_id) => {
     .whereNull('deleted_at')
     .update(resumeObj);
 
-  determineFileName()
+  validateInputs()
+  .then(() => determineFileName())
   .then(file_name => updateResumeDb({
-    title: req.body.title.trim() || null,
-    intent: req.body.intent.trim() || 'Generic resume - no specifc intent.',
+    title,
+    intent,
     file_name,
-    audience_filter_id: req.session.inst_prog_id,
-    audience_filter_id: req.session.inst_prog_id,
-    audience_filter_table: 'institution_program',
-    owner_id: user_id
+    audience_filter_id: req.session.inst_prog_id
   }))
   .then(() => res.send(true))
   .catch(err => {
-    console.error('Error inside updateResume.js', err);
+    console.error('Error inside updateResume.js: ', err);
     res.send(false);
   });
 

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import NewResumeReviewForm from './NewResumeReviewForm.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 const download = require('../../download.js');
 
@@ -10,6 +11,10 @@ class ResumeCard extends Component {
     super(props);
     this.reactAlert = new ReactAlert();
     this.images = ['pdf.png', 'docx.png', 'xlsx.png', 'zip.png', 'default.png'];
+    this.formLimits = {
+      title: { min: 3, max: 60 },
+      intent: { min: 3, max: 250 }
+    };
     this.state = {
       showNewResumeReviewForm: false,
       editCard: false,
@@ -53,28 +58,39 @@ class ResumeCard extends Component {
     this.setState({ showNewResumeReviewForm: !this.state.showNewResumeReviewForm });
   }
 
-  _handleEdit() {
-    let data = new FormData();
-    if (this.state.file) { data.append('file', this.state.file); }
-    data.append('title', this.state.title);
-    data.append('intent', this.state.intent);
+  _validateForm() {
+    return this.state.title.length >= this.formLimits.title.min &&
+           !InvalidCharChecker(this.state.title, this.formLimits.title.max, 'resumeTitle') &&
+           this.state.intent.length >= this.formLimits.intent.min &&
+           !InvalidCharChecker(this.state.intent, this.formLimits.intent.max, 'resumeIntent');
+  }
 
-    fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
-      method: 'POST',
-      credentials: 'same-origin',
-      body: data
-    })
-    .then(response => response.json())
-    .then(resJSON => {
-      if (resJSON) {
-        this.reactAlert.showAlert('Resume updated', 'info');
-        this.props.reload();
-      } else {
-        throw 'Server returned false';
-      }
-    })
-    .catch(() => this.reactAlert.showAlert('Unable to update resume', 'error'))
-    .then(this._toggleView);
+  _handleEdit() {
+    if (this._validateForm()) {
+      let data = new FormData();
+      if (this.state.file) { data.append('file', this.state.file); }
+      data.append('title', this.state.title);
+      data.append('intent', this.state.intent);
+
+      fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: data
+      })
+      .then(response => response.json())
+      .then(resJSON => {
+        if (resJSON) {
+          this.reactAlert.showAlert('Resume updated', 'info');
+          this.props.reload();
+        } else {
+          throw 'Server returned false';
+        }
+      })
+      .catch(() => this.reactAlert.showAlert('Unable to update resume', 'error'))
+      .then(this._toggleView);
+    } else {
+      this.setState({ editCardError: 'Please fill all the fields correctly.' });
+    }
   }
 
   _handleDelete() {
@@ -135,18 +151,49 @@ class ResumeCard extends Component {
     return (
       <div className='resume-index card'>
         <div className='card-content'>
-          <label className='label'>Resume Title:</label>
+          <label className='label'>
+            Resume Title:
+            { InvalidCharChecker(this.state.title, this.formLimits.title.max, 'resumeTitle') && <span className='char-limit'>Invalid</span> }
+          </label>
           <p className='control'>
-            <input className='input' type='text' name='title' placeholder='Enter resume title here' defaultValue={this.state.title} onChange={this._handleChange} />
+            <input
+              className='input'
+              type='text'
+              name='title'
+              placeholder='Enter resume title here'
+              defaultValue={this.state.title}
+              onChange={this._handleChange}
+              style={{ borderColor: InvalidCharChecker(this.state.title, this.formLimits.title.max, 'resumeTitle') || !this.state.title ? '#9D0600' : '' }} />
           </p>
-          <label className='label'>Resume Intent (Optional):</label>
+          <label className='label'>
+            Resume Intent:
+            { InvalidCharChecker(this.state.intent, this.formLimits.intent.max, 'resumeIntent') && <span className='char-limit'>Invalid</span> }
+          </label>
           <p className='control'>
-            <textarea className='textarea' name='intent' placeholder='Example: I intend to use this resume for junior level mechanical engineering jobs' defaultValue={this.state.intent} onChange={this._handleChange} />
+            <textarea
+              className='textarea'
+              name='intent'
+              placeholder='Example: I intend to use this resume for junior level mechanical engineering jobs'
+              defaultValue={this.state.intent}
+              onChange={this._handleChange}
+              style={{ borderColor: InvalidCharChecker(this.state.intent, this.formLimits.intent.max, 'resumeIntent') || !this.state.intent ? '#9D0600' : '' }} />
           </p>
           <label className='label'>Upload new resume:</label>
           <p className='control'>
-            <input className='upload' type='file' onChange={this._handleFileChange} />
+            <input
+              className='upload'
+              type='file'
+              accept='
+                  image/png,
+                  image/jpeg,
+                  image/pjpeg,
+                  application/pdf,
+                  application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                  application/vnd.ms-word.document.macroEnabled.12,
+                  application/msword'
+              onChange={this._handleFileChange} />
           </p>
+          <p className='char-limit'>{this.state.editCardError}</p>
         </div>
         <footer className='card-footer'>
           <Link className='card-footer-item' onClick={this._handleEdit}>Save</Link>

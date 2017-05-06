@@ -46,7 +46,8 @@ const updateItemForSale = (req, res, knex, user_id) => {
     .update(feedObj);
 
   knex.transaction(trx => {
-    determinePhotoName()
+    validateInputs()
+    .then(() => determinePhotoName())
     .then(photo_name => {
       let itemObj = {
         title,
