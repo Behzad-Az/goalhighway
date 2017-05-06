@@ -1,5 +1,26 @@
 const updateItemForSale = (req, res, knex, user_id) => {
 
+  const title = req.body.title.trim();
+  const item_desc = req.body.itemDesc.trim();
+  const price = req.body.price.trim();
+
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      title.length >= 3 && title.length <= 60 &&
+      title.search(/[^a-zA-Z0-9\ \#\&\*\$\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      item_desc.length >= 3 && item_desc.length <= 250 &&
+      item_desc.search(/[^a-zA-Z0-9\ \#\&\*\$\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      price.length >= 1 && price.length <= 10 &&
+      price.search(/[^a-zA-Z0-9\ \$\*\(\)\_\-\,\.\[\]]/) == -1 &&
+      req.params.course_id &&
+      req.params.item_id
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
+
   const determinePhotoName = () => new Promise((resolve, reject) => {
     if (req.file && req.file.filename) {
       resolve(req.file.filename);
@@ -28,31 +49,28 @@ const updateItemForSale = (req, res, knex, user_id) => {
     determinePhotoName()
     .then(photo_name => {
       let itemObj = {
-        title: req.body.title.trim(),
-        item_desc: req.body.itemDesc.trim(),
-        price: req.body.price.trim(),
+        title,
+        item_desc,
+        price,
         photo_name
       };
       return updateItem(itemObj, trx);
     })
     .then(() => {
       let feedObj = {
-        header: req.body.title.trim(),
-        content: `${req.body.itemDesc.trim()} - $` + req.body.price.trim()
+        header: title,
+        content: `${item_desc} - $` + price
       };
       return updateCourseFeed(feedObj, trx);
     })
     .then(() => trx.commit())
     .catch(err => {
+      console.error('Error inside updateItemForSale.js: ', err);
       trx.rollback();
-      throw err;
     });
   })
   .then(() => res.send(true))
-  .catch(err => {
-    console.error('Error inside updateItemForSale.js', err);
-    res.send(false);
-  });
+  .catch(err => res.send(false));
 
 };
 
