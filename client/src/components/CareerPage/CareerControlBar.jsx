@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
+import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class CareerControlBar extends Component {
   constructor(props) {
     super(props);
     this.preferenceTags = ['aerospace', 'automation', 'automotive', 'design', 'electrical', 'energy', 'engineer', 'instrumentation', 'manufacturing', 'mechanical', 'military', 'mining', 'naval', 'programming', 'project-management', 'QA/QC', 'R&D', 'robotics', 'software'];
     this.reactAlert = new ReactAlert();
+    this.formLimits = {
+      postalCode: { min: 5, max: 10 },
+      jobKind: { min: 3, max: 100 },
+      jobQuery: { min: 3, max: 250 }
+    };
     this.state = {
       dataLoaded: false,
       username: '',
@@ -37,9 +43,8 @@ class CareerControlBar extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      let jobQuery = resJSON.job_query;
-      let jobKind = resJSON.job_kind;
-
+      let jobQuery = resJSON.userInfo.job_query;
+      let jobKind = resJSON.userInfo.job_kind;
       jobKind = jobKind ? jobKind.split(' ') : [];
 
       if (jobQuery) {
@@ -55,9 +60,9 @@ class CareerControlBar extends Component {
       }
 
       this.setState({
-        username: resJSON.username,
-        postalCode: resJSON.postal_code ? resJSON.postal_code.toUpperCase() : '',
-        jobDistance: resJSON.job_distance ? resJSON.job_distance : '',
+        username: resJSON.userInfo.username,
+        postalCode: resJSON.userInfo.postal_code ? resJSON.userInfo.postal_code : '',
+        jobDistance: resJSON.userInfo.job_distance ? resJSON.userInfo.job_distance : '',
         dataLoaded: true,
         jobKind,
         jobQuery
@@ -110,9 +115,11 @@ class CareerControlBar extends Component {
   }
 
   _validateForm() {
-    return this.state.postalCode &&
+    return this.state.postalCode.length >= this.formLimits.postalCode.min &&
+           !InvalidCharChecker(this.state.postalCode, this.formLimits.postalCode.max, 'userPostalCode') &&
            this.state.jobDistance &&
            this.state.jobQuery[0] &&
+           this.state.jobQuery.join(' ').length <= this.formLimits.jobQuery.max &&
            this.state.jobKind[0];
   }
 
@@ -150,19 +157,26 @@ class CareerControlBar extends Component {
       <div id='control-bar' className='card control-bar'>
 
         <div className='card-content'>
-
           <div className='media'>
             <div className='media-content'>
               <p className='title is-4'>Jobs for {this.state.username}</p>
             </div>
           </div>
-
           <div className='content'>
-
-            <label className='label'>Search Area:</label>
+            <label className='label'>
+              Search Area:
+              { InvalidCharChecker(this.state.postalCode, this.formLimits.postalCode.max, 'userPostalCode') && <span className='char-limit'>Invalid</span> }
+            </label>
             <div className='geo-criteria'>
               <p className='control'>
-                <input className='input' type='text' name='postalCode' placeholder='postal code' onChange={this._handleChange} defaultValue={this.state.postalCode} />
+                <input
+                  className='input'
+                  type='text'
+                  name='postalCode'
+                  placeholder='postal code'
+                  defaultValue={this.state.postalCode}
+                  onChange={this._handleChange}
+                  style={{ borderColor: InvalidCharChecker(this.state.postalCode, this.formLimits.postalCode.max, 'userPostalCode') ? '#9D0600' : '' }} />
               </p>
 
               <p className='control'>
@@ -184,19 +198,15 @@ class CareerControlBar extends Component {
             <p className='categories control'>
               <label className='checkbox'>
                 <input type='checkbox' name='jobKind' value='summer' onChange={this._handleJobKind} checked={this.state.jobKind.includes('summer')} />
-                Summer/Part-Time
+                Summer / Part-Time
               </label>
               <label className='checkbox'>
                 <input type='checkbox' name='jobKind' value='internship' onChange={this._handleJobKind} checked={this.state.jobKind.includes('internship')} />
-                Intern/Coop
+                Intern / Coop
               </label>
               <label className='checkbox'>
                 <input type='checkbox' name='jobKind' value='junior' onChange={this._handleJobKind} checked={this.state.jobKind.includes('junior')} />
-                Junior
-              </label>
-              <label className='checkbox'>
-                <input type='checkbox' name='jobKind' value='senior' onChange={this._handleJobKind} checked={this.state.jobKind.includes('senior')} />
-                Senior
+                New-Grad / Junior
               </label>
             </p>
 

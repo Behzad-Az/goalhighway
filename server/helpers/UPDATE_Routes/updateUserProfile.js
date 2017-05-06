@@ -2,10 +2,43 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
 
   let updatedUserObj;
 
-  const getLocation = () => {
+  const validateProfileInputs = (username, email) => new Promise ((resolve, reject) => {
+    const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    if (
+      username.length >= 3 && username.length <= 30 &&
+      username.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1 &&
+      email.length >= 6 && email.length <= 30 &&
+      email.match(emailRegex) &&
+      [1, 2, 3, 4, 5, 6].includes(parseInt(req.body.userYear)) &&
+      req.body.instId &&
+      req.body.progId
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
+
+  const validateJobQueryInputs = (postal_code, job_distance, job_kind, job_query) => new Promise((resolve, reject) => {
+    if (
+      postal_code.length >= 5 && postal_code.length <= 10 &&
+      postal_code.search(/[^a-zA-Z0-9\ ]/) == -1 &&
+      [10, 20, 30, 50, 100, 9000].includes(job_distance) &&
+      job_kind.length >= 3 && job_kind.length <= 100 &&
+      job_kind.search(/[^a-zA-Z\ \-\_]/) == -1 &&
+      job_query.length >= 3 && job_query.length <= 250 &&
+      job_query.search(/[^a-zA-Z\ \-\_]/) == -1
+    ) {
+      resolve();
+    } else {
+      reject('Invalid form entries');
+    }
+  });
+
+  const getLocation = postal_code => {
     return new Promise((resolve, reject) => {
       googleMapsClient.geocode({
-        address: req.body.postalCode
+        address: postal_code
       }, (err, response) => {
         if (!err && response.json.status === 'OK') {
           let coordinates = {
@@ -40,7 +73,11 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
     .update(updatedObj);
 
   if (req.body.type === 'profile') {
-    Promise.all([ findInstProgId(req.body.instId, req.body.progId), determinePhotoName() ])
+    const username = req.body.username.trim().toLowerCase();
+    const email = req.body.email.trim().toLowerCase();
+
+    validateProfileInputs(username, email)
+    .then(() => Promise.all([ findInstProgId(req.body.instId, req.body.progId), determinePhotoName() ]))
     .then(results => {
       updatedUserObj = {
         username: req.body.username,
@@ -65,25 +102,34 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
       res.send(false);
     });
   } else if (req.body.type === 'job') {
-    getLocation()
+    const postal_code = req.body.postalCode.toUpperCase().trim();
+    const job_distance = parseInt(req.body.jobDistance);
+    const job_kind = req.body.jobKind.toLowerCase().trim();
+    const job_query = req.body.jobQuery.toLowerCase().trim();
+
+    validateJobQueryInputs(postal_code, job_distance, job_kind, job_query)
+    .then(() => getLocation(postal_code))
     .then(coordinates => {
       let knexObj = {
         lat: coordinates.lat,
         lon: coordinates.lon,
-        postal_code: req.body.postalCode,
-        job_distance: parseInt(req.body.jobDistance),
-        job_kind: req.body.jobKind,
-        job_query: req.body.jobQuery
+        postal_code,
+        job_distance,
+        job_kind,
+        job_query
       };
       return knex('users').where('id', user_id).update(knexObj);
     })
-    .then(() => {
-      res.send(true);
-    }).catch(err => {
+    .then(() => res.send(true))
+    .catch(err => {
       console.error('Error inside updateUserProfile.js: ', err);
       res.send(false);
     });
+  } else {
+    console.error('Error inside updateUserProfile.js: Invalid request type');
+    res.send(false);
   }
+
 };
 
 module.exports = updateUserProfile;

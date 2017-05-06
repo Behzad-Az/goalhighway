@@ -68,6 +68,9 @@ const InvalidCharChecker = (str, maxChar, type) => {
     case 'resumeIntent':
       regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
       break;
+    case 'userPostalCode':
+      regEx = new RegExp(/[^a-zA-Z0-9\ ]/);
+      break;
     default:
       regEx = 'iL5mdXEbyY';
       break;
