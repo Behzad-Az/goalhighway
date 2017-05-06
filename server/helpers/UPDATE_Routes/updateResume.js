@@ -9,7 +9,8 @@ const updateResume = (req, res, knex, user_id) => {
       title.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       intent.length >= 3 && intent.length <= 250 &&
       intent.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
-      req.session.inst_prog_id
+      req.session.inst_prog_id &&
+      req.params.resume_id
     ) {
       resolve();
     } else {

@@ -1,5 +1,20 @@
 const updateTutorLog = (req, res, knex, user_id) => {
 
+  // const issue_desc = req.body.issueDesc.trim();
+
+  // const validateInputs = () => new Promise((resolve, reject) => {
+  //   if (
+  //     issue_desc.length >= 4 && issue_desc.length <= 500 &&
+  //     issue_desc.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
+  //     ['close', 'update'].includes(req.body.action)
+  //     req.params.course_id
+  //   ) {
+  //     resolve();
+  //   } else {
+  //     reject('Invalid form entries');
+  //   }
+  // });
+
   let tutorLogObj;
 
   if (req.body.action === 'close') {
