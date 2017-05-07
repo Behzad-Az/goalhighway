@@ -1,11 +1,12 @@
 const postNewFlag = (req, res, knex, user_id) => {
 
   const acceptedFlags = {
-    revisions: ['inappropriate content', 'does not belong to this course', 'spam', 'corrupted file or unreadable', 'other'],
-    jobs: ['expired link', 'poor categorization', 'other'],
+    revisions: ['inappropriate content', 'does not belong to this course', 'corrupted file or unreadable', 'spam', 'other'],
+    jobs: ['expired link', 'poor categorization', 'spam', 'other'],
     interview_questions: ['inappropriate content', 'spam', 'other'],
     interview_answers: ['inappropriate content', 'spam', 'other'],
-    course_feed: ['inappropriate content', 'spam', 'other']
+    course_feed: ['inappropriate content', 'spam', 'other'],
+    resumes: ['inappropriate content', 'spam', 'other']
   };
   const reason = req.body.flagReason;
   const foreign_table = req.params.foreign_table;

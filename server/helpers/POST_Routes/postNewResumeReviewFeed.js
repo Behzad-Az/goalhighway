@@ -9,7 +9,10 @@ const postNewResumeReviewFeed = (req, res, knex, user_id) => {
     .andWhere('owner_id', user_id)
     .whereNull('review_requested_at')
     .whereNull('deleted_at')
-    .update({ review_requested_at: knex.fn.now() });
+    .update({
+      review_requested_at: knex.fn.now(),
+      audience_filter_id: req.session.inst_prog_id
+    });
 
   validateInputs()
   .then(() => updateResumeDb())

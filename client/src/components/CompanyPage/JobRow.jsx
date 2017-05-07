@@ -13,21 +13,23 @@ class JobRow extends Component {
   }
 
   _handleFlagSubmit(e) {
-    let state = {};
-    state[e.target.name] = e.target.value;
-    fetch(`/api/flags/jobs/${this.props.job.id}`, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(state)
-    })
-    .then(response => response.json())
-    .then(resJSON => { if (!resJSON) throw 'Server returned false' })
-    .catch(err => console.error('Unable to post flag - ', err))
-    .then(() => this.setState(state));
+    if (e.target.value) {
+      let newState = {};
+      newState[e.target.name] = e.target.value;
+      fetch(`/api/flags/jobs/${this.props.job.id}`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newState)
+      })
+      .then(response => response.json())
+      .then(resJSON => { if (!resJSON) throw 'Server returned false' })
+      .catch(err => console.error('Unable to post flag - ', err))
+      .then(() => this.setState(newState));
+    }
   }
 
   _renderFlagSelect() {
@@ -38,6 +40,7 @@ class JobRow extends Component {
             <option value=''>select reason</option>
             <option value='expired link'>Expired link</option>
             <option value='poor categorization'>Poor categorization</option>
+            <option value='spam'>Spam</option>
             <option value='other'>Other</option>
           </select>
         </span>
