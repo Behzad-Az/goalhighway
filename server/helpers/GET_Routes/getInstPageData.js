@@ -1,6 +1,19 @@
-const findUsersCourses = require('../Multipurpose/findUsersCourses.js');
-
 const getInstPageData = (req, res, knex, user_id) => {
+
+  const findUsersCourses = () => knex('users')
+    .innerJoin('course_user', 'user_id', 'users.id')
+    .innerJoin('courses', 'course_id', 'courses.id')
+    .select(
+      'courses.id', 'course_id', 'short_display_name', 'full_display_name',
+      'course_year', 'course_desc', 'courses.inst_id'
+    )
+    .orderBy('courses.prefix')
+    .orderBy('courses.suffix')
+    .where('course_user.user_id', user_id)
+    .whereNull('course_user.unsub_date')
+    .whereNull('course_user.unsub_reason')
+    .whereNull('users.deleted_at')
+    .whereNull('courses.deleted_at');
 
   const getInstCourses = () => knex('institutions')
     .innerJoin('courses', 'courses.inst_id', 'institutions.id')
@@ -19,7 +32,7 @@ const getInstPageData = (req, res, knex, user_id) => {
     .orderBy('inst_value');
 
   Promise.all([
-    findUsersCourses(knex, user_id),
+    findUsersCourses(),
     getInstCourses(),
     getInstList()
   ])
