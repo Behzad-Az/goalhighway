@@ -8,7 +8,12 @@ const deleteEmail = (req, res, knex, user_id) => {
     .count('id as authorized');
 
   const determineDeleteInstructions = () => new Promise((resolve, reject) => {
-    knex('email_conversations').select('deleted_one', 'deleted_two').where('email_id', req.params.email_id).orderBy('created_at', 'desc').limit(1).then(result => {
+    knex('email_conversations')
+    .select('deleted_one', 'deleted_two')
+    .where('email_id', req.params.email_id)
+    .orderBy('created_at', 'desc')
+    .limit(1)
+    .then(result => {
       let conversation = result[0];
       if (conversation.deleted_one == user_id || conversation.deleted_two == user_id) {
         reject('User has already deleted this email chain.');

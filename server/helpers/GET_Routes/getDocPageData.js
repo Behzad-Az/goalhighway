@@ -3,9 +3,12 @@ const getDocPageData = (req, res, knex, user_id) => {
   let courseInfo;
 
   const getDocRevisions = doc => new Promise((resolve, reject) => {
-    knex('revisions').where('doc_id', doc.id).whereNull('deleted_at').orderBy('created_at', 'desc')
+    knex('revisions')
+    .where('doc_id', doc.id)
+    .whereNull('deleted_at')
+    .orderBy('created_at', 'desc')
     .then(revisions => {
-      revisions.forEach(revision => revision.deleteable = revision.user_id === user_id);
+      revisions.forEach(revision => revision.editable = revision.poster_id === user_id);
       doc.revisions = revisions;
       doc.title = revisions[0].title;
       doc.type = revisions[0].type;
@@ -17,7 +20,8 @@ const getDocPageData = (req, res, knex, user_id) => {
   const getCourseInfo = () => knex('courses')
     .innerJoin('institutions', 'inst_id', 'institutions.id')
     .select('inst_display_name', 'short_display_name', 'inst_id', 'courses.id')
-    .where('courses.id', req.params.course_id);
+    .where('courses.id', req.params.course_id)
+    .limit(1);
 
   const getCourseUserInfo = () => knex('course_user')
     .where('user_id', user_id)
@@ -30,19 +34,24 @@ const getDocPageData = (req, res, knex, user_id) => {
   const getDocInfo = () => knex('docs')
     .where('course_id', req.params.course_id)
     .andWhere('id', req.params.doc_id)
-    .whereNull('deleted_at');
+    .whereNull('deleted_at')
+    .limit(1);
 
   const getTutorLogInfo = () => knex('tutor_log')
     .where('student_id', user_id)
     .andWhere('course_id', req.params.course_id)
-    .whereNull('closed_at');
+    .whereNull('closed_at')
+    .whereNull('closure_reason');
 
   const getSubscriptionStatus = () => knex('course_user')
     .where('user_id', user_id)
-    .andWhere('course_id', req.params.course_id);
+    .andWhere('course_id', req.params.course_id)
+    .whereNull('unsub_date')
+    .whereNull('unsub_reason');
 
   const getAvgCourseRating = () => knex('course_reviews')
     .where('course_id', req.params.course_id)
+    .whereNull('deleted_at')
     .avg('overall_rating');
 
   Promise.all([

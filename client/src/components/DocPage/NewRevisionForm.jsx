@@ -86,7 +86,7 @@ class NewRevisionForm extends Component {
                 className='input'
                 type='text'
                 name='title'
-                laceholder='Enter document title here'
+                placeholder='Enter document title here'
                 defaultValue={this.state.title}
                 onChange={this._handleChange}
                 style={{ borderColor: InvalidCharChecker(this.state.title, this.formLimits.title.max, 'revTitle') ? '#9D0600' : '' }} />

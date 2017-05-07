@@ -94,7 +94,7 @@ class RevisionRow extends Component {
         <div className='column is-3 buttons'>
           <i className='fa fa-download' aria-hidden='true' onClick={this._handleRevisionRequest} />
           <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-          { this.props.rev.deleteable && <i onClick={this._handleDeletionRequest} className='fa fa-trash' aria-hidden='true' /> }
+          { this.props.rev.editable && <i onClick={this._handleDeletionRequest} className='fa fa-trash' aria-hidden='true' /> }
           {this.state.flagRequest && this._renderFlagSelect()}
         </div>
       </div>

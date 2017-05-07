@@ -4,17 +4,12 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
   let rev_id = req.params.rev_id;
   let url;
 
-  const checkIfAuthorized = trx => knex('revisions')
-    .transacting(trx)
-    .where('poster_id', user_id)
-    .andWhere('doc_id', doc_id)
-    .andWhere('id', rev_id)
-    .count('id as auth');
-
   const deleteRev = trx => knex('revisions')
     .transacting(trx)
     .where('id', rev_id)
+    .andWhere('poster_id', user_id)
     .andWhere('doc_id', doc_id)
+    .whereNull('deleted_at')
     .update({ deleted_at: knex.fn.now() });
 
   const deleteDoc = trx => knex('docs')
@@ -41,6 +36,7 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
     .andWhere('course_id', course_id)
     .andWhere('doc_id', doc_id)
     .andWhere('rev_id', rev_id)
+    .andWhere('commenter_id', user_id)
     .del();
 
   const deleteElasticDoc = () => esClient.bulk({
@@ -82,27 +78,20 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
   };
 
   knex.transaction(trx => {
-    checkIfAuthorized(trx)
-    .then(auth => {
-      if (parseInt(auth[0].auth)) { return getDocRevs(trx); }
-      else { throw 'User not authorized to delete revision'; }
-    })
+    getDocRevs(trx)
     .then(revs => revs[0].id == rev_id && revs[1] ? Promise.all([ deleteRev(trx), updateElasticSearch(revs[1].title, revs[1].type), deleteCourseFeed(trx) ]) : Promise.all([ deleteRev(trx), deleteCourseFeed(trx) ]))
     .then(() => getRemainingRevCount(trx))
     .then(revCount => parseInt(revCount[0].count) ? 'no_need_to_delete_doc' : Promise.all([ deleteDoc(trx), deleteElasticDoc() ]))
     .then(deleted => url = deleted === 'no_need_to_delete_doc' ? `/courses/${course_id}/docs/${doc_id}` : `/courses/${course_id}`)
     .then(() => trx.commit())
     .catch(err => {
+      console.error('Error inside deleteRevision.js', err);
       trx.rollback();
-      throw err;
     });
   })
   .then(() => res.send({ url }))
-  .catch(err => {
-    console.error('Error inside deleteRevision.js', err);
-    res.send(false);
-  });
+  .catch(err => res.send(false));
 
-}
+};
 
 module.exports = deleteRevision;

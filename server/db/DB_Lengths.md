@@ -33,3 +33,13 @@ updateItemForSale.js | itemCard.jsx
 updateResume.js | ResumeCard.jsx
 updateTutorLog.js | NewReqAssistForm.jsx
 updateUserProfile.js | CareerControlBar.jsx
+
+DELETE ROUTES:
+-------------------------------------------------------
+deleteCourseFeed.js
+deleteCourseUser.js
+deleteEmail.js
+deleteItemForSale.js
+deleteResume.js
+deleteResumeReviewRequest.js
+deleteRevision.js

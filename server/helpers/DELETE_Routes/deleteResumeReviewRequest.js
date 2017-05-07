@@ -13,6 +13,7 @@ const deleteResumeReviewRequest = (req, res, knex, user_id) => {
     console.error('Error inside deleteResumeReviewRequest.js: ', err);
     res.send(false);
   });
+
 };
 
 module.exports = deleteResumeReviewRequest;
