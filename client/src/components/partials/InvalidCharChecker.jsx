@@ -1,7 +1,7 @@
 const InvalidCharChecker = (str, maxChar, type) => {
   let regEx;
 
-  switch(type) {
+  switch (type) {
     case 'username':
       regEx = new RegExp(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/);
       break;

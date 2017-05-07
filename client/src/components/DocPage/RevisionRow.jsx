@@ -48,26 +48,27 @@ class RevisionRow extends Component {
   }
 
   _handleFlagClick() {
-    let flagRequest = !this.state.flagRequest;
-    this.setState({ flagRequest });
+    this.setState({ flagRequest: !this.state.flagRequest });
   }
 
   _handleFlagSubmit(e) {
-    let state = {};
-    state[e.target.name] = e.target.value;
-    fetch(`/api/flags/revisions/${this.props.rev.id}`, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(state)
-    })
-    .then(response => response.json())
-    .then(resJSON => { if (!resJSON) throw 'Server returned false' })
-    .catch(err => console.error('Unable to post flag - ', err))
-    .then(() => this.setState(state));
+    if (e.target.value) {
+      let newState = {};
+      newState[e.target.name] = e.target.value;
+      fetch(`/api/flags/revisions/${this.props.rev.id}`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newState)
+      })
+      .then(response => response.json())
+      .then(resJSON => { if (!resJSON) throw 'Server returned false' })
+      .catch(err => console.error('Unable to post flag - ', err))
+      .then(() => this.setState(newState));
+    }
   }
 
   _renderFlagSelect() {
@@ -79,6 +80,7 @@ class RevisionRow extends Component {
             <option value='inappropriate content'>Inappropriate content</option>
             <option value='does not belong to this course'>Doesn't belong to this course</option>
             <option value='corrupted file or unreadable'>Corrupted file / unreadable</option>
+            <option value='spam'>Spam</option>
             <option value='other'>Other</option>
           </select>
         </span>

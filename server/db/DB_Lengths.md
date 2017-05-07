@@ -15,7 +15,9 @@ postNewDoc.js | NewDocForm.jsx
 postNewEmail.js | NewEmailForm.jsx
 postNewEmailConversation.js | NewReplyForm.jsx
 SKIPPED: postNewFeedReply.js
-SKIPPED: postNewFlag.js
+
+WORK REMAINING: postNewFlag.js | RevisionRow.jsx | CourseFeedRow.jsx
+
 postNewInst.js | NewInstForm.jsx
 postNewInterviewAnswer.js | NewAnswerForm.jsx
 posNewInterviewQuestion.js | NewQuestionForm.jsx

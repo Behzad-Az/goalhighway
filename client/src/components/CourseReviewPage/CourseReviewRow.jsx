@@ -9,7 +9,7 @@ class CourseReviewRow extends Component {
   }
 
   _decodeWorkload(value) {
-    switch(value) {
+    switch (value) {
       case 1:
         return 'Too little';
       case 2:
@@ -22,7 +22,7 @@ class CourseReviewRow extends Component {
   }
 
   _decodeFairness(value) {
-    switch(value) {
+    switch (value) {
       case 1:
         return 'Too easy';
       case 2:
@@ -35,7 +35,7 @@ class CourseReviewRow extends Component {
   }
 
   _decodeProf(value) {
-    switch(value) {
+    switch (value) {
       case 1:
         return 'Not good';
       case 2:

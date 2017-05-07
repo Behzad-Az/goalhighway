@@ -31,7 +31,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
 
   const determineCategory = type => {
     let output;
-    switch(type) {
+    switch (type) {
       case 'asg_report':
         output = 'revised_asg_report';
         break;

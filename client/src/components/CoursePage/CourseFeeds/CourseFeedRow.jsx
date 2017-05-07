@@ -40,13 +40,27 @@ class CourseFeedRow extends Component {
   }
 
   _handleFlagClick() {
-    let flagRequest = !this.state.flagRequest;
-    this.setState({ flagRequest });
+    this.setState({ flagRequest: !this.state.flagRequest });
   }
 
   _handleFlagSubmit(e) {
-    let state = {};
-    state[e.target.name] = e.target.value;
+    if (e.target.value) {
+      let newState = {};
+      newState[e.target.name] = e.target.value;
+      fetch(`/api/flags/course_feed/${this.props.feed.id}`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newState)
+      })
+      .then(response => response.json())
+      .then(resJSON => { if (!resJSON) throw 'Server returned false' })
+      .catch(err => console.error('Unable to post flag - ', err))
+      .then(() => this.setState(newState));
+    }
   }
 
   _renderFlagSelect() {
@@ -55,8 +69,8 @@ class CourseFeedRow extends Component {
         <span className='select is-small'>
           <select name='flagReason' onChange={this._handleFlagSubmit}>
             <option value=''>select reason</option>
-            <option value='expired link'>Expired link</option>
-            <option value='poor categorization'>Poor categorization</option>
+            <option value='inappropriate content'>Inappropriate content</option>
+            <option value='spam'>Spam</option>
             <option value='other'>Other</option>
           </select>
         </span>
@@ -65,7 +79,7 @@ class CourseFeedRow extends Component {
   }
 
   _prepareFeed() {
-    switch(this.props.feed.category) {
+    switch (this.props.feed.category) {
       case 'new_asg_report':
         return this._renderDocumentFeed(`New Assingment / Report - ${this.props.feed.header}`);
       case 'new_lecture_note':

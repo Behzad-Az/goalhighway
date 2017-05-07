@@ -13,7 +13,7 @@ class CourseFeedRow extends Component {
   }
 
   _prepareFeed() {
-    switch(this.props.feed.category) {
+    switch (this.props.feed.category) {
       case 'new_asg_report':
         return this._renderDocumentFeed(`New Assingment / Report - ${this.props.feed.header}`);
       case 'new_lecture_note':

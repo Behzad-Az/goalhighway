@@ -9,7 +9,7 @@ class FeedsContainer extends Component {
   }
 
   _categorizeFeed(feed) {
-    switch(feed.type) {
+    switch (feed.type) {
       case 'courseFeed':
         return <CourseFeedRow key={feed.id} feed={feed} composeNewEmail={this.props.composeNewEmail} />;
       case 'resumeReviewFeed':

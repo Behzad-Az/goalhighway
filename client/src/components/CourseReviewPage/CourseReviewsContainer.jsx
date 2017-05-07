@@ -16,7 +16,7 @@ class CourseReviewsContainer extends Component {
   }
 
   _sortReviews() {
-    switch(this.state.sortedBy) {
+    switch (this.state.sortedBy) {
       case 'date_new_to_old':
         this.props.courseReviews.sort((a, b) => a.created_at <= b.created_at ? 1 : -1);
         break;

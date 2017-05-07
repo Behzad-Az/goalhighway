@@ -33,7 +33,7 @@ exports.seed = function(knex, Promise) {
 
     const determineCategory = type => {
       let output;
-      switch(type) {
+      switch (type) {
         case 'asg_report':
           output = 'new_asg_report';
           break;
