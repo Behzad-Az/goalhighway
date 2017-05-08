@@ -30,8 +30,9 @@ class FeedPage extends Component {
     this._conditionData = this._conditionData.bind(this);
     this._composeNewEmail = this._composeNewEmail.bind(this);
     this._toggleEmailModal = this._toggleEmailModal.bind(this);
-    this._renderPageAfterData = this._renderPageAfterData.bind(this);
     this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
+    this._removeComment = this._removeComment.bind(this);
+    this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +82,25 @@ class FeedPage extends Component {
     this.setState({ showNewEmailForm: !this.state.showNewEmailForm });
   }
 
+  _removeComment(feedId, courseId) {
+    fetch(`/api/courses/${courseId}/feed/${feedId}`, {
+      method: 'DELETE',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/string',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.setState({ feeds: this.state.feeds.filter(comment => !(comment.id === feedId && comment.course_id === courseId && comment.type === 'courseFeed')) });
+      }
+      else { throw 'Server returned false'; }
+    })
+    .catch(err => console.error('Unable to delete course feed: ', err));
+  }
+
   _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
@@ -100,7 +120,7 @@ class FeedPage extends Component {
             showModal={this.state.showNewEmailForm}
             toggleModal={this._toggleEmailModal}
           />
-          <FeedsContainer feeds={this.state.feeds} composeNewEmail={this._composeNewEmail} />
+          <FeedsContainer feeds={this.state.feeds} composeNewEmail={this._composeNewEmail} removeComment={this._removeComment} />
           { this._displayLoadMoreBtn() }
         </div>
       );

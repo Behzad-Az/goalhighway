@@ -231,7 +231,7 @@ app.post('/api/likes/:foreign_table/:foreign_id', (req, res) => {
   postNewLikeDislike(req, res, knex, req.session.user_id);
 });
 
-app.post('/api/courses/:course_id/comments', (req, res) => {
+app.post('/api/courses/:course_id/feed', (req, res) => {
   postNewCourseFeed(req, res, knex, req.session.user_id);
 });
 

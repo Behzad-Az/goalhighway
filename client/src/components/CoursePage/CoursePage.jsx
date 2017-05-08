@@ -37,6 +37,7 @@ class CoursePage extends Component {
     this._conditionData = this._conditionData.bind(this);
     this._composeNewEmail = this._composeNewEmail.bind(this);
     this._toggleEmailModal = this._toggleEmailModal.bind(this);
+    this._removeComment = this._removeComment.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
@@ -87,6 +88,25 @@ class CoursePage extends Component {
     this.setState({ showNewEmailForm: !this.state.showNewEmailForm });
   }
 
+  _removeComment(feedId) {
+    fetch(`/api/courses/${this.state.courseInfo.id}/feed/${feedId}`, {
+      method: 'DELETE',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/string',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.setState({ courseFeeds: this.state.courseFeeds.filter(comment => comment.id !== feedId) });
+      }
+      else { throw 'Server returned false'; }
+    })
+    .catch(err => console.error('Unable to delete course feed: ', err));
+  }
+
   _renderPageAfterData() {
     if (this.state.dataLoaded && this.state.pageError) {
       return (
@@ -120,6 +140,7 @@ class CoursePage extends Component {
             courseFeeds={this.state.courseFeeds}
             reload={this._loadComponentData}
             composeNewEmail={this._composeNewEmail}
+            removeComment={this._removeComment}
           />
         </div>
       );

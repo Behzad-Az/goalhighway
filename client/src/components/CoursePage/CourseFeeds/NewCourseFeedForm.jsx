@@ -35,7 +35,7 @@ class NewCourseFeedForm extends Component {
       content: this.state.content
     };
 
-    fetch(`/api/courses/${this.props.courseId}/comments`, {
+    fetch(`/api/courses/${this.props.courseId}/feed`, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {

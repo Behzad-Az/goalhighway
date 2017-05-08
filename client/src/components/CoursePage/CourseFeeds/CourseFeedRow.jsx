@@ -166,7 +166,7 @@ class CourseFeedRow extends Component {
                 {this.props.feed.created_at.slice(0, 10)}
                 <i className={this.props.feed.editable ? 'fa fa-trash' : 'fa fa-flag'}
                   aria-hidden='true'
-                  onClick={this._handleFlagClick}
+                  onClick={() => this.props.removeComment(this.props.feed.id)}
                   style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 {this.state.flagRequest && this._renderFlagSelect()}
                 <i className='fa fa-heart' aria-hidden='true' />
