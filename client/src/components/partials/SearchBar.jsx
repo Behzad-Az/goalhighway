@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 
 class SearhBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: []
+      searchResults: [],
+      showResults: false
     };
     this._handleSearch = this._handleSearch.bind(this);
+    this._navigatePage = this._navigatePage.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._showSearchResults = this._showSearchResults.bind(this);
   }
 
   _handleSearch(e) {
@@ -30,9 +31,13 @@ class SearhBar extends Component {
       })
       .catch(err => console.error('Unable to process search query - ', err));
     } else {
-      this.setState({ searchResults: [] });
-      this._showSearchResults(false);
+      this.setState({ searchResults: [], showResults: false });
     }
+  }
+
+  _navigatePage(link) {
+    this.setState({ searchResults: [], showResults: false });
+    browserHistory.push(link);
   }
 
   _conditionData(resJSON) {
@@ -42,32 +47,41 @@ class SearhBar extends Component {
         switch (result._type) {
           case 'document':
             searchResults.push(
-              <p key={index}>
-                <Link onClick={() => this._showSearchResults(false)} to={`/courses/${result._source.course_id}/docs/${result._source.id}`}>
-                <i className='fa fa-file-text' /> {result._source.course_name} <i className='fa fa-arrow-right' /> {result._source.title}</Link>
+              <p key={index} className='result-row valid' onClick={() => this._navigatePage(`/courses/${result._source.course_id}/docs/${result._source.id}`)}>
+                <i className='fa fa-file-text' /> {result._source.course_name} <i className='fa fa-arrow-right' /> {result._source.title}
               </p>);
             break;
           case 'course':
-            searchResults.push(<p key={index}><Link onClick={() => this._showSearchResults(false)} to={`/courses/${result._source.id}`}><i className='fa fa-users' /> {result._source.title}</Link></p>);
+            searchResults.push(
+              <p key={index} className='result-row valid' onClick={() => this._navigatePage(`/courses/${result._source.id}`)}>
+                <i className='fa fa-users' /> {result._source.title}
+              </p>
+            );
             break;
           case 'institution':
-            searchResults.push(<p key={index}><Link onClick={() => this._showSearchResults(false)} to={`/institutions/${result._source.id}`}><i className='fa fa-graduation-cap' /> {result._source.inst_name}</Link></p>);
+            searchResults.push(
+              <p key={index} className='result-row valid' onClick={() => this._navigatePage(`/institutions/${result._source.id}`)}>
+                <i className='fa fa-graduation-cap' /> {result._source.inst_name}
+              </p>
+            );
             break;
           case 'company':
-            searchResults.push(<p key={index}><Link onClick={() => this._showSearchResults(false)} to={`/companies/${result._source.id}`}><i className='fa fa-briefcase' /> {result._source.company_name}</Link></p>);
+            searchResults.push(
+              <p key={index} className='result-row valid' onClick={() => this._navigatePage(`/companies/${result._source.id}`)}>
+                <i className='fa fa-briefcase' /> {result._source.company_name}
+              </p>
+            );
             break;
         }
       });
     } else {
-      searchResults.push(<p key={1}>No results matching...</p>);
+      searchResults.push(
+        <p key={1} className='result-row'>
+          No results matching...
+        </p>
+      );
     }
-    this.setState({ searchResults });
-    this._showSearchResults(true);
-  }
-
-  _showSearchResults(enabled) {
-    let searchResults = document.getElementById('search-result-list');
-    searchResults.className = enabled ? 'search-bar results is-enabled' : 'search-bar results';
+    this.setState({ searchResults, showResults: true });
   }
 
   render() {
@@ -79,7 +93,7 @@ class SearhBar extends Component {
             <i className='fa fa-search' />
           </span>
         </p>
-        <div id='search-result-list' className='search-bar results'>
+        <div className={this.state.showResults ? 'search-bar results is-enabled' : 'search-bar results'}>
           { this.state.searchResults }
         </div>
       </div>
