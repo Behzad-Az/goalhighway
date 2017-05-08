@@ -20,7 +20,7 @@ postNewInst.js | NewInstForm.jsx
 postNewInterviewAnswer.js | NewAnswerForm.jsx
 posNewInterviewQuestion.js | NewQuestionForm.jsx
 postNewItemForSale.js | NewItemForm.jsx
-SKIPPED: postNewLikeDislike.js
+STILL NEEDS WORK: postNewLikeDislike.js | DocCard.jsx
 postNewResume.js | NewResumeForm.jsx
 postNewResumeReviewFeed.js
 postNewRevision.js | NewRevisionForm.jsx

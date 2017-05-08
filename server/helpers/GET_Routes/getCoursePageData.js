@@ -14,11 +14,12 @@ const getCoursePageData = (req, res, knex, user_id) => {
   });
 
   const getDocLikeCount = doc => new Promise((resolve, reject) => {
-    knex('doc_user_likes').where('doc_id', doc.id)
-    .then(rows => {
-      doc.likeCount = rows.reduce((a, b) => {
-        return { like_count: parseInt(a.like_count) + parseInt(b.like_count) };
-      }, {like_count : 0}).like_count;
+    knex('user_likes')
+    .where('foreign_table', 'docs')
+    .andWhere('foreign_id', doc.id)
+    .sum('like_or_dislike as likeCount')
+    .then(result => {
+      doc.likeCount = result[0].likeCount || 0;
       resolve();
     })
     .catch(err => reject('Unable to get doc like count: ', err));

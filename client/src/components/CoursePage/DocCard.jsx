@@ -12,13 +12,10 @@ class DocCard extends Component {
     ];
     this._findImageLink = this._findImageLink.bind(this);
     this.state = {
-      likeCount: this.props.doc.likeCount,
+      likeCount: parseInt(this.props.doc.likeCount),
       likeColor: '',
-      dislikeColor: '',
       imageLink: this._findImageLink(this.props.doc.revisions[0].file_name)
     };
-    this._handleLikeSubmission = this._handleLikeSubmission.bind(this);
-    this._handleDislikeSubmission = this._handleDislikeSubmission.bind(this);
     this._sendLikeDislike = this._sendLikeDislike.bind(this);
   }
 
@@ -28,32 +25,11 @@ class DocCard extends Component {
     return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
   }
 
-  _handleLikeSubmission(e) {
+  _sendLikeDislike(e) {
     let color = e.target.style.color;
-    let value = color === 'green' ? -1 : 1;
-    let nextState = {
-      likeCount: this.state.likeCount + value,
-      likeColor: this.state.likeCount === this.originalLikeCount ? 'green' : '',
-      dislikeColor: ''
-    };
-    this._sendLikeDislike(value);
-    this.setState(nextState);
-  }
+    let likeOrDislike = color === 'rgb(0, 78, 137)' ? -1 : 1;
 
-  _handleDislikeSubmission(e) {
-    let color = e.target.style.color;
-    let value = color === 'red' ? 1 : -1;
-    let nextState = {
-      likeCount: this.state.likeCount + value,
-      likeColor: '',
-      dislikeColor: this.state.likeCount === this.originalLikeCount ? 'red' : ''
-    };
-    this._sendLikeDislike(value);
-    this.setState(nextState);
-  }
-
-  _sendLikeDislike(likeOrDislike) {
-    fetch(`/api/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}/likes`, {
+    fetch(`/api/likes/docs/${this.props.doc.id}`, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
@@ -66,16 +42,24 @@ class DocCard extends Component {
     .then(resJSON => {
       if (!resJSON) { throw 'Server returned false.'; }
     })
-    .catch(err => console.error('Unable to like / dislike document - ', err));
+    .catch(err => console.error('Unable to like / dislike document - ', err))
+    .then(() => this.setState({
+      likeCount: this.state.likeCount + likeOrDislike,
+      likeColor: color === 'rgb(0, 78, 137)' ? '' : 'rgb(0, 78, 137)'
+    }));
   }
 
   render() {
     return (
       <div className='doc-index card'>
+        <p className='heart'>
+          <i onClick={this._sendLikeDislike} className='fa fa-heart' aria-hidden='true' style={{cursor: 'pointer', color: this.state.likeColor}} />
+          {this.state.likeCount}
+        </p>
         <div className='card-content'>
           <div className='card-image'>
             <Link to={`/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}`}>
-              <figure className='image is-96x96'>
+              <figure className='image is-64x64'>
                 <img src={this.state.imageLink} alt='doc-type' />
               </figure>
             </Link>
@@ -87,12 +71,7 @@ class DocCard extends Component {
             <p className='date title is-6'>Revision: {this.props.doc.revisions.length} - {this.props.doc.revisions[0].created_at.slice(0, 10)}</p>
           </div>
           <p className='card-foot title is-6'>
-            <i onClick={this._handleLikeSubmission} className='fa fa-thumbs-up' aria-hidden='true' style={{cursor: 'pointer', color: this.state.likeColor}} />
-            <span className='text-link'>
-              <Link to={`/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}`}>See All Revisions</Link>
-            </span>
-            <i onClick={this._handleDislikeSubmission} className='fa fa-thumbs-down' aria-hidden='true' style={{cursor: 'pointer', color: this.state.dislikeColor}} />
-            {this.state.likeCount}
+            <Link to={`/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}`}>See All Revisions</Link>
           </p>
         </div>
       </div>

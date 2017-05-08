@@ -227,7 +227,7 @@ app.post('/api/courses/:course_id/docs/:doc_id', documentUpload.single('file'), 
   postNewRevision(req, res, knex, req.session.user_id, esClient);
 });
 
-app.post('/api/courses/:course_id/docs/:doc_id/likes', (req, res) => {
+app.post('/api/likes/:foreign_table/:foreign_id', (req, res) => {
   postNewLikeDislike(req, res, knex, req.session.user_id);
 });
 

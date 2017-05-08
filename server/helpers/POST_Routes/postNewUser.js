@@ -5,6 +5,7 @@ const postNewUser = (req, res, knex, bcrypt) => {
   const pwdConfirm = req.body.passwordConfirm.trim();
   const email = req.body.email.trim().toLowerCase();
   const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  const user_year = parseInt(req.body.userYear);
 
   const validateInputs = () => new Promise ((resolve, reject) => {
     if (
@@ -17,7 +18,7 @@ const postNewUser = (req, res, knex, bcrypt) => {
       username.search(/[^a-zA-Z0-9\!\@\#\$\%\^\&\*\(\)\_\+]/) == -1 &&
       email.length >= 6 && email.length <= 30 &&
       email.match(emailRegex) &&
-      [1, 2, 3, 4, 5, 6].includes(parseInt(req.body.userYear)) &&
+      [1, 2, 3, 4, 5, 6].includes(user_year) &&
       req.body.instId &&
       req.body.progId
     ) {
@@ -42,7 +43,7 @@ const postNewUser = (req, res, knex, bcrypt) => {
     username,
     email,
     password: results[0],
-    user_year: req.body.userYear,
+    user_year,
     inst_prog_id: results[1][0].id
   }))
   .then(() => res.send(true))

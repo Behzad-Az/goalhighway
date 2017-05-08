@@ -14,7 +14,7 @@ exports.seed = function(knex, Promise) {
     knex.raw('ALTER SEQUENCE items_for_sale_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE tutor_log_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE course_feed_id_seq RESTART WITH 1;'),
-    knex.raw('ALTER SEQUENCE doc_user_likes_id_seq RESTART WITH 1;'),
+    knex.raw('ALTER SEQUENCE user_likes_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE revisions_id_seq RESTART WITH 100000;'),
     knex.raw('ALTER SEQUENCE course_user_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE users_id_seq RESTART WITH 1;'),

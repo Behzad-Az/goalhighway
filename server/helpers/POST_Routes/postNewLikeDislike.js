@@ -1,21 +1,31 @@
 const postNewLikeDislike = (req, res, knex, user_id) => {
 
-  let like_count = parseInt(req.body.likeOrDislike);
+  const like_or_dislike = parseInt(req.body.likeOrDislike);
+  const foreign_table = req.params.foreign_table;
+  const foreign_id = req.params.foreign_id;
 
-  let newLikeDislikeObj = {
-    like_count,
-    doc_id: req.params.doc_id,
-    user_id: user_id
-  };
-
-  const validateLikeOrDislike = () => new Promise((resolve, reject) => {
-    (like_count === -1 || like_count === 1) ? resolve() : reject('Invalid like or dislike value');
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      [1, -1].includes(like_or_dislike) &&
+      ['docs'].includes(foreign_table) &&
+      foreign_id
+    ) {
+      resolve();
+    } else {
+      reject('Invalid like entry');
+    }
   });
 
-  const insertLikeOrDislike = () => knex('doc_user_likes').insert(newLikeDislikeObj);
+  const insertLikeOrDislike = newLikeDislikeObj => knex('user_likes')
+    .insert(newLikeDislikeObj);
 
-  validateLikeOrDislike()
-  .then(() => insertLikeOrDislike())
+  validateInputs()
+  .then(() => insertLikeOrDislike({
+    user_id,
+    like_or_dislike,
+    foreign_table,
+    foreign_id
+  }))
   .then(() => res.send(true))
   .catch((err) => {
     console.error('Error inside postNewLikeDislike.js: ', err);

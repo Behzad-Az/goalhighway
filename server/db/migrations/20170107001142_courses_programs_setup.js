@@ -38,7 +38,7 @@ exports.up = function(knex, Promise) {
       t.string('suffix', 10).notNullable();
       t.string('full_display_name', 130).notNullable();
       t.string('short_display_name', 25).notNullable();
-      t.string('course_desc', 100).notNullable();
+      t.string('course_desc', 250).notNullable();
       t.integer('course_year').notNullable();
       t.integer('inst_id').notNullable().references('institutions.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());

@@ -13,7 +13,7 @@ exports.seed = function(knex, Promise) {
     knex.raw('delete from course_reviews where 1=1'),
     knex.raw('delete from items_for_sale where 1=1'),
     knex.raw('delete from tutor_log where 1=1'),
-    knex.raw('delete from doc_user_likes where 1=1'),
+    knex.raw('delete from user_likes where 1=1'),
     knex.raw('delete from course_user where 1=1'),
     knex.raw('delete from revisions where 1=1')
   ]);

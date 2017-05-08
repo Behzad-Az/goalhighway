@@ -1,11 +1,12 @@
 
 exports.up = function(knex, Promise) {
   return Promise.all([
-    knex.schema.createTableIfNotExists('doc_user_likes', t => {
+    knex.schema.createTableIfNotExists('user_likes', t => {
       t.increments('id');
-      t.integer('like_count').notNullable().defaultTo(0);
+      t.integer('like_or_dislike').notNullable();
       t.integer('user_id').notNullable().references('users.id');
-      t.integer('doc_id').notNullable().references('docs.id');
+      t.integer('foreign_id').notNullable();
+      t.string('foreign_table').notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
     })
   ]);
@@ -13,6 +14,6 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-    knex.schema.dropTable('doc_user_likes')
+    knex.schema.dropTable('user_likes')
   ]);
 };

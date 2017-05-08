@@ -9,7 +9,7 @@ class NewCourseForm extends Component {
     this.formLimits = {
       prefix: { min: 3, max: 10 },
       suffix: { min: 3, max: 10 },
-      courseDesc: { min: 4, max: 100 }
+      courseDesc: { min: 4, max: 250 }
     };
     this.state = {
       prefix: '',
