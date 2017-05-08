@@ -1,7 +1,7 @@
 import React from 'react';
 import CropperJS from 'react-cropperjs';
 
-class Demo extends React.Component {
+class ImageCropper extends React.Component {
 
   constructor() {
     super();
@@ -51,4 +51,4 @@ class Demo extends React.Component {
    }
 }
 
-export default Demo;
+export default ImageCropper;

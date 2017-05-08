@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
-
 import ReactAlert from '../partials/ReactAlert.jsx';
 
 class CourseRow extends Component {

@@ -45,7 +45,6 @@ institution_program.forEach((data, index) => {
   });
 });
 
-
 let courseArr = [{"prefix":"ARTS","suffix":"001A","course_year":1,"course_desc":"Arts One - KNOWLEDGE&POWER","inst_id":1,"id":1},
 {"prefix":"ARTS","suffix":"001B","course_year":1,"course_desc":"Arts One - SEEING& KNOWING","inst_id":1,"id":2},
 {"prefix":"MATH","suffix":"001","course_year":1,"course_desc":"Algebra","inst_id":1,"id":3},

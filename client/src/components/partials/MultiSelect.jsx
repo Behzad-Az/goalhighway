@@ -60,4 +60,5 @@ var MultiSelect = React.createClass({
     );
   }
 });
+
 module.exports = MultiSelect;

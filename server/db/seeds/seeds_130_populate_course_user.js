@@ -16,10 +16,5 @@ let course_user = [];
 populate(course_user, 1, 1, 4);
 
 exports.seed = function(knex, Promise) {
-  // let promiseArr = [];
-  // course_user.forEach((data) => {
-  //   promiseArr.push(knex('course_user').insert(data));
-  // });
-  // return Promise.all(promiseArr);
   return Promise.all([]);
 };

@@ -3,25 +3,7 @@ import React, {Component} from 'react';
 class ControlSideBarRow extends Component {
   constructor(props) {
     super(props);
-    this._handleDeletionRequest = this._handleDeletionRequest.bind(this);
     this._determineEmailPreviewText = this._determineEmailPreviewText.bind(this);
-  }
-
-  _handleDeletionRequest() {
-    // fetch(`/api/courses/${this.props.feed.course_id}/feed/${this.props.feed.id}`, {
-    //   method: 'DELETE',
-    //   credentials: 'same-origin',
-    //   headers: {
-    //     'Accept': 'application/string',
-    //     'Content-Type': 'application/json'
-    //   }
-    // })
-    // .then(response => response.json())
-    // .then(resJSON => {
-    //   if (resJSON) { this.props.reload(); }
-    //   else { throw 'Server returned false'; }
-    // })
-    // .catch(() => this.reactAlert.showAlert('Unable to remove course feed', 'error'));
   }
 
   _determineEmailPreviewText() {
