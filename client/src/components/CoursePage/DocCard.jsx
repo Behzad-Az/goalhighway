@@ -53,7 +53,7 @@ class DocCard extends Component {
     return (
       <div className='doc-index card'>
         <p className='heart'>
-          <i onClick={this._sendLikeDislike} className='fa fa-heart' aria-hidden='true' style={{cursor: 'pointer', color: this.state.likeColor}} />
+          <i onClick={this._sendLikeDislike} className='fa fa-heart' aria-hidden='true' style={{ cursor: 'pointer', color: this.state.likeColor }} />
           {this.state.likeCount}
         </p>
         <div className='card-content'>

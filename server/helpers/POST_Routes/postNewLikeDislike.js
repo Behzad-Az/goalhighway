@@ -7,7 +7,7 @@ const postNewLikeDislike = (req, res, knex, user_id) => {
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       [1, -1].includes(like_or_dislike) &&
-      ['docs'].includes(foreign_table) &&
+      ['docs', 'course_feed', 'resumes'].includes(foreign_table) &&
       foreign_id
     ) {
       resolve();

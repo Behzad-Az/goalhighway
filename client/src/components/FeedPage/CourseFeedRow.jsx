@@ -8,11 +8,13 @@ class CourseFeedRow extends Component {
       flagRequest: false,
       flagReason: '',
       showReplyBox: false,
-      replyContent: ''
+      replyContent: '',
+      likeColor: ''
     };
     this._handleFlagClick = this._handleFlagClick.bind(this);
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
     this._renderFlagSelect = this._renderFlagSelect.bind(this);
+    this._handleFeedLike = this._handleFeedLike.bind(this);
     this._prepareFeed = this._prepareFeed.bind(this);
     this._renderDocumentFeed = this._renderDocumentFeed.bind(this);
     this._renderCommentFeed = this._renderCommentFeed.bind(this);
@@ -61,6 +63,27 @@ class CourseFeedRow extends Component {
         </span>
       </small>
     );
+  }
+
+  _handleFeedLike(e) {
+    let color = e.target.style.color;
+    let likeOrDislike = color === 'rgb(0, 78, 137)' ? -1 : 1;
+
+    fetch(`/api/likes/course_feed/${this.props.feed.id}`, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ likeOrDislike })
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (!resJSON) { throw 'Server returned false.'; }
+    })
+    .catch(err => console.error('Unable to like / dislike feed - ', err))
+    .then(() => this.setState({ likeColor: color === 'rgb(0, 78, 137)' ? '' : 'rgb(0, 78, 137)' }));
   }
 
   _prepareFeed() {
@@ -126,7 +149,7 @@ class CourseFeedRow extends Component {
                 {this.props.feed.created_at.slice(0, 10)}
                 <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 {this.state.flagRequest && this._renderFlagSelect()}
-                <i className='fa fa-heart' aria-hidden='true' />
+                <i className='fa fa-heart' aria-hidden='true' onClick={this._handleFeedLike} style={{ color: this.state.likeColor }} />
               </small>
             </p>
           </div>
