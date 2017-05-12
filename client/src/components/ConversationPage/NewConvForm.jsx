@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
-class NewConversationForm extends Component {
+class NewConvForm extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
@@ -117,4 +117,4 @@ class NewConversationForm extends Component {
   }
 }
 
-export default NewConversationForm;
+export default NewConvForm;

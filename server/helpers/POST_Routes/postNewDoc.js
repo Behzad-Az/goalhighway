@@ -2,6 +2,8 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   const title = req.body.title.trim();
   const rev_desc = req.body.revDesc.trim();
+  const type = req.body.type;
+  const course_id = req.params.course_id;
   let doc_id;
 
   const validateInputs = () => new Promise((resolve, reject) => {
@@ -10,8 +12,8 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
       title.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       rev_desc.length >= 3 && rev_desc.length <= 250 &&
       rev_desc.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
-      ['asg_report', 'lecture_note', 'sample_question'].includes(req.body.type) &&
-      req.params.course_id
+      ['asg_report', 'lecture_note', 'sample_question'].includes(type) &&
+      course_id
     ) {
       resolve();
     } else {
@@ -36,7 +38,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
   const getSearchData = () => knex('courses')
     .innerJoin('institutions', 'inst_id', 'institutions.id')
     .select('institutions.id', 'inst_long_name', 'inst_short_name', 'short_display_name')
-    .where('courses.id', req.params.course_id);
+    .where('courses.id', course_id);
 
   const determineCategory = type => {
     let output;
@@ -86,15 +88,15 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   knex.transaction(trx => {
     validateInputs()
-    .then(() => insertNewDoc({ course_id: req.params.course_id }, trx))
+    .then(() => insertNewDoc({ course_id }, trx))
     .then(docId => {
       doc_id = docId[0];
       let newRevObj = {
         title,
-        type: req.body.type,
+        type,
         rev_desc,
         file_name: req.file.filename,
-        doc_id: docId[0],
+        doc_id,
         poster_id: user_id
       };
       return insertNewRev(newRevObj, trx);
@@ -102,10 +104,10 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     .then(revId => {
       let adminFeedObj = {
         commenter_id: user_id,
-        course_id: req.params.course_id,
+        course_id,
         doc_id,
         rev_id: revId[0],
-        category: determineCategory(req.body.type),
+        category: determineCategory(type),
         anonymous: true,
         header: title,
         content: 'New document received.'
@@ -117,8 +119,8 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
       let esDocObj = {
         id: doc_id,
         title,
-        kind: req.body.type,
-        course_id: req.params.course_id,
+        kind: type,
+        course_id,
         course_name: searchData[0].short_display_name,
         inst_id: searchData[0].id,
         inst_name: `${searchData[0].inst_long_name} ${searchData[0].inst_short_name}`

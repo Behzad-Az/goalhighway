@@ -2,6 +2,9 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
 
   const title = req.body.title.trim();
   const rev_desc = req.body.revDesc.trim();
+  const type = req.body.type;
+  const course_id = req.params.course_id;
+  const doc_id = req.params.doc_id;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
@@ -9,9 +12,9 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
       title.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       rev_desc.length >= 3 && rev_desc.length <= 250 &&
       rev_desc.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
-      ['asg_report', 'lecture_note', 'sample_question'].includes(req.body.type) &&
-      req.params.course_id &&
-      req.params.doc_id
+      ['asg_report', 'lecture_note', 'sample_question'].includes(type) &&
+      course_id &&
+      doc_id
     ) {
       resolve();
     } else {
@@ -23,7 +26,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     if (req.file && req.file.filename) {
       resolve(req.file.filename);
     } else {
-      knex('revisions').where('doc_id', req.params.doc_id).orderBy('created_at', 'desc').limit(1)
+      knex('revisions').where('doc_id', doc_id).orderBy('created_at', 'desc').limit(1)
       .then(lastRevision => resolve(lastRevision[0].file_name))
       .catch(err => reject('could not find the file_name for last revision: ', err));
     }
@@ -54,10 +57,10 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
       update: {
         _index: 'search_catalogue',
         _type: 'document',
-        _id: req.params.doc_id
+        _id: doc_id
       }
     };
-    switch (req.body.type) {
+    switch (type) {
       case 'asg_report':
         kind = 'assignment assingments report reports';
         break;
@@ -95,9 +98,9 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     .then(file_name => {
       let newRevObj = {
         title,
-        type: req.body.type,
+        type,
         rev_desc,
-        doc_id: req.params.doc_id,
+        doc_id,
         poster_id: user_id,
         file_name
       };
@@ -106,10 +109,10 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     .then(revId => {
       let adminFeedObj = {
         commenter_id: user_id,
-        course_id: req.params.course_id,
-        doc_id: req.params.doc_id,
+        course_id,
+        doc_id,
         rev_id: revId[0],
-        category: determineCategory(req.body.type),
+        category: determineCategory(type),
         anonymous: true,
         header: title,
         content: rev_desc
