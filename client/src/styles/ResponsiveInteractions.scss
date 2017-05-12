@@ -7,7 +7,7 @@ $side_hamburger_width: 40px;
     .main-container { display: block; width: 100%; padding: $top_margin 1px $default_margin 1px; }
   }
 
-  .career-page, .email-page {
+  .career-page, .conversation-page {
     .main-container {
       display: inline-block; width: 100%; padding: $top_margin 0px $default_margin $side_hamburger_width+10px;
       .search-bar-container { min-width: 300px; }

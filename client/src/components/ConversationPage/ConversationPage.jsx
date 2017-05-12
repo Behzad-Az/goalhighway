@@ -6,20 +6,19 @@ import RightSideBar from '../RightSideBar/RightSideBar.jsx';
 import ControlSideBar from './ControlSideBar.jsx';
 import ConversationContainer from './ConversationContainer.jsx';
 
-class EmailPage extends Component {
+class ConversationPage extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
     this.state = {
       dataLoaded: false,
       pageError: false,
-      emails: [],
-      currEmailId: ''
+      conversations: [],
+      curreConvId: ''
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
     this._toggleControlBar = this._toggleControlBar.bind(this);
-    this._selectEmail = this._selectEmail.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
@@ -28,7 +27,7 @@ class EmailPage extends Component {
   }
 
   _loadComponentData() {
-    fetch('/api/emails', {
+    fetch('/api/conversations', {
       method: 'GET',
       credentials: 'same-origin'
     })
@@ -39,15 +38,15 @@ class EmailPage extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      resJSON.emails[0] ?
+      resJSON.conversations[0] ?
         this.setState({
-          emails: resJSON.emails.sort((a, b) => a.conversations[0].sent_at <= b.conversations[0].sent_at ? 1 : -1),
-          currEmailId: resJSON.emails[0].id,
+          conversations: resJSON.conversations.sort((a, b) => a.messages[0].sent_at <= b.messages[0].sent_at ? 1 : -1),
+          curreConvId: resJSON.conversations[0].id,
           dataLoaded: true
         }) :
         this.setState({
-          emails: [],
-          currEmailId: '',
+          conversations: [],
+          curreConvId: '',
           dataLoaded: true
         });
     } else {
@@ -59,10 +58,6 @@ class EmailPage extends Component {
     let controlBar = document.getElementById('control-bar');
     let className = controlBar.getAttribute('class');
     controlBar.className = className.includes(' is-enabled') ? 'card control-bar' : 'card control-bar is-enabled';
-  }
-
-  _selectEmail(currEmailId) {
-   this.setState({ currEmailId });
   }
 
   _renderPageAfterData() {
@@ -79,8 +74,8 @@ class EmailPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          { this.state.emails[0] && <ConversationContainer email={this.state.emails.find(email => email.id === this.state.currEmailId)} reload={this._loadComponentData} /> }
-          { !this.state.emails[0] && <p>No message available to view.</p> }
+          { this.state.conversations[0] && <ConversationContainer conversation={this.state.conversations.find(conv => conv.id === this.state.curreConvId)} reload={this._loadComponentData} /> }
+          { !this.state.conversations[0] && <p>No message available to view.</p> }
         </div>
       );
     } else {
@@ -97,15 +92,15 @@ class EmailPage extends Component {
 
   render() {
     return (
-      <div className='email-page'>
+      <div className='conversation-page'>
         <Navbar />
         <div className='hamburger'>
           <i className='fa fa-navicon' onClick={this._toggleControlBar} />
         </div>
         <ControlSideBar
           toggleControlBar={this._toggleControlBar}
-          emails={this.state.emails}
-          selectEmail={this._selectEmail}
+          conversations={this.state.conversations}
+          selectConversation={curreConvId => this.setState({ curreConvId })}
         />
         { this._renderPageAfterData() }
         <RightSideBar />
@@ -115,4 +110,4 @@ class EmailPage extends Component {
   }
 }
 
-export default EmailPage;
+export default ConversationPage;

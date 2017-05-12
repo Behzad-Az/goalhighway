@@ -10,7 +10,7 @@ import RegisterLoginPage from './RegisterLoginPage/RegisterLoginPage.jsx';
 import CareerPage from './CareerPage/CareerPage.jsx';
 import CompanyPage from './CompanyPage/CompanyPage.jsx';
 import FeedPage from './FeedPage/FeedPage.jsx';
-import EmailPage from './EmailPage/EmailPage.jsx';
+import ConversationPage from './ConversationPage/ConversationPage.jsx';
 
 class App extends React.Component {
   constructor() {
@@ -61,7 +61,7 @@ class App extends React.Component {
         <Route path='/courses/:course_id/reviews' component={CourseReviewPage} onEnter={this._validateAuth} />
         <Route path='/institutions/:inst_id' component={InstPage} onEnter={this._validateAuth} />
         <Route path='/companies/:company_id' component={CompanyPage} onEnter={this._validateAuth} />
-        <Route path='/emails' component={EmailPage} onEnter={this._validateAuth} />
+        <Route path='/conversations' component={ConversationPage} onEnter={this._validateAuth} />
         <Route path='*' component={IndexPage} onEnter={this._validateAuth} />
       </Router>
     );

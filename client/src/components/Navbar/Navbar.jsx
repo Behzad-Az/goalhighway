@@ -68,7 +68,7 @@ class Navbar extends Component {
           <div id='hamburger-menu' className={this.state.hamburgerClass}>
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-tablet' to={`/institutions/${this.state.userInfo.inst_id}`}><i className='fa fa-graduation-cap' aria-hidden='true' />Academics</Link>
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-tablet' to='/jobs'><i className='fa fa-briefcase' aria-hidden='true' />Careers</Link>
-            <Link className='nav-item is-tab' to='/emails'><i className='fa fa-envelope' aria-hidden='true' />Messages</Link>
+            <Link className='nav-item is-tab' to='/conversations'><i className='fa fa-envelope' aria-hidden='true' />Messages</Link>
             <Link className='nav-item is-tab' to='/profile'><i className='fa fa-user' aria-hidden='true' />Profile</Link>
             <Link className='nav-item is-tab' onClick={this._handleLogout}><i className='fa fa-sign-out' aria-hidden='true' />Logout</Link>
           </div>

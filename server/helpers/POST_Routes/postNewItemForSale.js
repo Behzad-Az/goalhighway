@@ -7,9 +7,9 @@ const postNewItemForSale = (req, res, knex, user_id) => {
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       title.length >= 3 && title.length <= 60 &&
-      title.search(/[^a-zA-Z0-9\ \#\&\*\$\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      title.search(/[^a-zA-Z0-9\ \#\&\*\$\!\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       item_desc.length >= 3 && item_desc.length <= 250 &&
-      item_desc.search(/[^a-zA-Z0-9\ \#\&\*\$\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
+      item_desc.search(/[^a-zA-Z0-9\ \#\&\*\$\!\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       price.length >= 1 && price.length <= 10 &&
       price.search(/[^a-zA-Z0-9\ \$\*\(\)\_\-\,\.\[\]]/) == -1 &&
       req.params.course_id

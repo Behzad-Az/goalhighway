@@ -197,7 +197,7 @@ class CourseFeedRow extends Component {
             <br />
             <small>
               <Link
-                onClick={() => this.props.composeNewEmail({
+                onClick={() => this.props.composeNewConv({
                   toId: this.props.feed.commenter_id,
                   objId: this.props.feed.tutor_log_id,
                   type: 'tutorReq',
@@ -237,7 +237,7 @@ class CourseFeedRow extends Component {
             <br />
             <small>
               <Link
-                onClick={() => this.props.composeNewEmail({
+                onClick={() => this.props.composeNewConv({
                   toId: this.props.feed.commenter_id,
                   objId: this.props.feed.item_for_sale_id,
                   type: 'itemForSale',

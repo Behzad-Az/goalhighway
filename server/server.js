@@ -79,7 +79,7 @@ const getLeftSideBarData = require('./helpers/GET_Routes/getLeftSideBarData.js')
 const getCompanyPageData = require('./helpers/GET_Routes/getCompanyPageData.js');
 const getFeedPageData = require('./helpers/GET_Routes/getFeedPageData.js');
 const getResumeData = require('./helpers/GET_Routes/getResumeData.js');
-const getEmailPageData = require('./helpers/GET_Routes/getEmailPageData.js');
+const getConversationPageData = require('./helpers/GET_Routes/getConversationPageData.js');
 
 const postNewDoc = require('./helpers/POST_Routes/postNewDoc.js');
 const postNewRevision = require('./helpers/POST_Routes/postNewRevision.js');
@@ -101,8 +101,8 @@ const postNewInterviewQuestion = require('./helpers/POST_Routes/postNewInterview
 const postNewInterviewAnswer = require('./helpers/POST_Routes/postNewInterviewAnswer.js');
 const postNewResume = require('./helpers/POST_Routes/postNewResume.js');
 const postNewResumeReviewFeed = require('./helpers/POST_Routes/postNewResumeReviewFeed.js');
-const postNewEmail = require('./helpers/POST_Routes/postNewEmail.js');
-const postNewEmailConversation = require('./helpers/POST_Routes/postNewEmailConversation.js');
+const postNewConversation = require('./helpers/POST_Routes/postNewConversation.js');
+const postNewConvMessage = require('./helpers/POST_Routes/postNewConvMessage.js');
 
 const updateUserProfile = require('./helpers/UPDATE_Routes/updateUserProfile.js');
 const updateCourseUserTutorStatus = require('./helpers/UPDATE_Routes/updateCourseUserTutorStatus.js');
@@ -116,7 +116,7 @@ const deleteCourseUser = require('./helpers/DELETE_Routes/deleteCourseUser.js');
 const deleteResume = require('./helpers/DELETE_Routes/deleteResume.js');
 const deleteResumeReviewRequest = require('./helpers/DELETE_Routes/deleteResumeReviewRequest.js');
 const deleteItemForSale = require('./helpers/DELETE_Routes/deleteItemForSale.js');
-const deleteEmail = require('./helpers/DELETE_Routes/deleteEmail.js');
+const deleteConversation = require('./helpers/DELETE_Routes/deleteConversation.js');
 
 
 // ***************************************************
@@ -199,8 +199,8 @@ app.get('/api/chatroom', (req, res) => {
   res.send({text: 'Hello world'});
 });
 
-app.get('/api/emails', (req, res) => {
-  getEmailPageData(req, res, knex, req.session.user_id);
+app.get('/api/conversations', (req, res) => {
+  getConversationPageData(req, res, knex, req.session.user_id);
 });
 
 
@@ -283,12 +283,12 @@ app.post('/api/companies/:company_id/questions/:question_id', (req, res) => {
   postNewInterviewAnswer(req, res, knex, req.session.user_id);
 });
 
-app.post('/api/emails', (req, res) => {
-  postNewEmail(req, res, knex, req.session.user_id);
+app.post('/api/conversations', (req, res) => {
+  postNewConversation(req, res, knex, req.session.user_id);
 });
 
-app.post('/api/emails/:email_id', (req, res) => {
-  postNewEmailConversation(req, res, knex, req.session.user_id);
+app.post('/api/conversations/:conversation_id', (req, res) => {
+  postNewConvMessage(req, res, knex, req.session.user_id);
 });
 
 
@@ -347,6 +347,6 @@ app.delete('/api/courses/:course_id/items/:item_id', (req, res) => {
   deleteItemForSale(req, res, knex, req.session.user_id);
 });
 
-app.delete('/api/emails/:email_id', (req, res) => {
-  deleteEmail(req, res, knex, req.session.user_id);
+app.delete('/api/conversations/:conversation_id', (req, res) => {
+  deleteConversation(req, res, knex, req.session.user_id);
 });

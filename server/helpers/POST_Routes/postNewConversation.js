@@ -1,4 +1,4 @@
-const postNewEmail = (req, res, knex, user_id) => {
+const postNewConversation = (req, res, knex, user_id) => {
 
   const subject = req.body.subject.trim();
   const content = req.body.content.trim();
@@ -19,18 +19,9 @@ const postNewEmail = (req, res, knex, user_id) => {
     }
   });
 
-  const insertNewEmail = (newEmailObj, trx) => knex('emails')
-    .transacting(trx)
-    .insert(newEmailObj)
-    .returning('id');
-
-  const insertNewEmailConversation = (newConversationObj, trx) => knex('email_conversations')
-    .transacting(trx)
-    .insert(newConversationObj);
-
-  const determineEmailType = trx => {
+  const determineConvType = trx => {
     if (req.body.toId == user_id) {
-      throw 'User cannot email self';
+      throw 'User cannot send message to self';
     } else {
       switch (req.body.type) {
         case 'itemForSale':
@@ -40,7 +31,7 @@ const postNewEmail = (req, res, knex, user_id) => {
             .andWhere('owner_id', req.body.toId)
             .whereNull('deleted_at')
             .limit(1)
-            .count('id as verifiedEmail');
+            .count('id as verified');
         case 'tutorReq':
           return knex('tutor_log')
             .transacting(trx)
@@ -49,7 +40,7 @@ const postNewEmail = (req, res, knex, user_id) => {
             .whereNull('closed_at')
             .whereNull('closure_reason')
             .limit(1)
-            .count('id as verifiedEmail');
+            .count('id as verified');
         case 'resumeReview':
           return knex('resumes')
             .transacting(trx)
@@ -58,39 +49,50 @@ const postNewEmail = (req, res, knex, user_id) => {
             .whereNull('deleted_at')
             .whereNotNull('review_requested_at')
             .limit(1)
-            .count('id as verifiedEmail');
+            .count('id as verified');
         default:
-          throw 'Unable to validate email parameters';
+          throw 'Unable to validate conversation parameters';
       }
     }
   };
 
+  const insertNewConversation = (newConvObj, trx) => knex('conversations')
+    .transacting(trx)
+    .insert(newConvObj)
+    .returning('id');
+
+  const insertNewConvMessage = (newMsgObj, trx) => knex('conversation_messages')
+    .transacting(trx)
+    .insert(newMsgObj);
+
+  const insertNewConvMembers = (newMemberObjs, trx) => knex('conversation_members')
+    .transacting(trx)
+    .insert(newMemberObjs);
+
   knex.transaction(trx => {
     validateInputs()
-    .then(() => determineEmailType(trx))
-    .then(verifiedEmail => {
-      if (parseInt(verifiedEmail[0].verifiedEmail)) {
-        let newEmailObj = {
-          subject,
-          to_id: req.body.toId,
-          from_id: user_id,
-        };
-        return insertNewEmail(newEmailObj, trx);
+    .then(() => determineConvType(trx))
+    .then(result => {
+      if (parseInt(result[0].verified)) {
+        return insertNewConversation({ subject }, trx);
       } else {
-        throw 'Email parameters not valid.';
+        throw 'Conversation parameters not valid.';
       }
     })
-    .then(emailId => {
-      let newConversationObj = {
-        content,
-        sender_id: user_id,
-        email_id: emailId[0]
-      };
-      return insertNewEmailConversation(newConversationObj, trx);
+    .then(convId => {
+      const conversation_id = convId[0];
+      let newMsgObj = { content, conversation_id, sender_id: user_id };
+      let newMemberObjs = [
+        { user_id: req.body.toId, conversation_id },
+        { user_id, conversation_id }
+      ];
+      return Promise.all([
+        insertNewConvMessage(newMsgObj, trx), insertNewConvMembers(newMemberObjs, trx)
+      ]);
     })
     .then(() => trx.commit())
     .catch(err => {
-      console.error('Error inside postNewEmail.js: ', err);
+      console.error('Error inside postNewConversation.js: ', err);
       trx.rollback();
     });
   })
@@ -99,4 +101,4 @@ const postNewEmail = (req, res, knex, user_id) => {
 
 };
 
-module.exports = postNewEmail;
+module.exports = postNewConversation;

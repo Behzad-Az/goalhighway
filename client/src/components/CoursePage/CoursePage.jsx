@@ -8,7 +8,7 @@ import ItemsContainer from './ItemsContainer.jsx';
 import TopRow from './TopRow.jsx';
 import CourseFeedsContainer from './CourseFeeds/CourseFeedsContainer.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import NewEmailForm from '../EmailPage/NewEmailForm.jsx';
+import NewConvForm from '../ConversationPage/NewConvForm.jsx';
 
 class CoursePage extends Component {
   constructor(props) {
@@ -17,13 +17,13 @@ class CoursePage extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      emailParams: {
+      convParams: {
         toId: '',
         objId: '',
         type: '',
         subject: ''
       },
-      showNewEmailForm: false,
+      showNewConvForm: false,
       courseInfo: {
         id: this.props.routeParams.course_id
       },
@@ -35,8 +35,7 @@ class CoursePage extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._composeNewEmail = this._composeNewEmail.bind(this);
-    this._toggleEmailModal = this._toggleEmailModal.bind(this);
+    this._composeNewConv = this._composeNewConv.bind(this);
     this._removeComment = this._removeComment.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
@@ -80,12 +79,8 @@ class CoursePage extends Component {
     }
   }
 
-  _composeNewEmail(emailParams) {
-    this.setState({ emailParams, showNewEmailForm: true });
-  }
-
-  _toggleEmailModal() {
-    this.setState({ showNewEmailForm: !this.state.showNewEmailForm });
+  _composeNewConv(convParams) {
+    this.setState({ convParams, showNewConvForm: true });
   }
 
   _removeComment(feedId) {
@@ -121,10 +116,10 @@ class CoursePage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <NewEmailForm
-            emailParams={this.state.emailParams}
-            showModal={this.state.showNewEmailForm}
-            toggleModal={this._toggleEmailModal}
+          <NewConvForm
+            convParams={this.state.convParams}
+            showModal={this.state.showNewConvForm}
+            toggleModal={() => this.setState({ showNewConvForm: !this.state.showNewConvForm })}
           />
           <TopRow courseInfo={this.state.courseInfo} reload={this._loadComponentData} />
           <DocsContainer docs={this.state.asgReports} header='Assignments and Reports' />
@@ -133,13 +128,13 @@ class CoursePage extends Component {
           <ItemsContainer
             items={this.state.itemsForSale}
             reload={this._loadComponentData}
-            composeNewEmail={this._composeNewEmail}
+            composeNewConv={this._composeNewConv}
           />
           <CourseFeedsContainer
             courseId={this.state.courseInfo.id}
             courseFeeds={this.state.courseFeeds}
             reload={this._loadComponentData}
-            composeNewEmail={this._composeNewEmail}
+            composeNewConv={this._composeNewConv}
             removeComment={this._removeComment}
           />
         </div>

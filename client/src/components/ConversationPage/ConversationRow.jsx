@@ -28,15 +28,15 @@ class ConversationRow extends Component {
       <article className='media conversation-row'>
         <figure className='media-left'>
           <p className='image is-48x48'>
-            <img src={`http://localhost:19001/images/userphotos/${this.props.conversation.photo_name}`} />
+            <img src={`http://localhost:19001/images/userphotos/${this.props.message.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <small className='email-date'>{this.props.conversation.sent_at.slice(0, 10)}</small>
-            <strong>@{this.props.conversation.sender_name}</strong>
+            <small className='message-date'>{this.props.message.sent_at.slice(0, 10)}</small>
+            <strong>@{this.props.message.sender_name}</strong>
             <br />
-            {this.props.conversation.content}
+            {this.props.message.content}
           </div>
         </div>
       </article>

@@ -24,7 +24,14 @@ class CourseFeedsContainer extends Component {
         <NewCourseFeedForm courseId={this.props.courseId} reload={this.props.reload} />
         <hr />
         <div className={this.state.showContainer ? 'feeds-rows' : 'feeds-rows is-hidden'}>
-          { this.props.courseFeeds.map(feed => <CourseFeedRow key={feed.id} feed={feed} reload={this.props.reload} composeNewEmail={this.props.composeNewEmail} removeComment={this.props.removeComment} /> ) }
+          { this.props.courseFeeds.map(feed =>
+              <CourseFeedRow
+                key={feed.id}
+                feed={feed}
+                reload={this.props.reload}
+                composeNewConv={this.props.composeNewConv}
+                removeComment={this.props.removeComment} />
+          )}
           { !this.props.courseFeeds.length && <p>No course feed available yet.</p> }
         </div>
       </div>

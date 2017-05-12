@@ -102,7 +102,7 @@ class ResumeReviewFeedRow extends Component {
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <Link onClick={() => this.props.composeNewEmail({
+            <Link onClick={() => this.props.composeNewConv({
               toId: this.props.feed.commenter_id,
               objId: this.props.feed.id,
               type: 'resumeReview',

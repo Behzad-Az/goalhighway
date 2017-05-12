@@ -26,7 +26,7 @@ class ItemsContainer extends Component {
               key={item.id}
               item={item}
               reload={this.props.reload}
-              composeNewEmail={this.props.composeNewEmail}
+              composeNewConv={this.props.composeNewConv}
             /> ) }
           { !this.props.items[0] && <p>No items for sale or trade yet...</p> }
         </div>

@@ -3,7 +3,7 @@ import Navbar from '../Navbar/Navbar.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../RightSideBar/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
-import NewEmailForm from '../EmailPage/NewEmailForm.jsx';
+import NewConvForm from '../ConversationPage/NewConvForm.jsx';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import FeedsContainer from './FeedsContainer.jsx';
 
@@ -14,13 +14,13 @@ class FeedPage extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      emailParams: {
+      convParams: {
         toId: '',
         objId: '',
         type: '',
         subject: ''
       },
-      showNewEmailForm: false,
+      showNewConvForm: false,
       feeds: [],
       courseFeedsLength: 0,
       resumeReviewFeedsLength: 0,
@@ -28,8 +28,7 @@ class FeedPage extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._composeNewEmail = this._composeNewEmail.bind(this);
-    this._toggleEmailModal = this._toggleEmailModal.bind(this);
+    this._composeNewConv = this._composeNewConv.bind(this);
     this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
     this._removeComment = this._removeComment.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
@@ -74,12 +73,8 @@ class FeedPage extends Component {
     }
   }
 
-  _composeNewEmail(emailParams) {
-    this.setState({ emailParams, showNewEmailForm: true });
-  }
-
-  _toggleEmailModal() {
-    this.setState({ showNewEmailForm: !this.state.showNewEmailForm });
+  _composeNewConv(convParams) {
+    this.setState({ convParams, showNewConvForm: true });
   }
 
   _removeComment(feedId, courseId) {
@@ -115,12 +110,12 @@ class FeedPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          <NewEmailForm
-            emailParams={this.state.emailParams}
-            showModal={this.state.showNewEmailForm}
-            toggleModal={this._toggleEmailModal}
+          <NewConvForm
+            convParams={this.state.convParams}
+            showModal={this.state.showNewConvForm}
+            toggleModal={() => this.setState({ showNewConvForm: !this.state.showNewConvForm })}
           />
-          <FeedsContainer feeds={this.state.feeds} composeNewEmail={this._composeNewEmail} removeComment={this._removeComment} />
+          <FeedsContainer feeds={this.state.feeds} composeNewConv={this._composeNewConv} removeComment={this._removeComment} />
           { this._displayLoadMoreBtn() }
         </div>
       );

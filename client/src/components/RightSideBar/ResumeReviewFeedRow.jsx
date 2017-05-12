@@ -34,7 +34,7 @@ class ResumeReviewFeedRow extends Component {
             {this.props.feed.title} - {this.props.feed.intent}
             <br />
             <small>
-              {this.props.feed.created_at.slice(0, 10)} | <Link onClick={this._handleDownload}>Download CV</Link> | <Link onClick={() => this.props.composeNewEmail({
+              {this.props.feed.created_at.slice(0, 10)} | <Link onClick={this._handleDownload}>Download CV</Link> | <Link onClick={() => this.props.composeNewConv({
                 toId: this.props.feed.commenter_id,
                 objId: this.props.feed.id,
                 type: 'resumeReview',

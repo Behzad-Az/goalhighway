@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 import FeedsContainer from './FeedsContainer.jsx';
-import NewEmailForm from '../EmailPage/NewEmailForm.jsx';
+import NewConvForm from '../ConversationPage/NewConvForm.jsx';
 
 class RightSideBar extends Component {
   constructor(props) {
@@ -9,13 +9,13 @@ class RightSideBar extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      emailParams: {
+      convParams: {
         toId: '',
         objId: '',
         type: '',
         subject: ''
       },
-      showNewEmailForm: false,
+      showNewConvForm: false,
       courseCount: 'N/A',
       feeds: [],
       instId: '',
@@ -27,8 +27,7 @@ class RightSideBar extends Component {
     this._conditionData = this._conditionData.bind(this);
     this._commaSeparateNumber = this._commaSeparateNumber.bind(this);
     this._renderFooter = this._renderFooter.bind(this);
-    this._composeNewEmail = this._composeNewEmail.bind(this);
-    this._toggleEmailModal = this._toggleEmailModal.bind(this);
+    this._composeNewConv = this._composeNewConv.bind(this);
   }
 
   componentWillMount() {
@@ -67,21 +66,17 @@ class RightSideBar extends Component {
     }
   }
 
-  _composeNewEmail(emailParams) {
-    this.setState({ emailParams, showNewEmailForm: true });
-  }
-
-  _toggleEmailModal() {
-    this.setState({ showNewEmailForm: !this.state.showNewEmailForm });
+  _composeNewConv(convParams) {
+    this.setState({ convParams, showNewConvForm: true });
   }
 
   render() {
     return this.state.dataLoaded ? (
       <div className='card side-bar right'>
-        <NewEmailForm
-          emailParams={this.state.emailParams}
-          showModal={this.state.showNewEmailForm}
-          toggleModal={this._toggleEmailModal}
+        <NewConvForm
+          convParams={this.state.convParams}
+          showModal={this.state.showNewConvForm}
+          toggleModal={() => this.setState({ showNewConvForm: !this.state.showNewConvForm })}
         />
         <div className='card-content'>
           <div className='media'>
@@ -101,7 +96,7 @@ class RightSideBar extends Component {
             <p><i className='fa fa-slideshare' aria-hidden='true' /> {this._commaSeparateNumber(this.state.tutorCount)} tutors</p>
           </div>
           <hr />
-          <FeedsContainer feeds={this.state.feeds} composeNewEmail={this._composeNewEmail} />
+          <FeedsContainer feeds={this.state.feeds} composeNewConv={this._composeNewConv} />
           { this._renderFooter() }
         </div>
       </div>

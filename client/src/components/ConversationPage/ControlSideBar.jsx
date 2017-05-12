@@ -7,8 +7,8 @@ class ControlSideBar extends Component {
       <div id='control-bar' className='card control-bar'>
         <p className='title is-4'>Conversations:</p>
         <hr />
-        { this.props.emails.map(email => <ControlSideBarRow key={email.id} email={email} selectEmail={this.props.selectEmail} /> ) }
-        { !this.props.emails[0] && <p>No message available to view.</p> }
+        { this.props.conversations.map(conversation => <ControlSideBarRow key={conversation.id} conversation={conversation} selectConversation={this.props.selectConversation} /> ) }
+        { !this.props.conversations[0] && <p>No message available to view.</p> }
       </div>
     );
   }

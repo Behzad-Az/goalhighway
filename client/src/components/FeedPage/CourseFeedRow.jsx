@@ -210,7 +210,7 @@ class CourseFeedRow extends Component {
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <Link onClick={() => this.props.composeNewEmail({
+            <Link onClick={() => this.props.composeNewConv({
               toId: this.props.feed.commenter_id,
               objId: this.props.feed.tutor_log_id,
               type: 'tutorReq',
@@ -252,7 +252,7 @@ class CourseFeedRow extends Component {
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <Link onClick={() => this.props.composeNewEmail({
+            <Link onClick={() => this.props.composeNewConv({
               toId: this.props.feed.commenter_id,
               objId: this.props.feed.item_for_sale_id,
               type: 'itemForSale',

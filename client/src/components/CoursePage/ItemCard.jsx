@@ -191,7 +191,7 @@ class ItemCard extends Component {
               { this.props.item.editable ?
                   <Link onClick={this._toggleView}>Edit</Link> :
                   <Link
-                    onClick={() => this.props.composeNewEmail({
+                    onClick={() => this.props.composeNewConv({
                       toId: this.props.item.owner_id,
                       objId: this.props.item.id,
                       type: 'itemForSale',

@@ -1,4 +1,4 @@
-.email-page {
+.conversation-page {
   background-color: $default-bg-color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
@@ -18,7 +18,7 @@
       }
       hr { margin: $default_margin/2 0; }
       .conversation-row {
-        .email-date { float: right; }
+        .message-date { float: right; }
         .media-left .image img { overflow: hidden; border: #bbb solid 2px; border-radius: 50%; }
       }
     }

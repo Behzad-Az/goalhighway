@@ -12,8 +12,8 @@ postNewCourseReview.js | NewCourseReviewForm.jsx
 postNewCourseUser.js
 postNewCourseUserAssistReq.js | NewReqAssistForm.jsx
 postNewDoc.js | NewDocForm.jsx
-postNewEmail.js | NewEmailForm.jsx
-postNewEmailConversation.js | NewReplyForm.jsx
+postNewConversation.js | NewConversationFrom.jsx
+postNewConvMessage.js | NewReplyForm.jsx
 SKIPPED: postNewFeedReply.js
 postNewFlag.js | RevisionRow.jsx | CourseFeedRow.jsx | JobRow.jsx | QaRow.jsx | AnswerRow.jsx | ResumeReviewFeedRow.jsx
 postNewInst.js | NewInstForm.jsx
@@ -38,7 +38,7 @@ DELETE ROUTES:
 -------------------------------------------------------
 deleteCourseFeed.js
 deleteCourseUser.js
-deleteEmail.js
+deleteConversation.js
 deleteItemForSale.js
 deleteResume.js
 deleteResumeReviewRequest.js
