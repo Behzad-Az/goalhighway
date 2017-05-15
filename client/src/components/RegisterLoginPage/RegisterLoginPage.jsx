@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-
 import Login from './Login.jsx';
 import Register from './Register.jsx';
 
@@ -7,30 +6,31 @@ class LoginRegisterPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      registerSuccessStatus: false,
-      badInputStatus: false,
+      registerStatus: false,
+      errorStatus: false,
       errorMsg: ''
     };
-    this.handleSuccessfulRegister = this.handleSuccessfulRegister.bind(this);
-    this.handleBadInput = this.handleBadInput.bind(this);
-    this.returnErrorMsg = this.returnErrorMsg.bind(this);
+    this._handleRegisterSuccess = this._handleRegisterSuccess.bind(this);
+    this._handleError = this._handleError.bind(this);
+    this._registerMsg = this._registerMsg.bind(this);
+    this._errorMsg = this._errorMsg.bind(this);
   }
 
-  handleSuccessfulRegister(registerSuccessStatus) {
-    this.setState({ registerSuccessStatus });
+  _handleRegisterSuccess(registerStatus) {
+    this.setState({ registerStatus });
   }
 
-  handleBadInput(badInputStatus, errorMsg) {
-    this.setState({ badInputStatus, errorMsg });
+  _handleError(errorStatus, errorMsg) {
+    this.setState({ errorStatus, errorMsg });
   }
 
-  returnRegisterSuccessMsg() {
-    if (this.state.registerSuccessStatus) {
+  _registerMsg() {
+    if (this.state.registerStatus) {
       return (
         <article className='message is-success'>
           <div className='message-header'>
             <p><strong>Thank you for registring and welcome!</strong>!</p>
-            <button className='delete' onClick={() => this.handleSuccessfulRegister(false)} />
+            <button className='delete' onClick={() => this._handleRegisterSuccess(false)} />
           </div>
           <div className='message-body'>
             Please login.
@@ -40,13 +40,13 @@ class LoginRegisterPage extends Component {
     }
   }
 
-  returnErrorMsg() {
-    if (this.state.badInputStatus) {
+  _errorMsg() {
+    if (this.state.errorStatus) {
       return (
         <article className='message is-danger'>
           <div className='message-header'>
             <strong>Invalid entry!</strong>
-            <button className='delete' onClick={() => this.handleBadInput(false, '')} />
+            <button className='delete' onClick={() => this._handleError(false, '')} />
           </div>
           <div className='message-body'>
             { this.state.errorMsg }
@@ -59,11 +59,11 @@ class LoginRegisterPage extends Component {
   render() {
     return (
       <div className='register-login-page'>
-        <Login handleBadInput={this.handleBadInput} />
+        <Login handleError={this._handleError} />
         <div className='main-container'>
-          { this.returnErrorMsg() }
-          { this.returnRegisterSuccessMsg() }
-          <Register handleBadInput={this.handleBadInput} handleSuccessfulRegister={this.handleSuccessfulRegister} />
+          { this._errorMsg() }
+          { this._registerMsg() }
+          <Register handleError={this._handleError} handleRegisterSuccess={this._handleRegisterSuccess} />
         </div>
       </div>
     );

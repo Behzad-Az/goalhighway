@@ -15,6 +15,7 @@ const checkUsernameAvailability = (req, res, knex, user_id) => {
 
   const checkUsername = () => knex('users')
     .where('username', username)
+    .whereNull('deleted_at')
     .count('username as taken');
 
   validateInputs()

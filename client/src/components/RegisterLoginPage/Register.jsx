@@ -26,7 +26,8 @@ class Register extends Component {
       userYear: '',
       instProgDropDownList: [],
       usernameAvaialble: false,
-      emailAvaialble: false
+      emailAvaialble: false,
+      processing: false
     };
     this._conditionData = this._conditionData.bind(this);
     this._handleInstChange = this._handleInstChange.bind(this);
@@ -158,10 +159,13 @@ class Register extends Component {
            this.state.progId &&
            this.state.userYear &&
            this.state.emailAvaialble &&
-           this.state.usernameAvaialble;
+           this.state.usernameAvaialble &&
+           !this.state.processing;
   }
 
   _handleRegister() {
+    this.setState({ processing: true });
+
     let data = {
       username: this.state.username,
       email: this.state.email,
@@ -182,10 +186,9 @@ class Register extends Component {
       body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(resJSON => {
-      resJSON ? this.props.handleSuccessfulRegister(true) : this.props.handleBadInput(true, 'Unable to register new user.');
-    })
-    .catch(err => console.error('Unable to process registeration - ', err));
+    .then(resJSON => resJSON ? this.props.handleRegisterSuccess(true) : this.props.handleError(true, 'Unable to register new user.'))
+    .catch(err => console.error('Unable to process registeration - ', err))
+    .then(() => this.setState({ processing: false }));
   }
 
   render() {
@@ -208,7 +211,8 @@ class Register extends Component {
               className='input is-primary'
               placeholder='Enter username'
               name='username'
-              onChange={this._getUserAvailability} />
+              onChange={this._getUserAvailability}
+              disabled={this.state.processing} />
           </div>
           <div className='control'>
             <label className='label'>
@@ -219,7 +223,8 @@ class Register extends Component {
               className='input is-primary'
               placeholder='Enter email'
               name='email'
-              onChange={this._getEmailAvailability} />
+              onChange={this._getEmailAvailability}
+              disabled={this.state.processing} />
           </div>
           <div className='control'>
             <label className='label'>
@@ -230,58 +235,60 @@ class Register extends Component {
               className='input is-primary'
               placeholder='minium six characters | one letter | one digit'
               name='password'
-              onChange={this._handleChange} />
+              onChange={this._handleChange}
+              disabled={this.state.processing} />
           </div>
           <div className='control'>
             <label className='label'>
               Confirm Password: { this._validatePasswordConfirm() && <i className='fa fa-check' /> }
             </label>
             <input
-            type='password'
-            className='input is-primary'
-            placeholder='minium six characters | one letter | one digit'
-            name='passwordConfirm'
-            onChange={this._handleChange} />
+              type='password'
+              className='input is-primary'
+              placeholder='minium six characters | one letter | one digit'
+              name='passwordConfirm'
+              onChange={this._handleChange}
+              disabled={this.state.processing} />
           </div>
-
           <div className='control'>
             <label className='label'>
               Primary Institution: { this.state.instId && <i className='fa fa-check' /> }
             </label>
             <SingleSelect
-              disabled={false}
+              disabled={this.state.processing}
               initialValue={this.state.instId}
               options={this.state.instProgDropDownList}
               name='instId'
               handleChange={this._handleInstChange} />
           </div>
-
           <div className='control'>
             <label className='label'>
               Primary Program: { this.state.progId && <i className='fa fa-check' /> }
             </label>
             <SingleSelect
-              disabled={false}
+              disabled={this.state.processing}
               initialValue={this.state.progId}
               options={programList}
               name='progId'
               handleChange={this._handleProgChange} />
           </div>
-
           <div className='control'>
             <label className='label'>
               Primary Academic Year: { this.state.userYear && <i className='fa fa-check' /> }
             </label>
             <SingleSelect
-              disabled={false}
+              disabled={this.state.processing}
               initialValue={this.state.userYear}
               options={this.academicYears}
               name='userYear'
               handleChange={this._handleUserYearChange} />
           </div>
         </div>
+
         <footer className='card-footer'>
-          <Link className='card-footer-item button is-link' onClick={this._handleRegister} disabled={!this._validateForm()}>Register!</Link>
+          <Link className='card-footer-item button is-link' onClick={this._handleRegister} disabled={!this._validateForm()}>
+            { this.state.processing ? 'Registering...' : 'Register!' }
+          </Link>
         </footer>
       </div>
     );

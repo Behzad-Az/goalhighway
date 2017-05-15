@@ -21,6 +21,20 @@ const esClient = new elasticsearch.Client({
 const googleMapsClient = require('@google/maps').createClient({
   key: 'AIzaSyAf8NX2LPzDPLTwLeHX9IgJ3LuvDQXiiEI'
 });
+
+// ***************************************************
+// NODE MAILER SETUP
+// ***************************************************
+// const nodemailer = require('nodemailer');
+// const mailer = nodemailer.createTransport({
+//   host: 'mailtrap.io',
+//   port: 2525,
+//   auth: {
+//     user: '12d82a5ce210c8',
+//     pass: '2b5b44e86ab965'
+//   }
+// });
+
 const blacklist = ['/api/home', '/api/courses', '/api/users', '/api/docs', '/api/institutions', '/images'];
 
 // ***************************************************

@@ -16,6 +16,7 @@ const checkEmailAvailability = (req, res, knex, user_id) => {
 
   const checkEmail = () => knex('users')
     .where('email', email)
+    .whereNull('deleted_at')
     .count('email as taken');
 
   validateInputs()

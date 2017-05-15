@@ -7,6 +7,14 @@ const postNewUser = (req, res, knex, bcrypt) => {
   const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
   const user_year = parseInt(req.body.userYear);
 
+  // const mailOptions = {
+  //   from: '"GoalHighway" <no-reply@goalhighway.com>', // sender address
+  //   to: email, // list of receivers
+  //   subject: 'Verify your account at GoalHighway', // Subject line
+  //   text: 'click here', // plaintext body
+  //   html: '<p>Click here</p>' // html body
+  // };
+
   const validateInputs = () => new Promise ((resolve, reject) => {
     if (
       pwd === pwdConfirm &&
@@ -34,12 +42,35 @@ const postNewUser = (req, res, knex, bcrypt) => {
     .andWhere('prog_id', req.body.progId)
     .whereNull('deleted_at');
 
-  const insertUser = newUserObj => knex('users')
+  const insertNewUser = newUserObj => knex('users')
     .insert(newUserObj);
+
+  // knex.transaction(trx => {
+  //   validateInputs()
+  //   .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId(trx) ]))
+  //   .then(results => {
+  //     const newUserObj = {
+  //       username,
+  //       email,
+  //       password: results[0],
+  //       user_year,
+  //       inst_prog_id: results[1][0].id
+  //     };
+  //     return insertNewUser(newUserObj, trx);
+  //   })
+  //   .then(() => mailer.sendMail(mailOptions))
+  //   .then(() => trx.commit())
+  //   .catch(err => {
+  //     console.error('Error inside postNewItemForSale.js: ', err);
+  //     trx.rollback();
+  //   });
+  // })
+  // .then(() => res.send(true))
+  // .catch(() => res.send(false));
 
   validateInputs()
   .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId() ]))
-  .then(results => insertUser({
+  .then(results => insertNewUser({
     username,
     email,
     password: results[0],

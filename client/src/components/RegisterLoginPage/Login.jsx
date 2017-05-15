@@ -10,8 +10,9 @@ class Login extends Component {
       password: { min: 6, max: 30 }
     };
     this.state = {
-      username: 'BEN',
-      password: 'ben123'
+      username: '',
+      password: '',
+      processing: false
     };
     this._handleChange = this._handleChange.bind(this);
     this._handleLogin = this._handleLogin.bind(this);
@@ -29,6 +30,8 @@ class Login extends Component {
   }
 
   _handleLogin() {
+    this.setState({ processing: true });
+
     let data = {
       username: this.state.username,
       password: this.state.password
@@ -45,16 +48,18 @@ class Login extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      resJSON ? browserHistory.push('/home') : this.props.handleBadInput(true, 'Invalid login credentials.');
+      resJSON ? browserHistory.push('/home') : this.props.handleError(true, 'Invalid login credentials.');
     })
-    .catch(err => console.error('Unable to process login - ', err));
+    .catch(err => console.error('Unable to process login - ', err))
+    .then(() => this.setState({ processing: false }));
   }
 
   _validateForm() {
     return this.state.username.length >= this.formLimits.username.min &&
            !InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') &&
            this.state.password.length >= this.formLimits.password.min &&
-           !InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password');
+           !InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password') &&
+           !this.state.processing;
   }
 
   render() {
@@ -76,6 +81,7 @@ class Login extends Component {
                 className='input is-primary'
                 placeholder='Enter username'
                 onChange={this._handleChange}
+                disabled={this.state.processing}
                 style={{ borderColor: InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') ? '#9D0600' : '' }} />
             </div>
             <div className='credential'>
@@ -89,6 +95,7 @@ class Login extends Component {
                 className='input is-primary'
                 placeholder='Enter password'
                 onChange={this._handleChange}
+                disabled={this.state.processing}
                 style={{ borderColor: InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password') ? '#9D0600' : '' }} />
             </div>
             <button className='button' onClick={this._handleLogin} disabled={!this._validateForm()}>Log in</button>

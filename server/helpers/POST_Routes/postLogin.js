@@ -1,8 +1,8 @@
 const postLogin = (req, res, knex, bcrypt) => {
 
-  let currUser;
   const username = req.body.username.trim().toLowerCase();
   const password = req.body.password;
+  let currUser;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
@@ -24,6 +24,7 @@ const postLogin = (req, res, knex, bcrypt) => {
       'institution_program.inst_id', 'institution_program.prog_id'
     )
     .where('username', username)
+    .andWhere('validated', true)
     .whereNull('users.deleted_at');
 
   const verifyPwd = (given, actual) => bcrypt.compare(given, actual);
@@ -31,8 +32,12 @@ const postLogin = (req, res, knex, bcrypt) => {
   validateInputs()
   .then(() => findUser())
   .then(user => {
-    currUser = user[0];
-    return verifyPwd(password, currUser.password);
+    if (user[0]) {
+      currUser = user[0];
+      return verifyPwd(password, currUser.password);
+    } else {
+      throw 'No username could be found or user has not verified email yet';
+    }
   })
   .then(valid => {
     if (valid) {
