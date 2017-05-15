@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
       t.string('password', 60).notNullable();
       t.string('email', 30).notNullable().unique();
       t.integer('user_year').notNullable();
-      t.boolean('validated').notNullable().defaultTo(false);
+      t.boolean('validated').notNullable().defaultTo(true);
       t.string('postal_code', 10);
       t.float('lat', 8, 5);
       t.float('lon', 8, 5);
