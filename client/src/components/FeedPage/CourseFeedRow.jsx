@@ -9,7 +9,8 @@ class CourseFeedRow extends Component {
       flagReason: '',
       showReplyBox: false,
       replyContent: '',
-      likeColor: ''
+      likeCount: parseInt(this.props.feed.likeCount),
+      likeColor: this.props.feed.alreadyLiked ? 'rgb(0, 78, 137)' : ''
     };
     this._handleFlagClick = this._handleFlagClick.bind(this);
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
@@ -65,9 +66,8 @@ class CourseFeedRow extends Component {
     );
   }
 
-  _handleFeedLike(e) {
-    let color = e.target.style.color;
-    let likeOrDislike = color === 'rgb(0, 78, 137)' ? -1 : 1;
+  _handleFeedLike() {
+    let likeOrDislike = this.state.likeColor === 'rgb(0, 78, 137)' ? -1 : 1;
 
     fetch(`/api/likes/course_feed/${this.props.feed.id}`, {
       method: 'POST',
@@ -83,7 +83,7 @@ class CourseFeedRow extends Component {
       if (!resJSON) { throw 'Server returned false.'; }
     })
     .catch(err => console.error('Unable to like / dislike feed - ', err))
-    .then(() => this.setState({ likeColor: color === 'rgb(0, 78, 137)' ? '' : 'rgb(0, 78, 137)' }));
+    .then(() => this.setState({ likeColor: this.state.likeColor === 'rgb(0, 78, 137)' ? '' : 'rgb(0, 78, 137)', likeCount: this.state.likeCount + likeOrDislike }));
   }
 
   _prepareFeed() {
@@ -146,10 +146,11 @@ class CourseFeedRow extends Component {
               </small>
               <br />
               <small>
-                {this.props.feed.created_at.slice(0, 10)}
-                <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
+                <i className='fa fa-flag footer-item' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 {this.state.flagRequest && this._renderFlagSelect()}
-                <i className='fa fa-heart' aria-hidden='true' onClick={this._handleFeedLike} style={{ color: this.state.likeColor }} />
+                <i className='fa fa-heart footer-item' aria-hidden='true' onClick={this._handleFeedLike} style={{ color: this.state.likeColor }} />
+                <span className='footer-item'>{this.state.likeCount}</span>
               </small>
             </p>
           </div>
@@ -184,13 +185,11 @@ class CourseFeedRow extends Component {
               </small>
               <br />
               <small>
-                {this.props.feed.created_at.slice(0, 10)}
-                <i className={this.props.feed.editable ? 'fa fa-trash' : 'fa fa-flag'}
-                  aria-hidden='true'
-                  onClick={() => this.props.removeComment(this.props.feed.id, this.props.feed.course_id)}
-                  style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
+                <i className='fa fa-flag footer-item' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 {this.state.flagRequest && this._renderFlagSelect()}
-                <i className='fa fa-heart' aria-hidden='true' />
+                <i className='fa fa-heart footer-item' aria-hidden='true' onClick={this._handleFeedLike} style={{ color: this.state.likeColor }} />
+                <span className='footer-item'>{this.state.likeCount}</span>
               </small>
             </p>
           </div>
@@ -230,10 +229,11 @@ class CourseFeedRow extends Component {
               </small>
               <br />
               <small>
-                {this.props.feed.created_at.slice(0, 10)}
-                <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
+                <i className='fa fa-flag footer-item' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 {this.state.flagRequest && this._renderFlagSelect()}
-                <i className='fa fa-heart' aria-hidden='true' />
+                <i className='fa fa-heart footer-item' aria-hidden='true' onClick={this._handleFeedLike} style={{ color: this.state.likeColor }} />
+                <span className='footer-item'>{this.state.likeCount}</span>
               </small>
             </p>
           </div>
@@ -272,10 +272,11 @@ class CourseFeedRow extends Component {
               </small>
               <br />
               <small>
-                {this.props.feed.created_at.slice(0, 10)}
-                <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
+                <i className='fa fa-flag footer-item' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 {this.state.flagRequest && this._renderFlagSelect()}
-                <i className='fa fa-heart' aria-hidden='true' />
+                <i className='fa fa-heart footer-item' aria-hidden='true' onClick={this._handleFeedLike} style={{ color: this.state.likeColor }} />
+                <span className='footer-item'>{this.state.likeCount}</span>
               </small>
             </p>
           </div>
@@ -310,10 +311,11 @@ class CourseFeedRow extends Component {
               </small>
               <br />
               <small>
-                {this.props.feed.created_at.slice(0, 10)}
-                <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
+                <i className='fa fa-flag footer-item' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 {this.state.flagRequest && this._renderFlagSelect()}
-                <i className='fa fa-heart' aria-hidden='true' />
+                <i className='fa fa-heart footer-item' aria-hidden='true' onClick={this._handleFeedLike} style={{ color: this.state.likeColor }} />
+                <span className='footer-item'>{this.state.likeCount}</span>
               </small>
             </p>
           </div>

@@ -1,5 +1,7 @@
 const getFeedPageData = (req, res, knex, user_id) => {
 
+  let courseFeeds, resumeFeeds;
+
   const getCourseIds = () => knex('users')
     .innerJoin('course_user', 'users.id', 'user_id')
     .select('course_user.course_id')
@@ -55,12 +57,38 @@ const getFeedPageData = (req, res, knex, user_id) => {
     return feed;
   });
 
+  const getLikeCount = (item, tableName) => knex('user_likes')
+      .where('foreign_table', tableName)
+      .andWhere('foreign_id', item.id)
+      .sum('like_or_dislike as likeCount');
+
+  const getAlreadyLiked = (item, tableName) => knex('user_likes')
+      .where('foreign_table', tableName)
+      .andWhere('foreign_id', item.id)
+      .andWhere('user_id', user_id)
+      .sum('like_or_dislike as likeCount');
+
+  const getLikesInfo = (item, tableName) => new Promise((resolve, reject) => {
+    Promise.all([ getLikeCount(item, tableName), getAlreadyLiked(item, tableName) ])
+    .then(results => {
+      item.likeCount = results[0][0].likeCount ? parseInt(results[0][0].likeCount) : 0;
+      item.alreadyLiked = results[1][0].likeCount ? parseInt(results[1][0].likeCount) : 0;
+      resolve();
+    })
+    .catch(err => reject(err));
+  });
+
   getCourseIds()
   .then(courses => Promise.all([ getCourseFeeds(courses.map(course => course.course_id)), getResumeFeeds() ]))
   .then(results => {
+    courseFeeds = results[0];
+    resumeFeeds = results[1];
+    return Promise.all(courseFeeds.map(feed => getLikesInfo(feed, 'course_feed')));
+  })
+  .then(() => {
     req.session.unviewed_notif = false;
-    let feeds = categorizeFeed(results[0], 'courseFeed')
-                .concat(categorizeFeed(results[1], 'resumeReviewFeed'));
+    const feeds = categorizeFeed(courseFeeds, 'courseFeed')
+                  .concat(categorizeFeed(resumeFeeds, 'resumeReviewFeed'));
     res.send({ feeds, instId: req.session.inst_id });
   })
   .then(() => updateUserFeedDate())

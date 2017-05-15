@@ -80,8 +80,9 @@
         background-color: white; margin: 0; padding: $default_margin/2;
         &.is-hidden { display: none; }
         .media-left .image { overflow: hidden; border: #bbb solid 2px; border-radius: 50% }
-        .fa { font-size: 12px; cursor: pointer; vertical-align: middle; margin-left: $default_margin/2; &:hover { transform: scale(1.1); } }
-        .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
+        .fa { font-size: 12px; cursor: pointer; vertical-align: middle; &:hover { transform: scale(1.1); } }
+        .footer-item { margin-right: $default_margin/2; }
+        .control.flag-submission { text-align: center; margin-right: $default_margin/2; select { max-width: 110px; } }
         a { color: $dark-blue; &:hover { color: $pumpkin; } }
       }
     }

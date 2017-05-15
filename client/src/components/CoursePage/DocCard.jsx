@@ -13,7 +13,7 @@ class DocCard extends Component {
     this._findImageLink = this._findImageLink.bind(this);
     this.state = {
       likeCount: parseInt(this.props.doc.likeCount),
-      likeColor: '',
+      likeColor: this.props.doc.alreadyLiked ? 'rgb(0, 78, 137)' : '',
       imageLink: this._findImageLink(this.props.doc.revisions[0].file_name)
     };
     this._sendLikeDislike = this._sendLikeDislike.bind(this);
@@ -25,9 +25,8 @@ class DocCard extends Component {
     return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
   }
 
-  _sendLikeDislike(e) {
-    let color = e.target.style.color;
-    let likeOrDislike = color === 'rgb(0, 78, 137)' ? -1 : 1;
+  _sendLikeDislike() {
+    let likeOrDislike = this.state.likeColor === 'rgb(0, 78, 137)' ? -1 : 1;
 
     fetch(`/api/likes/docs/${this.props.doc.id}`, {
       method: 'POST',
@@ -45,7 +44,7 @@ class DocCard extends Component {
     .catch(err => console.error('Unable to like / dislike document - ', err))
     .then(() => this.setState({
       likeCount: this.state.likeCount + likeOrDislike,
-      likeColor: color === 'rgb(0, 78, 137)' ? '' : 'rgb(0, 78, 137)'
+      likeColor: this.state.likeColor === 'rgb(0, 78, 137)' ? '' : 'rgb(0, 78, 137)'
     }));
   }
 

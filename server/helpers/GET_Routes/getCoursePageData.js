@@ -13,18 +13,6 @@ const getCoursePageData = (req, res, knex, user_id) => {
     .catch(err => reject('Unable to get revisions for course: ', err));
   });
 
-  const getDocLikeCount = doc => new Promise((resolve, reject) => {
-    knex('user_likes')
-    .where('foreign_table', 'docs')
-    .andWhere('foreign_id', doc.id)
-    .sum('like_or_dislike as likeCount')
-    .then(result => {
-      doc.likeCount = result[0].likeCount || 0;
-      resolve();
-    })
-    .catch(err => reject('Unable to get doc like count: ', err));
-  });
-
   const getDocs = () => knex('docs')
     .where('course_id', req.params.course_id)
     .whereNull('deleted_at')
@@ -83,6 +71,27 @@ const getCoursePageData = (req, res, knex, user_id) => {
     return feed;
   });
 
+  const getLikeCount = (item, tableName) => knex('user_likes')
+      .where('foreign_table', tableName)
+      .andWhere('foreign_id', item.id)
+      .sum('like_or_dislike as likeCount');
+
+  const getAlreadyLiked = (item, tableName) => knex('user_likes')
+      .where('foreign_table', tableName)
+      .andWhere('foreign_id', item.id)
+      .andWhere('user_id', user_id)
+      .sum('like_or_dislike as likeCount');
+
+  const getLikesInfo = (item, tableName) => new Promise((resolve, reject) => {
+    Promise.all([ getLikeCount(item, tableName), getAlreadyLiked(item, tableName) ])
+    .then(results => {
+      item.likeCount = results[0][0].likeCount ? parseInt(results[0][0].likeCount) : 0;
+      item.alreadyLiked = results[1][0].likeCount ? parseInt(results[1][0].likeCount) : 0;
+      resolve();
+    })
+    .catch(err => reject(err));
+  });
+
   Promise.all([
     getDocs(),
     getCourseInfo(),
@@ -112,8 +121,10 @@ const getCoursePageData = (req, res, knex, user_id) => {
     let promiseArr = [];
     docs.forEach(doc => {
       promiseArr.push(getDocRevisions(doc));
-      promiseArr.push(getDocLikeCount(doc));
+      promiseArr.push(getLikesInfo(doc, 'docs'));
     });
+
+    courseFeeds.forEach(feed => promiseArr.push(getLikesInfo(feed, 'course_feed')));
 
     return Promise.all(promiseArr);
   })
