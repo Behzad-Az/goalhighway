@@ -76,7 +76,7 @@ class DocsContainer extends Component {
       return (
         <p className='page-msg'>
           <i className='fa fa-exclamation-triangle' aria-hidden='true' />
-          Error while loading up course feed
+          Error while loading documents
         </p>
       );
     } else if (this.state.dataLoaded) {

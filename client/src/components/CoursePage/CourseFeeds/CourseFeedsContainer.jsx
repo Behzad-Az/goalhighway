@@ -20,7 +20,7 @@ class CourseFeedsContainer extends Component {
   }
 
   componentDidMount() {
-    this._loadComponentData()
+    this._loadComponentData(false);
   }
 
   _loadComponentData(freshReload) {

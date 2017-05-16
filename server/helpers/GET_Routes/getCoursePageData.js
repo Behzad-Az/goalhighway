@@ -21,11 +21,6 @@ const getCoursePageData = (req, res, knex, user_id) => {
     .whereNull('closed_at')
     .limit(1);
 
-  const getItemsForSale = () => knex('items_for_sale')
-    .select('id', 'owner_id', 'course_id', 'price', 'photo_name', 'title', 'item_desc', 'created_at')
-    .where('course_id', req.params.course_id)
-    .whereNull('deleted_at');
-
   const getAvgCourseRating = () => knex('course_reviews')
     .where('course_id', req.params.course_id)
     .whereNull('deleted_at')
@@ -35,25 +30,18 @@ const getCoursePageData = (req, res, knex, user_id) => {
     getCourseInfo(),
     getCourseUserInfo(),
     getTutorLogInfo(),
-    getItemsForSale(),
     getAvgCourseRating()
   ])
   .then(results => {
     let courseInfo = results[0][0];
     let userInfo = results[1][0];
     let latestTutorLog = results[2][0];
-    let itemsForSale = results[3].map(item => {
-      item.editable = item.owner_id === user_id;
-      return item;
-    });
-
-    courseInfo.subscriptionStatus = userInfo.sub_date;
-    courseInfo.tutorStatus = userInfo.tutor_status;
-    courseInfo.assistReqOpen = latestTutorLog;
+    courseInfo.subscriptionStatus = (userInfo && userInfo.sub_date) || false;
+    courseInfo.tutorStatus = (userInfo && userInfo.tutor_status) || false;
+    courseInfo.assistReqOpen = (latestTutorLog && !latestTutorLog.closed_at) || false;
     courseInfo.latestAssistRequest = latestTutorLog ? latestTutorLog.issue_desc : '';
-    courseInfo.avgRating = results[4][0] ?  Math.round(results[4][0].avg / 5 * 100) : 0;
-
-    res.send({ courseInfo, itemsForSale });
+    courseInfo.avgRating = results[3][0] ?  Math.round(results[3][0].avg / 5 * 100) : 0;
+    res.send({ courseInfo });
   })
   .catch(err => {
     console.error('Error inside getCoursePageData.js: ', err);

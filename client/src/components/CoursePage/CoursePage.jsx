@@ -26,8 +26,7 @@ class CoursePage extends Component {
       showNewConvForm: false,
       courseInfo: {
         id: this.props.routeParams.course_id
-      },
-      itemsForSale: []
+      }
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
@@ -58,10 +57,8 @@ class CoursePage extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      let filterDocs = (docs, docType) => docs.filter(doc => doc.type === docType);
       let newState = {
         courseInfo: resJSON.courseInfo,
-        itemsForSale: resJSON.itemsForSale,
         dataLoaded: true
       };
       this.setState(newState);
@@ -94,14 +91,10 @@ class CoursePage extends Component {
             toggleModal={() => this.setState({ showNewConvForm: !this.state.showNewConvForm })}
           />
           <TopRow courseInfo={this.state.courseInfo} reload={this._loadComponentData} />
-          <DocsContainer type='asg_report' courseId={this.state.courseInfo.id} />
-          <DocsContainer type='lecture_note' courseId={this.state.courseInfo.id} />
-          <DocsContainer type='sample_question' courseId={this.state.courseInfo.id} />
-          <ItemsContainer
-            items={this.state.itemsForSale}
-            reload={this._loadComponentData}
-            composeNewConv={this._composeNewConv}
-          />
+          <DocsContainer courseId={this.state.courseInfo.id} type='asg_report' />
+          <DocsContainer courseId={this.state.courseInfo.id} type='lecture_note' />
+          <DocsContainer courseId={this.state.courseInfo.id} type='sample_question' />
+          <ItemsContainer courseId={this.state.courseInfo.id} composeNewConv={this._composeNewConv} />
           <CourseFeedsContainer courseId={this.state.courseInfo.id} composeNewConv={this._composeNewConv} />
         </div>
       );

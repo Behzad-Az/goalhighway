@@ -3,6 +3,7 @@ const getCoursePageDocs = (req, res, knex, user_id) => {
    let docs;
 
    const getDocs = () => knex('docs')
+    .select('id', 'course_id', 'created_at')
     .where('course_id', req.params.course_id)
     .andWhere('type', req.params.doc_type)
     .whereNull('deleted_at')
@@ -29,15 +30,15 @@ const getCoursePageDocs = (req, res, knex, user_id) => {
   });
 
   const getLikeCount = item => knex('user_likes')
-      .where('foreign_table', 'docs')
-      .andWhere('foreign_id', item.id)
-      .sum('like_or_dislike as likeCount');
+    .where('foreign_table', 'docs')
+    .andWhere('foreign_id', item.id)
+    .sum('like_or_dislike as likeCount');
 
   const getAlreadyLiked = item => knex('user_likes')
-      .where('foreign_table', 'docs')
-      .andWhere('foreign_id', item.id)
-      .andWhere('user_id', user_id)
-      .sum('like_or_dislike as likeCount');
+    .where('foreign_table', 'docs')
+    .andWhere('foreign_id', item.id)
+    .andWhere('user_id', user_id)
+    .sum('like_or_dislike as likeCount');
 
   const getLikesInfo = item => new Promise((resolve, reject) => {
     Promise.all([ getLikeCount(item), getAlreadyLiked(item) ])
