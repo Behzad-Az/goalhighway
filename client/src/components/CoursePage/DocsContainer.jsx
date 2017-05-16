@@ -7,6 +7,7 @@ class DocsContainer extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
+      courseId: this.props.courseId,
       showContainer: true,
       docs: [],
       noMoreFeeds: false
@@ -19,23 +20,31 @@ class DocsContainer extends Component {
   }
 
   componentDidMount() {
-    this._loadComponentData();
+    this._loadComponentData(true);
   }
 
-  _loadComponentData() {
-    fetch(`/api/courses/${this.props.courseId}/docs/types/${this.props.type}?docoffset=${this.state.docs.length}`, {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.courseId !== this.state.courseId) {
+      this.setState({ courseId: nextProps.courseId });
+      this._loadComponentData(true, nextProps.courseId);
+    }
+  }
+
+  _loadComponentData(freshReload, courseId) {
+    courseId = courseId || this.state.courseId;
+    fetch(`/api/courses/${courseId}/docs/types/${this.props.type}?docoffset=${freshReload ? 0 : this.state.docs.length}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this._conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON, freshReload))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  _conditionData(resJSON) {
+  _conditionData(resJSON, freshReload) {
     if (resJSON) {
       let newState = {
-        docs: this.state.docs.concat(resJSON.docs),
+        docs: freshReload ? resJSON.docs : this.state.docs.concat(resJSON.docs),
         dataLoaded: true,
         noMoreFeeds: !resJSON.docs.length
       };
@@ -63,7 +72,7 @@ class DocsContainer extends Component {
     if (this.state.docs.length) {
       return (
         <p className='end-msg'>
-          <button className='button is-link' disabled={this.state.noMoreFeeds} onClick={this._loadComponentData}>{btnContent}</button>
+          <button className='button is-link' disabled={this.state.noMoreFeeds} onClick={() => this._loadComponentData(false)}>{btnContent}</button>
         </p>
       );
     } else {

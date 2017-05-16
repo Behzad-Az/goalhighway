@@ -8,6 +8,7 @@ class CourseFeedsContainer extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
+      courseId: this.props.courseId,
       showContainer: true,
       feeds: [],
       noMoreFeeds: false
@@ -20,11 +21,19 @@ class CourseFeedsContainer extends Component {
   }
 
   componentDidMount() {
-    this._loadComponentData(false);
+    this._loadComponentData(true);
   }
 
-  _loadComponentData(freshReload) {
-    fetch(`/api/courses/${this.props.courseId}/feed?coursefeedoffset=${freshReload ? 0 : this.state.feeds.length}`, {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.courseId !== this.state.courseId) {
+      this.setState({ courseId: nextProps.courseId });
+      this._loadComponentData(true, nextProps.courseId);
+    }
+  }
+
+  _loadComponentData(freshReload, courseId) {
+    courseId = courseId || this.state.courseId;
+    fetch(`/api/courses/${courseId}/feed?coursefeedoffset=${freshReload ? 0 : this.state.feeds.length}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
