@@ -100,19 +100,15 @@ class CoursePage extends Component {
             toggleModal={() => this.setState({ showNewConvForm: !this.state.showNewConvForm })}
           />
           <TopRow courseInfo={this.state.courseInfo} reload={this._loadComponentData} />
-          <DocsContainer docs={this.state.asgReports} header='Assignments and Reports' />
-          <DocsContainer docs={this.state.lectureNotes} header='Lecture Notes' />
-          <DocsContainer docs={this.state.sampleQuestions} header='Sample Questions' />
+          <DocsContainer docs={this.state.sampleQuestions} type='asg_report' courseId={this.state.courseInfo.id} />
+          <DocsContainer docs={this.state.sampleQuestions} type='lecture_note' courseId={this.state.courseInfo.id} />
+          <DocsContainer docs={this.state.sampleQuestions} type='sample_question' courseId={this.state.courseInfo.id} />
           <ItemsContainer
             items={this.state.itemsForSale}
             reload={this._loadComponentData}
             composeNewConv={this._composeNewConv}
           />
-          <CourseFeedsContainer
-            courseId={this.state.courseInfo.id}
-            reload={this._loadComponentData}
-            composeNewConv={this._composeNewConv}
-          />
+          <CourseFeedsContainer courseId={this.state.courseInfo.id} composeNewConv={this._composeNewConv} />
         </div>
       );
     } else {

@@ -88,7 +88,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   knex.transaction(trx => {
     validateInputs()
-    .then(() => insertNewDoc({ course_id }, trx))
+    .then(() => insertNewDoc({ course_id, type }, trx))
     .then(docId => {
       doc_id = docId[0];
       let newRevObj = {

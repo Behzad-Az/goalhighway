@@ -67,6 +67,10 @@
           .card-footer-item { color: $dark-blue; &:hover{ color: $pumpkin } }
         }
       }
+      .end-msg {
+        text-align: right;
+        .button { color: $dark-blue; &:hover { color: $pumpkin; } }
+      }
     }
 
     .feeds-container {
@@ -85,12 +89,10 @@
         .control.flag-submission { text-align: center; margin-right: $default_margin/2; select { max-width: 110px; } }
         a { color: $dark-blue; &:hover { color: $pumpkin; } }
       }
+      .end-msg {
+        text-align: center; margin-top: $default_margin/2;
+        .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
+      }
     }
-
-    .end-msg {
-      text-align: center; margin-top: $default_margin/2;
-      .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
-    }
-
   }
 }

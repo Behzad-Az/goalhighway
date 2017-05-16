@@ -83,6 +83,13 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     return esClient.bulk({ body: [indexObj, bodyObj] });
   };
 
+  const updateDoc = (updatedDocObj, trx) => knex('docs')
+    .transacting(trx)
+    .where('id', doc_id)
+    .andWhere('course_id', course_id)
+    .whereNull('deleted_at')
+    .update(updatedDocObj);
+
   const insertNewRevision = (newRevObj, trx) => knex('revisions')
     .transacting(trx)
     .insert(newRevObj)
@@ -104,14 +111,14 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
         poster_id: user_id,
         file_name
       };
-      return insertNewRevision(newRevObj, trx);
+      return Promise.all([ insertNewRevision(newRevObj, trx), updateDoc({ type }, trx) ]);
     })
-    .then(revId => {
+    .then(results => {
       let adminFeedObj = {
         commenter_id: user_id,
         course_id,
         doc_id,
-        rev_id: revId[0],
+        rev_id: results[0][0],
         category: determineCategory(type),
         anonymous: true,
         header: title,

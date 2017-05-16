@@ -14,7 +14,7 @@ class DocCard extends Component {
     this.state = {
       likeCount: parseInt(this.props.doc.likeCount),
       likeColor: this.props.doc.alreadyLiked ? 'rgb(0, 78, 137)' : '',
-      imageLink: this._findImageLink(this.props.doc.revisions[0].file_name)
+      imageLink: this._findImageLink(this.props.doc.fileName)
     };
     this._sendLikeDislike = this._sendLikeDislike.bind(this);
   }
@@ -65,9 +65,9 @@ class DocCard extends Component {
           </div>
           <div className='card-text'>
             <p className='name title is-6'>{this.props.doc.title}</p>
-            <p className='description title is-6'>'{this.props.doc.revisions[0].rev_desc}'</p>
+            <p className='description title is-6'>'{this.props.doc.revDesc}'</p>
             <p className='date title is-6'>Upload Date: {this.props.doc.created_at.slice(0, 10)}</p>
-            <p className='date title is-6'>Revision: {this.props.doc.revisions.length} - {this.props.doc.revisions[0].created_at.slice(0, 10)}</p>
+            <p className='date title is-6'>Revision: {this.props.doc.revCount} - {this.props.doc.lastRevAt.slice(0, 10)}</p>
           </div>
           <p className='card-foot title is-6'>
             <Link to={`/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}`}>See All Revisions</Link>

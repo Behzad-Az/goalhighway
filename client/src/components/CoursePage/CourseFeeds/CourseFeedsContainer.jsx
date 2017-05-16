@@ -23,20 +23,20 @@ class CourseFeedsContainer extends Component {
     this._loadComponentData()
   }
 
-  _loadComponentData(courseId) {
-    fetch(`/api/courses/${this.props.courseId}/feed?coursefeedoffset=${this.state.feeds.length}`, {
+  _loadComponentData(freshReload) {
+    fetch(`/api/courses/${this.props.courseId}/feed?coursefeedoffset=${freshReload ? 0 : this.state.feeds.length}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this._conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON, freshReload))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  _conditionData(resJSON) {
+  _conditionData(resJSON, freshReload) {
     if (resJSON) {
       this.setState({
-        feeds: this.state.feeds.concat(resJSON.feeds),
+        feeds: freshReload ? resJSON.feeds : this.state.feeds.concat(resJSON.feeds),
         dataLoaded: true,
         noMoreFeeds: !resJSON.feeds.length
       });
@@ -69,7 +69,7 @@ class CourseFeedsContainer extends Component {
     if (this.state.feeds.length) {
       return (
         <p className='end-msg'>
-          <button className='button' disabled={this.state.noMoreFeeds} onClick={this._loadComponentData}>{btnContent}</button>
+          <button className='button' disabled={this.state.noMoreFeeds} onClick={() => this._loadComponentData(false)}>{btnContent}</button>
         </p>
       );
     } else {
@@ -92,7 +92,6 @@ class CourseFeedsContainer extends Component {
               <CourseFeedRow
                 key={feed.id}
                 feed={feed}
-                reload={this.props.reload}
                 composeNewConv={this.props.composeNewConv}
                 removeComment={this._removeComment} />
           )}
@@ -119,10 +118,10 @@ class CourseFeedsContainer extends Component {
             onClick={() => this.setState({ showContainer: !this.state.showContainer })}
           />
         </h1>
-        <NewCourseFeedForm courseId={this.props.courseId} reload={this.props.reload} />
+        <NewCourseFeedForm courseId={this.props.courseId} reload={() => this._loadComponentData(true)} />
         <hr />
         { this._renderCompAfterData() }
-        { this.state.showContainer && this._displayLoadMoreBtn() }
+        { this.state.showContainer && this.state.dataLoaded && !this.state.pageError && this._displayLoadMoreBtn() }
       </div>
     );
   }

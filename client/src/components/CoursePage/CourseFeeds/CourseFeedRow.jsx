@@ -36,7 +36,7 @@ class CourseFeedRow extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { this.props.reload(); }
+      if (resJSON) { this.props.removeComment(this.props.feed.id); }
       else { throw 'Server returned false'; }
     })
     .catch(() => this.reactAlert.showAlert('Unable to remove course feed', 'error'));

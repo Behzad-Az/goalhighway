@@ -48,6 +48,7 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('docs', t => {
       t.increments('id');
       t.integer('course_id').notNullable().references('courses.id');
+      t.string('type', 35).notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     })
