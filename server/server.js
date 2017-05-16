@@ -79,6 +79,7 @@ const server = app.listen(PORT, '127.0.0.1', 'localhost', () => console.log(`Lis
 const getIndexPageData = require('./helpers/GET_Routes/getIndexPageData.js');
 const getUserProfileData = require('./helpers/GET_Routes/getUserProfileData.js');
 const getCoursePageData = require('./helpers/GET_Routes/getCoursePageData.js');
+const getCoursePageFeed = require('./helpers/GET_Routes/getCoursePageFeed.js');
 const getDocPageData = require('./helpers/GET_Routes/getDocPageData.js');
 const getCourseReviewPageData = require('./helpers/GET_Routes/getCourseReviewPageData.js');
 const getInstPageData = require('./helpers/GET_Routes/getInstPageData.js');
@@ -146,6 +147,10 @@ app.get('/api/users/:user_id', (req, res) => {
 
 app.get('/api/courses/:course_id', (req, res) => {
   getCoursePageData(req, res, knex, req.session.user_id);
+});
+
+app.get('/api/courses/:course_id/feed', (req, res) => {
+  getCoursePageFeed(req, res, knex, req.session.user_id);
 });
 
 app.get('/api/courses/:course_id/reviews', (req, res) => {

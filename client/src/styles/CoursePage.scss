@@ -75,9 +75,9 @@
       .anonymous { line-height: 35px; }
       .char-counter { position: absolute; right: 0; font-size: 12px; }
       .button.is-primary { background-color: $dark-blue; &:hover { background-color: darken($dark-blue, 10%) } }
-      .feeds-rows { border: 1px darken($default-bg-color, 20%) solid; }
-      .course-row {
-        background-color: white; margin: 0; padding: $default_margin/2;
+      .feeds-rows { background-color: white; border: 1px darken($default-bg-color, 20%) solid; }
+      .feed-row {
+        margin: 0; padding: $default_margin/2;
         &.is-hidden { display: none; }
         .media-left .image { overflow: hidden; border: #bbb solid 2px; border-radius: 50% }
         .fa { font-size: 12px; cursor: pointer; vertical-align: middle; &:hover { transform: scale(1.1); } }
@@ -85,6 +85,11 @@
         .control.flag-submission { text-align: center; margin-right: $default_margin/2; select { max-width: 110px; } }
         a { color: $dark-blue; &:hover { color: $pumpkin; } }
       }
+    }
+
+    .end-msg {
+      text-align: center; margin-top: $default_margin/2;
+      .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
     }
 
   }

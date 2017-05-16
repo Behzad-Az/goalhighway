@@ -27,7 +27,6 @@ class CoursePage extends Component {
       courseInfo: {
         id: this.props.routeParams.course_id
       },
-      courseFeeds: [],
       itemsForSale: [],
       sampleQuestions: [],
       asgReports: [],
@@ -36,7 +35,6 @@ class CoursePage extends Component {
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
     this._composeNewConv = this._composeNewConv.bind(this);
-    this._removeComment = this._removeComment.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
 
@@ -66,7 +64,6 @@ class CoursePage extends Component {
       let filterDocs = (docs, docType) => docs.filter(doc => doc.type === docType);
       let newState = {
         courseInfo: resJSON.courseInfo,
-        courseFeeds: resJSON.courseFeeds,
         itemsForSale: resJSON.itemsForSale,
         sampleQuestions: filterDocs(resJSON.docs, 'sample_question'),
         asgReports: filterDocs(resJSON.docs, 'asg_report'),
@@ -81,25 +78,6 @@ class CoursePage extends Component {
 
   _composeNewConv(convParams) {
     this.setState({ convParams, showNewConvForm: true });
-  }
-
-  _removeComment(feedId) {
-    fetch(`/api/courses/${this.state.courseInfo.id}/feed/${feedId}`, {
-      method: 'DELETE',
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/string',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(resJSON => {
-      if (resJSON) {
-        this.setState({ courseFeeds: this.state.courseFeeds.filter(comment => comment.id !== feedId) });
-      }
-      else { throw 'Server returned false'; }
-    })
-    .catch(err => console.error('Unable to delete course feed: ', err));
   }
 
   _renderPageAfterData() {
@@ -132,10 +110,8 @@ class CoursePage extends Component {
           />
           <CourseFeedsContainer
             courseId={this.state.courseInfo.id}
-            courseFeeds={this.state.courseFeeds}
             reload={this._loadComponentData}
             composeNewConv={this._composeNewConv}
-            removeComment={this._removeComment}
           />
         </div>
       );

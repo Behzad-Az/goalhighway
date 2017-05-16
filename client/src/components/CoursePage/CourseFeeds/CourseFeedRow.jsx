@@ -134,7 +134,7 @@ class CourseFeedRow extends Component {
 
   _renderDocumentFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media feed-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
@@ -167,7 +167,7 @@ class CourseFeedRow extends Component {
 
   _renderCommentFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media feed-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
@@ -187,7 +187,10 @@ class CourseFeedRow extends Component {
             <br />
             <small>
               <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
-              <i className='fa fa-flag footer-item' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+              <i className={this.props.feed.editable ? 'fa fa-trash footer-item' : 'fa fa-flag footer-item'}
+                aria-hidden='true'
+                onClick={() => this.props.removeComment(this.props.feed.id)}
+                style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
               {this.state.flagRequest && this._renderFlagSelect()}
               <i className='fa fa-heart footer-item' aria-hidden='true' onClick={this._handleFeedLike} style={{ color: this.state.likeColor }} />
               <span className='footer-item'>{this.state.likeCount}</span>
@@ -201,7 +204,7 @@ class CourseFeedRow extends Component {
 
   _renderTutorFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media feed-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
@@ -241,7 +244,7 @@ class CourseFeedRow extends Component {
 
   _renderItemFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media feed-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
@@ -281,7 +284,7 @@ class CourseFeedRow extends Component {
 
   _renderCourseReviewFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media feed-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
