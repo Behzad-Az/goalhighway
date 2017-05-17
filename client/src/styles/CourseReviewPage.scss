@@ -41,10 +41,16 @@
       }
     }
 
+    .end-msg {
+      text-align: center; margin: $default_margin/2 0;
+      .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
+    }
+
     .modal .modal-card .modal-card-body {
       .control .option { padding-left: 10px; min-width: 90px; }
       .control.single-select { width: 30%; display: inline-block; }
     }
+
   }
 
 }

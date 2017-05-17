@@ -12,75 +12,8 @@ class CourseReviewPage extends Component {
     super(props);
     this.reactAlert = new ReactAlert();
     this.state = {
-      dataLoaded: false,
-      pageError: false,
-      courseInfo: {
-        id: this.props.routeParams.course_id
-      },
-      courseReviews: [],
-      profs: []
+      reviewsState: 0
     };
-    this._loadComponentData = this._loadComponentData.bind(this);
-    this._conditionData = this._conditionData.bind(this);
-    this._renderPageAfterData = this._renderPageAfterData.bind(this);
-  }
-
-  componentDidMount() {
-    this._loadComponentData();
-  }
-
-  _loadComponentData() {
-    fetch(`/api/courses/${this.state.courseInfo.id}/reviews`, {
-      method: 'GET',
-      credentials: 'same-origin'
-    })
-    .then(response => response.json())
-    .then(resJSON => this._conditionData(resJSON))
-    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
-  }
-
-  _conditionData(resJSON) {
-    if (resJSON) {
-      resJSON.dataLoaded = true;
-      this.setState(resJSON);
-    } else {
-      throw 'Server returned false';
-    }
-  }
-
-  _renderPageAfterData() {
-    if (this.state.dataLoaded && this.state.pageError) {
-      return (
-        <div className='main-container'>
-          <p className='page-msg'>
-            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
-            Error in loading up the page
-          </p>
-        </div>
-      );
-    } else if (this.state.dataLoaded) {
-      return (
-        <div className='main-container'>
-          <SearchBar />
-          <TopRow
-            courseInfo={this.state.courseInfo}
-            courseReviews={this.state.courseReviews}
-            profs={this.state.profs}
-            reload={this._loadComponentData}
-          />
-          <CourseReviewsContainer courseReviews={this.state.courseReviews} />
-        </div>
-      );
-    } else {
-      return (
-        <div className='main-container'>
-          <p className='page-msg'>
-            <i className='fa fa-spinner fa-spin fa-3x fa-fw'></i>
-            <span className='sr-only'>Loading...</span>
-          </p>
-        </div>
-      );
-    }
   }
 
   render() {
@@ -88,7 +21,11 @@ class CourseReviewPage extends Component {
       <div className='course-review-page'>
         <Navbar />
         <LeftSideBar />
-        { this._renderPageAfterData() }
+        <div className='main-container'>
+          <SearchBar />
+          <TopRow courseId={this.props.routeParams.course_id} updateCompState={() => this.setState({ reviewsState: this.state.reviewsState + 1 })} />
+          <CourseReviewsContainer courseId={this.props.routeParams.course_id} parentState={this.state.reviewsState} />
+        </div>
         <RightSideBar />
         { this.reactAlert.container }
       </div>

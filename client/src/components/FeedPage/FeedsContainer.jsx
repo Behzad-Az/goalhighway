@@ -93,7 +93,7 @@ class FeedsContainer extends Component {
   }
 
   _displayLoadMoreBtn() {
-    let btnContent = this.state.noMoreFeeds && this.state.feeds.length ? 'No more feed item' : 'Load more feed items';
+    let btnContent = this.state.noMoreFeeds && this.state.feeds.length ? 'No more feed' : 'Load more';
     if (this.state.feeds.length) {
       return (
         <p className='end-msg'>
