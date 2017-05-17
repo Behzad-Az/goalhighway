@@ -1,4 +1,4 @@
-const getDocPageData = (req, res, knex, user_id) => {
+const getDocPageTopRow = (req, res, knex, user_id) => {
 
   const getDocInfo = () => knex('docs')
     .select('id', 'course_id', 'latest_type as type', 'latest_title as title')
@@ -11,6 +11,7 @@ const getDocPageData = (req, res, knex, user_id) => {
     .innerJoin('institutions', 'inst_id', 'institutions.id')
     .select('institutions.inst_display_name', 'courses.short_display_name', 'courses.inst_id', 'courses.id')
     .where('courses.id', req.params.course_id)
+    .whereNull('courses.deleted_at')
     .limit(1);
 
   const getCourseUserInfo = () => knex('course_user')
@@ -27,7 +28,8 @@ const getDocPageData = (req, res, knex, user_id) => {
     .where('student_id', user_id)
     .andWhere('course_id', req.params.course_id)
     .whereNull('closed_at')
-    .whereNull('closure_reason');
+    .whereNull('closure_reason')
+    .limit(1);
 
   const getAvgCourseRating = () => knex('course_reviews')
     .where('course_id', req.params.course_id)
@@ -53,10 +55,10 @@ const getDocPageData = (req, res, knex, user_id) => {
     res.send({ docInfo: results[0][0], courseInfo });
   })
   .catch(err => {
-    console.error('Error inside getDocPageData.js: ', err);
+    console.error('Error inside getDocPageTopRow.js: ', err);
     res.send(false);
   });
 
 };
 
-module.exports = getDocPageData;
+module.exports = getDocPageTopRow;

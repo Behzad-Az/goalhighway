@@ -1,13 +1,14 @@
-const getCoursePageData = (req, res, knex, user_id) => {
+const getCoursePageTopRow = (req, res, knex, user_id) => {
 
   const getCourseInfo = () => knex('courses')
     .innerJoin('institutions', 'inst_id', 'institutions.id')
-    .select('inst_display_name', 'short_display_name', 'full_display_name', 'course_desc', 'inst_id', 'courses.id')
+    .select('institutions.inst_display_name', 'courses.short_display_name', 'courses.course_desc', 'courses.inst_id', 'courses.id')
     .where('courses.id', req.params.course_id)
     .whereNull('courses.deleted_at')
     .limit(1);
 
   const getCourseUserInfo = () => knex('course_user')
+    .select('sub_date', 'tutor_status')
     .where('user_id', user_id)
     .andWhere('course_id', req.params.course_id)
     .whereNull('unsub_date')
@@ -16,9 +17,11 @@ const getCoursePageData = (req, res, knex, user_id) => {
     .limit(1);
 
   const getTutorLogInfo = () => knex('tutor_log')
+    .select('closed_at', 'issue_desc')
     .where('student_id', user_id)
     .andWhere('course_id', req.params.course_id)
     .whereNull('closed_at')
+    .whereNull('closure_reason')
     .limit(1);
 
   const getAvgCourseRating = () => knex('course_reviews')
@@ -44,10 +47,10 @@ const getCoursePageData = (req, res, knex, user_id) => {
     res.send({ courseInfo });
   })
   .catch(err => {
-    console.error('Error inside getCoursePageData.js: ', err);
+    console.error('Error inside getCoursePageTopRow.js: ', err);
     res.send(false);
   });
 
 };
 
-module.exports = getCoursePageData;
+module.exports = getCoursePageTopRow;

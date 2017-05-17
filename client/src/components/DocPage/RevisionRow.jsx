@@ -10,15 +10,14 @@ class RevisionRow extends Component {
       flagRequest: false,
       flagReason: ''
     };
-    this._handleRevisionRequest = this._handleRevisionRequest.bind(this);
-    this._handleDeletionRequest = this._handleDeletionRequest.bind(this);
-    this._handleFlagClick = this._handleFlagClick.bind(this);
+    this._handleRequestDownload = this._handleRequestDownload.bind(this);
+    this._handleDeleteRequest = this._handleDeleteRequest.bind(this);
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
     this._renderFlagSelect = this._renderFlagSelect.bind(this);
   }
 
-  _handleRevisionRequest() {
-    fetch(`/api/courses/${this.props.courseId}/docs/${this.props.docId}/revisions/${this.props.rev.id}`, {
+  _handleRequestDownload() {
+    fetch(`/api/courses/${this.props.courseId}/docs/${this.props.docId}/revisions/${this.props.rev.id}/download`, {
       method: 'GET',
       credentials: 'same-origin'
     })
@@ -30,7 +29,7 @@ class RevisionRow extends Component {
     .catch(err => console.error('Unable to download file: - ', err));
   }
 
-  _handleDeletionRequest() {
+  _handleDeleteRequest() {
     fetch(`/api/courses/${this.props.courseId}/docs/${this.props.docId}/revisions/${this.props.rev.id}`, {
       method: 'DELETE',
       credentials: 'same-origin',
@@ -50,10 +49,6 @@ class RevisionRow extends Component {
       }
     })
     .catch(err => console.error('Unable to delete revision - ', err));
-  }
-
-  _handleFlagClick() {
-    this.setState({ flagRequest: !this.state.flagRequest });
   }
 
   _handleFlagSubmit(e) {
@@ -99,9 +94,12 @@ class RevisionRow extends Component {
         <div className='column is-3'>Date:<br/>{this.props.rev.created_at.slice(0, 10)}</div>
         <div className='column is-6'>Description:<br/>{this.props.rev.rev_desc}</div>
         <div className='column is-3 buttons'>
-          <i className='fa fa-download' aria-hidden='true' onClick={this._handleRevisionRequest} />
-          <i className='fa fa-flag' aria-hidden='true' onClick={this._handleFlagClick} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-          { this.props.rev.editable && <i onClick={this._handleDeletionRequest} className='fa fa-trash' aria-hidden='true' /> }
+          <i className='fa fa-download' aria-hidden='true' onClick={this._handleRequestDownload} />
+          <i className='fa fa-flag'
+            aria-hidden='true'
+            onClick={() => this.setState({ flagRequest: !this.state.flagRequest })}
+            style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+          { this.props.rev.editable && <i onClick={this._handleDeleteRequest} className='fa fa-trash' aria-hidden='true' /> }
           {this.state.flagRequest && this._renderFlagSelect()}
         </div>
       </div>

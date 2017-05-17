@@ -1,4 +1,4 @@
-const getCourseReviewPageData = (req, res, knex, user_id) => {
+const getCourseReviewPageTopRow = (req, res, knex, user_id) => {
 
   const getInstructorAvgs = () => knex('profs')
     .innerJoin('course_reviews', 'profs.id', 'course_reviews.prof_id')
@@ -15,7 +15,7 @@ const getCourseReviewPageData = (req, res, knex, user_id) => {
     .select('institutions.inst_display_name', 'courses.short_display_name', 'courses.inst_id', 'courses.id')
     .where('courses.id', req.params.course_id)
     .whereNull('courses.deleted_at')
-    .whereNull('institutions.deleted_at');
+    .limit(1);
 
   const getReviewAvgs = () => knex('course_reviews')
     .where('course_id', req.params.course_id)
@@ -44,10 +44,10 @@ const getCourseReviewPageData = (req, res, knex, user_id) => {
     profs: results[3]
   }))
   .catch(err => {
-    console.error('Error inside getCourseReviewPageData.js: ', err);
+    console.error('Error inside getCourseReviewPageTopRow.js: ', err);
     res.send(false);
   });
 
 };
 
-module.exports = getCourseReviewPageData;
+module.exports = getCourseReviewPageTopRow;

@@ -38,8 +38,7 @@ class TopRow extends Component {
   }
 
   _loadComponentData(courseId) {
-    courseId = courseId || this.state.courseInfo.id;
-    fetch(`/api/courses/${courseId}`, {
+    fetch(`/api/courses/${courseId || this.state.courseInfo.id}/toprow`, {
       method: 'GET',
       credentials: 'same-origin'
     })

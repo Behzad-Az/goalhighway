@@ -40,7 +40,7 @@ class TopRow extends Component {
   }
 
   _loadComponentData(courseId, docId) {
-    fetch(`/api/courses/${courseId || this.state.courseInfo.id}/docs/${docId || this.state.docInfo.id}`, {
+    fetch(`/api/courses/${courseId || this.state.courseInfo.id}/docs/${docId || this.state.docInfo.id}/toprow`, {
       method: 'GET',
       credentials: 'same-origin'
     })
