@@ -55,7 +55,7 @@ class CourseFeedsContainer extends Component {
   }
 
   _removeComment(feedId) {
-    fetch(`/api/courses/${this.props.courseId}/feed/${feedId}`, {
+    fetch(`/api/courses/${this.state.courseId}/feed/${feedId}`, {
       method: 'DELETE',
       credentials: 'same-origin',
       headers: {
@@ -127,7 +127,7 @@ class CourseFeedsContainer extends Component {
             onClick={() => this.setState({ showContainer: !this.state.showContainer })}
           />
         </h1>
-        <NewCourseFeedForm courseId={this.props.courseId} reload={() => this._loadComponentData(true)} />
+        <NewCourseFeedForm courseId={this.state.courseId} reload={() => this._loadComponentData(true)} />
         <hr />
         { this._renderCompAfterData() }
         { this.state.showContainer && this.state.dataLoaded && !this.state.pageError && this._displayLoadMoreBtn() }
