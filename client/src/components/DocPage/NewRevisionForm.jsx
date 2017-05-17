@@ -36,7 +36,7 @@ class NewRevisionForm extends Component {
   _validateForm() {
     return this.state.title.length >= this.formLimits.title.min &&
            !InvalidCharChecker(this.state.title, this.formLimits.title.max, 'revTitle') &&
-           this.state.revDesc.length >= this.formLimits.revDesc.min, 'revDesc' &&
+           this.state.revDesc.length >= this.formLimits.revDesc.min &&
            !InvalidCharChecker(this.state.revDesc, this.formLimits.revDesc.max, 'revDesc') &&
            this.state.type &&
            this.props.docInfo.course_id &&

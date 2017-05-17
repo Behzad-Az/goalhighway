@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 import NewDocForm from './NewDocForm.jsx';
-import NewReAssistForm from '../partials/NewReqAssistForm.jsx';
+import NewReqAssistForm from '../partials/NewReqAssistForm.jsx';
 import NewItemForm from './NewItemForm.jsx';
 
 class TopRow extends Component {
@@ -175,7 +175,7 @@ class TopRow extends Component {
             showModal={this.state.showNewDocForm}
             toggleModal={() => this._toggleFormModal('showNewDocForm')}
           />
-          <NewReAssistForm
+          <NewReqAssistForm
             courseInfo={this.state.courseInfo}
             reload={this._loadComponentData}
             showModal={this.state.showNewReqAssistForm}

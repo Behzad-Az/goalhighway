@@ -48,7 +48,11 @@ exports.seed = function(knex, Promise) {
           break;
       }
       return output;
-    }
+    };
+
+    const updateDoc = docObj => knex('docs')
+      .where('id', docObj.id)
+      .update(docObj);
 
     for(let n = 1; n <= randNum; n++) {
 
@@ -73,7 +77,18 @@ exports.seed = function(knex, Promise) {
         content: 'New document posted.'
       };
 
+      let docObj = {
+        id: i,
+        latest_title: title,
+        latest_type: type,
+        latest_rev_desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        latest_file_name: 'default_file.pdf',
+        rev_count: n,
+        updated_at: knex.fn.now()
+      };
+
       promiseArr1.push(insertRev(revObj));
+      promiseArr1.push(updateDoc(docObj));
       promiseArr2.push(adminAddToCourseFeed(adminFeedObj));
       k++;
     }

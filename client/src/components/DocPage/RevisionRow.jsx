@@ -18,7 +18,7 @@ class RevisionRow extends Component {
   }
 
   _handleRevisionRequest() {
-    fetch(`/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}/revisions/${this.props.rev.id}`, {
+    fetch(`/api/courses/${this.props.courseId}/docs/${this.props.docId}/revisions/${this.props.rev.id}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
@@ -31,7 +31,7 @@ class RevisionRow extends Component {
   }
 
   _handleDeletionRequest() {
-    fetch(`/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}/revisions/${this.props.rev.id}`, {
+    fetch(`/api/courses/${this.props.courseId}/docs/${this.props.docId}/revisions/${this.props.rev.id}`, {
       method: 'DELETE',
       credentials: 'same-origin',
       headers: {
@@ -41,8 +41,13 @@ class RevisionRow extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { resJSON.url === this.props.currentUrl ? this.props.reload(this.props.docInfo.course_id, this.props.docInfo.id) : browserHistory.push(resJSON.url); }
-      else { throw 'Server returned false'; }
+      if (resJSON) {
+        resJSON.url === `/courses/${this.props.courseId}/docs/${this.props.docId}` ?
+          this.props.reload(this.props.courseId, this.props.docId) :
+          browserHistory.push(resJSON.url);
+      } else {
+        throw 'Server returned false';
+      }
     })
     .catch(err => console.error('Unable to delete revision - ', err));
   }

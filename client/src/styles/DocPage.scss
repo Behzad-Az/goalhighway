@@ -48,6 +48,12 @@
         }
       }
     }
+
+    .end-msg {
+      text-align: center; margin: $default_margin/2 0;
+      .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
+    }
+
   }
 
 }

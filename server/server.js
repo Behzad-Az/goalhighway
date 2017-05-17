@@ -83,6 +83,7 @@ const getCoursePageFeed = require('./helpers/GET_Routes/getCoursePageFeed.js');
 const getCoursePageDocs = require('./helpers/GET_Routes/getCoursePageDocs.js');
 const getCoursePageItems = require('./helpers/GET_Routes/getCoursePageItems.js');
 const getDocPageData = require('./helpers/GET_Routes/getDocPageData.js');
+const getDocPageRevisions = require('./helpers/GET_Routes/getDocPageRevisions.js');
 const getCourseReviewPageData = require('./helpers/GET_Routes/getCourseReviewPageData.js');
 const getCourseReviewPageReviews = require('./helpers/GET_Routes/getCourseReviewPageReviews.js');
 const getInstPageData = require('./helpers/GET_Routes/getInstPageData.js');
@@ -174,6 +175,10 @@ app.get('/api/courses/:course_id/reviews/reviews', (req, res) => {
 
 app.get('/api/courses/:course_id/docs/:doc_id', (req, res) => {
   getDocPageData(req, res, knex, req.session.user_id);
+});
+
+app.get('/api/courses/:course_id/docs/:doc_id/revisions', (req, res) => {
+  getDocPageRevisions(req, res, knex, req.session.user_id);
 });
 
 app.get('/api/courses/:course_id/docs/:doc_id/revisions/:rev_id', (req, res) => {

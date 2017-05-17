@@ -1,7 +1,7 @@
 const deleteRevision = (req, res, knex, user_id, esClient) => {
-  let course_id = req.params.course_id;
-  let doc_id = req.params.doc_id;
-  let rev_id = req.params.rev_id;
+  const course_id = req.params.course_id;
+  const doc_id = req.params.doc_id;
+  const rev_id = req.params.rev_id;
   let url;
 
   const deleteRev = trx => knex('revisions')
@@ -12,24 +12,20 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
     .whereNull('deleted_at')
     .update({ deleted_at: knex.fn.now() });
 
-  const deleteDoc = trx => knex('docs')
+  const updateDoc = (updatedDocObj, trx) => knex('docs')
     .transacting(trx)
     .where('id', doc_id)
     .andWhere('course_id', course_id)
-    .update({ deleted_at: knex.fn.now() });
-
-  const getRemainingRevCount = trx => knex('revisions')
-    .transacting(trx)
-    .where('doc_id', doc_id)
     .whereNull('deleted_at')
-    .count('id');
+    .update(updatedDocObj);
 
   const getDocRevs = trx => knex('revisions')
     .transacting(trx)
-    .select('id', 'title', 'type')
+    .select('id', 'title', 'type', 'rev_desc', 'file_name', 'created_at')
     .where('doc_id', doc_id)
     .whereNull('deleted_at')
-    .orderBy('created_at', 'desc');
+    .orderBy('created_at', 'desc')
+    .limit(2);
 
   const deleteCourseFeed = trx => knex('course_feed')
     .transacting(trx)
@@ -79,10 +75,40 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
 
   knex.transaction(trx => {
     getDocRevs(trx)
-    .then(revs => revs[0].id == rev_id && revs[1] ? Promise.all([ deleteRev(trx), updateElasticSearch(revs[1].title, revs[1].type), deleteCourseFeed(trx) ]) : Promise.all([ deleteRev(trx), deleteCourseFeed(trx) ]))
-    .then(() => getRemainingRevCount(trx))
-    .then(revCount => parseInt(revCount[0].count) ? 'no_need_to_delete_doc' : Promise.all([ deleteDoc(trx), deleteElasticDoc() ]))
-    .then(deleted => url = deleted === 'no_need_to_delete_doc' ? `/courses/${course_id}/docs/${doc_id}` : `/courses/${course_id}`)
+    .then(revs => {
+      if (revs[0].id == rev_id && revs[1]) {
+        url = `/courses/${course_id}/docs/${doc_id}`;
+        const latest_title = revs[1].title;
+        const latest_type = revs[1].type;
+        const updatedDocObj = {
+          latest_title,
+          latest_type,
+          latest_rev_desc: revs[1].rev_desc,
+          latest_file_name: revs[1].file_name,
+          rev_count: knex.raw('rev_count - 1'),
+          updated_at: revs[1].created_at
+        };
+        return Promise.all([
+          deleteRev(trx),
+          updateElasticSearch(latest_title, latest_type),
+          updateDoc(updatedDocObj, trx),
+          deleteCourseFeed(trx)
+        ]);
+      } else if (revs[0].id == rev_id && !revs[1]) {
+        url = `/courses/${course_id}`;
+        return Promise.all([
+          updateDoc({ deleted_at: knex.fn.now() }, trx),
+          deleteElasticDoc()
+        ]);
+      } else {
+        url = `/courses/${course_id}/docs/${doc_id}`;
+        return Promise.all([
+          deleteRev(trx),
+          updateDoc({ rev_count: knex.raw('rev_count - 1') }, trx),
+          deleteCourseFeed(trx)
+        ]);
+      }
+    })
     .then(() => trx.commit())
     .catch(err => {
       console.error('Error inside deleteRevision.js', err);

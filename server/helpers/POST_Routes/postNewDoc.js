@@ -4,6 +4,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
   const rev_desc = req.body.revDesc.trim();
   const type = req.body.type;
   const course_id = req.params.course_id;
+  const file_name = req.file.filename;
   let doc_id;
 
   const validateInputs = () => new Promise((resolve, reject) => {
@@ -13,6 +14,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
       rev_desc.length >= 3 && rev_desc.length <= 250 &&
       rev_desc.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       ['asg_report', 'lecture_note', 'sample_question'].includes(type) &&
+      file_name &&
       course_id
     ) {
       resolve();
@@ -88,14 +90,23 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   knex.transaction(trx => {
     validateInputs()
-    .then(() => insertNewDoc({ course_id, type }, trx))
+    .then(() => {
+      let newDocObj = {
+        course_id,
+        latest_type: type,
+        latest_title: title,
+        latest_file_name: file_name,
+        latest_rev_desc: rev_desc
+      };
+      return insertNewDoc(newDocObj, trx);
+    })
     .then(docId => {
       doc_id = docId[0];
       let newRevObj = {
         title,
         type,
         rev_desc,
-        file_name: req.file.filename,
+        file_name,
         doc_id,
         poster_id: user_id
       };

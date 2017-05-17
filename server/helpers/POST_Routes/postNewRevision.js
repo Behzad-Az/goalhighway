@@ -111,7 +111,15 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
         poster_id: user_id,
         file_name
       };
-      return Promise.all([ insertNewRevision(newRevObj, trx), updateDoc({ type }, trx) ]);
+      let updatedDocObj = {
+        latest_type: type,
+        latest_title: title,
+        latest_rev_desc: rev_desc,
+        latest_file_name: file_name,
+        rev_count: knex.raw('rev_count + 1'),
+        updated_at: knex.fn.now()
+      };
+      return Promise.all([ insertNewRevision(newRevObj, trx), updateDoc(updatedDocObj, trx) ]);
     })
     .then(results => {
       let adminFeedObj = {
