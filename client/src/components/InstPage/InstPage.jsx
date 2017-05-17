@@ -29,7 +29,7 @@ class InstPage extends Component {
   }
 
   componentDidMount() {
-    this._loadComponentData(this.state.instId);
+    this._loadComponentData();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -51,21 +51,21 @@ class InstPage extends Component {
 
   _conditionData(resJSON, instId) {
     if (resJSON) {
-      resJSON.instList.forEach(inst => {
-        inst.label = inst.inst_display_name;
-        inst.value = inst.id;
+      this.setState({
+        instList: resJSON.instList,
+        currUserCourseIds: resJSON.currUserCourseIds,
+        currInstCourses: resJSON.currInstCourses,
+        instId,
+        dataLoaded: true
       });
-      resJSON.instId = instId;
-      resJSON.dataLoaded = true;
-      this.setState(resJSON);
     } else {
       throw 'Server returned false';
     }
   }
 
   _findInstName() {
-    let inst = this.state.instList.find(inst => inst.id == this.state.instId);
-    return inst ? inst.inst_display_name : '';
+    let inst = this.state.instList.find(inst => inst.value == this.state.instId);
+    return inst ? inst.label : '';
   }
 
   _saveFilterPhrase(e) {
@@ -100,7 +100,7 @@ class InstPage extends Component {
             courses={this._filterCourseList()}
             currUserCourseIds={this.state.currUserCourseIds}
             handleFilter={this._saveFilterPhrase}
-            instId={parseInt(this.state.instId)}
+            instId={this.state.instId}
             instName={this._findInstName()}
             reload={this._loadComponentData}
           />

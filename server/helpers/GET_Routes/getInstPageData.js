@@ -1,26 +1,15 @@
 const getInstPageData = (req, res, knex, user_id) => {
 
-  const findUsersCourses = () => knex('users')
-    .innerJoin('course_user', 'user_id', 'users.id')
-    .innerJoin('courses', 'course_id', 'courses.id')
-    .select(
-      'courses.id', 'course_id', 'short_display_name', 'full_display_name',
-      'course_year', 'course_desc', 'courses.inst_id'
-    )
-    .orderBy('courses.prefix')
-    .orderBy('courses.suffix')
-    .where('course_user.user_id', user_id)
-    .whereNull('course_user.unsub_date')
-    .whereNull('course_user.unsub_reason')
-    .whereNull('users.deleted_at')
-    .whereNull('courses.deleted_at');
+  const findUsersCourses = () => knex('course_user')
+    .select('course_id')
+    .where('user_id', user_id)
+    .whereNotNull('sub_date')
+    .whereNull('unsub_date')
+    .whereNull('unsub_reason');
 
   const getInstCourses = () => knex('institutions')
     .innerJoin('courses', 'courses.inst_id', 'institutions.id')
-    .select(
-      'courses.id', 'courses.inst_id', 'courses.short_display_name', 'courses.full_display_name',
-      'inst_display_name', 'inst_long_name', 'inst_short_name'
-    )
+    .select('courses.id', 'courses.short_display_name', 'courses.full_display_name')
     .where('inst_id', req.params.inst_id)
     .whereNull('courses.deleted_at')
     .whereNull('institutions.deleted_at')
@@ -28,6 +17,7 @@ const getInstPageData = (req, res, knex, user_id) => {
     .orderBy('suffix');
 
   const getInstList = () => knex('institutions')
+    .select('id as value', 'inst_display_name as label')
     .whereNull('deleted_at')
     .orderBy('inst_value');
 

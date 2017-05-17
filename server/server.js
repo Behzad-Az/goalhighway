@@ -79,19 +79,18 @@ const server = app.listen(PORT, '127.0.0.1', 'localhost', () => console.log(`Lis
 const getIndexPageData = require('./helpers/GET_Routes/getIndexPageData.js');
 const getUserProfileData = require('./helpers/GET_Routes/getUserProfileData.js');
 const getCoursePageTopRow = require('./helpers/GET_Routes/getCoursePageTopRow.js');
-const getCoursePageFeed = require('./helpers/GET_Routes/getCoursePageFeed.js');
 const getCoursePageDocs = require('./helpers/GET_Routes/getCoursePageDocs.js');
 const getCoursePageItems = require('./helpers/GET_Routes/getCoursePageItems.js');
-const getDocPageTopRow = require('./helpers/GET_Routes/getDocPageTopRow.js');
-const getDocPageRevisions = require('./helpers/GET_Routes/getDocPageRevisions.js');
+const getCoursePageFeed = require('./helpers/GET_Routes/getCoursePageFeed.js');
 const getCourseReviewPageTopRow = require('./helpers/GET_Routes/getCourseReviewPageTopRow.js');
 const getCourseReviewPageReviews = require('./helpers/GET_Routes/getCourseReviewPageReviews.js');
+const getDocPageTopRow = require('./helpers/GET_Routes/getDocPageTopRow.js');
+const getDocPageRevs = require('./helpers/GET_Routes/getDocPageRevs.js');
 const getInstPageData = require('./helpers/GET_Routes/getInstPageData.js');
 const getDocPageRevDownload = require('./helpers/GET_Routes/getDocPageRevDownload.js');
 const getJobPageData = require('./helpers/GET_Routes/getJobPageData.js');
 const getUserNavBarData = require('./helpers/GET_Routes/getUserNavBarData.js');
 const getInstitutionsAndPrograms = require('./helpers/GET_Routes/getInstitutionsAndPrograms.js');
-const getInstList = require('./helpers/GET_Routes/getInstList.js');
 const getLoginCheck = require('./helpers/GET_Routes/getLoginCheck.js');
 const getRightSideBarData = require('./helpers/GET_Routes/getRightSideBarData.js');
 const getLeftSideBarData = require('./helpers/GET_Routes/getLeftSideBarData.js');
@@ -184,7 +183,7 @@ app.get('/api/courses/:course_id/docs/:doc_id/toprow', (req, res) => {
 });
 
 app.get('/api/courses/:course_id/docs/:doc_id/revisions', (req, res) => {
-  getDocPageRevisions(req, res, knex, req.session.user_id);
+  getDocPageRevs(req, res, knex, req.session.user_id);
 });
 
 app.get('/api/courses/:course_id/docs/:doc_id/revisions/:rev_id/download', (req, res) => {
@@ -192,11 +191,7 @@ app.get('/api/courses/:course_id/docs/:doc_id/revisions/:rev_id/download', (req,
 });
 
 
-
-app.get('/api/institutions', (req, res) => {
-  getInstList(req, res, knex, req.session.user_id);
-});
-
+// ********************* INST PAGE ***************************
 app.get('/api/institutions/:inst_id', (req, res) => {
   getInstPageData(req, res, knex, req.session.user_id);
 });

@@ -1,4 +1,4 @@
-const getDocPageRevisions = (req, res, knex, user_id) => {
+const getDocPageRevs = (req, res, knex, user_id) => {
 
   const validateParams = () => knex('docs')
     .where('id', req.params.doc_id)
@@ -25,10 +25,10 @@ const getDocPageRevisions = (req, res, knex, user_id) => {
     res.send({ revs });
   })
   .catch(err => {
-    console.error('Error inside getDocPageRevisions.js: ', err);
+    console.error('Error inside getDocPageRevs.js: ', err);
     res.send(false);
   });
 
 };
 
-module.exports = getDocPageRevisions;
+module.exports = getDocPageRevs;
