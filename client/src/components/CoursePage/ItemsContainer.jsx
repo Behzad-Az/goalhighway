@@ -10,7 +10,8 @@ class ItemsContainer extends Component {
       courseId: this.props.courseId,
       showContainer: true,
       items: [],
-      noMoreFeeds: false
+      noMoreFeeds: false,
+      parentState: this.props.parentState
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
@@ -26,6 +27,9 @@ class ItemsContainer extends Component {
     if (nextProps.courseId !== this.state.courseId) {
       this.setState({ courseId: nextProps.courseId });
       this._loadComponentData(true, nextProps.courseId);
+    } else if (nextProps.parentState !== this.state.parentState) {
+      this.setState({ parentState: nextProps.parentState });
+      this._loadComponentData(true);
     }
   }
 

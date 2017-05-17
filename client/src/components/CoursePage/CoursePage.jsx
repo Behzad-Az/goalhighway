@@ -15,8 +15,6 @@ class CoursePage extends Component {
     super(props);
     this.reactAlert = new ReactAlert();
     this.state = {
-      dataLoaded: false,
-      pageError: false,
       convParams: {
         toId: '',
         objId: '',
@@ -24,90 +22,23 @@ class CoursePage extends Component {
         subject: ''
       },
       showNewConvForm: false,
-      courseInfo: {
-        id: this.props.routeParams.course_id
-      }
+      itemsState: 0,
+      asgReportsState: 0,
+      lectureNotesState: 0,
+      sampleQuestionsState: 0
     };
-    this._loadComponentData = this._loadComponentData.bind(this);
-    this._conditionData = this._conditionData.bind(this);
     this._composeNewConv = this._composeNewConv.bind(this);
-    this._renderPageAfterData = this._renderPageAfterData.bind(this);
-  }
-
-  componentDidMount() {
-    this._loadComponentData(this.state.courseInfo.id);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.params.course_id !== this.state.courseInfo.id) {
-      this._loadComponentData(nextProps.params.course_id);
-    }
-  }
-
-  _loadComponentData(courseId) {
-    courseId = courseId || this.state.courseInfo.id;
-    fetch(`/api/courses/${courseId}`, {
-      method: 'GET',
-      credentials: 'same-origin'
-    })
-    .then(response => response.json())
-    .then(resJSON => this._conditionData(resJSON))
-    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
-  }
-
-  _conditionData(resJSON) {
-    if (resJSON) {
-      let newState = {
-        courseInfo: resJSON.courseInfo,
-        dataLoaded: true
-      };
-      this.setState(newState);
-    } else {
-      throw 'Server returned false';
-    }
+    this._updateCompState = this._updateCompState.bind(this);
   }
 
   _composeNewConv(convParams) {
     this.setState({ convParams, showNewConvForm: true });
   }
 
-  _renderPageAfterData() {
-    if (this.state.dataLoaded && this.state.pageError) {
-      return (
-        <div className='main-container'>
-          <p className='page-msg'>
-            <i className='fa fa-exclamation-triangle' aria-hidden='true' />
-            Error in loading up the page
-          </p>
-        </div>
-      );
-    } else if (this.state.dataLoaded) {
-      return (
-        <div className='main-container'>
-          <SearchBar />
-          <NewConvForm
-            convParams={this.state.convParams}
-            showModal={this.state.showNewConvForm}
-            toggleModal={() => this.setState({ showNewConvForm: !this.state.showNewConvForm })}
-          />
-          <TopRow courseInfo={this.state.courseInfo} reload={this._loadComponentData} />
-          <DocsContainer courseId={this.state.courseInfo.id} type='asg_report' />
-          <DocsContainer courseId={this.state.courseInfo.id} type='lecture_note' />
-          <DocsContainer courseId={this.state.courseInfo.id} type='sample_question' />
-          <ItemsContainer courseId={this.state.courseInfo.id} composeNewConv={this._composeNewConv} />
-          <CourseFeedsContainer courseId={this.state.courseInfo.id} composeNewConv={this._composeNewConv} />
-        </div>
-      );
-    } else {
-      return (
-        <div className='main-container'>
-          <p className='page-msg'>
-            <i className='fa fa-spinner fa-spin fa-3x fa-fw'></i>
-            <span className='sr-only'>Loading...</span>
-          </p>
-        </div>
-      );
-    }
+  _updateCompState(state) {
+    let newState = {};
+    newState[state] = this.state[state] + 1;
+    this.setState(newState);
   }
 
   render() {
@@ -115,7 +46,32 @@ class CoursePage extends Component {
       <div className='course-page'>
         <Navbar />
         <LeftSideBar />
-        { this._renderPageAfterData() }
+        <div className='main-container'>
+          <SearchBar />
+          <NewConvForm
+            convParams={this.state.convParams}
+            showModal={this.state.showNewConvForm}
+            toggleModal={() => this.setState({ showNewConvForm: !this.state.showNewConvForm })}
+          />
+          <TopRow courseId={this.props.routeParams.course_id} updateCompState={this._updateCompState} />
+          <DocsContainer
+            courseId={this.props.routeParams.course_id}
+            type='asg_report'
+            parentState={this.state.asgReportsState} />
+          <DocsContainer
+            courseId={this.props.routeParams.course_id}
+            type='lecture_note'
+            parentState={this.state.lectureNotesState} />
+          <DocsContainer
+            courseId={this.props.routeParams.course_id}
+            type='sample_question'
+            parentState={this.state.sampleQuestionsState} />
+          <ItemsContainer
+            courseId={this.props.routeParams.course_id}
+            composeNewConv={this._composeNewConv}
+            parentState={this.state.itemsState} />
+          <CourseFeedsContainer courseId={this.props.routeParams.course_id} composeNewConv={this._composeNewConv} />
+        </div>
         <RightSideBar />
         { this.reactAlert.container }
       </div>

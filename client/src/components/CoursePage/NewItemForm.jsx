@@ -61,7 +61,7 @@ class NewItemForm extends Component {
       if (resJSON) {
         this.reactAlert.showAlert('New item posted', 'info');
         this._deleteFormData();
-        this.props.reload();
+        this.props.reload('itemsState');
       }
       else { throw 'Server returned false'; }
     })

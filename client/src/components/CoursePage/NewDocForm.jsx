@@ -59,7 +59,17 @@ class NewDocForm extends Component {
     .then(resJSON => {
       if (resJSON) {
         this.reactAlert.showAlert('New document saved', 'info');
-        this.props.reload();
+        switch (this.state.type) {
+          case 'asg_report':
+            this.props.reload('asgReportsState');
+            break;
+          case 'lecture_note':
+            this.props.reload('lectureNotesState');
+            break;
+          case 'sample_question':
+            this.props.reload('sampleQuestionsState');
+            break;
+        }
       } else {
         throw 'Server returned false';
       }
