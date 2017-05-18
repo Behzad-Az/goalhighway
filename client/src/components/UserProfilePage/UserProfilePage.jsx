@@ -17,6 +17,7 @@ class UserProfilePage extends Component {
   }
 
   componentDidMount() {
+    document.title = 'GoalHwy - My Profile';
     fetch('/api/users/currentuser', {
       method: 'GET',
       credentials: 'same-origin'

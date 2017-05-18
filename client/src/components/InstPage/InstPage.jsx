@@ -29,6 +29,7 @@ class InstPage extends Component {
   }
 
   componentDidMount() {
+    document.title = 'GoalHwy - My Institution';
     this._loadComponentData();
   }
 

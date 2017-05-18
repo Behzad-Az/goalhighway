@@ -20,6 +20,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    document.title = 'GoalHwy - Login';
     this._handleLogin();
   }
 

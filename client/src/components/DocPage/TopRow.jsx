@@ -30,6 +30,7 @@ class TopRow extends Component {
   }
 
   componentDidMount() {
+    document.title = 'GoalHwy - Document Page';
     this._loadComponentData();
   }
 
@@ -51,6 +52,7 @@ class TopRow extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
+      document.title = `GoalHwy - ${resJSON.docInfo.title}`;
       this.setState({
         courseInfo: resJSON.courseInfo,
         docInfo: resJSON.docInfo,

@@ -24,6 +24,7 @@ class CareerPage extends Component {
   }
 
   componentDidMount() {
+    document.title = 'GoalHwy - My Career';
     this._loadComponentData();
   }
 

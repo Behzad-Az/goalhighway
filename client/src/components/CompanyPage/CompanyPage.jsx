@@ -13,7 +13,9 @@ class CompanyPage extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      companyInfo: {},
+      companyInfo: {
+        id: this.props.routeParams.company_id,
+      },
       qas: [],
       jobs: []
     };
@@ -23,7 +25,8 @@ class CompanyPage extends Component {
   }
 
   componentDidMount() {
-    this._loadComponentData(this.props.routeParams.company_id);
+    document.title = 'GoalHwy - Company Page';
+    this._loadComponentData();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,8 +36,7 @@ class CompanyPage extends Component {
   }
 
   _loadComponentData(companyId) {
-    companyId = companyId || this.state.companyInfo.id;
-    fetch(`/api/companies/${companyId}`, {
+    fetch(`/api/companies/${companyId || this.state.companyInfo.id}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
@@ -45,15 +47,20 @@ class CompanyPage extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      let jobs = resJSON.jobs.map(data => {
+      const jobs = resJSON.jobs.map(data => {
         return {
           ...data._source.pin,
           tags: data._source.pin.search_text.split(' ')
         };
       });
-      resJSON.jobs = jobs;
-      resJSON.dataLoaded = true;
-      this.setState(resJSON);
+      document.title = `GoalHwy - ${resJSON.companyInfo.name}`;
+      this.setState({
+        companyInfo: resJSON.companyInfo,
+        qas: resJSON.qas,
+        jobs,
+        dataLoaded: true
+      });
+
     } else {
       throw 'Server returned false';
     }

@@ -31,6 +31,7 @@ class FeedsContainer extends Component {
   }
 
   componentDidMount() {
+    document.title = 'GoalHwy - My Feed';
     this._loadComponentData();
   }
 

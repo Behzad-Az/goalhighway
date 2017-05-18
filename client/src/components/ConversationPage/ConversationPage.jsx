@@ -23,6 +23,7 @@ class ConversationPage extends Component {
   }
 
   componentDidMount() {
+    document.title = 'GoalHwy - My Conversations';
     this._loadComponentData();
   }
 
