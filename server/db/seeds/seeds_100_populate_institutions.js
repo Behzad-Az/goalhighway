@@ -1,6 +1,6 @@
 let institutions = [
-  { inst_short_name: 'UBC', inst_long_name: 'University of British Columbia', id: 1, province: 'British Columbia', country: 'canada' },
-  { inst_short_name: 'SFU', inst_long_name: 'Simon Fraser University', id: 2, province: 'British Columbia', country: 'canada' }
+  { inst_short_name: 'UBC', inst_long_name: 'University of British Columbia', id: 1, province: 'British Columbia', country: 'canada', photo_name: 'university_of_british_columbia.png' },
+  { inst_short_name: 'SFU', inst_long_name: 'Simon Fraser University', id: 2, province: 'British Columbia', country: 'canada', photo_name: 'simon_fraser_university.png' }
 ];
 
 const getInstValue = inst_long_name => inst_long_name.toLowerCase().replace(/ /g, '_');

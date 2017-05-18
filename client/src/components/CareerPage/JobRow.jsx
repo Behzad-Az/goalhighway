@@ -59,7 +59,7 @@ class JobRow extends Component {
       <article className='media job-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src='http://bulma.io/images/placeholders/128x128.png' />
+            <img src={`http://localhost:19001/images/companies/${this.props.job.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -68,7 +68,7 @@ class JobRow extends Component {
               <Link><button className='button'>Apply Now!</button></Link>
               <strong>{this.props.job.title}</strong>
               <br />
-              {this.props.job.company}
+              <Link to={`/companies/${this.props.job.company_id}`}>@{this.props.job.company}</Link>
               <br />
               Job Level: {this.props.job.kind}
               <br />

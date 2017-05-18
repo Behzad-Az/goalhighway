@@ -72,7 +72,7 @@ const getIndexPageData = (req, res, knex, user_id) => {
       course.itemActivities = filterResults(results[1], course.id);
       course.commentActivities = filterResults(results[2], course.id);
     });
-    res.send({ courses });
+    res.send({ courses, instId: req.session.inst_id });
   })
   .catch(err => {
     console.error('Error inside getIndexPageData.js: ', err);

@@ -3,14 +3,17 @@ const getCompanyPageData = (req, res, knex, user_id, esClient) => {
   let companyInfo, jobs;
 
   const getCompanyProfile = () => knex('companies')
-    .where('id', req.params.company_id);
+    .where('id', req.params.company_id)
+    .whereNull('deleted_at');
 
   const getQuestions = () => knex('interview_questions')
     .where('company_id', req.params.company_id)
     .whereNull('deleted_at');
 
   const getAnswers = question => new Promise((resolve, reject) => {
-    knex('interview_answers').where('question_id', question.id).whereNull('deleted_at')
+    knex('interview_answers')
+    .where('question_id', question.id)
+    .whereNull('deleted_at')
     .then(rows => {
       question.answers = rows;
       resolve(question);

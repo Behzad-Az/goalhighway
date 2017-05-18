@@ -57,7 +57,7 @@ class NewInstForm extends Component {
   _validateForm() {
     return this.state.instLongName.length >= this.formLimits.instLongName.min &&
            !InvalidCharChecker(this.state.instLongName, this.formLimits.instLongName.max, 'instLongName') &&
-           this.state.instShortName.length >= this.formLimits.instShortName.min &&
+           (!this.state.instShortName || this.state.instShortName.length >= this.formLimits.instShortName.min) &&
            !InvalidCharChecker(this.state.instShortName, this.formLimits.instShortName.max, 'instShortName') &&
            this.state.country &&
            this.state.province;

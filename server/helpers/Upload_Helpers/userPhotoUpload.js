@@ -15,7 +15,7 @@ const acceptableMimeType = [
 ];
 
 const userPhotoStorage = multer.diskStorage({
-  destination: './public/images/userphotos/',
+  destination: './public/images/users/',
   filename: (req, file, cb) => {
     let ext = '.unknown';
     switch (file.mimetype) {

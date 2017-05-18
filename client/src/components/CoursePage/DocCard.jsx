@@ -13,15 +13,15 @@ class DocCard extends Component {
     this._findImageLink = this._findImageLink.bind(this);
     this.state = {
       likeCount: parseInt(this.props.doc.likeCount),
-      likeColor: this.props.doc.alreadyLiked ? 'rgb(0, 78, 137)' : '',
-      imageLink: this._findImageLink(this.props.doc.fileName)
+      likeColor: this.props.doc.alreadyLiked ? 'rgb(0, 78, 137)' : ''
     };
     this._sendLikeDislike = this._sendLikeDislike.bind(this);
   }
 
-  _findImageLink(fileName) {
-    let directoryPath = '../../images/doccard_icons/';
-    let extension = fileName.substr(fileName.lastIndexOf('.') + 1) + '.png';
+  _findImageLink() {
+    const fileName = this.props.doc.fileName;
+    const directoryPath = '../../images/doccard_icons/';
+    const extension = fileName.substr(fileName.lastIndexOf('.') + 1) + '.png';
     return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
   }
 
@@ -59,7 +59,7 @@ class DocCard extends Component {
           <div className='card-image'>
             <Link to={`/courses/${this.props.doc.course_id}/docs/${this.props.doc.id}`}>
               <figure className='image is-64x64'>
-                <img src={this.state.imageLink} alt='doc-type' />
+                <img src={this._findImageLink()} alt='doc-type' />
               </figure>
             </Link>
           </div>

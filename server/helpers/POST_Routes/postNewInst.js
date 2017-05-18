@@ -9,7 +9,7 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
     };
 
   const inst_long_name = req.body.instLongName.trim();
-  const inst_short_name = req.body.instShortName.trim();
+  const inst_short_name = req.body.instShortName.trim() || 'not avail.';
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
@@ -56,7 +56,7 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
       } else {
         let newInstObj = {
           inst_value: inst_long_name.toLowerCase().replace(/ /g, '_'),
-          inst_display_name: inst_short_name ? inst_long_name + ` (${inst_short_name})` : inst_long_name,
+          inst_display_name: inst_short_name === 'not avail.' ? inst_long_name : inst_long_name + ` (${inst_short_name})`,
           inst_long_name,
           inst_short_name,
           country: req.body.country,

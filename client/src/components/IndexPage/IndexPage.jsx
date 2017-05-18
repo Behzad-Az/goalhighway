@@ -13,7 +13,6 @@ class IndexPage extends Component {
       dataLoaded: false,
       pageError: false,
       courses: [],
-      updates: [],
       instId: ''
     };
     this._conditionData = this._conditionData.bind(this);
@@ -34,6 +33,7 @@ class IndexPage extends Component {
     if (resJSON) {
       this.setState({
         courses: resJSON.courses,
+        instId: resJSON.instId,
         dataLoaded: true
       });
     } else {

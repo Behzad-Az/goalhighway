@@ -1,29 +1,38 @@
 const getRightSideBarData = (req, res, knex, user_id) => {
 
-  let instName, studentCount, courseCount, tutorCount, revCount;
+  let instName, instPhoto, studentCount, courseCount, tutorCount, revCount;
 
   const getInstName = () => knex('institutions')
-    .select('inst_long_name')
-    .where('id', req.session.inst_id);
+    .select('inst_long_name', 'photo_name')
+    .where('id', req.session.inst_id)
+    .whereNull('deleted_at')
 
   const getStudentCount = () => knex('institution_program')
     .innerJoin('users', 'institution_program.id', 'inst_prog_id')
     .where('inst_id', req.session.inst_id)
+    .whereNull('institution_program.deleted_at')
+    .whereNull('users.deleted_at')
     .count('username as studentCount');
 
   const getCourseCount = () => knex('courses')
     .where('inst_id', req.session.inst_id)
+    .whereNull('deleted_at')
     .count('id as courseCount');
 
   const getTutorCount = courseIds => knex('course_user')
     .where('tutor_status', true)
     .whereIn('course_id', courseIds)
+    .whereNull('unsub_date')
+    .whereNull('unsub_reason')
     .count('user_id as tutorCount');
 
   const getRevCount = courseIds => knex('revisions')
     .innerJoin('docs', 'doc_id', 'docs.id')
     .innerJoin('courses', 'course_id', 'courses.id')
-    .where('inst_id', req.session.inst_id)
+    .where('courses.inst_id', req.session.inst_id)
+    .whereNull('revisions.deleted_at')
+    .whereNull('docs.deleted_at')
+    .whereNull('courses.deleted_at')
     .count('revisions.id as revCount');
 
   const getCourseIds = () => knex('users')
@@ -68,7 +77,8 @@ const getRightSideBarData = (req, res, knex, user_id) => {
     getCourseIds()
   ])
   .then(results => {
-    instName = results[0][0] ? results[0][0].inst_long_name : 'N/A';
+    instName = results[0][0].inst_long_name;
+    instPhoto = results[0][0].photo_name;
     studentCount = results[1][0].studentCount;
     courseCount = results[2][0].courseCount;
     let courseIds = results[3].map(course => course.course_id);
@@ -86,6 +96,7 @@ const getRightSideBarData = (req, res, knex, user_id) => {
                 .concat(categorizeFeed(results[3], 'resumeReviewFeed'));
     res.send({
       instName,
+      instPhoto,
       instId: req.session.inst_id,
       studentCount,
       courseCount,

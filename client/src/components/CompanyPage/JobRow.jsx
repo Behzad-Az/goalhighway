@@ -53,7 +53,7 @@ class JobRow extends Component {
       <article className='media job-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src='http://bulma.io/images/placeholders/128x128.png' />
+            <img src={`http://localhost:19001/images/companies/${this.props.job.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>

@@ -28,7 +28,7 @@ class ConversationRow extends Component {
       <article className='media conversation-row'>
         <figure className='media-left'>
           <p className='image is-48x48'>
-            <img src={`http://localhost:19001/images/userphotos/${this.props.message.photo_name}`} />
+            <img src={`http://localhost:19001/images/users/${this.props.message.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>

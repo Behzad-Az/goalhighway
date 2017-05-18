@@ -122,7 +122,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
+            <img src={`http://localhost:19001/images/users/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -164,7 +164,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
+            <img src={`http://localhost:19001/images/users/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -207,7 +207,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
+            <img src={`http://localhost:19001/images/users/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -250,7 +250,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
+            <img src={`http://localhost:19001/images/users/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -293,7 +293,7 @@ class CourseFeedRow extends Component {
       <article className='media course-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src={`http://localhost:19001/images/userphotos/${this.props.feed.photo_name}`} />
+            <img src={`http://localhost:19001/images/users/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>

@@ -4,7 +4,9 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
 
   const getQueryInfo = () => knex('users')
     .select('job_kind', 'job_distance', 'job_query', 'lat', 'lon')
-    .where('id', user_id);
+    .where('id', user_id)
+    .whereNull('deleted_at')
+    .limit(1);
 
   const getUserResumes = () => knex('resumes')
     .where('owner_id', user_id)

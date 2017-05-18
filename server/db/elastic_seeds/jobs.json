@@ -11,6 +11,7 @@
       "kind": "internship",
       "link": "some_link",
       "company": "Home Inc.",
+      "photo_name": "home_inc.png",
       "search_text": "software engineer javascript front-end"
     }
   },
@@ -24,9 +25,10 @@
       "id": 2,
       "company_id": 2,
       "title": "Manufacturing Engineer",
-      "kind": "senior",
+      "kind": "summer",
       "link": "some_link",
       "company": "Ballard Power Systems",
+      "photo_name": "ballard_power_systems.png",
       "search_text": "mechanical engineer manufacturing sustainability"
     }
   },
@@ -42,7 +44,8 @@
       "title": "Research Engineer",
       "kind": "junior",
       "link": "some_link",
-      "company": "NCIS Facility - UBC",
+      "company": "Apple Inc.",
+      "photo_name": "apple_inc.png",
       "search_text": "electrical engineer R&D instrumentation"
     }
   }

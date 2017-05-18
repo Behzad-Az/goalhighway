@@ -24,6 +24,7 @@ const newIndex = {
               'title': { 'type': 'string' },
               'kind': { 'type': 'string' },
               'link': { 'type': 'string' },
+              'photo_name': { 'type': 'string' },
               'company': { 'type': 'string' },
               'company_id': { 'type': 'integer' },
               'search_text': { 'type': 'string' }

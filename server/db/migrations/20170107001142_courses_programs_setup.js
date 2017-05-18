@@ -8,6 +8,7 @@ exports.up = function(knex, Promise) {
       t.string('inst_long_name', 60).notNullable();
       t.string('inst_value', 60).notNullable();
       t.string('inst_display_name', 75).notNullable();
+      t.string('photo_name', 35).notNullable().defaultTo('default_inst_photo.png');
       t.string('country', 35).notNullable();
       t.string('province', 35).notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());

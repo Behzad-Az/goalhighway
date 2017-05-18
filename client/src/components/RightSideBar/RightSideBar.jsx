@@ -20,6 +20,7 @@ class RightSideBar extends Component {
       feeds: [],
       instId: '',
       instName: 'N/A',
+      instPhoto: 'N/A',
       revCount: 'N/A',
       studentCount: 'N/A',
       tutorCount: 'N/A'
@@ -82,7 +83,7 @@ class RightSideBar extends Component {
           <div className='media'>
             <div className='media-left'>
               <figure className='image inst-logo'>
-                <img src='http://www.cs.ubc.ca/~shafaei/homepage/images/logoUBC.gif' alt='Image' />
+                <img src={`http://localhost:19001/images/institutions/${this.state.instPhoto}`} alt='Image' />
               </figure>
             </div>
             <div className='media-content'>

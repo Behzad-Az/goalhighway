@@ -10,7 +10,7 @@ class ResumeCard extends Component {
   constructor(props) {
     super(props);
     this.reactAlert = new ReactAlert();
-    this.images = ['pdf.png', 'docx.png', 'xlsx.png', 'zip.png', 'default.png'];
+    this.images = ['png.png', 'jpeg.png', 'pdf.png', 'doc.png', 'docx.png', 'docm.png', 'default.png'];
     this.formLimits = {
       title: { min: 3, max: 60 },
       intent: { min: 3, max: 250 }
@@ -37,9 +37,9 @@ class ResumeCard extends Component {
   }
 
   _findImageLink() {
-    let fileName = this.props.resume.file_name;
-    let directoryPath = '../../images/';
-    let extension = fileName.substr(fileName.lastIndexOf('.') + 1) + '.png';
+    const fileName = this.props.resume.file_name;
+    const directoryPath = '../../images/doccard_icons/';
+    const extension = fileName.substr(fileName.lastIndexOf('.') + 1) + '.png';
     return this.images.includes(extension) ? `${directoryPath}${extension}` : `${directoryPath}default.png`;
   }
 
