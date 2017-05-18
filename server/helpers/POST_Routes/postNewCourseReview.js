@@ -84,7 +84,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
         category: 'new_course_review',
         header: 'new_course_review',
         anonymous: true,
-        content: `Overall Rating: ${req.body.overallRating}/5.`
+        content: `Overall Rating: ${req.body.overallRating}/5. - ${review_desc}.`
       };
       return adminAddToCourseFeed(adminFeedObj, trx);
     })
