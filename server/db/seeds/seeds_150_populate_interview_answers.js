@@ -10,7 +10,7 @@ const answers = [
   },
   {
     answer: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a.",
-    question_id: 3, poster_id: 1
+    question_id: 3, poster_id: 1, outcome: "Unknown"
   },
 
   {
@@ -23,7 +23,7 @@ const answers = [
   },
   {
     answer: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arc.",
-    question_id: 6, poster_id: 2
+    question_id: 6, poster_id: 2, outcome: "Unknown"
   },
 
   {
@@ -36,7 +36,7 @@ const answers = [
   },
   {
     answer: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet.",
-    question_id: 9, poster_id: 3
+    question_id: 9, poster_id: 3, outcome: "Unknown"
   }
 
 ];

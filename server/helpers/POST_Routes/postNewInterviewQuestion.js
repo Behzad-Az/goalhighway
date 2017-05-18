@@ -2,13 +2,14 @@ const posNewInterviewQuestion = (req, res, knex, user_id) => {
 
   const question = req.body.question.trim();
   const answer = req.body.answer.trim();
+  const outcome = req.body.outcome;
   let question_id;
 
   const validateAnswer = () => {
     if (answer) {
       return answer.length >= 5 && answer.length <= 500 &&
              answer.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
-             ['Got the job', 'Unsuccessful', 'Unknown'].includes(req.body.outcome);
+             ['Got the job', 'Unsuccessful', 'Unknown'].includes(outcome);
     } else {
       return true;
     }
@@ -50,7 +51,7 @@ const posNewInterviewQuestion = (req, res, knex, user_id) => {
     if (answer) {
       return insertAnswer({
         answer,
-        outcome: req.body.outcome,
+        outcome,
         poster_id: user_id,
         question_id
       });

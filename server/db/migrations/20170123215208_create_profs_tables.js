@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('profs', (t) => {
       t.increments('id');
       t.string('name', 60).notNullable();
-      t.integer('inst_id').notNullable().references('institutions.id');
+      t.integer('inst_id').notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     }),

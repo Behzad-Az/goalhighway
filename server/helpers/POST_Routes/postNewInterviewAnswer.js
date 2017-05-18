@@ -1,12 +1,13 @@
 const postNewInterviewAnswer = (req, res, knex, user_id) => {
 
   const answer = req.body.answer.trim();
+  const outcome = outcome;
 
   const validateInputs = () => new Promise ((resolve, reject) => {
     if (
       answer.length >= 5 && answer.length <= 500 &&
       answer.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
-      ['Got the job', 'Unsuccessful', 'Unknown'].includes(req.body.outcome) &&
+      ['Got the job', 'Unsuccessful', 'Unknown'].includes(outcome) &&
       req.params.company_id &&
       req.params.question_id
     ) {
@@ -32,7 +33,7 @@ const postNewInterviewAnswer = (req, res, knex, user_id) => {
     if (parseInt(result[0].valid)) {
       return insertAnswer({
         answer,
-        outcome: req.body.outcome,
+        outcome,
         poster_id: user_id,
         question_id: req.params.question_id
       });

@@ -38,6 +38,7 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
     .returning('id');
 
   const insertDefaultInstProgs = (inst_id, trx) => knex('institution_program')
+    .transacting(trx)
     .insert([
       { inst_id, prog_id: 1 },
       { inst_id, prog_id: 2 },
@@ -45,6 +46,10 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
       { inst_id, prog_id: 4 },
       { inst_id, prog_id: 5 }
     ]);
+
+  const insertDefaultProf = (inst_id, trx) => knex('profs')
+    .transacting(trx)
+    .insert({ inst_id, name: 'Unknown' });
 
   const addInstToElasticSearch = esInstObj => {
     const indexObj = {
@@ -77,7 +82,8 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
     })
     .then(instId => Promise.all([
       addInstToElasticSearch({ id: instId[0], inst_name: inst_display_name }),
-      insertDefaultInstProgs(instId[0], trx)
+      insertDefaultInstProgs(instId[0], trx),
+      insertDefaultProf(instId[0], trx)
     ]))
     .then(results => {
       let errorCount = results[0].items.reduce((count, item) => item.index && item.index.error ? 1 : 0, 0);

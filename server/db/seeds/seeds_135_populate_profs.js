@@ -54,6 +54,6 @@ exports.seed = function(knex, Promise) {
     };
     return knex('profs').insert(profObj);
   });
-  promiseArr.push(knex('profs').insert({ inst_id: 1, name: 'unknown'}));
+  promiseArr.push(knex('profs').insert({ inst_id: 1, name: 'Unknown'}));
   return Promise.all(promiseArr);
 };

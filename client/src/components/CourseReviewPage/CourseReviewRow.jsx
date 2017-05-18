@@ -17,7 +17,7 @@ class CourseReviewRow extends Component {
       case 3:
         return 'Fair';
       default:
-        return 'unknown';
+        return 'Unknown';
     }
   }
 
@@ -30,7 +30,7 @@ class CourseReviewRow extends Component {
       case 3:
         return 'Fair';
       default:
-        return 'unknown';
+        return 'Unknown';
     }
   }
 
@@ -47,7 +47,7 @@ class CourseReviewRow extends Component {
       case 5:
         return 'Excellent!';
       default:
-        return 'unknown';
+        return 'Unknown';
     }
   }
 
@@ -72,7 +72,7 @@ class CourseReviewRow extends Component {
             </tr>
             <tr>
               <td>Instructor:</td>
-              <td>{this.props.review.name || 'unknown'}</td>
+              <td>{this.props.review.name}</td>
             </tr>
             <tr>
               <td>Teaching:</td>

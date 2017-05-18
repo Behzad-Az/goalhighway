@@ -1,6 +1,6 @@
 const postNewCourseReview = (req, res, knex, user_id) => {
 
-  const profName = req.body.profName.trim() || 'unknown';
+  const profName = req.body.profName.trim() || 'Unknown';
   const review_desc = req.body.reviewDesc.trim() || 'No detail provided.';
   let inst_id;
 
