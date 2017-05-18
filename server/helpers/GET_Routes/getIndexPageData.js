@@ -38,6 +38,13 @@ const getIndexPageData = (req, res, knex, user_id) => {
     .count('id as commentCount')
     .groupBy('course_id');
 
+  const getReviewActivities = courseIds => knex('course_reviews')
+    .select('course_id')
+    .whereIn('course_id', courseIds)
+    .whereNull('deleted_at')
+    .count('id as reviewCount')
+    .groupBy('course_id');
+
   const getLatestRevisions = course => new Promise((resolve, reject) => {
     knex('revisions')
     .innerJoin('docs', 'revisions.doc_id', 'docs.id')
@@ -63,7 +70,8 @@ const getIndexPageData = (req, res, knex, user_id) => {
     return Promise.all([
       getRevActivities(courseIds),
       getItemActivities(courseIds),
-      getCommentActivities(courseIds)
+      getCommentActivities(courseIds),
+      getReviewActivities(courseIds)
     ].concat(courses.map(course => getLatestRevisions(course))));
   })
   .then(results => {
@@ -71,6 +79,7 @@ const getIndexPageData = (req, res, knex, user_id) => {
       course.revActivities = filterResults(results[0], course.id);
       course.itemActivities = filterResults(results[1], course.id);
       course.commentActivities = filterResults(results[2], course.id);
+      course.reviewActivities = filterResults(results[3], course.id);
     });
     res.send({ courses, instId: req.session.inst_id });
   })

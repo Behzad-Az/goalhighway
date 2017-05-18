@@ -37,7 +37,7 @@ const bulkIndex = function bulkIndex(index, type, data) {
 
 const populate = function populate() {
   const companies = [
-    { id: 1, company_name: 'Hokme Inc.' },
+    { id: 1, company_name: 'Home Inc.' },
     { id: 2, company_name: 'Ballard Power Systems' },
     { id: 3, company_name: 'Apple Inc.' },
     { id: 4, company_name: 'NCIS Facility - UBC' }

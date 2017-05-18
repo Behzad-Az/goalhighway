@@ -45,6 +45,7 @@ class IndexRow extends Component {
               <h1 className='header'>Overview</h1>
               { this._decodeRevActivities() }
               { <p>• <Link to={`${this.courseLink}#items`}>{this.props.course.itemActivities[0] ? this.props.course.itemActivities[0].itemCount : 0} Items for Sale or Trade</Link></p> }
+              { <p>• <Link to={`${this.courseLink}/reviews`}>{this.props.course.reviewActivities[0] ? this.props.course.reviewActivities[0].reviewCount : 0} Course Reviews</Link></p> }
               { <p>• <Link to={`${this.courseLink}#feeds`}>{this.props.course.commentActivities[0] ? this.props.course.commentActivities[0].commentCount : 0} User Comments</Link></p> }
             </div>
             <div className='updates column is-7'>
