@@ -1,6 +1,7 @@
 const postSearchBarResults = (req, res, knex, user_id, esClient) => {
 
   const search = (index, body) => esClient.search({ index, body });
+  const query = req.body.query.trim();
 
   let docSearchBody = {
     size: 5,
@@ -9,13 +10,13 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
       bool: {
         must: {
           multi_match: {
-            query: req.body.query,
+            query,
             fields: ['course_name^5', 'inst_name^2']
           }
         },
         should: {
           multi_match: {
-            query: req.body.query,
+            query,
             fields: ['kind^5', 'title']
           }
         },
@@ -34,7 +35,7 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
       bool: {
         must: {
           multi_match: {
-            query: req.body.query,
+            query,
             fields: ['title^5', 'inst_name', 'course_desc^2'],
             fuzziness: 'AUTO'
           }
@@ -54,7 +55,7 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
       bool: {
         must: {
           multi_match: {
-            query: req.body.query,
+            query,
             fields: ['inst_name'],
             fuzziness: 'AUTO'
           }
@@ -73,7 +74,7 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
       bool: {
         must: {
           multi_match: {
-            query: req.body.query,
+            query,
             fields: ['company_name'],
             fuzziness: 'AUTO'
           }
