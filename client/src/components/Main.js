@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {Router, Route, browserHistory} from 'react-router';
+import { animateScroll } from 'react-scroll';
 import IndexPage from './IndexPage/IndexPage.jsx';
 import CoursePage from './CoursePage/CoursePage.jsx';
 import DocPage from './DocPage/DocPage.jsx';
@@ -12,7 +13,18 @@ import CompanyPage from './CompanyPage/CompanyPage.jsx';
 import FeedPage from './FeedPage/FeedPage.jsx';
 import ConversationPage from './ConversationPage/ConversationPage.jsx';
 
-class App extends React.Component {
+browserHistory.listen(location => {
+  if (location.hash) {
+    setTimeout(() => {
+      const offset = document.getElementById(location.hash.slice(1)).getBoundingClientRect().top;
+      animateScroll.scrollMore(offset - 55);
+    }, 75);
+  } else {
+    animateScroll.scrollToTop();
+  }
+});
+
+class App extends Component {
   constructor() {
     super();
     this._validateAuth = this._validateAuth.bind(this);
@@ -31,11 +43,11 @@ class App extends React.Component {
       } else {
         switch (nextState.routes[0].path) {
           case '/':
-            replace('/home');
+            replace('/index');
             callPage();
             break;
           case '/login':
-            replace('/home');
+            replace('/index');
             callPage();
             break;
           default:
@@ -44,7 +56,7 @@ class App extends React.Component {
         }
       }
     })
-    .catch(err => console.error(err));
+    .catch(err => console.error('error while authenticating user', err));
   }
 
   render() {
@@ -52,7 +64,7 @@ class App extends React.Component {
       <Router history={browserHistory}>
         <Route path='/' onEnter={this._validateAuth} />
         <Route path='/login' component={RegisterLoginPage} onEnter={this._validateAuth} />
-        <Route path='/home' component={IndexPage} onEnter={this._validateAuth} />
+        <Route path='/index' component={IndexPage} onEnter={this._validateAuth} />
         <Route path='/profile' component={UserProfilePage} onEnter={this._validateAuth} />
         <Route path='/jobs' component={CareerPage} onEnter={this._validateAuth} />
         <Route path='/feed' component={FeedPage} onEnter={this._validateAuth} />

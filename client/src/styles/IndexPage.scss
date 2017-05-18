@@ -32,10 +32,6 @@
           padding-bottom: 0;
           .header { background-color: $light-blue; color: white; padding: 5px 10px; }
           a { color: $dark-blue; &:hover { color: $pumpkin; } }
-          .update-row {
-            padding: 0 $default_margin/4 $default_margin/2 $default_margin/4;
-            .update-desc { font-style: italic; }
-          }
         }
       }
     }

@@ -48,7 +48,7 @@ class Login extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      resJSON ? browserHistory.push('/home') : this.props.handleError(true, 'Invalid login credentials.');
+      resJSON ? browserHistory.push('/index') : this.props.handleError(true, 'Invalid login credentials.');
     })
     .catch(err => console.error('Unable to process login - ', err))
     .then(() => this.setState({ processing: false }));
@@ -67,7 +67,7 @@ class Login extends Component {
       <nav className='nav login has-shadow'>
         <div className='container'>
           <div className='nav-left'>
-            <Link className='nav-item logo' to='/home'><img src='../../../images/goalhighway-logo.png' alt='Bulma logo' /></Link>
+            <Link className='nav-item logo' to='/index'><img src='../../../images/goalhighway-logo.png' alt='Bulma logo' /></Link>
           </div>
           <div className='nav-item credentials'>
             <div className='credential'>

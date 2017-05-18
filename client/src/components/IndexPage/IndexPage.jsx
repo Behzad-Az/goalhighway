@@ -4,7 +4,7 @@ import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../RightSideBar/RightSideBar.jsx';
 import SearchBar from '../partials/SearchBar.jsx';
 import WelcomeBox from './WelcomeBox.jsx';
-import CourseCard from './CourseCard.jsx';
+import IndexRow from './IndexRow.jsx';
 
 class IndexPage extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class IndexPage extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/home', {
+    fetch('/api/index', {
       method: 'GET',
       credentials: 'same-origin'
     })
@@ -32,8 +32,10 @@ class IndexPage extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      resJSON.dataLoaded = true;
-      this.setState(resJSON);
+      this.setState({
+        courses: resJSON.courses,
+        dataLoaded: true
+      });
     } else {
       throw 'Server returned false';
     }
@@ -53,7 +55,7 @@ class IndexPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          { this.state.courses.map(course => <CourseCard key={course.id} course={course} updates={this.state.updates.filter(update => update.course_id === course.course_id)} /> ) }
+          { this.state.courses.map(course => <IndexRow key={course.id} course={course} /> )}
           { this.state.dataLoaded && !this.state.courses[0] && <WelcomeBox instId={this.state.instId} /> }
         </div>
       );

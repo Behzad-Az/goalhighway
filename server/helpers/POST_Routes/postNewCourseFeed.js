@@ -1,13 +1,14 @@
 const postNewCourseFeed = (req, res, knex, user_id) => {
 
   const content = req.body.content.trim();
+  const course_id = req.params.course_id;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       content.length >= 3 && content.length <= 535 &&
       content.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
       [true, false].includes(req.body.anonymous) &&
-      req.params.course_id
+      course_id
     ) {
       resolve();
     } else {
@@ -25,7 +26,7 @@ const postNewCourseFeed = (req, res, knex, user_id) => {
     header: 'new_comment',
     content,
     commenter_id: user_id,
-    course_id: req.params.course_id
+    course_id
   }))
   .then(() => res.send(true))
   .catch(err => {

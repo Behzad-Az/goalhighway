@@ -118,7 +118,7 @@ class CourseFeedsContainer extends Component {
 
   render() {
     return (
-      <div className='feeds-container'>
+      <div id='feeds' className='feeds-container'>
         <h1 className='header'>
           Course Feed:
           <i

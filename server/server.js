@@ -35,7 +35,7 @@ const googleMapsClient = require('@google/maps').createClient({
 //   }
 // });
 
-const blacklist = ['/api/home', '/api/courses', '/api/users', '/api/docs', '/api/institutions', '/images'];
+const blacklist = ['/api/index', '/api/courses', '/api/users', '/api/docs', '/api/institutions', '/images'];
 
 // ***************************************************
 // MIDDLEWARE
@@ -140,9 +140,6 @@ const deleteConversation = require('./helpers/DELETE_Routes/deleteConversation.j
 // ***************************************************
 // ROUTES - GET
 // ***************************************************
-app.get('/api/home', (req, res) => {
-  getIndexPageData(req, res, knex, req.session.user_id);
-});
 
 app.get('/api/users/:user_id', (req, res) => {
   getUserProfileData(req, res, knex, req.session.user_id);
@@ -191,10 +188,18 @@ app.get('/api/courses/:course_id/docs/:doc_id/revisions/:rev_id/download', (req,
 });
 
 
+// ********************* INDEX PAGE ***************************
+app.get('/api/index', (req, res) => {
+  getIndexPageData(req, res, knex, req.session.user_id);
+});
+
+
 // ********************* INST PAGE ***************************
 app.get('/api/institutions/:inst_id', (req, res) => {
   getInstPageData(req, res, knex, req.session.user_id);
 });
+
+
 
 app.get('/api/jobs', (req, res) => {
   getJobPageData(req, res, knex, req.session.user_id, esClient);

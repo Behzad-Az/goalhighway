@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import CropperJS from 'react-cropperjs';
 
-class ImageCropper extends React.Component {
+class ImageCropper extends Component {
 
   constructor() {
     super();

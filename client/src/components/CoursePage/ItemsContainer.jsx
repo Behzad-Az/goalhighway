@@ -96,7 +96,7 @@ class ItemsContainer extends Component {
 
   render() {
     return (
-      <div className='items-container'>
+      <div id='items' className='items-container'>
         <h1 className='header'>
           Items for Sale or Trade:
           <i

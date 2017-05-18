@@ -110,7 +110,7 @@ class DocsContainer extends Component {
 
   render() {
     return (
-      <div className='docs-container'>
+      <div id={this.props.scrollId} className='docs-container'>
         <h1 className='header'>
           { this._determineHeader() }
           <i

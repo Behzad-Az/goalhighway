@@ -10,11 +10,10 @@ const getInstPageData = (req, res, knex, user_id) => {
   const getInstCourses = () => knex('institutions')
     .innerJoin('courses', 'courses.inst_id', 'institutions.id')
     .select('courses.id', 'courses.short_display_name', 'courses.full_display_name')
-    .where('inst_id', req.params.inst_id)
+    .where('courses.inst_id', req.params.inst_id)
     .whereNull('courses.deleted_at')
     .whereNull('institutions.deleted_at')
-    .orderBy('prefix')
-    .orderBy('suffix');
+    .orderBy('courses.short_display_name');
 
   const getInstList = () => knex('institutions')
     .select('id as value', 'inst_display_name as label')

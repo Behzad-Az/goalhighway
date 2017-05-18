@@ -55,14 +55,17 @@ class CoursePage extends Component {
           />
           <TopRow courseId={this.props.routeParams.course_id} updateCompState={this._updateCompState} />
           <DocsContainer
+            scrollId='assignmentsAndReports'
             courseId={this.props.routeParams.course_id}
             type='asg_report'
             parentState={this.state.asgReportsState} />
           <DocsContainer
+            scrollId='lectureNotes'
             courseId={this.props.routeParams.course_id}
             type='lecture_note'
             parentState={this.state.lectureNotesState} />
           <DocsContainer
+            scrollId='sampleQuestions'
             courseId={this.props.routeParams.course_id}
             type='sample_question'
             parentState={this.state.sampleQuestionsState} />
