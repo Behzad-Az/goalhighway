@@ -27,7 +27,7 @@ exports.up = function(knex, Promise) {
 
     knex.schema.createTableIfNotExists('institution_program', t => {
       t.increments('id');
-      t.integer('inst_id').notNullable().references('institutions.id');
+      t.integer('inst_id').notNullable();
       t.integer('prog_id').notNullable().references('programs.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');

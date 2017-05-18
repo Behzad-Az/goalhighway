@@ -10,6 +10,7 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
 
   const inst_long_name = req.body.instLongName.trim();
   const inst_short_name = req.body.instShortName.trim() || 'not avail.';
+  const inst_display_name = inst_short_name === 'not avail.' ? inst_long_name : inst_long_name + ` (${inst_short_name})`;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
@@ -36,6 +37,15 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
     .insert(newInstObj)
     .returning('id');
 
+  const insertDefaultInstProgs = (inst_id, trx) => knex('institution_program')
+    .insert([
+      { inst_id, prog_id: 1 },
+      { inst_id, prog_id: 2 },
+      { inst_id, prog_id: 3 },
+      { inst_id, prog_id: 4 },
+      { inst_id, prog_id: 5 }
+    ]);
+
   const addInstToElasticSearch = esInstObj => {
     const indexObj = {
       index: {
@@ -56,7 +66,7 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
       } else {
         let newInstObj = {
           inst_value: inst_long_name.toLowerCase().replace(/ /g, '_'),
-          inst_display_name: inst_short_name === 'not avail.' ? inst_long_name : inst_long_name + ` (${inst_short_name})`,
+          inst_display_name,
           inst_long_name,
           inst_short_name,
           country: req.body.country,
@@ -65,15 +75,12 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
         return insertInst(newInstObj, trx);
       }
     })
-    .then(instId => {
-      const esInstObj = {
-        id: instId[0],
-        inst_name: `${inst_long_name} ${inst_short_name}`
-      };
-      return addInstToElasticSearch(esInstObj);
-    })
-    .then(response => {
-      let errorCount = response.items.reduce((count, item) => item.index && item.index.error ? 1 : 0, 0);
+    .then(instId => Promise.all([
+      addInstToElasticSearch({ id: instId[0], inst_name: inst_display_name }),
+      insertDefaultInstProgs(instId[0], trx)
+    ]))
+    .then(results => {
+      let errorCount = results[0].items.reduce((count, item) => item.index && item.index.error ? 1 : 0, 0);
       if (errorCount) { throw 'Could not upload to elastic search db'; }
       else { return; }
     })
