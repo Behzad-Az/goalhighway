@@ -51,15 +51,11 @@ class PersonalInformation extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      let instProgDropDownList = resJSON.map(inst => {
-        let value = inst.id;
-        let label = inst.inst_display_name;
-        let programs = inst.programs.map(prog => {
-          let value = prog.prog_id;
-          let label = prog.prog_display_name;
-          return { value, label };
+      const instProgDropDownList = resJSON.insts.map(inst => {
+        const programs = inst.programs.map(prog => {
+          return { value: prog.id, label: prog.prog_display_name };
         });
-        return { value, label, programs};
+        return { value: inst.id, label: inst.inst_display_name, programs };
       });
       this.setState({ instProgDropDownList, dataLoaded: true });
     } else {

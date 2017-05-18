@@ -1,13 +1,13 @@
 let programs = [
-  { prog_short_name: 'ELEC', prog_long_name: 'Electrical Eng' },
-  { prog_short_name: 'MECH', prog_long_name: 'Mechanical Eng' },
-  { prog_short_name: 'CPSC', prog_long_name: 'Computer Eng' },
-  { prog_short_name: 'CVIL', prog_long_name: 'Civil Eng' },
-  { prog_short_name: 'CHEM', prog_long_name: 'Chemical Eng' }
+  { prog_short_name: 'not avail.', prog_long_name: 'Engineering' },
+  { prog_short_name: 'not avail.', prog_long_name: 'Sciences' },
+  { prog_short_name: 'not avail.', prog_long_name: 'Fine Arts' },
+  { prog_short_name: 'not avail.', prog_long_name: 'Commerce' },
+  { prog_short_name: 'not avail.', prog_long_name: 'Other' }
 ];
 
 const getProgValue = prog_long_name => prog_long_name.toLowerCase().replace(/ /g, '_');
-const getProgDisplayName = (prog_long_name, prog_short_name) => prog_short_name ? prog_long_name + ` (${prog_short_name})` : prog_long_name;
+const getProgDisplayName = (prog_long_name, prog_short_name) => prog_short_name === 'not avail.' ? prog_long_name : prog_long_name + ` (${prog_short_name})`;
 
 exports.seed = function(knex, Promise) {
   let promiseArr = [];
