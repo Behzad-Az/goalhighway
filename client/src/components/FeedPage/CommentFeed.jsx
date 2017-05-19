@@ -22,11 +22,12 @@ class CommentFeed extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._handleFlagSubmit = this._handleFlagSubmit.bind(this);
-    this._renderFlagSelect = this._renderFlagSelect.bind(this);
-    this._handleFeedLike = this._handleFeedLike.bind(this);
-    this._displayReplyBox = this._displayReplyBox.bind(this);
-    this._validateReply = this._validateReply.bind(this);
     this._handleSendReply = this._handleSendReply.bind(this);
+    this._handleFeedLike = this._handleFeedLike.bind(this);
+    this._validateReply = this._validateReply.bind(this);
+    this._renderFlagSelect = this._renderFlagSelect.bind(this);
+    this._renderReplyBox = this._renderReplyBox.bind(this);
+    this._renderReplies = this._renderReplies.bind(this);
   }
 
   componentDidMount() {
@@ -134,50 +135,46 @@ class CommentFeed extends Component {
     .then(() => this.setState({ likeColor: this.state.likeColor === 'rgb(0, 78, 137)' ? '' : 'rgb(0, 78, 137)', likeCount: this.state.likeCount + likeOrDislike }));
   }
 
-  _displayReplyBox() {
-    if (this.state.showComments) {
-      return (
-        <div className='control is-grouped'>
-          <p className='control is-expanded'>
-            <textarea
-              className='textarea'
-              name='replyContent'
-              placeholder='Enter your comment here...'
-              onChange={e => this.setState({ replyContent: e.target.value })}
-              style={{ minHeight: '40px', borderColor: InvalidCharChecker(this.state.replyContent, this.formLimits.replyContent.max, 'courseFeed') ? '#9D0600' : '' }} />
-          </p>
-          <p className='control'>
-            <button className='button reply' onClick={this._handleSendReply} disabled={!this._validateReply()}>
-              Send
-            </button>
-          </p>
-        </div>
-      );
-    }
+  _renderReplyBox() {
+    return (
+      <div className='control is-grouped'>
+        <p className='control is-expanded'>
+          <textarea
+            className='textarea'
+            name='replyContent'
+            placeholder='Reply here...'
+            onChange={e => this.setState({ replyContent: e.target.value })}
+            style={{ minHeight: '40px', borderColor: InvalidCharChecker(this.state.replyContent, this.formLimits.replyContent.max, 'courseFeed') ? '#9D0600' : '' }} />
+        </p>
+        <p className='control'>
+          <button className='button reply' onClick={this._handleSendReply} disabled={!this._validateReply()}>
+            Send
+          </button>
+        </p>
+      </div>
+    );
   }
 
   _renderReplies() {
-    if (this.state.showComments) {
-      return this.state.replies.map(reply =>
-        <article key={reply.id} className='media course-feed-row'>
-          <figure className='media-left'>
-            <p className='image is-64x64'>
-              <img src={`http://localhost:19001/images/users/${reply.photo_name}`} />
-            </p>
-          </figure>
-          <div className='media-content'>
-            <div className='content'>
-              <strong>@{reply.commenter_name}</strong>
-              <br />
-              {reply.content}
-              <br />
-              <small>{reply.created_at.slice(0, 10)}
-              </small>
-            </div>
+    return this.state.replies.map(reply =>
+      <article key={reply.id} className='media course-feed-row'>
+        <figure className='media-left'>
+          <p className='image is-64x64'>
+            <img src={`http://localhost:19001/images/users/${reply.photo_name}`} />
+          </p>
+        </figure>
+        <div className='media-content'>
+          <div className='content'>
+            <strong>@{reply.commenter_name}</strong>
+            <br />
+            {reply.content}
+            <br />
+            <small>{reply.created_at.slice(0, 10)}
+            </small>
           </div>
-        </article>
-      );
-    }
+        </div>
+      </article>
+    );
   }
 
   render() {
@@ -201,11 +198,7 @@ class CommentFeed extends Component {
               <br />
               {this.props.feed.content}
               <br />
-              <small>
-                <Link onClick={() => this.setState({ showComments: !this.state.showComments })}>Reply</Link> |
-                <Link onClick={() => this.setState({ showComments: !this.state.showComments })}> {this.state.replyCount} Comments</Link>
-              </small>
-              <br />
+
               <small>
                 <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
                 <i
@@ -222,11 +215,13 @@ class CommentFeed extends Component {
                   style={{ color: this.state.likeColor }}
                 />
                 <span className='footer-item'>{this.state.likeCount}</span>
+                <Link className='footer-item' onClick={() => this.setState({ showComments: !this.state.showComments })}>{this.state.replyCount} Comments</Link>
               </small>
             </p>
           </div>
-          { this._displayReplyBox() }
-          { this._renderReplies() }
+          { this._renderReplyBox() }
+          { this.state.showComments && this._renderReplies() }
+
         </div>
       </article>
     );
