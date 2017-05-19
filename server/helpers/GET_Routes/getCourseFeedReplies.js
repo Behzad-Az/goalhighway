@@ -14,7 +14,8 @@ const getCourseFeedReplies = (req, res, knex, user_id) => {
     )
     .where('course_feed_replies.course_feed_id', req.params.course_feed_id)
     .orderBy('course_feed_replies.created_at', 'desc')
-    .limit(3);
+    .limit(5)
+    .offset(req.query.repliesoffset);
 
   const getReplyCount = () => knex('course_feed_replies')
     .where('course_feed_replies.course_feed_id', req.params.course_feed_id)

@@ -102,8 +102,15 @@ class DocoumentFeed extends Component {
                 <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
                 <i className='fa fa-flag footer-item' aria-hidden='true' onClick={() => this.setState({ flagRequest: !this.state.flagRequest })} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 {this.state.flagRequest && this._renderFlagSelect()}
-                <i className='fa fa-heart footer-item' aria-hidden='true' onClick={this._handleFeedLike} style={{ color: this.state.likeColor }} />
-                <span className='footer-item'>{this.state.likeCount}</span>
+                <span className='footer-item'>
+                  <i
+                    className='fa fa-heart'
+                    aria-hidden='true'
+                    onClick={this._handleFeedLike}
+                    style={{ color: this.state.likeColor }}
+                  />
+                  ({this.state.likeCount})
+                </span>
               </small>
             </p>
           </div>

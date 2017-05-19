@@ -24,6 +24,10 @@
         .control.flag-submission { text-align: center; margin-right: $default_margin/2; select { max-width: 110px; } }
         a { color: $dark-blue; &:hover { color: $pumpkin; } }
       }
+      .reply-load {
+        text-align: right;
+        .button { color: $dark-blue; &:hover { color: $pumpkin; } }
+      }
     }
 
     .end-msg {

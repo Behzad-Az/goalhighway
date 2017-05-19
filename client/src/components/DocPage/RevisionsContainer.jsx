@@ -56,8 +56,8 @@ class RevisionsContainer extends Component {
   }
 
   _displayLoadMoreBtn() {
-    let btnContent = this.state.noMoreFeeds && this.state.revs.length ? 'All revisions loaded' : 'Load more';
     if (this.state.revs.length) {
+      const btnContent = this.state.noMoreFeeds && this.state.revs.length ? 'All revisions loaded' : 'Load more';
       return (
         <p className='end-msg'>
           <button className='button' disabled={this.state.noMoreFeeds} onClick={() => this._loadComponentData(false)}>{btnContent}</button>

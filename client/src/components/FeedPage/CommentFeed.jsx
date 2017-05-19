@@ -16,6 +16,7 @@ class CommentFeed extends Component {
       flagRequest: false,
       flagReason: '',
       showComments: false,
+      noMoreFeeds: false,
       replyContent: '',
       likeCount: parseInt(this.props.feed.likeCount),
       likeColor: this.props.feed.alreadyLiked ? 'rgb(0, 78, 137)' : ''
@@ -31,23 +32,24 @@ class CommentFeed extends Component {
   }
 
   componentDidMount() {
-    this._loadComponentData();
+    this._loadComponentData(false);
   }
 
-  _loadComponentData() {
-    fetch(`/api/courses/${this.props.feed.course_id}/feed/${this.props.feed.id}/replies`, {
+  _loadComponentData(freshReload) {
+    fetch(`/api/courses/${this.props.feed.course_id}/feed/${this.props.feed.id}/replies?repliesoffset=${freshReload ? 0 : this.state.replies.length}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(resJSON => this._conditionData(resJSON))
+    .then(resJSON => this._conditionData(resJSON, freshReload))
     .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
-  _conditionData(resJSON) {
+  _conditionData(resJSON, freshReload) {
     if (resJSON) {
       this.setState({
-        replies: resJSON.replies,
+        replies: freshReload ? resJSON.replies : this.state.replies.concat(resJSON.replies),
+        noMoreFeeds: !resJSON.replies.length,
         replyCount: resJSON.replyCount,
         dataLoaded: true
       });
@@ -88,7 +90,7 @@ class CommentFeed extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      if (resJSON) { this._loadComponentData(); }
+      if (resJSON) { this._loadComponentData(true); }
       else { throw 'Server returned false'; }
     })
     .catch(err => console.error('Unable to post flag - ', err))
@@ -144,7 +146,7 @@ class CommentFeed extends Component {
             name='replyContent'
             placeholder='Reply here...'
             onChange={e => this.setState({ replyContent: e.target.value })}
-            style={{ minHeight: '40px', borderColor: InvalidCharChecker(this.state.replyContent, this.formLimits.replyContent.max, 'courseFeed') ? '#9D0600' : '' }} />
+            style={{ minHeight: '35px', padding: '7px', borderColor: InvalidCharChecker(this.state.replyContent, this.formLimits.replyContent.max, 'courseFeed') ? '#9D0600' : '' }} />
         </p>
         <p className='control'>
           <button className='button reply' onClick={this._handleSendReply} disabled={!this._validateReply()}>
@@ -153,6 +155,19 @@ class CommentFeed extends Component {
         </p>
       </div>
     );
+  }
+
+  _displayLoadMoreBtn() {
+    if (this.state.replies.length) {
+      const btnContent = this.state.noMoreFeeds && this.state.replies.length ? 'All comments loaded' : 'Load more';
+      return (
+        <p className='reply-load'>
+          <button className='button is-link' disabled={this.state.noMoreFeeds} onClick={() => this._loadComponentData(false)}>{btnContent}</button>
+        </p>
+      );
+    } else {
+      return <p>No reply has been posted yet.</p>;
+    }
   }
 
   _renderReplies() {
@@ -208,20 +223,22 @@ class CommentFeed extends Component {
                   style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }}
                 />
                 {this.state.flagRequest && this._renderFlagSelect()}
-                <i
-                  className='fa fa-heart footer-item'
-                  aria-hidden='true'
-                  onClick={this._handleFeedLike}
-                  style={{ color: this.state.likeColor }}
-                />
-                <span className='footer-item'>{this.state.likeCount}</span>
-                <Link className='footer-item' onClick={() => this.setState({ showComments: !this.state.showComments })}>{this.state.replyCount} Comments</Link>
+                <span className='footer-item'>
+                  <i
+                    className='fa fa-heart'
+                    aria-hidden='true'
+                    onClick={this._handleFeedLike}
+                    style={{ color: this.state.likeColor }}
+                  />
+                  ({this.state.likeCount})
+                </span>
+                <Link className='footer-item' onClick={() => this.setState({ showComments: !this.state.showComments })}>Comments({this.state.replyCount})</Link>
               </small>
             </p>
           </div>
           { this._renderReplyBox() }
           { this.state.showComments && this._renderReplies() }
-
+          { this.state.showComments && this._displayLoadMoreBtn() }
         </div>
       </article>
     );

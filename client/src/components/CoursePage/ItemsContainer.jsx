@@ -58,8 +58,8 @@ class ItemsContainer extends Component {
   }
 
   _displayLoadMoreBtn() {
-    let btnContent = this.state.noMoreFeeds && this.state.items.length ? 'All items loaded' : 'Load more';
     if (this.state.items.length) {
+      const btnContent = this.state.noMoreFeeds && this.state.items.length ? 'All items loaded' : 'Load more';
       return (
         <p className='end-msg'>
           <button className='button is-link' disabled={this.state.noMoreFeeds} onClick={() => this._loadComponentData(false)}>{btnContent}</button>

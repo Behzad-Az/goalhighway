@@ -75,8 +75,8 @@ class reviewsContainer extends Component {
   }
 
   _displayLoadMoreBtn() {
-    let btnContent = this.state.noMoreFeeds && this.state.reviews.length ? 'All reviews shown' : 'Load More';
     if (this.state.reviews.length) {
+      const btnContent = this.state.noMoreFeeds && this.state.reviews.length ? 'All reviews shown' : 'Load More';
       return (
         <p className='end-msg'>
           <button className='button' disabled={this.state.noMoreFeeds} onClick={() => this._loadComponentData(false)}>{btnContent}</button>

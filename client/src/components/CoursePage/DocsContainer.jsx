@@ -35,8 +35,7 @@ class DocsContainer extends Component {
   }
 
   _loadComponentData(freshReload, courseId) {
-    courseId = courseId || this.state.courseId;
-    fetch(`/api/courses/${courseId}/docs/types/${this.props.type}?docoffset=${freshReload ? 0 : this.state.docs.length}`, {
+    fetch(`/api/courses/${courseId || this.state.courseId}/docs/types/${this.props.type}?docoffset=${freshReload ? 0 : this.state.docs.length}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
@@ -72,8 +71,8 @@ class DocsContainer extends Component {
   }
 
   _displayLoadMoreBtn() {
-    let btnContent = this.state.noMoreFeeds && this.state.docs.length ? 'All documents loaded' : 'Load more';
     if (this.state.docs.length) {
+      const btnContent = this.state.noMoreFeeds && this.state.docs.length ? 'All documents loaded' : 'Load more';
       return (
         <p className='end-msg'>
           <button className='button is-link' disabled={this.state.noMoreFeeds} onClick={() => this._loadComponentData(false)}>{btnContent}</button>
