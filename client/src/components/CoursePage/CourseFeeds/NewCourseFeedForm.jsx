@@ -7,7 +7,7 @@ class NewCourseFeedForm extends Component {
     super(props);
     this.reactAlert = new ReactAlert();
     this.formLimits = {
-      content: { min: 3, max: 535 }
+      content: { min: 3, max: 500 }
     };
     this.state = {
       content: '',
@@ -20,7 +20,9 @@ class NewCourseFeedForm extends Component {
 
   _validateForm() {
     return this.state.content.length >= this.formLimits.content.min &&
-           !InvalidCharChecker(this.state.content, this.formLimits.content.max, 'courseFeed');
+           !InvalidCharChecker(this.state.content, this.formLimits.content.max, 'courseFeed') &&
+           [true, false].includes(this.state.anonymous) &&
+           this.props.courseId;
   }
 
   _handleChange(e) {

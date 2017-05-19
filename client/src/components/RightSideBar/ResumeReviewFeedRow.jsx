@@ -24,7 +24,7 @@ class ResumeReviewFeedRow extends Component {
 
   render() {
     return (
-      <article className='media resume-review-row'>
+      <article className='media resume-review-feed-row'>
         <div className='media-content'>
           <div className='content'>
             <strong>

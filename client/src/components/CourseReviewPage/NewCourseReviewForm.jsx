@@ -71,7 +71,7 @@ class NewCourseReviewForm extends Component {
   }
 
   _handleNewReview() {
-    let data = {
+    const data = {
       startYear: this.state.startYear,
       startMonth: this.state.startMonth,
       workloadRating: this.state.workloadRating,

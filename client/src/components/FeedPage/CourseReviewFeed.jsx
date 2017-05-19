@@ -72,7 +72,7 @@ class CourseReviewFeed extends Component {
 
   render() {
     return (
-      <article className='media course-row'>
+      <article className='media course-feed-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src={`http://localhost:19001/images/users/${this.props.feed.photo_name}`} />
@@ -106,6 +106,7 @@ class CourseReviewFeed extends Component {
           </div>
         </div>
       </article>
+    );
   }
 }
 

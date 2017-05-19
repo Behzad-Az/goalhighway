@@ -45,7 +45,7 @@ class CourseFeedRow extends Component {
 
   _renderDocumentFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media course-feed-row'>
         <div className='media-content'>
           <div className='content'>
             <strong>
@@ -69,7 +69,7 @@ class CourseFeedRow extends Component {
 
   _renderCommentFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media course-feed-row'>
         <div className='media-content'>
           <div className='content'>
             <strong>
@@ -90,7 +90,7 @@ class CourseFeedRow extends Component {
 
   _renderTutorFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media course-feed-row'>
         <div className='media-content'>
           <div className='content'>
             <p>
@@ -117,7 +117,7 @@ class CourseFeedRow extends Component {
 
   _renderItemFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media course-feed-row'>
         <div className='media-content'>
           <div className='content'>
             <p>
@@ -144,7 +144,7 @@ class CourseFeedRow extends Component {
 
   _renderCourseReviewFeed(header) {
     return (
-      <article className='media course-row'>
+      <article className='media course-feed-row'>
         <div className='media-content'>
           <div className='content'>
             <p>

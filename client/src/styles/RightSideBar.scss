@@ -9,7 +9,7 @@
     hr { margin: 0 0 $default_margin/2 0; }
     .card-footer-item { color: $dark-blue; font-size: 12px; &:hover { color: $pumpkin; } }
     .feeds-container {
-      .resume-review-row, .course-row {
+      .resume-review-feed-row, .course-feed-row {
         background-color: white; font-size: 12px; margin: 0; padding-bottom: $default_margin/2;
       }
     }

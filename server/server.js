@@ -98,11 +98,13 @@ const getCompanyPageData = require('./helpers/GET_Routes/getCompanyPageData.js')
 const getFeedPageData = require('./helpers/GET_Routes/getFeedPageData.js');
 const getResumeData = require('./helpers/GET_Routes/getResumeData.js');
 const getConversationPageData = require('./helpers/GET_Routes/getConversationPageData.js');
+const getCourseFeedReplies = require('./helpers/GET_Routes/getCourseFeedReplies.js');
 
 const postNewDoc = require('./helpers/POST_Routes/postNewDoc.js');
 const postNewRevision = require('./helpers/POST_Routes/postNewRevision.js');
 const postNewLikeDislike = require('./helpers/POST_Routes/postNewLikeDislike.js');
 const postNewCourseFeed = require('./helpers/POST_Routes/postNewCourseFeed.js');
+const postNewCourseFeedReply = require('./helpers/POST_Routes/postNewCourseFeedReply.js');
 const postNewCourseUser = require('./helpers/POST_Routes/postNewCourseUser.js');
 const postNewCourseUserAssistReq = require('./helpers/POST_Routes/postNewCourseUserAssistReq.js');
 const postNewCourseReview = require('./helpers/POST_Routes/postNewCourseReview.js');
@@ -250,6 +252,10 @@ app.get('/api/conversations', (req, res) => {
   getConversationPageData(req, res, knex, req.session.user_id);
 });
 
+app.get('/api/courses/:course_id/feed/:course_feed_id/replies', (req, res) => {
+  getCourseFeedReplies(req, res, knex, req.session.user_id);
+});
+
 
 // ***************************************************
 // ROUTES - POST
@@ -280,6 +286,10 @@ app.post('/api/likes/:foreign_table/:foreign_id', (req, res) => {
 
 app.post('/api/courses/:course_id/feed', (req, res) => {
   postNewCourseFeed(req, res, knex, req.session.user_id);
+});
+
+app.post('/api/courses/:course_id/feed/:course_feed_id/replies', (req, res) => {
+  postNewCourseFeedReply(req, res, knex, req.session.user_id);
 });
 
 app.post('/api/users/:user_id/courses/:course_id', (req, res) => {
