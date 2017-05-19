@@ -26,7 +26,7 @@ class FeedsContainer extends Component {
     this._composeNewConv = this._composeNewConv.bind(this);
     this._categorizeFeed = this._categorizeFeed.bind(this);
     this._removeComment = this._removeComment.bind(this);
-    this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
+    this._renderLoadMoreBtn = this._renderLoadMoreBtn.bind(this);
     this._renderCompAfterData = this._renderCompAfterData.bind(this);
   }
 
@@ -93,7 +93,7 @@ class FeedsContainer extends Component {
     .catch(err => console.error('Unable to delete course feed: ', err));
   }
 
-  _displayLoadMoreBtn() {
+  _renderLoadMoreBtn() {
     if (this.state.feeds.length) {
       const btnContent = this.state.noMoreFeeds && this.state.feeds.length ? 'No more feed' : 'Load more';
       return (
@@ -127,7 +127,7 @@ class FeedsContainer extends Component {
             <i className='fa fa-angle-down' aria-hidden='true' />
           </h1>
           { this.state.feeds.map(feed => this._categorizeFeed(feed)) }
-          { this._displayLoadMoreBtn() }
+          { this._renderLoadMoreBtn() }
         </div>
       );
     } else {

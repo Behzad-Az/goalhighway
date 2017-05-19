@@ -16,7 +16,7 @@ class DocsContainer extends Component {
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
     this._determineHeader = this._determineHeader.bind(this);
-    this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
+    this._renderLoadMoreBtn = this._renderLoadMoreBtn.bind(this);
     this._renderCompAfterData = this._renderCompAfterData.bind(this);
   }
 
@@ -70,7 +70,7 @@ class DocsContainer extends Component {
     }
   }
 
-  _displayLoadMoreBtn() {
+  _renderLoadMoreBtn() {
     if (this.state.docs.length) {
       const btnContent = this.state.noMoreFeeds && this.state.docs.length ? 'All documents loaded' : 'Load more';
       return (
@@ -119,7 +119,7 @@ class DocsContainer extends Component {
           />
         </h1>
         { this._renderCompAfterData() }
-        { this.state.showContainer && this.state.dataLoaded && !this.state.pageError && this._displayLoadMoreBtn() }
+        { this.state.showContainer && this.state.dataLoaded && !this.state.pageError && this._renderLoadMoreBtn() }
       </div>
     );
   }

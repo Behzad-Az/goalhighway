@@ -32,7 +32,7 @@ class CourseFeedRow extends Component {
       case 'new_tutor_request':
         return <TutorFeed feed={this.props.feed} composeNewConv={this.props.composeNewConv} />;
       case 'new_comment':
-        return <CommentFeed feed={this.props.feed} />;
+        return <CommentFeed feed={this.props.feed} removeComment={this.props.removeComment} />;
       case 'new_item_for_sale':
         return <ItemFeed feed={this.props.feed} composeNewConv={this.props.composeNewConv} />;
       case 'new_course_review':

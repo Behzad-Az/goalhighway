@@ -16,7 +16,7 @@ class CourseFeedsContainer extends Component {
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
     this._removeComment = this._removeComment.bind(this);
-    this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
+    this._renderLoadMoreBtn = this._renderLoadMoreBtn.bind(this);
     this._renderCompAfterData = this._renderCompAfterData.bind(this);
   }
 
@@ -73,7 +73,7 @@ class CourseFeedsContainer extends Component {
     .catch(err => console.error('Unable to delete course feed: ', err));
   }
 
-  _displayLoadMoreBtn() {
+  _renderLoadMoreBtn() {
     if (this.state.feeds.length) {
       const btnContent = this.state.noMoreFeeds && this.state.feeds.length ? 'No more feed item' : 'Load more feed items';
       return (
@@ -130,7 +130,7 @@ class CourseFeedsContainer extends Component {
         <NewCourseFeedForm courseId={this.state.courseId} reload={() => this._loadComponentData(true)} />
         <hr />
         { this._renderCompAfterData() }
-        { this.state.showContainer && this.state.dataLoaded && !this.state.pageError && this._displayLoadMoreBtn() }
+        { this.state.showContainer && this.state.dataLoaded && !this.state.pageError && this._renderLoadMoreBtn() }
       </div>
     );
   }

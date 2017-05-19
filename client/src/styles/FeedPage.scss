@@ -17,6 +17,7 @@
     .feeds-container {
       .resume-review-feed-row, .course-feed-row {
         background-color: white; padding: $default_margin/2; margin: 0 0 $default_margin/2 0; border: 1px darken($default-bg-color, 20%) solid;
+        &.reply { margin: 0; border: none; border-top: 1px darken($default-bg-color, 10%) solid; }
         .media-left .image { overflow: hidden; border: #bbb solid 2px; border-radius: 50% }
         .button { height: 100%; font-size: 10px; color: $dark-blue; float: right; &.reply { color: white; background-color: $dark-blue; } }
         .fa { font-size: 12px; cursor: pointer; vertical-align: middle; &:hover { transform: scale(1.1); } }
@@ -29,12 +30,9 @@
         .button { color: $dark-blue; &:hover { color: $pumpkin; } }
       }
     }
-
     .end-msg {
       text-align: center; margin: $default_margin/2 0;
       .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
     }
-
   }
-
 }

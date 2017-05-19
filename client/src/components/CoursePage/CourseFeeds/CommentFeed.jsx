@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
-import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
+import InvalidCharChecker from '../../partials/InvalidCharChecker.jsx';
 
 class CommentFeed extends Component {
   constructor(props) {
@@ -172,7 +172,7 @@ class CommentFeed extends Component {
 
   _renderReplies() {
     return this.state.replies.map(reply =>
-      <article key={reply.id} className='media course-feed-row reply'>
+      <article key={reply.id} className='media course-feed-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
             <img src={`http://localhost:19001/images/users/${reply.photo_name}`} />
@@ -202,38 +202,32 @@ class CommentFeed extends Component {
         </figure>
         <div className='media-content'>
           <div className='content'>
-            <Link to={`/courses/${this.props.feed.course_id}`}>
-              <button className='button'>Course Page</button>
-            </Link>
-            <p>
-              <strong>
-                <Link to={`/courses/${this.props.feed.course_id}`}>@{this.props.feed.short_display_name}</Link>
-                {` - New Comment by ${this.props.feed.commenter_name}`}
-              </strong>
-              <br />
-              {this.props.feed.content}
-              <br />
-              <small>
-                <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
+            <strong>
+              {`New Comment by ${this.props.feed.commenter_name}`}
+            </strong>
+            <br />
+            {this.props.feed.content}
+            <br />
+            <small>
+              <span className='footer-item'>{this.props.feed.created_at.slice(0, 10)}</span>
+              <i
+                className={this.props.feed.editable ? 'fa fa-trash footer-item' : 'fa fa-flag footer-item'}
+                aria-hidden='true'
+                onClick={() => this.props.feed.editable ? this.props.removeComment(this.props.feed.id, this.props.feed.course_id) : this.setState({ flagRequest: !this.state.flagRequest })}
+                style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }}
+              />
+              {this.state.flagRequest && this._renderFlagSelect()}
+              <span className='footer-item'>
                 <i
-                  className={this.props.feed.editable ? 'fa fa-trash footer-item' : 'fa fa-flag footer-item'}
+                  className='fa fa-heart'
                   aria-hidden='true'
-                  onClick={() => this.props.feed.editable ? this.props.removeComment(this.props.feed.id, this.props.feed.course_id) : this.setState({ flagRequest: !this.state.flagRequest })}
-                  style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }}
+                  onClick={this._handleFeedLike}
+                  style={{ color: this.state.likeColor }}
                 />
-                {this.state.flagRequest && this._renderFlagSelect()}
-                <span className='footer-item'>
-                  <i
-                    className='fa fa-heart'
-                    aria-hidden='true'
-                    onClick={this._handleFeedLike}
-                    style={{ color: this.state.likeColor }}
-                  />
-                  ({this.state.likeCount})
-                </span>
-                <Link className='footer-item' onClick={() => this.setState({ showComments: !this.state.showComments })}>Comments({this.state.replyCount})</Link>
-              </small>
-            </p>
+                ({this.state.likeCount})
+              </span>
+              <Link className='footer-item' onClick={() => this.setState({ showComments: !this.state.showComments })}>Comments({this.state.replyCount})</Link>
+            </small>
           </div>
           { this._renderReplyBox() }
           { this.state.showComments && this._renderReplies() }

@@ -15,7 +15,7 @@ class ItemsContainer extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
+    this._renderLoadMoreBtn = this._renderLoadMoreBtn.bind(this);
     this._renderCompAfterData = this._renderCompAfterData.bind(this);
   }
 
@@ -57,7 +57,7 @@ class ItemsContainer extends Component {
     }
   }
 
-  _displayLoadMoreBtn() {
+  _renderLoadMoreBtn() {
     if (this.state.items.length) {
       const btnContent = this.state.noMoreFeeds && this.state.items.length ? 'All items loaded' : 'Load more';
       return (
@@ -106,7 +106,7 @@ class ItemsContainer extends Component {
           />
         </h1>
         { this._renderCompAfterData() }
-        { this.state.showContainer && this.state.dataLoaded && !this.state.pageError && this._displayLoadMoreBtn() }
+        { this.state.showContainer && this.state.dataLoaded && !this.state.pageError && this._renderLoadMoreBtn() }
       </div>
     );
   }

@@ -15,7 +15,7 @@ class RevisionsContainer extends Component {
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
+    this._renderLoadMoreBtn = this._renderLoadMoreBtn.bind(this);
     this._renderCompAfterData = this._renderCompAfterData.bind(this);
   }
 
@@ -55,7 +55,7 @@ class RevisionsContainer extends Component {
     }
   }
 
-  _displayLoadMoreBtn() {
+  _renderLoadMoreBtn() {
     if (this.state.revs.length) {
       const btnContent = this.state.noMoreFeeds && this.state.revs.length ? 'All revisions loaded' : 'Load more';
       return (
@@ -91,7 +91,7 @@ class RevisionsContainer extends Component {
                 docId={this.state.docId}
                 reload={() => this._loadComponentData(true)} />
             )}
-          { this._displayLoadMoreBtn() }
+          { this._renderLoadMoreBtn() }
         </div>
       );
     } else {

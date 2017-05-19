@@ -15,7 +15,7 @@ class reviewsContainer extends Component {
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
     this._sortReviews = this._sortReviews.bind(this);
-    this._displayLoadMoreBtn = this._displayLoadMoreBtn.bind(this);
+    this._renderLoadMoreBtn = this._renderLoadMoreBtn.bind(this);
     this._renderCompAfterData = this._renderCompAfterData.bind(this);
   }
 
@@ -74,7 +74,7 @@ class reviewsContainer extends Component {
     }
   }
 
-  _displayLoadMoreBtn() {
+  _renderLoadMoreBtn() {
     if (this.state.reviews.length) {
       const btnContent = this.state.noMoreFeeds && this.state.reviews.length ? 'All reviews shown' : 'Load More';
       return (
@@ -109,7 +109,7 @@ class reviewsContainer extends Component {
             </select>
           </h1>
           { this.state.reviews.map(review => <CourseReviewRow key={review.id} review={review} /> ) }
-          { this._displayLoadMoreBtn() }
+          { this._renderLoadMoreBtn() }
         </div>
       );
     } else {
