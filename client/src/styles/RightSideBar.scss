@@ -1,5 +1,5 @@
 .side-bar.right {
-  display: inline-block; margin-top: $top_margin; position: fixed; width: $sidebar_width_right;
+  display: inline-block; margin-top: $top_margin; position: fixed; width: $sidebar_width_right; max-height: 75%; overflow: scroll;
   .image { width: 40px; }
   a { color: $dark-blue; &:hover { color: $pumpkin; } }
   .card-content {
