@@ -28,7 +28,6 @@ class ItemCard extends Component {
     this._toggleView = this._toggleView.bind(this);
     this._editCardView = this._editCardView.bind(this);
     this._showCardView = this._showCardView.bind(this);
-    this._deleteFormData = this._deleteFormData.bind(this);
   }
 
   _handleChange(e) {
@@ -48,9 +47,9 @@ class ItemCard extends Component {
 
   _handleEdit() {
     if (this._validateForm()) {
-      this.formData.append('title', this.state.title);
-      this.formData.append('itemDesc', this.state.itemDesc);
-      this.formData.append('price', this.state.price);
+      this.formData.set('title', this.state.title);
+      this.formData.set('itemDesc', this.state.itemDesc);
+      this.formData.set('price', this.state.price);
 
       fetch(`/api/courses/${this.props.item.course_id}/items/${this.props.item.id}`, {
         method: 'POST',
@@ -61,16 +60,12 @@ class ItemCard extends Component {
       .then(resJSON => {
         if (resJSON) {
           this.reactAlert.showAlert('Item updated', 'info');
-          this._deleteFormData();
           this.props.reload();
         } else {
           throw 'Server returned false';
         }
       })
-      .catch(() => {
-        this.reactAlert.showAlert('Unable to update item', 'error');
-        this._deleteFormData();
-      })
+      .catch(() => this.reactAlert.showAlert('Unable to update item', 'error'))
       .then(this._toggleView);
     } else {
       this.setState({ editCardError: 'Please fill all the fields correctly.' });
@@ -99,13 +94,6 @@ class ItemCard extends Component {
 
   _toggleView() {
     this.setState({ editCard: !this.state.editCard });
-  }
-
-  _deleteFormData() {
-    this.formData.delete('file');
-    this.formData.delete('title');
-    this.formData.delete('itemDesc');
-    this.formData.delete('price');
   }
 
   _editCardView() {
@@ -163,7 +151,7 @@ class ItemCard extends Component {
           <p className='char-limit'>{this.state.editCardError}</p>
         </div>
         <footer className='card-footer'>
-          <Link className='card-footer-item is-link' onClick={this._handleEdit}>Save</Link>
+          <Link className='card-footer-item' onClick={this._handleEdit}>Save</Link>
           <Link className='card-footer-item' onClick={this._toggleView}>Cancel</Link>
           <Link className='card-footer-item' onClick={this._handleDelete}>Delete</Link>
         </footer>

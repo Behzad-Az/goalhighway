@@ -20,7 +20,6 @@ class NewItemForm extends Component {
     };
     this._handleChange = this._handleChange.bind(this);
     this._validateForm = this._validateForm.bind(this);
-    this._deleteFormData = this._deleteFormData.bind(this);
     this._handleNewItemPost = this._handleNewItemPost.bind(this);
   }
 
@@ -39,17 +38,10 @@ class NewItemForm extends Component {
            !InvalidCharChecker(this.state.price, this.formLimits.price.max, 'itemPrice');
   }
 
-  _deleteFormData() {
-    this.formData.delete('file');
-    this.formData.delete('title');
-    this.formData.delete('itemDesc');
-    this.formData.delete('price');
-  }
-
   _handleNewItemPost() {
-    this.formData.append('title', this.state.title);
-    this.formData.append('itemDesc', this.state.itemDesc);
-    this.formData.append('price', this.state.price);
+    this.formData.set('title', this.state.title);
+    this.formData.set('itemDesc', this.state.itemDesc);
+    this.formData.set('price', this.state.price);
 
     fetch(`/api/courses/${this.props.courseId}/items`, {
       method: 'POST',
@@ -60,15 +52,11 @@ class NewItemForm extends Component {
     .then(resJSON => {
       if (resJSON) {
         this.reactAlert.showAlert('New item posted', 'info');
-        this._deleteFormData();
         this.props.reload('itemsState');
       }
       else { throw 'Server returned false'; }
     })
-    .catch(() => {
-      this.reactAlert.showAlert('error in posting item', 'error');
-      this._deleteFormData();
-    })
+    .catch(() => this.reactAlert.showAlert('error in posting item', 'error'))
     .then(this.props.toggleModal);
   }
 

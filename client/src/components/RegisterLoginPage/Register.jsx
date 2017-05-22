@@ -30,9 +30,6 @@ class Register extends Component {
       processing: false
     };
     this._conditionData = this._conditionData.bind(this);
-    this._handleInstChange = this._handleInstChange.bind(this);
-    this._handleProgChange = this._handleProgChange.bind(this);
-    this._handleUserYearChange = this._handleUserYearChange.bind(this);
     this._handleChange = this._handleChange.bind(this);
     this._getUserAvailability = this._getUserAvailability.bind(this);
     this._getEmailAvailability = this._getEmailAvailability.bind(this);
@@ -65,18 +62,6 @@ class Register extends Component {
     } else {
       throw 'Server returned false';
     }
-  }
-
-  _handleInstChange(instId) {
-    this.setState({ instId });
-  }
-
-  _handleProgChange(progId) {
-    this.setState({ progId });
-  }
-
-  _handleUserYearChange(userYear) {
-    this.setState({ userYear });
   }
 
   _handleChange(e) {
@@ -255,7 +240,7 @@ class Register extends Component {
               initialValue={this.state.instId}
               options={this.state.instProgDropDownList}
               name='instId'
-              handleChange={this._handleInstChange} />
+              handleChange={instId => this.setState({ instId })} />
           </div>
           <div className='control'>
             <label className='label'>
@@ -266,7 +251,7 @@ class Register extends Component {
               initialValue={this.state.progId}
               options={programList}
               name='progId'
-              handleChange={this._handleProgChange} />
+              handleChange={progId => this.setState({ progId })} />
           </div>
           <div className='control'>
             <label className='label'>
@@ -277,7 +262,7 @@ class Register extends Component {
               initialValue={this.state.userYear}
               options={this.academicYears}
               name='userYear'
-              handleChange={this._handleUserYearChange} />
+              handleChange={userYear => this.setState({ userYear })} />
           </div>
         </div>
 

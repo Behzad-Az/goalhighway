@@ -4,7 +4,7 @@ import AutoSuggestion from '../partials/AutoSuggestion.jsx';
 import SingleSelect from '../partials/SingleSelect.jsx';
 import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
-class NewCourseReviewForm extends Component {
+class NewCompanyReviewForm extends Component {
   constructor(props) {
     super(props);
     this.months = [ { value: '', label: 'select month' },
@@ -34,6 +34,9 @@ class NewCourseReviewForm extends Component {
       profName: ''
     };
     this._handleChange = this._handleChange.bind(this);
+    this._handleSelectProf = this._handleSelectProf.bind(this);
+    this._handleSelectYear = this._handleSelectYear.bind(this);
+    this._handleSelectMonth = this._handleSelectMonth.bind(this);
     this._validateForm = this._validateForm.bind(this);
     this._handleNewReview = this._handleNewReview.bind(this);
   }
@@ -42,6 +45,18 @@ class NewCourseReviewForm extends Component {
     let newState = {};
     newState[e.target.name] = e.target.value;
     this.setState(newState);
+  }
+
+  _handleSelectProf(profName) {
+    this.setState({ profName });
+  }
+
+  _handleSelectYear(startYear) {
+    this.setState({ startYear });
+  }
+
+  _handleSelectMonth(startMonth) {
+    this.setState({ startMonth });
   }
 
   _validateForm() {
@@ -102,20 +117,10 @@ class NewCourseReviewForm extends Component {
             <label className='label'>When did you start?</label>
             <div className='columns'>
               <div className='column is-6'>
-                <SingleSelect
-                  disabled={false}
-                  initialValue={this.state.startYear}
-                  name='startYear'
-                  options={this.years}
-                  handleChange={startYear => this.setState({ startYear })} />
+                <SingleSelect disabled={false} initialValue={this.state.startYear} name='startYear' options={this.years} handleChange={this._handleSelectYear} />
               </div>
               <div className='column is-6'>
-                <SingleSelect
-                  disabled={false}
-                  initialValue={this.state.startMonth}
-                  name='startMonth'
-                  options={this.months}
-                  handleChange={startMonth => this.setState({ startMonth })} />
+                <SingleSelect disabled={false} initialValue={this.state.startMonth} name='startMonth' options={this.months} handleChange={this._handleSelectMonth} />
               </div>
             </div>
 
@@ -180,41 +185,16 @@ class NewCourseReviewForm extends Component {
                 Instructor's name (optional):
                 { InvalidCharChecker(this.state.profName, this.formLimits.profName.max, 'profName') && <span className='char-limit'>Invalid</span> }
               </label>
-              <AutoSuggestion options={this.props.profs} onChange={profName => this.setState({ profName })} />
+              <AutoSuggestion options={this.props.profs} onChange={this._handleSelectProf} />
             </div>
 
             <p className='control'>
               <label className='label'>Overall satisfaction with the course?</label>
-              <i
-                className={ this.state.tempStars >= 1 || this.state.overallRating >= 1 ? 'fa fa-star' : 'fa fa-star-o'}
-                aria-hidden='true'
-                onMouseOver={() => this.setState({ tempStars: 1 })}
-                onMouseLeave={() => this.setState({ tempStars: 0 })}
-                onClick={() => this.setState({ overallRating: 1})} />
-              <i
-                className={ this.state.tempStars >= 2 || this.state.overallRating >= 2 ? 'fa fa-star' : 'fa fa-star-o'}
-                aria-hidden='true'
-                onMouseOver={() => this.setState({ tempStars: 2 })}
-                onMouseLeave={() => this.setState({ tempStars: 0 })}
-                onClick={() => this.setState({ overallRating: 2})} />
-              <i
-                className={ this.state.tempStars >= 3 || this.state.overallRating >= 3 ? 'fa fa-star' : 'fa fa-star-o'}
-                aria-hidden='true'
-                onMouseOver={() => this.setState({ tempStars: 3 })}
-                onMouseLeave={() => this.setState({ tempStars: 0 })}
-                onClick={() => this.setState({ overallRating: 3})} />
-              <i
-                className={ this.state.tempStars >= 4 || this.state.overallRating >= 4 ? 'fa fa-star' : 'fa fa-star-o'}
-                aria-hidden='true'
-                onMouseOver={() => this.setState({ tempStars: 4 })}
-                onMouseLeave={() => this.setState({ tempStars: 0 })}
-                onClick={() => this.setState({ overallRating: 4})} />
-              <i
-                className={ this.state.tempStars >= 5 || this.state.overallRating >= 5 ? 'fa fa-star' : 'fa fa-star-o'}
-                aria-hidden='true'
-                onMouseOver={() => this.setState({ tempStars: 5 })}
-                onMouseLeave={() => this.setState({ tempStars: 0 })}
-                onClick={() => this.setState({ overallRating: 5})} />
+              <i className={ this.state.tempStars >= 1 || this.state.overallRating >= 1 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 1 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 1})} />
+              <i className={ this.state.tempStars >= 2 || this.state.overallRating >= 2 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 2 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 2})} />
+              <i className={ this.state.tempStars >= 3 || this.state.overallRating >= 3 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 3 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 3})} />
+              <i className={ this.state.tempStars >= 4 || this.state.overallRating >= 4 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 4 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 4})} />
+              <i className={ this.state.tempStars >= 5 || this.state.overallRating >= 5 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 5 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 5})} />
             </p>
 
             <label className='label'>
@@ -241,4 +221,4 @@ class NewCourseReviewForm extends Component {
   }
 }
 
-export default NewCourseReviewForm;
+export default NewCompanyReviewForm;

@@ -2,14 +2,17 @@ const getLeftSideBarData = (req, res, knex, user_id) => {
 
   const getProgName = () => knex('programs')
     .select('prog_long_name')
-    .where('id', req.session.prog_id);
+    .where('id', req.session.prog_id)
+    .whereNull('deleted_at');
 
   const getInstName = () => knex('institutions')
     .select('inst_long_name')
-    .where('id', req.session.inst_id);
+    .where('id', req.session.inst_id)
+    .whereNull('deleted_at');
 
   const getRevCount = () => knex('revisions')
     .where('poster_id', user_id)
+    .whereNull('deleted_at')
     .count('id');
 
   const getItemCount = () => knex('items_for_sale')
@@ -18,6 +21,7 @@ const getLeftSideBarData = (req, res, knex, user_id) => {
 
   const getCourseReviewCount = () => knex('course_reviews')
     .where('reviewer_id', user_id)
+    .whereNull('deleted_at')
     .count('id');
 
   Promise.all([

@@ -24,15 +24,11 @@ class PersonalInformation extends Component {
       instProgDropDownList: []
     };
     this._conditionData = this._conditionData.bind(this);
+    this._toggleView = this._toggleView.bind(this);
+    this._handleChange = this._handleChange.bind(this);
+    this._handleUpdateProfile = this._handleUpdateProfile.bind(this);
     this._showInfo = this._showInfo.bind(this);
     this._editInfo = this._editInfo.bind(this);
-    this._toggleView = this._toggleView.bind(this);
-    this._handleInstChange = this._handleInstChange.bind(this);
-    this._handleProgChange = this._handleProgChange.bind(this);
-    this._handleUserYearChange = this._handleUserYearChange.bind(this);
-    this._handleChange = this._handleChange.bind(this);
-    this._deleteFormData = this._deleteFormData.bind(this);
-    this._handleUpdateProfile = this._handleUpdateProfile.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,18 +59,6 @@ class PersonalInformation extends Component {
     }
   }
 
-  _handleInstChange(instId, instDisplayName) {
-    this.setState({ instId, instDisplayName });
-  }
-
-  _handleProgChange(progId, progDisplayName) {
-    this.setState({ progId, progDisplayName });
-  }
-
-  _handleUserYearChange(userYear) {
-    this.setState({ userYear });
-  }
-
   _handleChange(e) {
     let obj = {};
     obj[e.target.name] = e.target.value;
@@ -85,23 +69,13 @@ class PersonalInformation extends Component {
     this.setState({ editView: !this.state.editView });
   }
 
-  _deleteFormData() {
-    this.formData.delete('file');
-    this.formData.delete('type');
-    this.formData.delete('username');
-    this.formData.delete('email');
-    this.formData.delete('instYear');
-    this.formData.delete('instId');
-    this.formData.delete('progId');
-  }
-
   _handleUpdateProfile() {
-    this.formData.append('type', 'profile');
-    this.formData.append('username', this.state.username.trim().toLowerCase());
-    this.formData.append('email', this.state.email.trim().toLowerCase());
-    this.formData.append('userYear', this.state.userYear);
-    this.formData.append('instId', this.state.instId);
-    this.formData.append('progId', this.state.progId);
+    this.formData.set('type', 'profile');
+    this.formData.set('username', this.state.username.trim().toLowerCase());
+    this.formData.set('email', this.state.email.trim().toLowerCase());
+    this.formData.set('userYear', this.state.userYear);
+    this.formData.set('instId', this.state.instId);
+    this.formData.set('progId', this.state.progId);
 
     fetch('/api/users/currentuser', {
       method: 'POST',
@@ -113,14 +87,8 @@ class PersonalInformation extends Component {
       if (resJSON) { this.reactAlert.showAlert('User profile saved', 'info'); }
       else { throw 'Server returned false'; }
     })
-    .catch(() => {
-      this._deleteFormData();
-      this.reactAlert.showAlert('Could not save user profile', 'error');
-    })
-    .then(() => {
-      this._deleteFormData();
-      this._toggleView();
-    });
+    .catch(() => this.reactAlert.showAlert('Could not save user profile', 'error'))
+    .then(() => this._toggleView());
   }
 
   _showInfo() {
@@ -226,7 +194,7 @@ class PersonalInformation extends Component {
                 initialValue={this.state.instId}
                 options={this.state.instProgDropDownList}
                 name='instId'
-                handleChange={this._handleInstChange} />
+                handleChange={(instId, instDisplayName) => this.setState({ instId, instDisplayName })} />
             </div>
 
             <div className='control'>
@@ -236,7 +204,7 @@ class PersonalInformation extends Component {
                 initialValue={this.state.progId}
                 options={programList}
                 name='progId'
-                handleChange={this._handleProgChange} />
+                handleChange={(progId, progDisplayName) => this.setState({ progId, progDisplayName })} />
             </div>
 
             <div className='control'>
@@ -246,7 +214,7 @@ class PersonalInformation extends Component {
                 initialValue={this.state.userYear}
                 options={this.academicYears}
                 name='userYear'
-                handleChange={this._handleUserYearChange} />
+                handleChange={userYear => this.setState({ userYear })} />
             </div>
           </div>
 
