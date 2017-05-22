@@ -1,15 +1,17 @@
 const postNewInterviewAnswer = (req, res, knex, user_id) => {
 
   const answer = req.body.answer.trim();
-  const outcome = outcome;
+  const outcome = req.body.outcome;
+  const company_id = req.params.company_id;
+  const question_id = req.params.question_id;
 
   const validateInputs = () => new Promise ((resolve, reject) => {
     if (
       answer.length >= 5 && answer.length <= 500 &&
       answer.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
       ['Got the job', 'Unsuccessful', 'Unknown'].includes(outcome) &&
-      req.params.company_id &&
-      req.params.question_id
+      company_id &&
+      question_id
     ) {
       resolve();
     } else {
@@ -17,9 +19,9 @@ const postNewInterviewAnswer = (req, res, knex, user_id) => {
     }
   });
 
-  const checkIfQuestionBelongsToCompany = () => knex('interview_questions')
-    .where('id', req.params.question_id)
-    .andWhere('company_id', req.params.company_id)
+  const validateParams = () => knex('interview_questions')
+    .where('id', question_id)
+    .andWhere('company_id', company_id)
     .whereNull('deleted_at')
     .limit(1)
     .count('id as valid');
@@ -28,18 +30,18 @@ const postNewInterviewAnswer = (req, res, knex, user_id) => {
     .insert(newAnsObj);
 
   validateInputs()
-  .then(() => checkIfQuestionBelongsToCompany())
+  .then(() => validateParams())
   .then(result => {
     if (parseInt(result[0].valid)) {
       return insertAnswer({
         answer,
         outcome,
         poster_id: user_id,
-        question_id: req.params.question_id
+        question_id
       });
     }
     else {
-      throw 'provided company_id and question_id do not match.';
+      throw 'Invalid params.';
     }
   })
   .then(() => res.send(true))

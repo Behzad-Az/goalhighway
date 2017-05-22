@@ -60,7 +60,7 @@ class QaRow extends Component {
     return (
       <article className='media qa-row'>
         <NewAnswerForm
-          question={this.props.qa}
+          qa={this.props.qa}
           reload={this.props.reload}
           companyId={this.props.companyId}
           showModal={this.state.showNewAnswerForm}
@@ -71,13 +71,17 @@ class QaRow extends Component {
             <p>
               <strong>{this.props.qa.question}</strong>
               <br />
-              Posted On: {this.props.qa.created_at.slice(0, 10)}
-              <br />
-              Like Count: {this.props.qa.like_count}
-              <br />
-              <small><Link onClick={() => this.setState({ showAnswers: !this.state.showAnswers })}>{ this.state.showAnswers ? 'Hide Answers' : 'Show Answers' }</Link></small>
-              <i className='fa fa-flag' aria-hidden='true' onClick={() => this.setState({ flagRequest: !this.state.flagRequest })} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-              { this.state.flagRequest && this._renderFlagSelect() }
+              <small>
+                Posted On: {this.props.qa.created_at.slice(0, 10)}
+                <br />
+                Like Count: {this.props.qa.like_count}
+                <br />
+                <Link className='footer-item' onClick={() => this.setState({ showAnswers: !this.state.showAnswers })}>
+                  { this.state.showAnswers ? 'Hide Answers' : 'Show Answers' }
+                </Link>
+                <i className='fa fa-flag footer-item' aria-hidden='true' onClick={() => this.setState({ flagRequest: !this.state.flagRequest })} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                { this.state.flagRequest && this._renderFlagSelect() }
+              </small>
             </p>
             { this.state.showAnswers && <p><button className='button new-answer' onClick={this._toggleNewAnswerForm}>Post New Answer</button></p> }
             { this.state.showAnswers && this.props.qa.answers.map((ans, index) => <AnswerRow key={ans.id} ans={ans} index={index + 1}/>) }

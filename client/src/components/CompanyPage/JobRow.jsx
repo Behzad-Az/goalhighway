@@ -65,9 +65,11 @@ class JobRow extends Component {
               <br />
               {this.props.job.tags.map((tag, index) => <span key={index} className='tag'>{tag}</span>)}
               <br />
-              <small><Link>Apply Now!</Link></small>
-              <i className='fa fa-flag' aria-hidden='true' onClick={() => this.setState({ flagRequest: !this.state.flagRequest })} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
-              { this.state.flagRequest && this._renderFlagSelect() }
+              <small>
+                <Link className='footer-item'>Apply Now!</Link>
+                <i className='fa fa-flag footer-item' aria-hidden='true' onClick={() => this.setState({ flagRequest: !this.state.flagRequest })} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
+                { this.state.flagRequest && this._renderFlagSelect() }
+              </small>
             </p>
           </div>
         </div>

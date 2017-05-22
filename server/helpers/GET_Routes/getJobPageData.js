@@ -17,7 +17,7 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
 
   Promise.all([
     getQueryInfo(),
-    getUserResumes(),
+    getUserResumes()
   ])
   .then(results => {
     resumes = results[1];

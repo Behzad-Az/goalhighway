@@ -27,7 +27,7 @@ class NewAnswerForm extends Component {
            !InvalidCharChecker(this.state.answer, this.formLimits.answer.max, 'interviewAnswer') &&
            this.state.outcome &&
            this.props.companyId &&
-           this.props.question.id;
+           this.props.qa.id;
   }
 
   _handleNewAnsSubmission() {
@@ -36,7 +36,7 @@ class NewAnswerForm extends Component {
       outcome: this.state.outcome
     };
 
-    fetch(`/api/companies/${this.props.companyId}/questions/${this.props.question.id}`, {
+    fetch(`/api/companies/${this.props.companyId}/questions/${this.props.qa.id}`, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
@@ -61,7 +61,7 @@ class NewAnswerForm extends Component {
         <div className='modal-card'>
           <header className='modal-card-head'>
             <p className='modal-card-title'>
-              { this.props.question.question.length > 35 ? `${this.props.question.question.slice(0, 35)}... ` : this.props.question.question } - New Answer
+              { this.props.qa.question.length > 35 ? `${this.props.qa.question.slice(0, 35)}... ` : this.props.qa.question } - New Answer
             </p>
             <button className='delete' onClick={this.props.toggleModal}></button>
           </header>

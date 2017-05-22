@@ -6,14 +6,55 @@ class TopRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showNewQuestionForm: false
+      dataLoaded: false,
+      pageError: false,
+      showNewQuestionForm: false,
+      showNewCompanyReviewForm: false,
+      companyInfo: {
+        id: this.props.companyId
+      }
     };
+    this._loadComponentData = this._loadComponentData.bind(this);
+    this._conditionData = this._conditionData.bind(this);
+    this._toggleFormModal = this._toggleFormModal.bind(this);
     this._createBtnDiv = this._createBtnDiv.bind(this);
-    this._toggleNewQuestionForm = this._toggleNewQuestionForm.bind(this);
+    this._renderCompAfterData = this._renderCompAfterData.bind(this);
   }
 
-  _toggleNewQuestionForm() {
-    this.setState({ showNewQuestionForm: !this.state.showNewQuestionForm });
+  componentDidMount() {
+    document.title = 'GoalHwy - Company Page';
+    this._loadComponentData();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.companyId !== this.state.companyInfo.id) {
+      this._loadComponentData(nextProps.companyId);
+    }
+  }
+
+  _loadComponentData(companyId) {
+    fetch(`/api/companies/${companyId || this.state.companyInfo.id}/toprow`, {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this._conditionData(resJSON))
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
+  }
+
+  _conditionData(resJSON) {
+    if (resJSON) {
+      document.title = `GoalHwy - ${resJSON.companyInfo.name}`;
+      this.setState({ companyInfo: resJSON.companyInfo, dataLoaded: true });
+    } else {
+      throw 'Server returned false';
+    }
+  }
+
+  _toggleFormModal(stateName) {
+    let newState = {};
+    newState[stateName] = !this.state[stateName];
+    this.setState(newState);
   }
 
   _createBtnDiv(dfltClassName, truePhrase, trueCb, trueColor, validation, enable, falsePhrase, falseCb) {
@@ -35,23 +76,51 @@ class TopRow extends Component {
     }
   }
 
+  _renderCompAfterData() {
+    if (this.state.dataLoaded && this.state.pageError) {
+      return (
+        <p className='page-msg'>
+          <i className='fa fa-exclamation-triangle' aria-hidden='true' />
+          Error in loading up control bar
+        </p>
+      );
+    } else if (this.state.dataLoaded) {
+      return (
+        <div className='top-row'>
+          <NewQuestionForm
+            companyInfo={this.state.companyInfo}
+            reload={() => this.props.updateCompState('qasState')}
+            showModal={this.state.showNewQuestionForm}
+            toggleModal={() => this._toggleFormModal('showNewQuestionForm')} />
+          <NewCompanyReviewForm
+            reload={() => this.props.updateCompState('companyReviewsState')}
+            showModal={this.state.showNewCompanyReviewForm}
+            toggleModal={() => this._toggleFormModal('showNewCompanyReviewForm')} />
+          <h1 className='header'>
+            { this.state.companyInfo.name }
+          </h1>
+
+          { this._createBtnDiv('fa fa-upload', <p>New Interview<br/>Question</p>,
+                                () => this._toggleFormModal('showNewQuestionForm'), 'inherit',
+                                true, true) }
+
+          { this._createBtnDiv('fa fa-trash', <p>New Job<br/>Review</p>,
+                                () => this._toggleFormModal('showNewCompanyReviewForm'), 'inherit',
+                                true, true) }
+        </div>
+      );
+    } else {
+      return (
+        <p className='page-msg'>
+          <i className='fa fa-spinner fa-spin fa-3x fa-fw'></i>
+          <span className='sr-only'>Loading...</span>
+        </p>
+      );
+    }
+  }
+
   render() {
-    return (
-      <div className='top-row'>
-        <NewQuestionForm
-          companyInfo={this.props.companyInfo}
-          reload={this.props.reload}
-          showModal={this.state.showNewQuestionForm}
-          toggleModal={this._toggleNewQuestionForm} />
-        <NewCompanyReviewForm
-          reload={this.props.reload}
-          showModal={true} />
-        <h1 className='header'>
-          { this.props.companyInfo.name }
-        </h1>
-        { this._createBtnDiv('fa fa-upload', <p>New Interview<br/>Question</p>, this._toggleNewQuestionForm, 'inherit', true, true) }
-      </div>
-    );
+    return this._renderCompAfterData();
   }
 }
 

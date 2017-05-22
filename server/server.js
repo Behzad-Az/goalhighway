@@ -78,27 +78,39 @@ const server = app.listen(PORT, '127.0.0.1', 'localhost', () => console.log(`Lis
 // ***************************************************
 const getIndexPageData = require('./helpers/GET_Routes/getIndexPageData.js');
 const getUserProfileData = require('./helpers/GET_Routes/getUserProfileData.js');
+
 const getCoursePageTopRow = require('./helpers/GET_Routes/getCoursePageTopRow.js');
 const getCoursePageDocs = require('./helpers/GET_Routes/getCoursePageDocs.js');
 const getCoursePageItems = require('./helpers/GET_Routes/getCoursePageItems.js');
 const getCoursePageFeed = require('./helpers/GET_Routes/getCoursePageFeed.js');
+
 const getCourseReviewPageTopRow = require('./helpers/GET_Routes/getCourseReviewPageTopRow.js');
 const getCourseReviewPageReviews = require('./helpers/GET_Routes/getCourseReviewPageReviews.js');
+
 const getDocPageTopRow = require('./helpers/GET_Routes/getDocPageTopRow.js');
 const getDocPageRevs = require('./helpers/GET_Routes/getDocPageRevs.js');
-const getInstPageData = require('./helpers/GET_Routes/getInstPageData.js');
 const getDocPageRevDownload = require('./helpers/GET_Routes/getDocPageRevDownload.js');
+
+const getCompanyPageTopRow = require('./helpers/GET_Routes/getCompanyPageTopRow.js');
+const getCompanyPageQas = require('./helpers/GET_Routes/getCompanyPageQas.js');
+const getCompanyPageJobs = require('./helpers/GET_Routes/getCompanyPageJobs.js');
+
+const getInstPageData = require('./helpers/GET_Routes/getInstPageData.js');
+
 const getJobPageData = require('./helpers/GET_Routes/getJobPageData.js');
 const getUserNavBarData = require('./helpers/GET_Routes/getUserNavBarData.js');
 const getInstitutionsAndPrograms = require('./helpers/GET_Routes/getInstitutionsAndPrograms.js');
 const getLoginCheck = require('./helpers/GET_Routes/getLoginCheck.js');
 const getRightSideBarData = require('./helpers/GET_Routes/getRightSideBarData.js');
 const getLeftSideBarData = require('./helpers/GET_Routes/getLeftSideBarData.js');
-const getCompanyPageData = require('./helpers/GET_Routes/getCompanyPageData.js');
+
+
 const getFeedPageData = require('./helpers/GET_Routes/getFeedPageData.js');
 const getResumeData = require('./helpers/GET_Routes/getResumeData.js');
 const getConversationPageData = require('./helpers/GET_Routes/getConversationPageData.js');
 const getCourseFeedReplies = require('./helpers/GET_Routes/getCourseFeedReplies.js');
+
+
 
 const postNewDoc = require('./helpers/POST_Routes/postNewDoc.js');
 const postNewRevision = require('./helpers/POST_Routes/postNewRevision.js');
@@ -202,14 +214,24 @@ app.get('/api/institutions/:inst_id', (req, res) => {
 });
 
 
+// ********************* COMPANY PAGE ***************************
+app.get('/api/companies/:company_id/toprow', (req, res) => {
+  getCompanyPageTopRow(req, res, knex, req.session.user_id);
+});
+
+app.get('/api/companies/:company_id/qas', (req, res) => {
+  getCompanyPageQas(req, res, knex, req.session.user_id);
+});
+
+app.get('/api/companies/:company_id/jobs', (req, res) => {
+  getCompanyPageJobs(req, res, esClient, req.session.user_id);
+});
+
 
 app.get('/api/jobs', (req, res) => {
   getJobPageData(req, res, knex, req.session.user_id, esClient);
 });
 
-app.get('/api/companies/:company_id', (req, res) => {
-  getCompanyPageData(req, res, knex, req.session.user_id, esClient);
-});
 
 app.get('/api/rightsidebar', (req, res) => {
   getRightSideBarData(req, res, knex, req.session.user_id);

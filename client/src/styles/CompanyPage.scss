@@ -29,9 +29,14 @@
       .job-row {
         background-color: white; padding: $default_margin/2; margin: 0 0 $default_margin/2 0; border: 1px darken($default-bg-color, 20%) solid;
         .tag { margin: 3px; background-color: $light-blue; color: white; font-weight: bold; }
-        .fa { font-size: 14px; cursor: pointer; vertical-align: middle; margin-left: 10px; &:hover { transform: scale(1.1); } }
-        .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
+        .fa { font-size: 14px; cursor: pointer; vertical-align: middle; &:hover { transform: scale(1.1); } }
+        .footer-item { margin-right: $default_margin/2; }
+        .control.flag-submission { text-align: center; margin-right: $default_margin/2; select { max-width: 110px; } }
         a { color: $dark-blue; &:hover { color: $pumpkin; } }
+      }
+      .end-msg {
+        text-align: right;
+        .button { color: $dark-blue; &:hover { color: $pumpkin; } }
       }
     }
 
@@ -40,14 +45,15 @@
       .qa-row {
         background-color: white; padding: $default_margin/2; margin-top: $default_margin/2; border: 1px darken($default-bg-color, 20%) solid;
         .button.new-answer {  height: 100%; font-size: 10px; color: $dark-blue; }
-        .tag { margin: 3px; background-color: $light-blue; color: white; font-weight: bold; }
-        .fa {
-          font-size: 14px; cursor: pointer; vertical-align: middle; margin-left: 10px;
-          &:hover { transform: scale(1.1); }
-        }
-        .control.flag-submission { text-align: center; margin-left: 10px; select { max-width: 110px; } }
+        .fa { font-size: 14px; cursor: pointer; vertical-align: middle; &:hover { transform: scale(1.1); } }
+        .footer-item { margin-right: $default_margin/2; }
+        .control.flag-submission { text-align: center; margin-right: $default_margin/2; select { max-width: 110px; } }
         small a { color: $dark-blue; &:hover { color: $pumpkin; } }
         .date.top-right { float: right; }
+      }
+      .end-msg {
+        text-align: right;
+        .button { color: $dark-blue; &:hover { color: $pumpkin; } }
       }
     }
   }

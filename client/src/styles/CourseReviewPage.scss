@@ -39,12 +39,12 @@
         .meta-info { width: 250px; display: inline-block; td { padding-left: 15px; } }
         .comment { display: inline-block; vertical-align: top; width: 50%; min-width: 150px; padding-left: 15px; font-style: italic; }
       }
+      .end-msg {
+        text-align: center; margin: $default_margin/2 0;
+        .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
+      }
     }
 
-    .end-msg {
-      text-align: center; margin: $default_margin/2 0;
-      .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
-    }
 
     .modal .modal-card .modal-card-body {
       .control .option { padding-left: 10px; min-width: 90px; }
