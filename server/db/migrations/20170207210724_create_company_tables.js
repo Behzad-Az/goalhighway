@@ -24,7 +24,7 @@ exports.up = function(knex, Promise) {
       t.string('answer', 500).notNullable();
       t.string('outcome', 35).notNullable();
       t.integer('poster_id').notNullable().references('users.id');
-      t.integer('question_id').notNullable().references('interview_questions.id');
+      t.integer('question_id').notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     })
