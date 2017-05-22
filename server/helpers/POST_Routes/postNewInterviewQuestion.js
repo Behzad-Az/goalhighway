@@ -35,13 +35,7 @@ const posNewInterviewQuestion = (req, res, knex, user_id) => {
 
   const insertAnswer = (newAnsObj, trx) => knex('interview_answers')
     .transacting(trx)
-    .insert(newAnsObj)
-    .returning('id');
-
-  // const removeQuestion = questionId => knex('interview_questions')
-  //   .where('id', questionId)
-  //   .del();
-
+    .insert(newAnsObj);
 
   knex.transaction(trx => {
     validateInputs()
@@ -74,35 +68,6 @@ const posNewInterviewQuestion = (req, res, knex, user_id) => {
   })
   .then(() => res.send(true))
   .catch(() => res.send(false));
-
-
-
-  // validateInputs()
-  // .then(() => insertQuestion({
-  //   question,
-  //   poster_id: user_id,
-  //   company_id: req.params.company_id
-  // }))
-  // .then(qId => {
-  //   question_id = qId[0];
-  //   if (answer) {
-  //     return insertAnswer({
-  //       answer,
-  //       outcome,
-  //       poster_id: user_id,
-  //       question_id
-  //     });
-  //   } else {
-  //     return [0];
-  //   }
-  // })
-  // .then(() => res.send(true))
-  // .catch(err => {
-  //   console.log('Error inside posNewInterviewQuestion.js: ', err);
-  //   res.send(false);
-  //   removeQuestion(question_id)
-  //   .catch(err => console.log('Error inside posNewInterviewQuestion.js while rolling back: ', err));
-  // });
 
 };
 
