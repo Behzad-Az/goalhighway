@@ -1,22 +1,13 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import AutoSuggestion from '../partials/AutoSuggestion.jsx';
-import SingleSelect from '../partials/SingleSelect.jsx';
 import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewCourseReviewForm extends Component {
   constructor(props) {
     super(props);
-    this.months = [ { value: '', label: 'select month' },
-      { value: 'Jan', label: 'Jan' }, { value: 'Feb', label: 'Feb' }, { value: 'Mar', label: 'Mar' }, { value: 'Apr', label: 'Apr' },
-      { value: 'May', label: 'May' }, { value: 'Jun', label: 'Jun' }, { value: 'Jul', label: 'Jul' }, { value: 'Aug', label: 'Aug' },
-      { value: 'Sep', label: 'Sep' }, { value: 'Oct', label: 'Oct' }, { value: 'Nov', label: 'Nov' }, { value: 'Dec', label: 'Dec' }
-    ];
-    this.years = [ { value: '', label: 'select year' },
-      { value: 2017, label: 2017 }, { value: 2016, label: 2016 }, { value: 2015, label: 2015 }, { value: 2014, label: 2014 },
-      { value: 2013, label: 2013 }, { value: 2012, label: 2012 }, { value: 2011, label: 2011 }, { value: 2010, label: 2010 },
-      { value: 2009, label: 2009 }, { value: 2008, label: 2008 }, { value: 2007, label: 2007 }, { value: 2006, label: 2006 }
-    ];
+    this.years = [2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006];
+    this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     this.formLimits = {
       reviewDesc: { min: 3, max: 500 },
       profName: { min: 3, max: 60 }
@@ -100,23 +91,23 @@ class NewCourseReviewForm extends Component {
           <section className='modal-card-body'>
 
             <label className='label'>When did you start?</label>
-            <div className='columns'>
-              <div className='column is-6'>
-                <SingleSelect
-                  disabled={false}
-                  initialValue={this.state.startYear}
-                  name='startYear'
-                  options={this.years}
-                  handleChange={startYear => this.setState({ startYear })} />
-              </div>
-              <div className='column is-6'>
-                <SingleSelect
-                  disabled={false}
-                  initialValue={this.state.startMonth}
-                  name='startMonth'
-                  options={this.months}
-                  handleChange={startMonth => this.setState({ startMonth })} />
-              </div>
+            <div className='control is-grouped'>
+              <p className='control'>
+                <span className='select'>
+                  <select className='select' name='startYear' onChange={this._handleChange}>
+                    <option value=''>select year</option>
+                    { this.years.map(year => <option key={year} value={year}>{year}</option> )}
+                  </select>
+                </span>
+              </p>
+              <p className='control'>
+                <span className='select'>
+                  <select className='select' name='startMonth' onChange={this._handleChange}>
+                    <option value=''>select month</option>
+                    { this.months.map(month => <option key={month} value={month}>{month}</option> )}
+                  </select>
+                </span>
+              </p>
             </div>
 
             <label className='label'>How was the workload?</label>
@@ -218,7 +209,7 @@ class NewCourseReviewForm extends Component {
             </p>
 
             <label className='label'>
-              Feel free to ellaborate (optional):
+              Feel free to elaborate (optional):
               { InvalidCharChecker(this.state.reviewDesc, this.formLimits.reviewDesc.max, 'courseReview') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>

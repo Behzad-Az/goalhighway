@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import NewQuestionForm from './NewQuestionForm.jsx';
+import NewCompanyReviewForm from './NewCompanyReviewForm.jsx';
 
 class TopRow extends Component {
   constructor(props) {
@@ -41,8 +42,10 @@ class TopRow extends Component {
           companyInfo={this.props.companyInfo}
           reload={this.props.reload}
           showModal={this.state.showNewQuestionForm}
-          toggleModal={this._toggleNewQuestionForm}
-        />
+          toggleModal={this._toggleNewQuestionForm} />
+        <NewCompanyReviewForm
+          reload={this.props.reload}
+          showModal={true} />
         <h1 className='header'>
           { this.props.companyInfo.name }
         </h1>

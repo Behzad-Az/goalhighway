@@ -1,42 +1,40 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
 import AutoSuggestion from '../partials/AutoSuggestion.jsx';
-import SingleSelect from '../partials/SingleSelect.jsx';
 import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewCompanyReviewForm extends Component {
   constructor(props) {
     super(props);
-    this.months = [ { value: '', label: 'select month' },
-      { value: 'Jan', label: 'Jan' }, { value: 'Feb', label: 'Feb' }, { value: 'Mar', label: 'Mar' }, { value: 'Apr', label: 'Apr' },
-      { value: 'May', label: 'May' }, { value: 'Jun', label: 'Jun' }, { value: 'Jul', label: 'Jul' }, { value: 'Aug', label: 'Aug' },
-      { value: 'Sep', label: 'Sep' }, { value: 'Oct', label: 'Oct' }, { value: 'Nov', label: 'Nov' }, { value: 'Dec', label: 'Dec' }
-    ];
-    this.years = [ { value: '', label: 'select year' },
-      { value: 2017, label: 2017 }, { value: 2016, label: 2016 }, { value: 2015, label: 2015 }, { value: 2014, label: 2014 },
-      { value: 2013, label: 2013 }, { value: 2012, label: 2012 }, { value: 2011, label: 2011 }, { value: 2010, label: 2010 },
-      { value: 2009, label: 2009 }, { value: 2008, label: 2008 }, { value: 2007, label: 2007 }, { value: 2006, label: 2006 }
-    ];
+    this.years = [2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006];
+    this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     this.formLimits = {
-      reviewDesc: { min: 3, max: 500 },
-      profName: { min: 3, max: 60 }
+      jobPros: { min: 3, max: 500 },
+      jobCons: { min: 3, max: 500 },
+      profName: { min: 3, max: 60 },
+
+      positionTitle: { min: 3, max: 60 }
     };
     this.reactAlert = new ReactAlert();
     this.state = {
       startYear: '',
       startMonth: '',
       workloadRating: '',
-      fairnessRating: '',
       profRating: '',
       tempStars: '',
+      profName: '',
+
+
+
+      positionTitle: '',
+      trainingRating: '',
+      relevancyRating: '',
       overallRating: '',
-      reviewDesc: '',
-      profName: ''
+      jobPros: '',
+      jobCons: ''
     };
     this._handleChange = this._handleChange.bind(this);
     this._handleSelectProf = this._handleSelectProf.bind(this);
-    this._handleSelectYear = this._handleSelectYear.bind(this);
-    this._handleSelectMonth = this._handleSelectMonth.bind(this);
     this._validateForm = this._validateForm.bind(this);
     this._handleNewReview = this._handleNewReview.bind(this);
   }
@@ -51,22 +49,14 @@ class NewCompanyReviewForm extends Component {
     this.setState({ profName });
   }
 
-  _handleSelectYear(startYear) {
-    this.setState({ startYear });
-  }
-
-  _handleSelectMonth(startMonth) {
-    this.setState({ startMonth });
-  }
-
   _validateForm() {
     return this.state.startYear &&
            this.state.startMonth &&
            this.state.workloadRating &&
-           this.state.fairnessRating &&
+           this.state.relevancyRating &&
            this.state.profRating &&
            this.state.overallRating &&
-           !InvalidCharChecker(this.state.reviewDesc, this.formLimits.reviewDesc.max, 'courseReview') &&
+           !InvalidCharChecker(this.state.jobPros, this.formLimits.jobPros.max, 'courseReview') &&
            !InvalidCharChecker(this.state.profName, this.formLimits.profName.max, 'profName');
   }
 
@@ -75,10 +65,10 @@ class NewCompanyReviewForm extends Component {
       startYear: this.state.startYear,
       startMonth: this.state.startMonth,
       workloadRating: this.state.workloadRating,
-      fairnessRating: this.state.fairnessRating,
+      relevancyRating: this.state.relevancyRating,
       profRating: this.state.profRating,
       overallRating: this.state.overallRating,
-      reviewDesc: this.state.reviewDesc,
+      jobPros: this.state.jobPros,
       profName: this.state.profName
     };
 
@@ -114,101 +104,181 @@ class NewCompanyReviewForm extends Component {
           </header>
           <section className='modal-card-body'>
 
-            <label className='label'>When did you start?</label>
-            <div className='columns'>
-              <div className='column is-6'>
-                <SingleSelect disabled={false} initialValue={this.state.startYear} name='startYear' options={this.years} handleChange={this._handleSelectYear} />
-              </div>
-              <div className='column is-6'>
-                <SingleSelect disabled={false} initialValue={this.state.startMonth} name='startMonth' options={this.months} handleChange={this._handleSelectMonth} />
-              </div>
+
+            <label className='label'>
+              Position title:
+              { InvalidCharChecker(this.state.positionTitle, this.formLimits.positionTitle.max, 'positionTitle') && <span className='char-limit'>Invalid</span> }
+            </label>
+            <div className='control is-grouped'>
+              <p className='control is-expanded'>
+                <input
+                  className='input'
+                  type='text'
+                  name='positionTitle'
+                  placeholder='Describe your position title'
+                  onChange={this._handleChange}
+                  style={{ borderColor: InvalidCharChecker(this.state.positionTitle, this.formLimits.positionTitle.max, 'positionTitle') ? '#9D0600' : '' }} />
+              </p>
+              <p className='control'>
+                <span className='select'>
+                  <select className='select' name='workDuration' onChange={this._handleChange}>
+                    <option value=''>select type of job</option>
+                    <option value='summer'>Part Time / Summer Job</option>
+                    <option value='internship'>Internship / Coop</option>
+                    <option value='junior'>New Gradd / Junior</option>
+                  </select>
+                </span>
+              </p>
             </div>
 
-            <label className='label'>How was the workload?</label>
-            <p className='control'>
-              <label className='radio option'>
-                <input type='radio' name='workloadRating' value={1} onChange={this._handleChange} />
-                Too Much
-              </label>
-              <label className='radio option'>
-                <input type='radio' name='workloadRating' value={2} onChange={this._handleChange} />
-                Too Little
-              </label>
-              <label className='radio option'>
-                <input type='radio' name='workloadRating' value={3} onChange={this._handleChange} />
-                Fair
-              </label>
-            </p>
+            <label className='label'>Employment Timeline:</label>
+            <div className='control is-grouped'>
+              <p className='control'>
+                <span className='select'>
+                  <select className='select' name='startYear' onChange={this._handleChange}>
+                    <option value=''>start year</option>
+                    { this.years.map(year => <option key={year} value={year}>{year}</option> )}
+                  </select>
+                </span>
+              </p>
+              <p className='control'>
+                <span className='select'>
+                  <select className='select' name='startMonth' onChange={this._handleChange}>
+                    <option value=''>start month</option>
+                    { this.months.map(month => <option key={month} value={month}>{month}</option> )}
+                  </select>
+                </span>
+              </p>
+              <p className='control'>
+                <span className='select'>
+                  <select className='select' name='workDuration' onChange={this._handleChange}>
+                    <option value=''>duration at the job</option>
+                    <option value={1}>Less than 6 Months</option>
+                    <option value={2}>6 to 12 Months</option>
+                    <option value={3}>1 to 2 Years</option>
+                    <option value={4}>More than 2 Years</option>
+                  </select>
+                </span>
+              </p>
+            </div>
 
-            <label className='label'>How was the evaluation?</label>
+            <label className='label'>How were the training and development programs?</label>
             <p className='control'>
               <label className='radio option'>
-                <input type='radio' name='fairnessRating' value={1} onChange={this._handleChange} />
-                Too Hard
-              </label>
-              <label className='radio option'>
-                <input type='radio' name='fairnessRating' value={2} onChange={this._handleChange} />
-                Too Easy
-              </label>
-              <label className='radio option'>
-                <input type='radio' name='fairnessRating' value={3} onChange={this._handleChange} />
-                Fair
-              </label>
-            </p>
-
-            <label className='label'>How was the instructor?</label>
-            <p className='control'>
-              <label className='radio option'>
-                <input type='radio' name='profRating' value={1} onChange={this._handleChange} />
+                <input type='radio' name='trainingRating' value={1} onChange={this._handleChange} />
                 Not good
               </label>
               <label className='radio option'>
-                <input type='radio' name='profRating' value={2} onChange={this._handleChange} />
+                <input type='radio' name='trainingRating' value={2} onChange={this._handleChange} />
                 Below average
               </label>
               <label className='radio option'>
-                <input type='radio' name='profRating' value={3} onChange={this._handleChange} />
+                <input type='radio' name='trainingRating' value={3} onChange={this._handleChange} />
                 Average
               </label>
               <label className='radio option'>
-                <input type='radio' name='profRating' value={4} onChange={this._handleChange} />
+                <input type='radio' name='trainingRating' value={4} onChange={this._handleChange} />
                 Above average
               </label>
               <label className='radio option'>
-                <input type='radio' name='profRating' value={5} onChange={this._handleChange} />
+                <input type='radio' name='trainingRating' value={5} onChange={this._handleChange} />
                 Excellent!
               </label>
             </p>
 
-            <div className='control'>
-              <label className='is-inline-block'>
-                Instructor's name (optional):
-                { InvalidCharChecker(this.state.profName, this.formLimits.profName.max, 'profName') && <span className='char-limit'>Invalid</span> }
+            <label className='label'>How relevant was the job to your field of study?</label>
+            <p className='control'>
+              <label className='radio option'>
+                <input type='radio' name='relevancyRating' value={1} onChange={this._handleChange} />
+                Not very relevant
               </label>
-              <AutoSuggestion options={this.props.profs} onChange={this._handleSelectProf} />
-            </div>
+              <label className='radio option'>
+                <input type='radio' name='relevancyRating' value={2} onChange={this._handleChange} />
+                Somewhat relevant
+              </label>
+              <label className='radio option'>
+                <input type='radio' name='relevancyRating' value={3} onChange={this._handleChange} />
+                Very relevant
+              </label>
+            </p>
+
+            <label className='label'>How was the pay?</label>
+            <p className='control'>
+              <label className='radio option'>
+                <input type='radio' name='payRating' value={1} onChange={this._handleChange} />
+                Below average
+              </label>
+              <label className='radio option'>
+                <input type='radio' name='payRating' value={2} onChange={this._handleChange} />
+                Average
+              </label>
+              <label className='radio option'>
+                <input type='radio' name='payRating' value={3} onChange={this._handleChange} />
+                Above average
+              </label>
+            </p>
 
             <p className='control'>
-              <label className='label'>Overall satisfaction with the course?</label>
-              <i className={ this.state.tempStars >= 1 || this.state.overallRating >= 1 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 1 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 1})} />
-              <i className={ this.state.tempStars >= 2 || this.state.overallRating >= 2 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 2 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 2})} />
-              <i className={ this.state.tempStars >= 3 || this.state.overallRating >= 3 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 3 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 3})} />
-              <i className={ this.state.tempStars >= 4 || this.state.overallRating >= 4 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 4 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 4})} />
-              <i className={ this.state.tempStars >= 5 || this.state.overallRating >= 5 ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden='true' onMouseOver={() => this.setState({ tempStars: 5 })} onMouseLeave={() => this.setState({ tempStars: 0 })} onClick={() => this.setState({ overallRating: 5})} />
+              <label className='label'>Overall satisfaction with the job?</label>
+              <i
+                className={ this.state.tempStars >= 1 || this.state.overallRating >= 1 ? 'fa fa-star' : 'fa fa-star-o'}
+                aria-hidden='true'
+                onMouseOver={() => this.setState({ tempStars: 1 })}
+                onMouseLeave={() => this.setState({ tempStars: 0 })}
+                onClick={() => this.setState({ overallRating: 1})} />
+              <i
+                className={ this.state.tempStars >= 2 || this.state.overallRating >= 2 ? 'fa fa-star' : 'fa fa-star-o'}
+                aria-hidden='true'
+                onMouseOver={() => this.setState({ tempStars: 2 })}
+                onMouseLeave={() => this.setState({ tempStars: 0 })}
+                onClick={() => this.setState({ overallRating: 2})} />
+              <i
+                className={ this.state.tempStars >= 3 || this.state.overallRating >= 3 ? 'fa fa-star' : 'fa fa-star-o'}
+                aria-hidden='true'
+                onMouseOver={() => this.setState({ tempStars: 3 })}
+                onMouseLeave={() => this.setState({ tempStars: 0 })}
+                onClick={() => this.setState({ overallRating: 3})} />
+              <i
+                className={ this.state.tempStars >= 4 || this.state.overallRating >= 4 ? 'fa fa-star' : 'fa fa-star-o'}
+                aria-hidden='true'
+                onMouseOver={() => this.setState({ tempStars: 4 })}
+                onMouseLeave={() => this.setState({ tempStars: 0 })}
+                onClick={() => this.setState({ overallRating: 4})} />
+              <i
+                className={ this.state.tempStars >= 5 || this.state.overallRating >= 5 ? 'fa fa-star' : 'fa fa-star-o'}
+                aria-hidden='true'
+                onMouseOver={() => this.setState({ tempStars: 5 })}
+                onMouseLeave={() => this.setState({ tempStars: 0 })}
+                onClick={() => this.setState({ overallRating: 5})} />
             </p>
 
             <label className='label'>
-              Feel free to ellaborate (optional):
-              { InvalidCharChecker(this.state.reviewDesc, this.formLimits.reviewDesc.max, 'courseReview') && <span className='char-limit'>Invalid</span> }
+              Pros (optional):
+              { InvalidCharChecker(this.state.jobPros, this.formLimits.jobPros.max, 'jobPros') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <textarea
                 className='textarea'
-                name='reviewDesc'
-                placeholder='Provide context for your review (optional)'
+                name='jobPros'
+                placeholder='Describe the pros of your job (optional)'
                 onChange={this._handleChange}
-                style={{ borderColor: InvalidCharChecker(this.state.reviewDesc, this.formLimits.reviewDesc.max, 'courseReview') ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.jobPros, this.formLimits.jobPros.max, 'jobPros') ? '#9D0600' : '' }} />
             </p>
+
+            <label className='label'>
+              Cons (optional):
+              { InvalidCharChecker(this.state.jobCons, this.formLimits.jobCons.max, 'jobCons') && <span className='char-limit'>Invalid</span> }
+            </label>
+            <p className='control'>
+              <textarea
+                className='textarea'
+                name='jobCons'
+                placeholder='Describe the cons of your job (optional)'
+                onChange={this._handleChange}
+                style={{ borderColor: InvalidCharChecker(this.state.jobCons, this.formLimits.jobCons.max, 'courseReview') ? '#9D0600' : '' }} />
+            </p>
+
+
 
           </section>
           <footer className='modal-card-foot'>
