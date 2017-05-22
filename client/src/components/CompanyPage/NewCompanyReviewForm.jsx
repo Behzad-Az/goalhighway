@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactAlert from '../partials/ReactAlert.jsx';
-import AutoSuggestion from '../partials/AutoSuggestion.jsx';
 import InvalidCharChecker from '../partials/InvalidCharChecker.jsx';
 
 class NewCompanyReviewForm extends Component {
@@ -9,32 +8,30 @@ class NewCompanyReviewForm extends Component {
     this.years = [2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006];
     this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     this.formLimits = {
-      jobPros: { min: 3, max: 500 },
-      jobCons: { min: 3, max: 500 },
-      profName: { min: 3, max: 60 },
-
-      positionTitle: { min: 3, max: 60 }
+      position: { min: 3, max: 60 },
+      reviewerBackground: { min: 3, max: 60 },
+      pros: { min: 3, max: 500 },
+      cons: { min: 3, max: 500 }
     };
     this.reactAlert = new ReactAlert();
     this.state = {
+      position: '',
+      positionType: '',
+      reviewerBackground: '',
       startYear: '',
       startMonth: '',
-      workloadRating: '',
-      profRating: '',
-      tempStars: '',
-      profName: '',
-
-
-
-      positionTitle: '',
+      workDuration: '',
       trainingRating: '',
       relevancyRating: '',
+      payRating: '',
+      tempStars: '',
       overallRating: '',
-      jobPros: '',
-      jobCons: ''
+      pros: '',
+      cons: ''
     };
     this._handleChange = this._handleChange.bind(this);
-    this._handleSelectProf = this._handleSelectProf.bind(this);
+    this._validatePros = this._validatePros.bind(this);
+    this._validateCons = this._validateCons.bind(this);
     this._validateForm = this._validateForm.bind(this);
     this._handleNewReview = this._handleNewReview.bind(this);
   }
@@ -45,52 +42,72 @@ class NewCompanyReviewForm extends Component {
     this.setState(newState);
   }
 
-  _handleSelectProf(profName) {
-    this.setState({ profName });
+  _validatePros() {
+    return this.state.pros ?
+      this.state.pros.length >= this.formLimits.pros.min &&
+      !InvalidCharChecker(this.state.pros, this.formLimits.pros.max, 'jobPros') :
+      true;
+  }
+
+  _validateCons() {
+    return this.state.cons ?
+      this.state.cons.length >= this.formLimits.cons.min &&
+      !InvalidCharChecker(this.state.cons, this.formLimits.cons.max, 'jobCons') :
+      true;
   }
 
   _validateForm() {
-    return this.state.startYear &&
+    return this.state.position.length >= this.formLimits.position.min &&
+           !InvalidCharChecker(this.state.position, this.formLimits.position.max, 'jobPosition') &&
+           this.state.positionType &&
+           this.state.reviewerBackground.length >= this.formLimits.reviewerBackground.min &&
+           !InvalidCharChecker(this.state.reviewerBackground, this.formLimits.reviewerBackground.max, 'reviewerBackground') &&
+           this.state.startYear &&
            this.state.startMonth &&
-           this.state.workloadRating &&
+           this.state.workDuration &&
+           this.state.trainingRating &&
            this.state.relevancyRating &&
-           this.state.profRating &&
+           this.state.payRating &&
            this.state.overallRating &&
-           !InvalidCharChecker(this.state.jobPros, this.formLimits.jobPros.max, 'courseReview') &&
-           !InvalidCharChecker(this.state.profName, this.formLimits.profName.max, 'profName');
+           this._validatePros() &&
+           this._validateCons();
   }
 
   _handleNewReview() {
     const data = {
+      position: this.state.position,
+      positionType: this.state.positionType,
+      reviewerBackground: this.state.reviewerBackground,
       startYear: this.state.startYear,
       startMonth: this.state.startMonth,
-      workloadRating: this.state.workloadRating,
+      workDuration: this.state.workDuration,
+      trainingRating: this.state.trainingRating,
       relevancyRating: this.state.relevancyRating,
-      profRating: this.state.profRating,
+      payRating: this.state.payRating,
       overallRating: this.state.overallRating,
-      jobPros: this.state.jobPros,
-      profName: this.state.profName
+      pros: this.state.pros,
+      cons: this.state.cons
     };
 
-    fetch(`/api/courses/${this.props.courseId}/reviews`, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(resJSON => {
-      if (resJSON) {
-        this.reactAlert.showAlert('review posted', 'info');
-        this.props.reload();
-      }
-      else { throw 'Server returned false'; }
-    })
-    .catch(() => this.reactAlert.showAlert('Unable to post review', 'error'))
-    .then(this.props.toggleModal);
+    // fetch(`/api/companies/${this.props.companyId}/reviews`, {
+    //   method: 'POST',
+    //   credentials: 'same-origin',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    // .then(response => response.json())
+    // .then(resJSON => {
+    //   if (resJSON) {
+    //     this.reactAlert.showAlert('review posted', 'info');
+    //     this.props.reload();
+    //   }
+    //   else { throw 'Server returned false'; }
+    // })
+    // .catch(() => this.reactAlert.showAlert('Unable to post review', 'error'))
+    // .then(this.props.toggleModal);
   }
 
   render() {
@@ -99,29 +116,28 @@ class NewCompanyReviewForm extends Component {
         <div className='modal-background' onClick={this.props.toggleModal}></div>
         <div className='modal-card'>
           <header className='modal-card-head'>
-            <p className='modal-card-title'>New Course Review</p>
+            <p className='modal-card-title'>New Job Review</p>
             <button className='delete' onClick={this.props.toggleModal}></button>
           </header>
           <section className='modal-card-body'>
 
-
             <label className='label'>
               Position title:
-              { InvalidCharChecker(this.state.positionTitle, this.formLimits.positionTitle.max, 'positionTitle') && <span className='char-limit'>Invalid</span> }
+              { InvalidCharChecker(this.state.position, this.formLimits.position.max, 'jobPosition') && <span className='char-limit'>Invalid</span> }
             </label>
             <div className='control is-grouped'>
               <p className='control is-expanded'>
                 <input
                   className='input'
                   type='text'
-                  name='positionTitle'
+                  name='position'
                   placeholder='Describe your position title'
                   onChange={this._handleChange}
-                  style={{ borderColor: InvalidCharChecker(this.state.positionTitle, this.formLimits.positionTitle.max, 'positionTitle') ? '#9D0600' : '' }} />
+                  style={{ borderColor: InvalidCharChecker(this.state.position, this.formLimits.position.max, 'jobPosition') ? '#9D0600' : '' }} />
               </p>
               <p className='control'>
                 <span className='select'>
-                  <select className='select' name='workDuration' onChange={this._handleChange}>
+                  <select className='select' name='positionType' onChange={this._handleChange}>
                     <option value=''>select type of job</option>
                     <option value='summer'>Part Time / Summer Job</option>
                     <option value='internship'>Internship / Coop</option>
@@ -130,6 +146,20 @@ class NewCompanyReviewForm extends Component {
                 </span>
               </p>
             </div>
+
+            <label className='label'>
+              Your background or field of study:
+              { InvalidCharChecker(this.state.reviewerBackground, this.formLimits.reviewerBackground.max, 'reviewerBackground') && <span className='char-limit'>Invalid</span> }
+            </label>
+            <p className='control is-expanded'>
+              <input
+                className='input'
+                type='text'
+                name='reviewerBackground'
+                placeholder='Example: Mechanical Engineering'
+                onChange={this._handleChange}
+                style={{ borderColor: InvalidCharChecker(this.state.reviewerBackground, this.formLimits.reviewerBackground.max, 'reviewerBackground') ? '#9D0600' : '' }} />
+            </p>
 
             <label className='label'>Employment Timeline:</label>
             <div className='control is-grouped'>
@@ -254,31 +284,29 @@ class NewCompanyReviewForm extends Component {
 
             <label className='label'>
               Pros (optional):
-              { InvalidCharChecker(this.state.jobPros, this.formLimits.jobPros.max, 'jobPros') && <span className='char-limit'>Invalid</span> }
+              { InvalidCharChecker(this.state.pros, this.formLimits.pros.max, 'jobPros') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <textarea
                 className='textarea'
-                name='jobPros'
+                name='pros'
                 placeholder='Describe the pros of your job (optional)'
                 onChange={this._handleChange}
-                style={{ borderColor: InvalidCharChecker(this.state.jobPros, this.formLimits.jobPros.max, 'jobPros') ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.pros, this.formLimits.pros.max, 'jobPros') ? '#9D0600' : '' }} />
             </p>
 
             <label className='label'>
               Cons (optional):
-              { InvalidCharChecker(this.state.jobCons, this.formLimits.jobCons.max, 'jobCons') && <span className='char-limit'>Invalid</span> }
+              { InvalidCharChecker(this.state.cons, this.formLimits.cons.max, 'jobCons') && <span className='char-limit'>Invalid</span> }
             </label>
             <p className='control'>
               <textarea
                 className='textarea'
-                name='jobCons'
+                name='cons'
                 placeholder='Describe the cons of your job (optional)'
                 onChange={this._handleChange}
-                style={{ borderColor: InvalidCharChecker(this.state.jobCons, this.formLimits.jobCons.max, 'courseReview') ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.cons, this.formLimits.cons.max, 'jobCons') ? '#9D0600' : '' }} />
             </p>
-
-
 
           </section>
           <footer className='modal-card-foot'>
