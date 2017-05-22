@@ -93,6 +93,7 @@ class TopRow extends Component {
             showModal={this.state.showNewQuestionForm}
             toggleModal={() => this._toggleFormModal('showNewQuestionForm')} />
           <NewCompanyReviewForm
+            companyId={this.state.companyInfo.id}
             reload={() => this.props.updateCompState('companyReviewsState')}
             showModal={this.state.showNewCompanyReviewForm}
             toggleModal={() => this._toggleFormModal('showNewCompanyReviewForm')} />

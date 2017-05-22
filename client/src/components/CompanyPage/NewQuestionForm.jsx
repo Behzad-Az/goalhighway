@@ -49,7 +49,7 @@ class NewQuestionForm extends Component {
       outcome: this.state.outcome
     };
 
-    fetch(`/api/companies/${this.props.companyInfo.id}`, {
+    fetch(`/api/companies/${this.props.companyInfo.id}/questions`, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {

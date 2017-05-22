@@ -89,25 +89,25 @@ class NewCompanyReviewForm extends Component {
       cons: this.state.cons
     };
 
-    // fetch(`/api/companies/${this.props.companyId}/reviews`, {
-    //   method: 'POST',
-    //   credentials: 'same-origin',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-    // .then(response => response.json())
-    // .then(resJSON => {
-    //   if (resJSON) {
-    //     this.reactAlert.showAlert('review posted', 'info');
-    //     this.props.reload();
-    //   }
-    //   else { throw 'Server returned false'; }
-    // })
-    // .catch(() => this.reactAlert.showAlert('Unable to post review', 'error'))
-    // .then(this.props.toggleModal);
+    fetch(`/api/companies/${this.props.companyId}/reviews`, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(resJSON => {
+      if (resJSON) {
+        this.reactAlert.showAlert('review posted', 'info');
+        // this.props.reload();
+      }
+      else { throw 'Server returned false'; }
+    })
+    .catch(() => this.reactAlert.showAlert('Unable to post review', 'error'))
+    .then(this.props.toggleModal);
   }
 
   render() {
@@ -183,10 +183,10 @@ class NewCompanyReviewForm extends Component {
                 <span className='select'>
                   <select className='select' name='workDuration' onChange={this._handleChange}>
                     <option value=''>duration at the job</option>
-                    <option value={1}>Less than 6 Months</option>
-                    <option value={2}>6 to 12 Months</option>
-                    <option value={3}>1 to 2 Years</option>
-                    <option value={4}>More than 2 Years</option>
+                    <option value={1}>Less than 6 months</option>
+                    <option value={2}>6 to 12 months</option>
+                    <option value={3}>1 to 2 years</option>
+                    <option value={4}>More than 2 years</option>
                   </select>
                 </span>
               </p>
@@ -220,7 +220,7 @@ class NewCompanyReviewForm extends Component {
             <p className='control'>
               <label className='radio option'>
                 <input type='radio' name='relevancyRating' value={1} onChange={this._handleChange} />
-                Not very relevant
+                Not relevant
               </label>
               <label className='radio option'>
                 <input type='radio' name='relevancyRating' value={2} onChange={this._handleChange} />

@@ -94,6 +94,7 @@ const getDocPageRevDownload = require('./helpers/GET_Routes/getDocPageRevDownloa
 const getCompanyPageTopRow = require('./helpers/GET_Routes/getCompanyPageTopRow.js');
 const getCompanyPageQas = require('./helpers/GET_Routes/getCompanyPageQas.js');
 const getCompanyPageJobs = require('./helpers/GET_Routes/getCompanyPageJobs.js');
+const getCompanyPageReviews = require('./helpers/GET_Routes/getCompanyPageReviews.js');
 
 const getInstPageData = require('./helpers/GET_Routes/getInstPageData.js');
 
@@ -131,6 +132,7 @@ const checkEmailAvailability = require('./helpers/POST_Routes/checkEmailAvailabi
 const postNewFlag = require('./helpers/POST_Routes/postNewFlag.js');
 const postNewInterviewQuestion = require('./helpers/POST_Routes/postNewInterviewQuestion.js');
 const postNewInterviewAnswer = require('./helpers/POST_Routes/postNewInterviewAnswer.js');
+const postNewCompanyReview = require('./helpers/POST_Routes/postNewCompanyReview.js');
 const postNewResume = require('./helpers/POST_Routes/postNewResume.js');
 const postNewResumeReviewFeed = require('./helpers/POST_Routes/postNewResumeReviewFeed.js');
 const postNewConversation = require('./helpers/POST_Routes/postNewConversation.js');
@@ -225,6 +227,10 @@ app.get('/api/companies/:company_id/qas', (req, res) => {
 
 app.get('/api/companies/:company_id/jobs', (req, res) => {
   getCompanyPageJobs(req, res, esClient, req.session.user_id);
+});
+
+app.get('/api/companies/:company_id/reviews', (req, res) => {
+  getCompanyPageReviews(req, res, knex, req.session.user_id);
 });
 
 
@@ -354,12 +360,16 @@ app.post('/api/flags/:foreign_table/:foreign_id', (req, res) => {
   postNewFlag(req, res, knex, req.session.user_id);
 });
 
-app.post('/api/companies/:company_id', (req, res) => {
+app.post('/api/companies/:company_id/questions', (req, res) => {
   postNewInterviewQuestion(req, res, knex, req.session.user_id);
 });
 
-app.post('/api/companies/:company_id/questions/:question_id', (req, res) => {
+app.post('/api/companies/:company_id/questions/:question_id/answers', (req, res) => {
   postNewInterviewAnswer(req, res, knex, req.session.user_id);
+});
+
+app.post('/api/companies/:company_id/reviews', (req, res) => {
+  postNewCompanyReview(req, res, knex, req.session.user_id);
 });
 
 app.post('/api/conversations', (req, res) => {

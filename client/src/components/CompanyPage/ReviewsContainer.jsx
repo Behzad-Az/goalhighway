@@ -1,20 +1,19 @@
 import React, {Component} from 'react';
-import CourseReviewRow from './CourseReviewRow.jsx';
+import ReviewRow from './ReviewRow.jsx';
 
-class reviewsContainer extends Component {
+class ReviewsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dataLoaded: false,
       pageError: false,
+      companyId: this.props.companyId,
       reviews: [],
-      sortedBy: '',
       noMoreFeeds: false,
       parentState: this.props.parentState
     };
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
-    this._sortReviews = this._sortReviews.bind(this);
     this._renderLoadMoreBtn = this._renderLoadMoreBtn.bind(this);
     this._renderCompAfterData = this._renderCompAfterData.bind(this);
   }
@@ -24,20 +23,26 @@ class reviewsContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.companyId !== this.state.companyId) {
+      this.setState({ companyId: nextProps.companyId });
+      this._loadComponentData(true, nextProps.companyId);
+    }
     if (nextProps.parentState !== this.state.parentState) {
       this.setState({ parentState: nextProps.parentState });
       this._loadComponentData(true);
     }
   }
 
-  _loadComponentData(freshReload) {
-    fetch(`/api/courses/${this.props.courseId}/reviews/reviews?reviewsoffset=${freshReload ? 0 : this.state.reviews.length}`, {
+  _loadComponentData(freshReload, companyId) {
+    fetch(`/api/companies/${companyId || this.state.companyId}/reviews?reviewsoffset=${freshReload ? 0 : this.state.reviews.length}`, {
       method: 'GET',
       credentials: 'same-origin'
     })
     .then(response => response.json())
     .then(resJSON => this._conditionData(resJSON, freshReload))
-    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
+    .catch((err) => {
+      this.setState({ dataLoaded: true, pageError: true });
+    });
   }
 
   _conditionData(resJSON, freshReload) {
@@ -52,38 +57,16 @@ class reviewsContainer extends Component {
     }
   }
 
-  _sortReviews() {
-    switch (this.state.sortedBy) {
-      case 'date_new_to_old':
-        this.state.reviews.sort((a, b) => a.created_at <= b.created_at ? 1 : -1);
-        break;
-      case 'date_old_to_new':
-        this.state.reviews.sort((a, b) => a.created_at >= b.created_at ? 1 : -1);
-        break;
-      case 'rating_high_to_low':
-        this.state.reviews.sort((a, b) => a.overall_rating <= b.overall_rating ? 1 : -1);
-        break;
-      case 'rating_low_to_high':
-        this.state.reviews.sort((a, b) => a.overall_rating >= b.overall_rating ? 1 : -1);
-        break;
-      case 'instructor_name':
-        this.state.reviews.sort((a, b) => a.name.toLowerCase() >= b.name.toLowerCase() ? 1 : -1);
-        break;
-      default:
-        break;
-    }
-  }
-
   _renderLoadMoreBtn() {
     if (this.state.reviews.length) {
       const btnContent = this.state.noMoreFeeds && this.state.reviews.length ? 'All reviews shown' : 'Load More';
       return (
         <p className='end-msg'>
-          <button className='button' disabled={this.state.noMoreFeeds} onClick={() => this._loadComponentData(false)}>{btnContent}</button>
+          <button className='button is-link' disabled={this.state.noMoreFeeds} onClick={() => this._loadComponentData(false)}>{btnContent}</button>
         </p>
       );
     } else {
-      return <p>No review posted yet.</p>;
+      return <p>No company review available.</p>;
     }
   }
 
@@ -99,16 +82,10 @@ class reviewsContainer extends Component {
       return (
         <div className='reviews-container'>
           <h1 className='header'>
-            Previous Reviews:
-            <select className='sort-select' onChange={e => this.setState({ sortedBy: e.target.value })}>
-              <option value='date_new_to_old'>Date - New to Old</option>
-              <option value='date_old_to_new'>Date - Old to New</option>
-              <option value='rating_high_to_low'>Rating - High to Low</option>
-              <option value='rating_low_to_high'>Rating - Low to High</option>
-              <option value='instructor_name'>Instructor Name</option>
-            </select>
+            Company Reviews:
+            <i className='fa fa-angle-down' aria-hidden='true' />
           </h1>
-          { this.state.reviews.map(review => <CourseReviewRow key={review.id} review={review} /> ) }
+          { this.state.reviews.map(review => <ReviewRow key={review.id} review={review} /> ) }
           { this._renderLoadMoreBtn() }
         </div>
       );
@@ -123,9 +100,8 @@ class reviewsContainer extends Component {
   }
 
   render() {
-    this._sortReviews();
     return this._renderCompAfterData();
   }
 }
 
-export default reviewsContainer;
+export default ReviewsContainer;

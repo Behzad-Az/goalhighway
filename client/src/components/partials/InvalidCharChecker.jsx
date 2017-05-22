@@ -71,13 +71,11 @@ const InvalidCharChecker = (str, maxChar, type) => {
     case 'userPostalCode':
       regEx = new RegExp(/[^a-zA-Z0-9\ ]/);
       break;
-
-
     case 'jobPosition':
-      regEx = new RegExp(/[^a-zA-Z\ \-\'\\/\\.]/);
+      regEx = new RegExp(/[^a-zA-Z\ \-\(\)\'\\/\\.]/);
       break;
     case 'reviewerBackground':
-      regEx = new RegExp(/[^a-zA-Z\ \-\'\\/\\.]/);
+      regEx = new RegExp(/[^a-zA-Z\ \-\(\)\'\\/\\.]/);
       break;
     case 'jobPros':
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
@@ -85,8 +83,6 @@ const InvalidCharChecker = (str, maxChar, type) => {
     case 'jobCons':
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
       break;
-
-
     default:
       regEx = 'iL5mdXEbyY';
       break;

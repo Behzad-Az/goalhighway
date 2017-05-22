@@ -21,7 +21,7 @@
         margin: $default_margin/2 0; border: 1px #ccc solid; border-radius: 10px; padding: 0; background-color: white;
         .second-column { padding-left: 15px; }
         th { border-bottom: 1px solid; }
-        table { line-height: 25px; }
+        table { line-height: 25px; td { border-bottom: 1px #ccc solid; padding: $default_margin/4 0; } }
         .star-rating {
           i { line-height: 25px; }
           .outer {
@@ -32,19 +32,21 @@
       }
     }
 
-    .review-container {
+    .reviews-container {
       margin-bottom: $default_margin/2;
       .review-row {
-        margin: $default_margin/2 0; border: 1px #ccc solid; border-radius: 10px; padding: 15px 15px 15px 0; background-color: white;
-        .meta-info { width: 250px; display: inline-block; td { padding-left: 15px; } }
-        .comment { display: inline-block; vertical-align: top; width: 50%; min-width: 150px; padding-left: 15px; font-style: italic; }
+        margin: $default_margin/2 0; border: 1px #ccc solid; border-radius: 10px; padding: $default_margin/2 $default_margin/2 $default_margin/2 0; background-color: white;
+        .meta-info {
+          width: 250px; display: inline-block; padding: 0 $default_margin/2;
+          td { border-bottom: 1px #ccc solid; padding: $default_margin/4 0; }
+        }
+        .comment { display: inline-block; vertical-align: top; width: calc(100% - 270px); min-width: 250px; padding-left: $default_margin/2; font-style: italic; }
       }
       .end-msg {
         text-align: center; margin: $default_margin/2 0;
         .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
       }
     }
-
 
     .modal .modal-card .modal-card-body {
       .control .option { padding-left: 10px; min-width: 90px; }

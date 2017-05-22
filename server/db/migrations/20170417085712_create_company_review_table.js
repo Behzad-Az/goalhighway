@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
       t.increments('id');
       t.string('position', 60).notNullable();
       t.string('position_type', 35).notNullable();
-      t.string('reviwer_background', 60).notNullable();
+      t.string('reviewer_background', 60).notNullable();
       t.integer('start_year').notNullable();
       t.string('start_month', 10).notNullable();
       t.integer('work_duration').notNullable();

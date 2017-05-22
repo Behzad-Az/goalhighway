@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Navbar from '../Navbar/Navbar.jsx';
 import TopRow from './TopRow.jsx';
 import JobsContainer from './JobsContainer.jsx';
+import ReviewsContainer from './ReviewsContainer.jsx';
 import QaContainer from './QaContainer.jsx';
 import LeftSideBar from '../partials/LeftSideBar.jsx';
 import RightSideBar from '../RightSideBar/RightSideBar.jsx';
@@ -32,6 +33,7 @@ class CompanyPage extends Component {
           <SearchBar />
           <TopRow companyId={this.props.routeParams.company_id} updateCompState={this._updateCompState} />
           <JobsContainer companyId={this.props.routeParams.company_id} />
+          <ReviewsContainer companyId={this.props.routeParams.company_id} />
           <QaContainer companyId={this.props.routeParams.company_id} parentState={this.state.qasState} />
         </div>
         <RightSideBar />

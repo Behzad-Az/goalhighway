@@ -92,7 +92,11 @@ class CourseReviewRow extends Component {
             </tr>
           </tbody>
         </table>
-        <p className='comment'>'{this.props.review.review_desc}'</p>
+        <p className='comment'>
+          <strong>Comments:</strong>
+          <br />
+          {this.props.review.review_desc}
+        </p>
       </div>
     );
   }
