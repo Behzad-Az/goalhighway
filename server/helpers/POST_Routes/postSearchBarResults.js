@@ -6,7 +6,7 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       query.length >= 3 && query.length <= 40 &&
-      query.search(/[^a-zA-Z\ \-\(\)\'\\/\\.]/) == -1
+      query.search(/[^a-zA-Z0-9\ \-\(\)\'\\/\\.]/) == -1
     ) {
       resolve();
     } else {
