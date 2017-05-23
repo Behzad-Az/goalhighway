@@ -24,9 +24,9 @@ module.exports = {
     historyApiFallback: true,
     // hot: true,
     proxy: {
-      '/api/**': 'http://192.241.217.135:19001',
-      '/api/': 'http://192.241.217.135:19001',
-      '/imagesapi/': 'http://192.241.217.135:19001'
+      '/api/**': 'http://198.199.115.67:19001',
+      '/api/': 'http://198.199.115.67:19001',
+      '/imagesapi/': 'http://198.199.115.67:19001'
     },
     port: defaultSettings.port,
     publicPath: defaultSettings.publicPath,
