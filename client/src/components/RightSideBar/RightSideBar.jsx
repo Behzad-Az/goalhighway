@@ -83,7 +83,7 @@ class RightSideBar extends Component {
           <div className='media'>
             <div className='media-left'>
               <figure className='image inst-logo'>
-                <img src={`http://localhost:19001/images/institutions/${this.state.instPhoto}`} alt='Image' />
+                <img src={`/imagesapi/institutions/${this.state.instPhoto}`} alt='Image' />
               </figure>
             </div>
             <div className='media-content'>

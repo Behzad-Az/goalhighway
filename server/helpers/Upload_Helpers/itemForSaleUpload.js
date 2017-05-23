@@ -15,7 +15,7 @@ const acceptableMimeType = [
 ];
 
 const userPhotoStorage = multer.diskStorage({
-  destination: './public/images/itemsforsale/',
+  destination: './public/imagesapi/itemsforsale/',
   filename: (req, file, cb) => file.mimetype === 'image/png' ? cb(null, getRandomDocName() + Date.now() + '.png') : cb(null, new Error('unknown file type'))
 });
 

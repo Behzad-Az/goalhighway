@@ -40,7 +40,7 @@ class LeftSideBar extends Component {
         <div className='card-image'>
           <Link to='/profile'>
             <figure className='image is-4by3'>
-              <img src={`http://localhost:19001/images/users/${this.state.userInfo.photo_name}`} alt='Image' />
+              <img src={`/imagesapi/users/${this.state.userInfo.photo_name}`} alt='Image' />
             </figure>
           </Link>
         </div>

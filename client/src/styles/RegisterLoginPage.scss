@@ -1,8 +1,6 @@
 .register-login-page {
-  background-image: url(../images/background-04.png);
-  background-size: cover;
-  min-height: 100vh;
-  overflow: auto;
+  background-image: url(../images/login-background.png);
+  background-size: cover; min-height: 100vh; overflow: auto;
 
   .nav.login {
     height: 60px; background-color: $default-bg-color;

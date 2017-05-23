@@ -165,7 +165,7 @@ class ItemCard extends Component {
         <div className='card-content'>
           <div className='card-image'>
             <figure className='image item-img is-128x128'>
-              <img src={`http://localhost:19001/images/itemsforsale/${this.props.item.photo_name}`} alt='picture' />
+              <img src={`/imagesapi/itemsforsale/${this.props.item.photo_name}`} alt='picture' />
             </figure>
           </div>
           <div className='card-text'>

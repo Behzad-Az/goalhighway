@@ -175,7 +175,7 @@ class CommentFeed extends Component {
       <article key={reply.id} className='media course-feed-row reply'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src={`http://localhost:19001/images/users/${reply.photo_name}`} />
+            <img src={`/imagesapi/users/${reply.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
@@ -197,7 +197,7 @@ class CommentFeed extends Component {
       <article className='media course-feed-row'>
         <figure className='media-left'>
           <p className='image is-64x64'>
-            <img src={`http://localhost:19001/images/users/${this.props.feed.photo_name}`} />
+            <img src={`/imagesapi/users/${this.props.feed.photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>

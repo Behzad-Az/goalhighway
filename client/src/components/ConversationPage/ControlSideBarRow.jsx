@@ -16,7 +16,7 @@ class ControlSideBarRow extends Component {
       <article className='media control-bar-row' onClick={() => this.props.selectConversation(this.props.conversation.id)}>
         <figure className='media-left'>
           <p className='image is-48x48'>
-            <img src={`http://localhost:19001/images/users/${this.props.conversation.messages[0].photo_name}`} />
+            <img src={`/imagesapi/users/${this.props.conversation.messages[0].photo_name}`} />
           </p>
         </figure>
         <div className='media-content'>
