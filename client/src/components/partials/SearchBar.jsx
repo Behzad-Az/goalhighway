@@ -35,15 +35,10 @@ class SearhBar extends Component {
     }
   }
 
-  _navigatePage(link) {
-    this.setState({ searchResults: [], showResults: false });
-    browserHistory.push(link);
-  }
-
   _conditionData(resJSON) {
     let searchResults = [];
-    if (resJSON.length) {
-      resJSON.forEach((result, index) => {
+    if (resJSON.searchResults.length) {
+      resJSON.searchResults.forEach((result, index) => {
         switch (result._type) {
           case 'document':
             searchResults.push(
@@ -82,6 +77,11 @@ class SearhBar extends Component {
       );
     }
     this.setState({ searchResults, showResults: true });
+  }
+
+  _navigatePage(link) {
+    this.setState({ searchResults: [], showResults: false });
+    browserHistory.push(link);
   }
 
   render() {

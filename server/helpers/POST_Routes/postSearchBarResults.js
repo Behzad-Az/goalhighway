@@ -3,7 +3,18 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
   const search = (index, body) => esClient.search({ index, body });
   const query = req.body.query.trim();
 
-  let docSearchBody = {
+  const validateInputs = () => new Promise((resolve, reject) => {
+    if (
+      query.length >= 3 && query.length <= 40 &&
+      query.search(/[^a-zA-Z\ \-\(\)\'\\/\\.]/) == -1
+    ) {
+      resolve();
+    } else {
+      reject('Invalid search query.');
+    }
+  });
+
+  const docSearchBody = {
     size: 5,
     from: 0,
     query: {
@@ -28,7 +39,7 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
     }
   };
 
-  let courseSearchBody = {
+  const courseSearchBody = {
     size: 5,
     from: 0,
     query: {
@@ -48,7 +59,7 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
     }
   };
 
-  let institutionSearchBody = {
+  const institutionSearchBody = {
     size: 2,
     from: 0,
     query: {
@@ -67,7 +78,7 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
     }
   };
 
-  let companySearchBody = {
+  const companySearchBody = {
     size: 2,
     from: 0,
     query: {
@@ -86,15 +97,17 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
     }
   };
 
-  Promise.all([
+  validateInputs()
+  .then(() => Promise.all([
     search('search_catalogue', docSearchBody),
     search('search_catalogue', courseSearchBody),
     search('search_catalogue', institutionSearchBody),
     search('search_catalogue', companySearchBody)
-  ]).then (results => {
-    let output = results[0].hits.hits.concat(results[1].hits.hits).concat(results[2].hits.hits).concat(results[3].hits.hits);
-    res.send(output);
-  }).catch(err => {
+  ]))
+  .then (results => res.send({
+    searchResults: results[0].hits.hits.concat(results[1].hits.hits).concat(results[2].hits.hits).concat(results[3].hits.hits)
+  }))
+  .catch(err => {
     console.error('Error inside postSearchBarResults.js: ', err);
     res.send(false);
   });
