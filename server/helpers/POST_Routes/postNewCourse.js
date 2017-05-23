@@ -43,10 +43,11 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
 
   const getSearchData = trx => knex('institutions')
     .transacting(trx)
-    .select('inst_long_name', 'inst_short_name')
-    .where('id', req.body.instId);
+    .select('inst_display_name')
+    .where('id', req.body.instId)
+    .whereNull('deleted_at');
 
-  const addDocToSearchCatalogue = esBodyObj => {
+  const addToElasticSearch = esBodyObj => {
     const indexObj = {
       index: {
         _index: 'search_catalogue',
@@ -77,13 +78,13 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
         return insertCourse(newCourseObj, trx);
       }
     })
-    .then(course_id => {
-      esBodyObj.id = course_id[0];
+    .then(courseId => {
+      esBodyObj.id = courseId[0];
       return getSearchData(trx);
     })
     .then(courseInfo => {
-      esBodyObj.inst_name = `${courseInfo[0].inst_long_name} ${courseInfo[0].inst_short_name}`;
-      return addDocToSearchCatalogue(esBodyObj);
+      esBodyObj.inst_name = courseInfo[0].inst_display_name;
+      return addToElasticSearch(esBodyObj);
     })
     .then(() => trx.commit())
     .catch(err => {

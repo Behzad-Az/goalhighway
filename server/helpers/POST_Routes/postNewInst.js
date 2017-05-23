@@ -11,6 +11,8 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
   const inst_long_name = req.body.instLongName.trim();
   const inst_short_name = req.body.instShortName.trim() || 'not avail.';
   const inst_display_name = inst_short_name === 'not avail.' ? inst_long_name : inst_long_name + ` (${inst_short_name})`;
+  const country = req.body.country;
+  const province = req.body.province;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
@@ -18,7 +20,7 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
       inst_long_name.search(/[^a-zA-Z\ \-\'\.]/) == -1 &&
       inst_short_name.length >= 2 && inst_short_name.length <= 10 &&
       inst_short_name.search(/[^a-zA-Z\ \-\'\.]/) == -1 &&
-      provinceList[req.body.country] && provinceList[req.body.country].includes(req.body.province)
+      provinceList[country] && provinceList[country].includes(province)
     ) {
       resolve();
     } else {
@@ -28,8 +30,8 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
 
   const checkForDuplicateInst = () => knex('institutions')
     .where('inst_long_name', inst_long_name)
-    .andWhere('country', req.body.country)
-    .andWhere('province', req.body.province)
+    .andWhere('country', country)
+    .andWhere('province', province)
     .count('id as duplicate');
 
   const insertInst = (newInstObj, trx) => knex('institutions')
@@ -74,8 +76,8 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
           inst_display_name,
           inst_long_name,
           inst_short_name,
-          country: req.body.country,
-          province: req.body.province
+          country,
+          province
         };
         return insertInst(newInstObj, trx);
       }

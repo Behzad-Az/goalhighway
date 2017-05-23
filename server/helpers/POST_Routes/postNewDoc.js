@@ -39,7 +39,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   const getSearchData = () => knex('courses')
     .innerJoin('institutions', 'inst_id', 'institutions.id')
-    .select('institutions.id', 'inst_long_name', 'inst_short_name', 'short_display_name')
+    .select('institutions.id', 'institutions.inst_display_name', 'courses.short_display_name')
     .where('courses.id', course_id);
 
   const determineCategory = type => {
@@ -134,7 +134,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
         course_id,
         course_name: searchData[0].short_display_name,
         inst_id: searchData[0].id,
-        inst_name: `${searchData[0].inst_long_name} ${searchData[0].inst_short_name}`
+        inst_name: searchData[0].inst_display_name
       };
       return addDocToElasticSearch(esDocObj);
     })

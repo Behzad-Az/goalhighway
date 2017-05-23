@@ -81,7 +81,7 @@ const getRightSideBarData = (req, res, knex, user_id) => {
     instPhoto = results[0][0].photo_name;
     studentCount = results[1][0].studentCount;
     courseCount = results[2][0].courseCount;
-    let courseIds = results[3].map(course => course.course_id);
+    const courseIds = results[3].map(course => course.course_id);
     return Promise.all([
       getTutorCount(courseIds),
       getRevCount(courseIds),
@@ -89,22 +89,16 @@ const getRightSideBarData = (req, res, knex, user_id) => {
       getResumeFeeds()
     ]);
   })
-  .then(results => {
-    tutorCount = results[0][0].tutorCount;
-    revCount = results[1][0].revCount;
-    let feeds = categorizeFeed(results[2], 'courseFeed')
-                .concat(categorizeFeed(results[3], 'resumeReviewFeed'));
-    res.send({
-      instName,
-      instPhoto,
-      instId: req.session.inst_id,
-      studentCount,
-      courseCount,
-      tutorCount,
-      revCount,
-      feeds
-    });
-  })
+  .then(results => res.send({
+    instName,
+    instPhoto,
+    instId: req.session.inst_id,
+    studentCount,
+    courseCount,
+    tutorCount: results[0][0].tutorCount,
+    revCount: results[1][0].revCount,
+    feeds: categorizeFeed(results[2], 'courseFeed').concat(categorizeFeed(results[3], 'resumeReviewFeed'))
+  }))
   .catch(err => {
     console.error('Error inside getRightSideBarData.js: ', err);
     res.send(false);

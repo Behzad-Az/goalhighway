@@ -37,8 +37,8 @@ const bulkIndex = function bulkIndex(index, type, data) {
 
 const populate = function populate() {
   const institutions = [
-    { id: 1, inst_name: 'University of British Columbia UBC' },
-    { id: 2, inst_name: 'Simon Fraser University SFU' }
+    { id: 1, inst_name: 'University of British Columbia (UBC)' },
+    { id: 2, inst_name: 'Simon Fraser University (SFU)' }
   ];
   console.log(`${institutions.length} items parsed from data file`);
   bulkIndex('search_catalogue', 'institution', institutions);
