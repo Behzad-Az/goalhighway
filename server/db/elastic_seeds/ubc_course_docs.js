@@ -51,24 +51,24 @@ const populate = function populate() {
       course_id: course.id,
       course_name: course.title
     });
-    docs.push({
-      id: ++id,
-      title: `name_ln_${id}`,
-      kind: 'lecture lectures note notes',
-      inst_id: 1,
-      inst_name: 'University of British Columbia UBC',
-      course_id: course.id,
-      course_name: course.title
-    });
-    docs.push({
-      id: ++id,
-      title: `name_sq_${id}`,
-      kind: 'sample question questions quiz quizzes exam exams final finals midterm midterms',
-      inst_id: 1,
-      inst_name: 'University of British Columbia UBC',
-      course_id: course.id,
-      course_name: course.title
-    });
+    // docs.push({
+    //   id: ++id,
+    //   title: `name_ln_${id}`,
+    //   kind: 'lecture lectures note notes',
+    //   inst_id: 1,
+    //   inst_name: 'University of British Columbia UBC',
+    //   course_id: course.id,
+    //   course_name: course.title
+    // });
+    // docs.push({
+    //   id: ++id,
+    //   title: `name_sq_${id}`,
+    //   kind: 'sample question questions quiz quizzes exam exams final finals midterm midterms',
+    //   inst_id: 1,
+    //   inst_name: 'University of British Columbia UBC',
+    //   course_id: course.id,
+    //   course_name: course.title
+    // });
   });
 
   console.log(`${courses.length} items parsed from data file`);

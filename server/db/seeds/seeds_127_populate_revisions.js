@@ -12,24 +12,27 @@ exports.seed = function(knex, Promise) {
 
   let promiseArr1 = [];
   let promiseArr2 = [];
-  for(let i = 1; i <= 10299; i++) {
+  for(let i = 1; i <= 3433; i++) {
     let randNum = randomNum(5);
     let type, title;
 
-    switch (i % 3) {
-      case 1:
-        type = 'asg_report';
-        title = `name_ar_${i}`;
-        break;
-      case 2:
-        type = 'lecture_note';
-        title = `name_ln_${i}`;
-        break;
-      case 0:
-        type = 'sample_question';
-        title = `name_sq_${i}`;
-        break;
-    }
+    type = 'asg_report';
+    title = `name_ar_${i}`;
+
+    // switch (i % 3) {
+    //   case 1:
+    //     type = 'asg_report';
+    //     title = `name_ar_${i}`;
+    //     break;
+    //   case 2:
+    //     type = 'lecture_note';
+    //     title = `name_ln_${i}`;
+    //     break;
+    //   case 0:
+    //     type = 'sample_question';
+    //     title = `name_sq_${i}`;
+    //     break;
+    // }
 
     const determineCategory = type => {
       let output;
@@ -44,7 +47,7 @@ exports.seed = function(knex, Promise) {
           output = 'new_sample_question';
           break;
         default:
-          output = 'new_document';
+          output = 'new_asg_report';
           break;
       }
       return output;
