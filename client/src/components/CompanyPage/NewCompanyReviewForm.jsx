@@ -102,7 +102,7 @@ class NewCompanyReviewForm extends Component {
     .then(resJSON => {
       if (resJSON) {
         this.reactAlert.showAlert('review posted', 'info');
-        // this.props.reload();
+        this.props.reload();
       }
       else { throw 'Server returned false'; }
     })

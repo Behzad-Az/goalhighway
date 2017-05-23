@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Navbar from '../Navbar/Navbar.jsx';
+import ReactAlert from '../partials/ReactAlert.jsx';
 import TopRow from './TopRow.jsx';
 import JobsContainer from './JobsContainer.jsx';
 import ReviewsContainer from './ReviewsContainer.jsx';
@@ -11,6 +12,7 @@ import SearchBar from '../partials/SearchBar.jsx';
 class CompanyPage extends Component {
   constructor(props) {
     super(props);
+    this.reactAlert = new ReactAlert();
     this.state = {
       qasState: 0,
       companyReviewsState: 0
@@ -33,10 +35,11 @@ class CompanyPage extends Component {
           <SearchBar />
           <TopRow companyId={this.props.routeParams.company_id} updateCompState={this._updateCompState} />
           <JobsContainer companyId={this.props.routeParams.company_id} />
-          <ReviewsContainer companyId={this.props.routeParams.company_id} />
+          <ReviewsContainer companyId={this.props.routeParams.company_id} parentState={this.state.companyReviewsState} />
           <QaContainer companyId={this.props.routeParams.company_id} parentState={this.state.qasState} />
         </div>
         <RightSideBar />
+        { this.reactAlert.container }
       </div>
     );
   }

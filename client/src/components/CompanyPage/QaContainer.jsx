@@ -7,6 +7,7 @@ class JobsContainer extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
+      showContainer: true,
       companyId: this.props.companyId,
       qas: [],
       noMoreFeeds: false,
@@ -81,10 +82,16 @@ class JobsContainer extends Component {
         <div className='qa-container'>
           <h1 className='header'>
             Interview Questions and Answers:
-            <i className='fa fa-angle-down' aria-hidden='true' />
+            <i
+              className={this.state.showContainer ? 'fa fa-angle-down' : 'fa fa-angle-up'}
+              aria-hidden='true'
+              onClick={() => this.setState({ showContainer: !this.state.showContainer })}
+            />
           </h1>
-          { this.state.qas.map(qa => <QaRow key={qa.id} qa={qa} companyId={this.state.companyId} reload={() => this._loadComponentData(true)} />) }
-          { this._renderLoadMoreBtn() }
+          <div className={this.state.showContainer ? 'is-visible' : 'is-hidden'}>
+            { this.state.qas.map(qa => <QaRow key={qa.id} qa={qa} companyId={this.state.companyId} reload={() => this._loadComponentData(true)} />) }
+            { this._renderLoadMoreBtn() }
+          </div>
         </div>
       );
     } else {

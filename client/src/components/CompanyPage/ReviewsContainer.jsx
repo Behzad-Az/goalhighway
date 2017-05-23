@@ -7,6 +7,7 @@ class ReviewsContainer extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
+      showContainer: true,
       companyId: this.props.companyId,
       reviews: [],
       noMoreFeeds: false,
@@ -83,10 +84,16 @@ class ReviewsContainer extends Component {
         <div className='reviews-container'>
           <h1 className='header'>
             Company Reviews:
-            <i className='fa fa-angle-down' aria-hidden='true' />
+            <i
+              className={this.state.showContainer ? 'fa fa-angle-down' : 'fa fa-angle-up'}
+              aria-hidden='true'
+              onClick={() => this.setState({ showContainer: !this.state.showContainer })}
+            />
           </h1>
-          { this.state.reviews.map(review => <ReviewRow key={review.id} review={review} /> ) }
-          { this._renderLoadMoreBtn() }
+          <div className={this.state.showContainer ? 'is-visible' : 'is-hidden'}>
+            { this.state.reviews.map(review => <ReviewRow key={review.id} review={review} /> ) }
+            { this._renderLoadMoreBtn() }
+          </div>
         </div>
       );
     } else {

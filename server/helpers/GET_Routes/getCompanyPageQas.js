@@ -5,7 +5,7 @@ const getCompanyPageQas = (req, res, knex, user_id) => {
     .where('company_id', req.params.company_id)
     .whereNull('deleted_at')
     .orderBy('created_at', 'desc')
-    .limit(10)
+    .limit(5)
     .offset(parseInt(req.query.qasoffset));
 
   const getAnswers = question => new Promise((resolve, reject) => {

@@ -22,10 +22,20 @@
         .fa.disabled { pointer-events: none; cursor: default; opacity: 0.5 }
         p { font-size: 13px; }
       }
+      .top-row-star {
+        display: inline-block; width: 50%; text-align: center;
+        a { color: inherit; }
+        .outer {
+          position: relative; display: inline-block; &:hover { transform: scale(1.1); }
+          .inner { display: inline-block; position: absolute; top: 0; left: 0; overflow: hidden; }
+          i { cursor: pointer; font-size: 35px; }
+        }
+      }
     }
 
     .jobs-container {
       margin-bottom: $default_margin/2;
+      .fa { cursor: pointer; }
       .job-row {
         background-color: white; padding: $default_margin/2; margin: 0 0 $default_margin/2 0; border: 1px darken($default-bg-color, 20%) solid;
         .tag { margin: 3px; background-color: $light-blue; color: white; font-weight: bold; }
@@ -42,6 +52,7 @@
 
     .qa-container {
       margin-bottom: $default_margin/2;
+      .fa { cursor: pointer; }
       .qa-row {
         background-color: white; padding: $default_margin/2; margin-top: $default_margin/2; border: 1px darken($default-bg-color, 20%) solid;
         .button.new-answer {  height: 100%; font-size: 10px; color: $dark-blue; }
@@ -59,6 +70,7 @@
 
     .reviews-container {
       margin-bottom: $default_margin/2;
+      .fa { cursor: pointer; }
       .review-row {
         margin: $default_margin/2 0; border: 1px #ccc solid; border-radius: 10px; padding: $default_margin/2 $default_margin/2 $default_margin/2 0; background-color: white;
         .meta-info {

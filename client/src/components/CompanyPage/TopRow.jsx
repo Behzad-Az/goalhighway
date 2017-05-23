@@ -101,13 +101,20 @@ class TopRow extends Component {
             { this.state.companyInfo.name }
           </h1>
 
-          { this._createBtnDiv('fa fa-upload', <p>New Interview<br/>Question</p>,
+          { this._createBtnDiv('fa fa-question', <p>New Interview<br/>Question</p>,
                                 () => this._toggleFormModal('showNewQuestionForm'), 'inherit',
                                 true, true) }
 
-          { this._createBtnDiv('fa fa-trash', <p>New Job<br/>Review</p>,
-                                () => this._toggleFormModal('showNewCompanyReviewForm'), 'inherit',
-                                true, true) }
+          <div className='top-row-star' onClick={() => this._toggleFormModal('showNewCompanyReviewForm')}>
+            <div className='outer'>
+              <i className='fa fa-star-o' aria-hidden='true' />
+              <div className='inner' style={{ width: `${this.state.companyInfo.avgRating}%` }}>
+                <i className='fa fa-star' aria-hidden='true' />
+              </div>
+            </div>
+            <p>New<br/>Review</p>
+          </div>
+
         </div>
       );
     } else {
