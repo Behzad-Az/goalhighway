@@ -1,13 +1,14 @@
 // Update with your config settings.
 'use strict'
 
-const config = require('./config_local');
+const localConfig = require('./config_local');
+const prodConfig = require('./config_prod');
 
 module.exports = {
 
   development: {
     client: 'pg',
-    connection: config,
+    connection: localConfig,
     pool: {
       min: 2,
       max: 10
@@ -34,12 +35,8 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
+    client: 'pg',
+    connection: prodConfig,
     pool: {
       min: 2,
       max: 10
