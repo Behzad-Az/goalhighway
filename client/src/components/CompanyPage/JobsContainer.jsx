@@ -41,9 +41,7 @@ class JobsContainer extends Component {
     })
     .then(response => response.json())
     .then(resJSON => this._conditionData(resJSON, freshReload))
-    .catch((err) => {
-      this.setState({ dataLoaded: true, pageError: true });
-    });
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   _conditionData(resJSON, freshReload) {

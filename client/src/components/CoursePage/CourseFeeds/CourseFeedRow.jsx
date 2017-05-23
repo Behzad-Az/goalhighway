@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router';
 import DocumentFeed from './DocumentFeed.jsx';
 import TutorFeed from './TutorFeed.jsx';
 import CommentFeed from './CommentFeed.jsx';
