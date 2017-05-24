@@ -12,27 +12,24 @@ exports.seed = function(knex, Promise) {
 
   let promiseArr1 = [];
   let promiseArr2 = [];
-  for(let i = 1; i <= 3433; i++) {
+  for(let i = 1; i <= 3433 * 3; i++) {
     let randNum = randomNum(5);
     let type, title;
 
-    type = 'asg_report';
-    title = `name_ar_${i}`;
-
-    // switch (i % 3) {
-    //   case 1:
-    //     type = 'asg_report';
-    //     title = `name_ar_${i}`;
-    //     break;
-    //   case 2:
-    //     type = 'lecture_note';
-    //     title = `name_ln_${i}`;
-    //     break;
-    //   case 0:
-    //     type = 'sample_question';
-    //     title = `name_sq_${i}`;
-    //     break;
-    // }
+    switch (i % 3) {
+      case 1:
+        type = 'asg_report';
+        title = `name_ar_${i}`;
+        break;
+      case 2:
+        type = 'lecture_note';
+        title = `name_ln_${i}`;
+        break;
+      case 0:
+        type = 'sample_question';
+        title = `name_sq_${i}`;
+        break;
+    }
 
     const determineCategory = type => {
       let output;

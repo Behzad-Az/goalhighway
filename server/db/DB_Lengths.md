@@ -1,3 +1,10 @@
+PRODUCTION:
+-------------------------------------------------------
+Change .development to .production inside server.js
+Change IP address on base.js
+Change seed files to only include institutions, programs, institution_programs, courses, profs, and companies.
+
+
 Checked Files:
 -------------------------------------------------------
 
