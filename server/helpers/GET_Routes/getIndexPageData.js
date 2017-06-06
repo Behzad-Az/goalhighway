@@ -8,6 +8,7 @@ const getIndexPageData = (req, res, knex, user_id) => {
     .select('courses.id', 'courses.short_display_name', 'courses.course_desc')
     .orderBy('courses.short_display_name')
     .where('course_user.user_id', user_id)
+    .whereNull('users.deleted_at')
     .whereNull('course_user.unsub_date')
     .whereNull('course_user.unsub_reason')
     .whereNull('users.deleted_at')

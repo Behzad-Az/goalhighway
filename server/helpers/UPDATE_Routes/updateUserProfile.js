@@ -70,6 +70,7 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
 
   const knexUpdateUser = updatedObj => knex('users')
     .where('id', user_id)
+    .whereNull('deleted_at')
     .update(updatedObj);
 
   if (req.body.type === 'profile') {
@@ -110,7 +111,7 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
     validateJobQueryInputs(postal_code, job_distance, job_kind, job_query)
     .then(() => getLocation(postal_code))
     .then(coordinates => {
-      let knexObj = {
+      updatedUserObj = {
         lat: coordinates.lat,
         lon: coordinates.lon,
         postal_code,
@@ -118,9 +119,17 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
         job_kind,
         job_query
       };
-      return knex('users').where('id', user_id).update(knexObj);
+      return knexUpdateUser(updatedUserObj);
     })
-    .then(() => res.send(true))
+    .then(() => {
+      req.session.postal_code = updatedUserObj.postal_code;
+      req.session.lat = updatedUserObj.lat;
+      req.session.lon = updatedUserObj.lon;
+      req.session.job_kind = updatedUserObj.job_kind;
+      req.session.job_query = updatedUserObj.job_query;
+      req.session.job_distance = updatedUserObj.job_distance;
+      res.send(true);
+    })
     .catch(err => {
       console.error('Error inside updateUserProfile.js: ', err);
       res.send(false);

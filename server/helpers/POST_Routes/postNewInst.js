@@ -17,9 +17,9 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       inst_long_name.length >= 5 && inst_long_name.length <= 60 &&
-      inst_long_name.search(/[^a-zA-Z\ \-\'\.]/) == -1 &&
+      inst_long_name.search(/[^a-zA-Z\ \-\_\'\.]/) == -1 &&
       inst_short_name.length >= 2 && inst_short_name.length <= 10 &&
-      inst_short_name.search(/[^a-zA-Z\ \-\'\.]/) == -1 &&
+      inst_short_name.search(/[^a-zA-Z\ \-\_\'\.]/) == -1 &&
       provinceList[country] && provinceList[country].includes(province)
     ) {
       resolve();

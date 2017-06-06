@@ -21,6 +21,7 @@ const postLogin = (req, res, knex, bcrypt) => {
     .innerJoin('institution_program', 'inst_prog_id', 'institution_program.id')
     .select(
       'users.id', 'users.username', 'users.photo_name', 'users.inst_prog_id', 'users.email', 'users.user_year', 'users.password', 'users.created_at',
+      'users.postal_code', 'users.job_query', 'users.job_kind', 'users.job_distance', 'users.lat', 'users.lon',
       'institution_program.inst_id', 'institution_program.prog_id'
     )
     .where('username', username)
@@ -50,13 +51,19 @@ const postLogin = (req, res, knex, bcrypt) => {
       req.session.user_year = currUser.user_year;
       req.session.photo_name = currUser.photo_name;
       req.session.created_at = currUser.created_at;
+      req.session.postal_code = currUser.postal_code;
+      req.session.lat = currUser.lat;
+      req.session.lon = currUser.lon;
+      req.session.job_kind = currUser.job_kind;
+      req.session.job_query = currUser.job_query;
+      req.session.job_distance = currUser.job_distance;
       res.send(true);
     } else {
       throw 'Invalid username and password';
     }
   })
   .catch(err => {
-    console.error('Error inside postLogin.js: ', err);
+    console.error('Error inside ', err);
     res.send(false);
   });
 

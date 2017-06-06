@@ -17,10 +17,10 @@ const postNewCompanyReview = (req, res, knex, user_id) => {
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       position.length >= 3 && position.length <= 60 &&
-      position.search(/[^a-zA-Z\ \-\(\)\'\\/\\.]/) == -1 &&
+      position.search(/[^a-zA-Z0-9\ \-\_\(\)\'\\/\\.]/) == -1 &&
       ['summer', 'internship', 'junior'].includes(position_type) &&
       reviewer_background.length >= 3 && reviewer_background.length <= 60 &&
-      reviewer_background.search(/[^a-zA-Z\ \-\(\)\'\\/\\.]/) == -1 &&
+      reviewer_background.search(/[^a-zA-Z0-9\ \-\_\(\)\'\\/\\.]/) == -1 &&
       [2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006].includes(start_year) &&
       ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].includes(start_month) &&
       [1, 2, 3, 4].includes(work_duration) &&

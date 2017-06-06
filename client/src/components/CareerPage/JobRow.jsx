@@ -68,7 +68,7 @@ class JobRow extends Component {
               <Link><button className='button'>Apply Now!</button></Link>
               <strong>{this.props.job.title}</strong>
               <br />
-              <Link to={`/companies/${this.props.job.company_id}`}>@{this.props.job.company}</Link>
+              <Link to={`/companies/${this.props.job.company_id}`}>@{this.props.job.company_name}</Link>
               <br />
               Job Level: {this.props.job.kind}
               <br />

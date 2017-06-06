@@ -60,9 +60,9 @@ class PersonalInformation extends Component {
   }
 
   _handleChange(e) {
-    let obj = {};
-    obj[e.target.name] = e.target.value;
-    this.setState(obj);
+    let newState = {};
+    newState[e.target.name] = e.target.value;
+    this.setState(newState);
   }
 
   _toggleView() {
@@ -173,16 +173,20 @@ class PersonalInformation extends Component {
 
             <div className='control'>
               <label className='label'>Username:</label>
-              <input type='text' className='input is-primary'
-                     placeholder='Enter username' name='username'
+              <input type='text'
+                     className='input'
+                     placeholder='Enter username'
+                     name='username'
                      defaultValue={this.state.username}
                      onChange={this._handleChange} />
             </div>
 
             <div className='control'>
               <label className='label'>Email:</label>
-              <input type='text' className='input is-primary'
-                     placeholder='Enter email' name='email'
+              <input type='text'
+                     className='input'
+                     placeholder='Enter email'
+                     name='email'
                      defaultValue={this.state.email}
                      onChange={this._handleChange} />
             </div>

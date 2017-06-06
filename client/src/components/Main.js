@@ -12,6 +12,7 @@ import CareerPage from './CareerPage/CareerPage.jsx';
 import CompanyPage from './CompanyPage/CompanyPage.jsx';
 import FeedPage from './FeedPage/FeedPage.jsx';
 import ConversationPage from './ConversationPage/ConversationPage.jsx';
+import NewJobPage from './NewJobPage/NewJobPage.jsx';
 
 browserHistory.listen(location => {
   if (location.hash) {
@@ -74,6 +75,7 @@ class App extends Component {
         <Route path='/institutions/:inst_id' component={InstPage} onEnter={this._validateAuth} />
         <Route path='/companies/:company_id' component={CompanyPage} onEnter={this._validateAuth} />
         <Route path='/conversations' component={ConversationPage} onEnter={this._validateAuth} />
+        <Route path='/post_job' component={NewJobPage} onEnter={this._validateAuth} />
         <Route path='*' component={IndexPage} onEnter={this._validateAuth} />
       </Router>
     );

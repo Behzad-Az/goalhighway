@@ -14,7 +14,8 @@ class SearhBar extends Component {
   }
 
   _handleSearch(e) {
-    if (e.target.value.length > 2) {
+    const query = e.target.value;
+    if (query.length > 2) {
       fetch('/api/searchbar', {
         method: 'POST',
         credentials: 'same-origin',
@@ -22,7 +23,10 @@ class SearhBar extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ query: e.target.value })
+        body: JSON.stringify({
+          query,
+          searchType: 'mainSearchBar'
+        })
       })
       .then(response => response.json())
       .then(resJSON => {
@@ -88,7 +92,11 @@ class SearhBar extends Component {
     return (
       <div className='search-bar-container'>
         <p className='search-bar control has-icon'>
-          <input className='search-bar input is-medium' type='test' placeholder='search courses, documents and employers here...' onChange={this._handleSearch} />
+          <input
+            className='search-bar input is-medium'
+            type='text'
+            placeholder='search courses, documents and employers here...'
+            onChange={this._handleSearch} />
           <span className='icon is-medium'>
             <i className='fa fa-search' />
           </span>

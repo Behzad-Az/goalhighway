@@ -42,10 +42,10 @@ const InvalidCharChecker = (str, maxChar, type) => {
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
       break;
     case 'instLongName':
-      regEx = new RegExp(/[^a-zA-Z\ \-\'\.]/);
+      regEx = new RegExp(/[^a-zA-Z\ \-\_\'\.]/);
       break;
     case 'instShortName':
-      regEx = new RegExp(/[^a-zA-Z\ \-\'\.]/);
+      regEx = new RegExp(/[^a-zA-Z\ \-\_\'\.]/);
       break;
     case 'interviewAnswer':
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
@@ -68,14 +68,14 @@ const InvalidCharChecker = (str, maxChar, type) => {
     case 'resumeIntent':
       regEx = new RegExp(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/);
       break;
-    case 'userPostalCode':
+    case 'postalCode':
       regEx = new RegExp(/[^a-zA-Z0-9\ ]/);
       break;
     case 'jobPosition':
-      regEx = new RegExp(/[^a-zA-Z\ \-\(\)\'\\/\\.]/);
+      regEx = new RegExp(/[^a-zA-Z0-9\ \-\_\(\)\'\\/\\.]/);
       break;
     case 'reviewerBackground':
-      regEx = new RegExp(/[^a-zA-Z\ \-\(\)\'\\/\\.]/);
+      regEx = new RegExp(/[^a-zA-Z0-9\ \-\_\(\)\'\\/\\.]/);
       break;
     case 'jobPros':
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
@@ -83,6 +83,23 @@ const InvalidCharChecker = (str, maxChar, type) => {
     case 'jobCons':
       regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
       break;
+
+    case 'companyName':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \-\_\(\)\'\\/\\.]/);
+      break;
+    case 'jobPhotoName':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \-\_\.]/);
+      break;
+    case 'jobSearchTags':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \-\_]/);
+      break;
+    case 'jobLink':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/);
+      break;
+    case 'jobLocation':
+      regEx = new RegExp(/[^a-zA-Z0-9\ \-\_\(\)\'\,\.]/);
+      break;
+
     default:
       regEx = 'iL5mdXEbyY';
       break;

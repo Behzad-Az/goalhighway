@@ -23,9 +23,9 @@ class NewDocForm extends Component {
   }
 
   _handleChange(e) {
-    let stateObj = {};
-    stateObj[e.target.name] = e.target.value;
-    this.setState(stateObj);
+    let newState = {};
+    newState[e.target.name] = e.target.value;
+    this.setState(newState);
   }
 
   _handleFileChange(e) {
@@ -36,7 +36,7 @@ class NewDocForm extends Component {
   _validateForm() {
     return this.state.title.length >= this.formLimits.title.min &&
            !InvalidCharChecker(this.state.title, this.formLimits.title.max, 'revTitle') &&
-           this.state.revDesc.length >= this.formLimits.revDesc.min, 'revDesc' &&
+           this.state.revDesc.length >= this.formLimits.revDesc.min &&
            !InvalidCharChecker(this.state.revDesc, this.formLimits.revDesc.max, 'revDesc') &&
            this.state.type &&
            this.state.file &&
@@ -153,10 +153,11 @@ class NewDocForm extends Component {
               </span>
             </p>
           </section>
-          <footer className='modal-card-foot'>
+
+          <div className='block'>
             <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewDocPost}>Submit</button>
             <button className='button' onClick={this.props.toggleModal}>Cancel</button>
-          </footer>
+          </div>
         </div>
       </div>
     );

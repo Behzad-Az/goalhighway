@@ -7,10 +7,10 @@
       },
       "id": 1,
       "company_id": 1,
+      "company_name": "Home Inc.",
       "title": "Software Engineer",
       "kind": "internship",
       "link": "some_link",
-      "company": "Home Inc.",
       "photo_name": "home_inc.png",
       "search_text": "software engineer javascript front-end"
     }
@@ -24,10 +24,10 @@
       },
       "id": 2,
       "company_id": 2,
+      "company_name": "Ballard Power Systems",
       "title": "Manufacturing Engineer",
       "kind": "summer",
       "link": "some_link",
-      "company": "Ballard Power Systems",
       "photo_name": "ballard_power_systems.png",
       "search_text": "mechanical engineer manufacturing sustainability"
     }
@@ -41,10 +41,10 @@
       },
       "id": 3,
       "company_id": 3,
+      "company_name": "Apple Inc.",
       "title": "Research Engineer",
       "kind": "junior",
       "link": "some_link",
-      "company": "Apple Inc.",
       "photo_name": "apple_inc.png",
       "search_text": "electrical engineer R&D instrumentation"
     }

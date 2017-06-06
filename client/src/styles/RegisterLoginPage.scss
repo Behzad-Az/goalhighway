@@ -31,7 +31,6 @@
     padding: $default_margin/2 $default_margin;
     .card {
       display: inline-block; float: right; width: 360px; background-color: $default-bg-color; border-radius: 5px;
-      .card-content .control .input { border-color: #ccc; }
       a { color: $dark-blue; font-weight: bold; }
     }
   }

@@ -29,7 +29,7 @@ class UserProfilePage extends Component {
 
   conditionData(resJSON) {
     if (resJSON) {
-      let userInfo = {
+      const userInfo = {
         username: resJSON.userInfo.username,
         email: resJSON.userInfo.email,
         instDisplayName: resJSON.userInfo.inst_display_name,
@@ -45,6 +45,7 @@ class UserProfilePage extends Component {
   }
 
   render() {
+    console.log("i'm here 0: ", this.state.userInfo);
     return (
       <div className='profile-page'>
         <Navbar />

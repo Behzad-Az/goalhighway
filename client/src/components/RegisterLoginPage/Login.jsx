@@ -21,6 +21,7 @@ class Login extends Component {
 
   componentDidMount() {
     document.title = 'GoalHwy - Login';
+    this._handleLogin();
   }
 
   _handleChange(e) {
@@ -78,7 +79,7 @@ class Login extends Component {
               <input
                 type='text'
                 name='username'
-                className='input is-primary'
+                className='input'
                 placeholder='Enter username'
                 onChange={this._handleChange}
                 disabled={this.state.processing}
@@ -92,7 +93,7 @@ class Login extends Component {
               <input
                 type='password'
                 name='password'
-                className='input is-primary'
+                className='input'
                 placeholder='Enter password'
                 onChange={this._handleChange}
                 disabled={this.state.processing}

@@ -189,7 +189,7 @@ class Register extends Component {
             </label>
             <input
               type='text'
-              className='input is-primary'
+              className='input'
               placeholder='Enter username'
               name='username'
               onChange={this._getUserAvailability}
@@ -201,7 +201,7 @@ class Register extends Component {
             </label>
             <input
               type='email'
-              className='input is-primary'
+              className='input'
               placeholder='Enter email'
               name='email'
               onChange={this._getEmailAvailability}
@@ -213,7 +213,7 @@ class Register extends Component {
             </label>
             <input
               type='password'
-              className='input is-primary'
+              className='input'
               placeholder='minium six characters | one letter | one digit'
               name='password'
               onChange={this._handleChange}
@@ -225,7 +225,7 @@ class Register extends Component {
             </label>
             <input
               type='password'
-              className='input is-primary'
+              className='input'
               placeholder='minium six characters | one letter | one digit'
               name='passwordConfirm'
               onChange={this._handleChange}

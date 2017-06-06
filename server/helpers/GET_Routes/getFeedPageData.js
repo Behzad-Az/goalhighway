@@ -6,6 +6,7 @@ const getFeedPageData = (req, res, knex, user_id) => {
     .innerJoin('course_user', 'users.id', 'user_id')
     .select('course_user.course_id')
     .where('users.id', user_id)
+    .whereNull('users.deleted_at')
     .whereNull('course_user.unsub_date')
     .whereNull('course_user.unsub_reason');
 
@@ -38,6 +39,7 @@ const getFeedPageData = (req, res, knex, user_id) => {
 
   const updateUserFeedDate = () => knex('users')
     .where('id', user_id)
+    .whereNull('deleted_at')
     .update('last_feed_at', knex.fn.now());
 
   const categorizeFeed = (feedArr, feedType) => feedArr.map(feed => {

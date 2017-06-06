@@ -4,6 +4,8 @@ const getUserNavBarData = (req, res, knex, user_id) => {
     .innerJoin('course_user', 'users.id', 'user_id')
     .select('course_user.course_id')
     .where('users.id', user_id)
+    .whereNull('users.deleted_at')
+    .whereNull('users.deleted_at')
     .whereNull('course_user.unsub_date')
     .whereNull('course_user.unsub_reason');
 
@@ -24,7 +26,8 @@ const getUserNavBarData = (req, res, knex, user_id) => {
 
   const getLastUserFeedDate = () => knex('users')
     .select('last_feed_at')
-    .where('id', user_id);
+    .where('id', user_id)
+    .whereNull('deleted_at');
 
   getCourseIds()
   .then(courseIds => Promise.all([

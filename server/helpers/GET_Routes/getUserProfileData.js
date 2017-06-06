@@ -10,7 +10,8 @@ const getUserProfileData = (req, res, knex, user_id) => {
       'institution_program.inst_id', 'institution_program.prog_id',
       'institutions.inst_display_name', 'programs.prog_display_name'
     )
-    .where('users.id', user_id);
+    .where('users.id', user_id)
+    .whereNull('users.deleted_at');
 
   getUsersInstAndProg()
   .then(results => res.send({ userInfo: results[0] }))

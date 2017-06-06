@@ -165,7 +165,7 @@ class CareerControlBar extends Component {
           <div className='content'>
             <label className='label'>
               Search Area:
-              { InvalidCharChecker(this.state.postalCode, this.formLimits.postalCode.max, 'userPostalCode') && <span className='char-limit'>Invalid</span> }
+              { InvalidCharChecker(this.state.postalCode, this.formLimits.postalCode.max, 'postalCode') && <span className='char-limit'>Invalid</span> }
             </label>
             <div className='geo-criteria'>
               <p className='control'>
@@ -176,7 +176,7 @@ class CareerControlBar extends Component {
                   placeholder='postal code'
                   defaultValue={this.state.postalCode}
                   onChange={this._handleChange}
-                  style={{ borderColor: InvalidCharChecker(this.state.postalCode, this.formLimits.postalCode.max, 'userPostalCode') ? '#9D0600' : '' }} />
+                  style={{ borderColor: InvalidCharChecker(this.state.postalCode, this.formLimits.postalCode.max, 'postalCode') ? '#9D0600' : '' }} />
               </p>
 
               <p className='control'>

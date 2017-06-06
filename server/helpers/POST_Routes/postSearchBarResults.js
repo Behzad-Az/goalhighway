@@ -1,12 +1,14 @@
-const postSearchBarResults = (req, res, knex, user_id, esClient) => {
+const postSearchBarResults = (req, res, esClient) => {
 
   const search = (index, body) => esClient.search({ index, body });
   const query = req.body.query.trim();
+  const searchType = req.body.searchType;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       query.length >= 3 && query.length <= 40 &&
-      query.search(/[^a-zA-Z0-9\ \-\(\)\'\\/\\.]/) == -1
+      query.search(/[^a-zA-Z0-9\ \-\(\)\'\\/\\.]/) == -1 &&
+      ['mainSearchBar', 'companyName'].includes(searchType)
     ) {
       resolve();
     } else {
@@ -98,15 +100,33 @@ const postSearchBarResults = (req, res, knex, user_id, esClient) => {
   };
 
   validateInputs()
-  .then(() => Promise.all([
-    search('search_catalogue', docSearchBody),
-    search('search_catalogue', courseSearchBody),
-    search('search_catalogue', institutionSearchBody),
-    search('search_catalogue', companySearchBody)
-  ]))
-  .then (results => res.send({
-    searchResults: results[0].hits.hits.concat(results[1].hits.hits).concat(results[2].hits.hits).concat(results[3].hits.hits)
-  }))
+  .then(() => {
+    switch (searchType) {
+      case 'mainSearchBar':
+        return Promise.all([
+          search('search_catalogue', docSearchBody),
+          search('search_catalogue', courseSearchBody),
+          search('search_catalogue', institutionSearchBody),
+          search('search_catalogue', companySearchBody)
+        ]);
+      case 'companyName':
+        return search('search_catalogue', companySearchBody);
+    }
+  })
+  .then (results => {
+    switch (searchType) {
+      case 'mainSearchBar':
+        res.send({
+          searchResults: results[0].hits.hits.concat(results[1].hits.hits).concat(results[2].hits.hits).concat(results[3].hits.hits)
+        });
+        break;
+      case 'companyName':
+        res.send({
+          searchResults: results.hits.hits
+        });
+        break;
+    }
+  })
   .catch(err => {
     console.error('Error inside postSearchBarResults.js: ', err);
     res.send(false);

@@ -35,7 +35,7 @@ const googleMapsClient = require('@google/maps').createClient({
 //   }
 // });
 
-const blacklist = ['/api/index', '/api/courses', '/api/users', '/api/docs', '/api/institutions', '/images'];
+const blacklist = ['/api/index', '/api/courses', '/api/users', '/api/docs', '/api/institutions', '/api/searchbar', '/images'];
 
 // ***************************************************
 // MIDDLEWARE
@@ -345,7 +345,7 @@ app.post('/api/register', (req, res) => {
 });
 
 app.post('/api/searchbar', (req, res) => {
-  postSearchBarResults(req, res, knex, req.session.user_id, esClient);
+  postSearchBarResults(req, res, esClient);
 });
 
 app.post('/api/username_availability', (req, res) => {
