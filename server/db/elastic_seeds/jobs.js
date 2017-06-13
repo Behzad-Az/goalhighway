@@ -12,7 +12,7 @@ const deleteIndex = {
 };
 
 const newIndex = {
-  index: 'search_catalogue',
+  index: 'GoalHwyEsDb',
   body: {
     'mappings': {
       'job': {
@@ -69,7 +69,7 @@ const populate = function populate() {
   const jobsRaw = fs.readFileSync('jobs.json');
   const jobs = JSON.parse(jobsRaw);
   console.log(`${jobs.length} items parsed from data file`);
-  bulkIndex('search_catalogue', 'job', jobs);
+  bulkIndex('GoalHwyEsDb', 'job', jobs);
 };
 
 esClient.indices.delete(deleteIndex).then(() => esClient.indices.create(newIndex)).then(() => populate());

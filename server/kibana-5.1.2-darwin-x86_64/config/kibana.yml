@@ -27,7 +27,7 @@
 
 # Kibana uses an index in Elasticsearch to store saved searches, visualizations and
 # dashboards. Kibana creates a new index if the index doesn’t already exist.
-kibana.index: "search_catalogue"
+kibana.index: "GoalHwyEsDb"
 
 # The default application to load.
 #kibana.defaultAppId: "discover"

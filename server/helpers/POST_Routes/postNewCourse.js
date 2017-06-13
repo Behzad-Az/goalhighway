@@ -50,7 +50,7 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
   const addToElasticSearch = esBodyObj => {
     const indexObj = {
       index: {
-        _index: 'search_catalogue',
+        _index: 'GoalHwyEsDb',
         _type: 'course',
         _id: esBodyObj.id
       }

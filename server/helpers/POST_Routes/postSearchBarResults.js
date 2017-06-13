@@ -104,13 +104,13 @@ const postSearchBarResults = (req, res, esClient) => {
     switch (searchType) {
       case 'mainSearchBar':
         return Promise.all([
-          search('search_catalogue', docSearchBody),
-          search('search_catalogue', courseSearchBody),
-          search('search_catalogue', institutionSearchBody),
-          search('search_catalogue', companySearchBody)
+          search('GoalHwyEsDb', docSearchBody),
+          search('GoalHwyEsDb', courseSearchBody),
+          search('GoalHwyEsDb', institutionSearchBody),
+          search('GoalHwyEsDb', companySearchBody)
         ]);
       case 'companyName':
-        return search('search_catalogue', companySearchBody);
+        return search('GoalHwyEsDb', companySearchBody);
     }
   })
   .then (results => {

@@ -43,7 +43,7 @@ const populate = function populate() {
     { id: 4, company_name: 'NCIS Facility - UBC' }
   ];
   console.log(`${companies.length} items parsed from data file`);
-  bulkIndex('search_catalogue', 'company', companies);
+  bulkIndex('GoalHwyEsDb', 'company', companies);
 };
 
 populate();

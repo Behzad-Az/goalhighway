@@ -17,7 +17,7 @@ const getCompanyPageJobs = (req, res, esClient, user_id) => {
         }
       }
     };
-    return esClient.search({ index: 'search_catalogue', body });
+    return esClient.search({ index: 'GoalHwyEsDb', body });
   };
 
   getJobs()

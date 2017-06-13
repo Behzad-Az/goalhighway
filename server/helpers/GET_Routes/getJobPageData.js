@@ -49,7 +49,7 @@ const getJobPageData = (req, res, knex, user_id, esClient) => {
         }
       }
     };
-    return search('search_catalogue', jobSearchBody)
+    return search('GoalHwyEsDb', jobSearchBody)
   })
   .then(searchResults => res.send({ jobs: searchResults.hits.hits, resumes }))
   .catch(err => {
