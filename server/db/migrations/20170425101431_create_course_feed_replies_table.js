@@ -2,7 +2,7 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('course_feed_replies', t => {
-      t.increments('id');
+      t.bigIncrements('id');
       t.string('content', 500).notNullable();
       t.integer('course_feed_id').notNullable().references('course_feed.id');
       t.integer('commenter_id').notNullable().references('users.id');

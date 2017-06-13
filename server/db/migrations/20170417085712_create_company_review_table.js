@@ -2,7 +2,7 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('company_reviews', t => {
-      t.increments('id');
+      t.bigIncrements('id');
       t.string('position', 60).notNullable();
       t.string('position_type', 35).notNullable();
       t.string('reviewer_background', 60).notNullable();

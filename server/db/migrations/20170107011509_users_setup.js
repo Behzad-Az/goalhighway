@@ -2,7 +2,7 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('users', t => {
-      t.increments('id');
+      t.bigIncrements('id');
       t.string('username', 30).notNullable().unique();
       t.string('password', 60).notNullable();
       t.string('email', 30).notNullable().unique();
@@ -23,7 +23,7 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('revisions', t => {
-      t.increments('id');
+      t.bigIncrements('id');
       t.string('title', 60).notNullable();
       t.string('type', 35).notNullable();
       t.string('rev_desc', 250).notNullable();
@@ -35,7 +35,7 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('course_user', t => {
-      t.increments('id');
+      t.bigIncrements('id');
       t.boolean('tutor_status').notNullable().defaultTo(false);
       t.boolean('tutor_available').notNullable().defaultTo(false);
       t.integer('course_id').notNullable().references('courses.id');
