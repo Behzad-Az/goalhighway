@@ -39,7 +39,7 @@ const populate = function populate() {
   const coursesRaw = fs.readFileSync('ubc_courses.json');
   const courses = JSON.parse(coursesRaw);
   console.log(`${courses.length} items parsed from data file`);
-  bulkIndex('GoalHwyEsDb', 'course', courses);
+  bulkIndex('goalhwy_es_db', 'course', courses);
 };
 
 populate();

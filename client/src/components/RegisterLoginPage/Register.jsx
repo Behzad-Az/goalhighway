@@ -53,6 +53,7 @@ class Register extends Component {
   _conditionData(resJSON) {
     if (resJSON) {
       const instProgDropDownList = resJSON.insts.map(inst => {
+        console.log("i'm here 0: ", inst.programs);
         const programs = inst.programs.map(prog => {
           return { value: prog.id, label: prog.prog_display_name };
         });
@@ -173,7 +174,7 @@ class Register extends Component {
   }
 
   render() {
-    let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value === this.state.instId).programs : [];
+    let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : [];
     return (
       <div className='card'>
         <header className='card-header'>

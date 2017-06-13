@@ -7,12 +7,8 @@ const esClient = new elasticsearch.Client({
   log: 'error'
 });
 
-const deleteIndex = {
-  index: '_all'
-};
-
 const newIndex = {
-  index: 'GoalHwyEsDb',
+  index: 'goalhwy_es_db',
   body: {
     'mappings': {
       'job': {
@@ -64,12 +60,14 @@ const bulkIndex = function bulkIndex(index, type, data) {
   .catch(console.err);
 };
 
-
-const populate = function populate() {
+const populateElasticData = () => {
   const jobsRaw = fs.readFileSync('jobs.json');
   const jobs = JSON.parse(jobsRaw);
   console.log(`${jobs.length} items parsed from data file`);
-  bulkIndex('GoalHwyEsDb', 'job', jobs);
+  bulkIndex('goalhwy_es_db', 'job', jobs);
 };
 
-esClient.indices.delete(deleteIndex).then(() => esClient.indices.create(newIndex)).then(() => populate());
+esClient.indices.delete({ index: 'goalhwy_es_db' })
+.then(() => esClient.indices.create(newIndex))
+.then(() => populateElasticData())
+.catch(err => console.error('Error isnide jobs.js: ', err));

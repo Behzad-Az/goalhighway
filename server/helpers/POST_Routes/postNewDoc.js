@@ -65,7 +65,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     let kind;
     const indexObj = {
       index: {
-        _index: 'GoalHwyEsDb',
+        _index: 'goalhwy_es_db',
         _type: 'document',
         _id: esDocObj.id
       }

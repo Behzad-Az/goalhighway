@@ -72,7 +72,7 @@ const populate = function populate() {
   });
 
   console.log(`${courses.length} items parsed from data file`);
-  bulkIndex('GoalHwyEsDb', 'document', docs);
+  bulkIndex('goalhwy_es_db', 'document', docs);
 };
 
 populate();

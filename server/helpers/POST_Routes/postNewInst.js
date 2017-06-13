@@ -56,7 +56,7 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
   const addInstToElasticSearch = esInstObj => {
     const indexObj = {
       index: {
-        _index: 'GoalHwyEsDb',
+        _index: 'goalhwy_es_db',
         _type: 'institution',
         _id: esInstObj.id
       }

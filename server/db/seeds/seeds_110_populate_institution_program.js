@@ -1,27 +1,20 @@
 exports.seed = function(knex, Promise) {
-  let promiseArr = [];
+
   let tabledata = [];
 
-  let numPrograms = 5;
-  let institution_id = 1;
-  for (let i = 1; i <= numPrograms; i++) {
+  for (let prog_id = 1; prog_id <= 5; prog_id++) {
     tabledata.push({
-      inst_id: institution_id,
-      prog_id: i
+      inst_id: 1,
+      prog_id
     });
   }
 
-  numPrograms = 3;
-  institution_id = 2;
-  for (let i = 1; i <= numPrograms; i++) {
+  for (let prog_id = 1; prog_id <= 3; prog_id++) {
     tabledata.push({
-      inst_id: institution_id,
-      prog_id: i
+      inst_id: 2,
+      prog_id
     });
   }
 
-  tabledata.forEach((data) => {
-    promiseArr.push(knex('institution_program').insert(data));
-  });
-  return Promise.all(promiseArr);
+  return Promise.all(tabledata.map(data => knex('institution_program').insert(data)));
 };

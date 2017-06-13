@@ -41,7 +41,7 @@ const populate = function populate() {
     { id: 2, inst_name: 'Simon Fraser University (SFU)' }
   ];
   console.log(`${institutions.length} items parsed from data file`);
-  bulkIndex('GoalHwyEsDb', 'institution', institutions);
+  bulkIndex('goalhwy_es_db', 'institution', institutions);
 };
 
 populate();

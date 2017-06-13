@@ -55,7 +55,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     let kind;
     const indexObj = {
       update: {
-        _index: 'GoalHwyEsDb',
+        _index: 'goalhwy_es_db',
         _type: 'document',
         _id: doc_id
       }

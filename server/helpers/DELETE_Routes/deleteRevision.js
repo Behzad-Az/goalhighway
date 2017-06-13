@@ -36,13 +36,13 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
     .del();
 
   const deleteElasticDoc = () => esClient.bulk({
-    body: [{ delete: { _index: 'GoalHwyEsDb', _type: 'document', _id: doc_id } }]
+    body: [{ delete: { _index: 'goalhwy_es_db', _type: 'document', _id: doc_id } }]
   });
 
   const updateElasticSearch = (title, type) => {
     const indexObj = {
       update: {
-        _index: 'GoalHwyEsDb',
+        _index: 'goalhwy_es_db',
         _type: 'document',
         _id: doc_id
       }

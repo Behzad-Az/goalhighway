@@ -16,9 +16,10 @@ const getInstitutionsAndPrograms = (req, res, knex, user_id) => {
   ])
   .then(results => {
     const insts = results[0].map(inst => {
-      inst.programs = results[1].filter(prog => prog.inst_id === inst.id);
+      inst.programs = results[1].filter(prog => prog.inst_id == inst.id);
       return inst;
     });
+    console.log("i'm here 6: ", {insts});
     res.send({ insts });
   })
   .catch(err => {

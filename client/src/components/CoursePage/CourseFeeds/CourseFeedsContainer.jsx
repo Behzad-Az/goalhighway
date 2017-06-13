@@ -66,7 +66,7 @@ class CourseFeedsContainer extends Component {
     .then(response => response.json())
     .then(resJSON => {
       if (resJSON) {
-        this.setState({ feeds: this.state.feeds.filter(comment => !(comment.id === feedId)) });
+        this.setState({ feeds: this.state.feeds.filter(comment => !(comment.id == feedId)) });
       }
       else { throw 'Server returned false'; }
     })

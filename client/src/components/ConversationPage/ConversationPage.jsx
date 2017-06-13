@@ -75,7 +75,7 @@ class ConversationPage extends Component {
       return (
         <div className='main-container'>
           <SearchBar />
-          { this.state.conversations[0] && <ConversationContainer conversation={this.state.conversations.find(conv => conv.id === this.state.curreConvId)} reload={this._loadComponentData} /> }
+          { this.state.conversations[0] && <ConversationContainer conversation={this.state.conversations.find(conv => conv.id == this.state.curreConvId)} reload={this._loadComponentData} /> }
           { !this.state.conversations[0] && <p>No message available to view.</p> }
         </div>
       );
