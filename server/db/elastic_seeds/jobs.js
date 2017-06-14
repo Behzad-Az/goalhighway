@@ -10,22 +10,19 @@ const esClient = new elasticsearch.Client({
 const newIndex = {
   index: 'goalhwy_es_db',
   body: {
-    'mappings': {
-      'job': {
-        'properties': {
-          'pin': {
-            'properties': {
-              'location': { 'type': 'geo_point' },
-              'id': { 'type': 'integer' },
-              'title': { 'type': 'string' },
-              'kind': { 'type': 'string' },
-              'link': { 'type': 'string' },
-              'photo_name': { 'type': 'string' },
-              'company_name': { 'type': 'string' },
-              'company_id': { 'type': 'integer' },
-              'search_text': { 'type': 'string' }
-            }
-          }
+    mappings: {
+      job: {
+        properties: {
+          created_at: { type: 'date', format: 'yyyy-mm-dd' },
+          location: { type: 'geo_point' },
+          title: { type: 'string' },
+          kind: { type: 'string' },
+          link: { type: 'string' },
+          photo_name: { type: 'string' },
+          company_name: { type: 'string' },
+          company_id: { type: 'integer' },
+          search_text: { type: 'string' },
+          expired: { type: 'boolean' }
         }
       }
     }
@@ -33,21 +30,21 @@ const newIndex = {
 };
 
 const bulkIndex = function bulkIndex(index, type, data) {
-  let bulkBody = [];
+  let body = [];
 
   data.forEach(item => {
-    bulkBody.push({
+    const today = new Date();
+    item.created_at = today.toISOString().slice(0, 10);
+    body.push({
       index: {
         _index: index,
-        _type: type,
-        _id: item.pin.id
+        _type: type
       }
     });
-
-    bulkBody.push(item);
+    body.push(item);
   });
 
-  esClient.bulk({body: bulkBody})
+  esClient.bulk({ body })
   .then(response => {
     let errorCount = 0;
     response.items.forEach(item => {

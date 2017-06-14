@@ -48,8 +48,9 @@ class JobsContainer extends Component {
     if (resJSON) {
       const newJobs = resJSON.jobs.map(data => {
         return {
-          ...data._source.pin,
-          tags: data._source.pin.search_text.split(' ')
+          ...data._source,
+          tags: data._source.search_text.split(' '),
+          id: data._id
         };
       });
       this.setState({

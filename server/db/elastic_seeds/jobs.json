@@ -1,52 +1,46 @@
 [
   {
-    "pin": {
-      "location": {
-        "lat": 49.306168,
-        "lon": -122.783516
-      },
-      "id": 1,
-      "company_id": 1,
-      "company_name": "Home Inc.",
-      "title": "Software Engineer",
-      "kind": "internship",
-      "link": "some_link",
-      "photo_name": "home_inc.png",
-      "search_text": "software engineer javascript front-end"
-    }
+    "location": {
+      "lat": 49.306168,
+      "lon": -122.783516
+    },
+    "company_id": 1,
+    "company_name": "Home Inc.",
+    "title": "Software Engineer",
+    "kind": "internship",
+    "link": "some_link",
+    "photo_name": "home_inc.png",
+    "search_text": "software engineer javascript front-end",
+    "expired": false
   },
 
   {
-    "pin": {
-      "location": {
-        "lat": 49.198215,
-        "lon": -123.007668
-      },
-      "id": 2,
-      "company_id": 2,
-      "company_name": "Ballard Power Systems",
-      "title": "Manufacturing Engineer",
-      "kind": "summer",
-      "link": "some_link",
-      "photo_name": "ballard_power_systems.png",
-      "search_text": "mechanical engineer manufacturing sustainability"
-    }
+    "location": {
+      "lat": 49.198215,
+      "lon": -123.007668
+    },
+    "company_id": 2,
+    "company_name": "Ballard Power Systems",
+    "title": "Manufacturing Engineer",
+    "kind": "summer",
+    "link": "some_link",
+    "photo_name": "ballard_power_systems.png",
+    "search_text": "mechanical engineer manufacturing sustainability",
+    "expired": false
   },
 
   {
-    "pin": {
-      "location": {
-        "lat": 49.259695,
-        "lon": -123.255181
-      },
-      "id": 3,
-      "company_id": 3,
-      "company_name": "Apple Inc.",
-      "title": "Research Engineer",
-      "kind": "junior",
-      "link": "some_link",
-      "photo_name": "apple_inc.png",
-      "search_text": "electrical engineer R&D instrumentation"
-    }
+    "location": {
+      "lat": 49.259695,
+      "lon": -123.255181
+    },
+    "company_id": 3,
+    "company_name": "Apple Inc.",
+    "title": "Research Engineer",
+    "kind": "junior",
+    "link": "some_link",
+    "photo_name": "apple_inc.png",
+    "search_text": "electrical engineer R&D instrumentation",
+    "expired": false
   }
 ]

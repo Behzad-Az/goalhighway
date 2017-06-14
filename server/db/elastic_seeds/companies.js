@@ -8,21 +8,20 @@ const esClient = new elasticsearch.Client({
 });
 
 const bulkIndex = function bulkIndex(index, type, data) {
-  let bulkBody = [];
+  let body = [];
 
   data.forEach(item => {
-    bulkBody.push({
+    body.push({
       index: {
         _index: index,
         _type: type,
         _id: item.id
       }
     });
-
-    bulkBody.push(item);
+    body.push(item);
   });
 
-  esClient.bulk({body: bulkBody})
+  esClient.bulk({ body })
   .then(response => {
     let errorCount = 0;
     response.items.forEach(item => {

@@ -361,7 +361,7 @@ app.post('/api/flags/:foreign_table/:foreign_id', (req, res) => {
 });
 
 app.post('/api/companies/:company_id/questions', (req, res) => {
-  postNewInterviewQuestion(req, res, knex, req.session.user_id);
+  postNewInterviewQuestion(req, res, knex, req.session.user_id, esClient);
 });
 
 app.post('/api/companies/:company_id/questions/:question_id/answers', (req, res) => {
@@ -369,7 +369,7 @@ app.post('/api/companies/:company_id/questions/:question_id/answers', (req, res)
 });
 
 app.post('/api/companies/:company_id/reviews', (req, res) => {
-  postNewCompanyReview(req, res, knex, req.session.user_id);
+  postNewCompanyReview(req, res, knex, req.session.user_id, esClient);
 });
 
 app.post('/api/conversations', (req, res) => {

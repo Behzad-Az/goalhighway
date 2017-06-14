@@ -9,7 +9,8 @@ const getCompanyPageJobs = (req, res, esClient, user_id) => {
           filter: {
             bool: {
               must: [
-                { term: { 'pin.company_id' : req.params.company_id } },
+                { term: { 'company_id' : req.params.company_id } },
+                { term: { expired: false } },
                 { type: { value : 'job' } }
               ]
             }

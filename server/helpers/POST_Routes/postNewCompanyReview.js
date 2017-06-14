@@ -1,4 +1,4 @@
-const postNewCompanyReview = (req, res, knex, user_id) => {
+const postNewCompanyReview = (req, res, knex, user_id, esClient) => {
 
   const position = req.body.position.trim();
   const position_type = req.body.positionType;
@@ -40,26 +40,47 @@ const postNewCompanyReview = (req, res, knex, user_id) => {
     }
   });
 
+  const validateCompanyExists = () => {
+    const body = {
+      size: 1,
+      from: 0,
+      query: {
+        ids: {
+          type: 'company',
+          values: [req.params.company_id]
+        }
+      }
+    };
+    return esClient.search({ index: 'goalhwy_es_db', body });
+  };
+
   const insertNewReview = newReviewObj => knex('company_reviews')
     .insert(newReviewObj);
 
   validateInputs()
-  .then(() => insertNewReview({
-    position,
-    position_type,
-    reviewer_background,
-    start_year,
-    start_month,
-    work_duration,
-    training_rating,
-    relevancy_rating,
-    pay_rating,
-    overall_rating,
-    pros,
-    cons,
-    company_id,
-    reviewer_id: user_id
-  }))
+  .then(() => validateCompanyExists())
+  .then(results => {
+    if (results.hits.total === 1) {
+      return insertNewReview({
+        position,
+        position_type,
+        reviewer_background,
+        start_year,
+        start_month,
+        work_duration,
+        training_rating,
+        relevancy_rating,
+        pay_rating,
+        overall_rating,
+        pros,
+        cons,
+        company_id,
+        reviewer_id: user_id
+      });
+    } else {
+      throw 'Invalid company id';
+    }
+  })
   .then(() => res.send(true))
   .catch(err => {
     console.error('Error inside postNewCompanyReview.js: ', err);

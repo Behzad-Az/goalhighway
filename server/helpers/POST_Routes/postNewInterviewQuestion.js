@@ -1,4 +1,4 @@
-const posNewInterviewQuestion = (req, res, knex, user_id) => {
+const posNewInterviewQuestion = (req, res, knex, user_id, esClient) => {
 
   const question = req.body.question.trim();
   const answer = req.body.answer.trim();
@@ -28,6 +28,20 @@ const posNewInterviewQuestion = (req, res, knex, user_id) => {
     }
   });
 
+  const validateCompanyExists = () => {
+    const body = {
+      size: 1,
+      from: 0,
+      query: {
+        ids: {
+          type: 'company',
+          values: [req.params.company_id]
+        }
+      }
+    };
+    return esClient.search({ index: 'goalhwy_es_db', body });
+  };
+
   const insertQuestion = (newQestionObj, trx) => knex('interview_questions')
     .transacting(trx)
     .insert(newQestionObj)
@@ -39,13 +53,18 @@ const posNewInterviewQuestion = (req, res, knex, user_id) => {
 
   knex.transaction(trx => {
     validateInputs()
-    .then(() => {
-      const newQestionObj = {
-        question,
-        poster_id: user_id,
-        company_id
-      };
-      return insertQuestion(newQestionObj, trx);
+    .then(() => validateCompanyExists())
+    .then(results => {
+      if (results.hits.total === 1) {
+        const newQestionObj = {
+          question,
+          poster_id: user_id,
+          company_id
+        };
+        return insertQuestion(newQestionObj, trx);
+      } else {
+        throw 'Invalid company id';
+      }
     })
     .then(qId => {
       if (answer) {
