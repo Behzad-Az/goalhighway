@@ -218,7 +218,7 @@ app.get('/api/institutions/:inst_id', (req, res) => {
 
 // ********************* COMPANY PAGE ***************************
 app.get('/api/companies/:company_id/toprow', (req, res) => {
-  getCompanyPageTopRow(req, res, knex, req.session.user_id);
+  getCompanyPageTopRow(req, res, knex, esClient);
 });
 
 app.get('/api/companies/:company_id/qas', (req, res) => {

@@ -53,7 +53,6 @@ class PersonalInformation extends Component {
         });
         return { value: parseInt(inst.id), label: inst.inst_display_name, programs };
       });
-      console.log("i'm here 2: ", instProgDropDownList);
       this.setState({ instProgDropDownList, dataLoaded: true });
     } else {
       throw 'Server returned false';
@@ -155,7 +154,6 @@ class PersonalInformation extends Component {
   }
 
   _editInfo() {
-    console.log("i'm here 0: ", typeof(this.state.instId));
     let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : [];
     if (this.state.dataLoaded && !this.state.pageError) {
       return (

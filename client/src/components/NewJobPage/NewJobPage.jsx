@@ -62,8 +62,8 @@ class JobPage extends Component {
   _conditionCompanySearchResults(resJSON) {
     if (resJSON.searchResults.length) {
       const searchResults = resJSON.searchResults.map(result =>
-        <p key={result._source.id} className='result-row valid' onClick={() => this.setState({ companyName: result._source.company_name, showResults: false, searchResults: [] })}>
-          <i className='fa fa-briefcase' /> {result._source.company_name}
+        <p key={result._source.id} className='result-row valid' onClick={() => this.setState({ companyName: result._source.name, showResults: false, searchResults: [] })}>
+          <i className='fa fa-briefcase' /> {result._source.name}
         </p>
       );
       this.setState({ searchResults, showResults: true });
