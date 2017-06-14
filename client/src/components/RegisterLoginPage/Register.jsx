@@ -53,11 +53,10 @@ class Register extends Component {
   _conditionData(resJSON) {
     if (resJSON) {
       const instProgDropDownList = resJSON.insts.map(inst => {
-        console.log("i'm here 0: ", inst.programs);
         const programs = inst.programs.map(prog => {
-          return { value: prog.id, label: prog.prog_display_name };
+          return { value: parseInt(prog.id), label: prog.prog_display_name };
         });
-        return { value: inst.id, label: inst.inst_display_name, programs };
+        return { value: parseInt(inst.id), label: inst.inst_display_name, programs };
       });
       this.setState({ instProgDropDownList, dataLoaded: true });
     } else {

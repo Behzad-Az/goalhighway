@@ -23,7 +23,6 @@ class InstPage extends Component {
     this._loadComponentData = this._loadComponentData.bind(this);
     this._conditionData = this._conditionData.bind(this);
     this._findInstName = this._findInstName.bind(this);
-    this._saveFilterPhrase = this._saveFilterPhrase.bind(this);
     this._filterCourseList = this._filterCourseList.bind(this);
     this._renderPageAfterData = this._renderPageAfterData.bind(this);
   }
@@ -52,8 +51,12 @@ class InstPage extends Component {
 
   _conditionData(resJSON, instId) {
     if (resJSON) {
+      const instList = resJSON.instList.map(inst => {
+        inst.value = parseInt(inst.value);
+        return inst;
+      });
       this.setState({
-        instList: resJSON.instList,
+        instList,
         currUserCourseIds: resJSON.currUserCourseIds,
         currInstCourses: resJSON.currInstCourses,
         instId,
@@ -67,10 +70,6 @@ class InstPage extends Component {
   _findInstName() {
     let inst = this.state.instList.find(inst => inst.value == this.state.instId);
     return inst ? inst.label : '';
-  }
-
-  _saveFilterPhrase(e) {
-    this.setState({ filterPhrase: e.target.value });
   }
 
   _filterCourseList() {
@@ -100,7 +99,7 @@ class InstPage extends Component {
           <CoursesContainer
             courses={this._filterCourseList()}
             currUserCourseIds={this.state.currUserCourseIds}
-            handleFilter={this._saveFilterPhrase}
+            handleFilter={e => this.setState({ filterPhrase: e.target.value })}
             instId={this.state.instId}
             instName={this._findInstName()}
             reload={this._loadComponentData}

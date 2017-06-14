@@ -49,10 +49,11 @@ class PersonalInformation extends Component {
     if (resJSON) {
       const instProgDropDownList = resJSON.insts.map(inst => {
         const programs = inst.programs.map(prog => {
-          return { value: prog.id, label: prog.prog_display_name };
+          return { value: parseInt(prog.id), label: prog.prog_display_name };
         });
-        return { value: inst.id, label: inst.inst_display_name, programs };
+        return { value: parseInt(inst.id), label: inst.inst_display_name, programs };
       });
+      console.log("i'm here 2: ", instProgDropDownList);
       this.setState({ instProgDropDownList, dataLoaded: true });
     } else {
       throw 'Server returned false';
@@ -154,7 +155,8 @@ class PersonalInformation extends Component {
   }
 
   _editInfo() {
-    let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value === this.state.instId).programs : [];
+    console.log("i'm here 0: ", typeof(this.state.instId));
+    let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : [];
     if (this.state.dataLoaded && !this.state.pageError) {
       return (
         <div className='card'>

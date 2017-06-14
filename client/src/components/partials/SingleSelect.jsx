@@ -20,10 +20,15 @@ const SingleSelect = React.createClass({
   },
 
   render() {
-    return <Select options={this.props.options}
-              simpleValue clearable={this.state.clearable} name={this.props.name}
-              disabled={this.props.disabled} value={this.props.initialValue}
-              onChange={this.updateValue} searchable={this.state.searchable} />
+    return <Select
+              options={this.props.options}
+              simpleValue
+              clearable={this.state.clearable}
+              name={this.props.name}
+              disabled={this.props.disabled}
+              value={this.state.selectValue}
+              onChange={this.updateValue}
+              searchable={this.state.searchable} />
   }
 });
 

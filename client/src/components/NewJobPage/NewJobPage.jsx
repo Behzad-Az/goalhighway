@@ -86,8 +86,6 @@ class JobPage extends Component {
       searchTags: this.state.searchTags,
       link: this.state.link
     };
-
-    console.log("i'm here 0: ", this.state)
   }
 
   _clearForm() {

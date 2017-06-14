@@ -45,7 +45,6 @@ class UserProfilePage extends Component {
   }
 
   render() {
-    console.log("i'm here 0: ", this.state.userInfo);
     return (
       <div className='profile-page'>
         <Navbar />
