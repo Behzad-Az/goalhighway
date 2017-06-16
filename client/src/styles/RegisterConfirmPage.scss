@@ -1,0 +1,27 @@
+.register-confirm-page {
+
+  .nav.login {
+    height: 60px; background-color: $default-bg-color;
+    .container {
+      max-width: 100%;
+      .nav-item {
+        padding: 0 20px;
+        &.credentials {
+          width: 400px;
+          .credential {
+            margin: auto; padding-right: 10px; display: inline;
+            .label { text-align: left; margin: 0; font-size: 12px; color: $dark-blue; }
+            .input { max-height: 30px; border-color: $dark-blue; font-size: 12px; }
+          }
+          .button { max-height: 30px; margin-top: 20px; background-color: $dark-blue; color: white; font-style: bold; }
+        }
+      }
+    }
+  }
+
+  .main-container {
+    padding: $default_margin/2 $default_margin; background-color: darken($light-blue, 50%); min-height: 100vh;
+    .title { color: white; }
+  }
+
+}

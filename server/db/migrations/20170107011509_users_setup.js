@@ -1,4 +1,3 @@
-
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('users', t => {
@@ -7,15 +6,15 @@ exports.up = function(knex, Promise) {
       t.string('password', 60).notNullable();
       t.string('email', 30).notNullable().unique();
       t.integer('user_year').notNullable();
-      t.boolean('validated').notNullable().defaultTo(true);
       t.string('postal_code', 10);
       t.float('lat', 8, 5);
       t.float('lon', 8, 5);
       t.string('job_query', 250);
       t.string('job_kind', 100);
       t.integer('job_distance');
-      t.integer('auth_level').notNullable().defaultTo(0);
       t.string('photo_name', 35).notNullable().defaultTo('default_user_photo.png');
+      t.boolean('confirmed').notNullable().defaultTo(false);
+      t.string('register_token', 35).notNullable().unique();
       t.integer('inst_prog_id').notNullable().references('institution_program.id');
       t.timestamp('last_feed_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());

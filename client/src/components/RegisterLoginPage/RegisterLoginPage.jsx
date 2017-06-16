@@ -33,7 +33,7 @@ class LoginRegisterPage extends Component {
             <button className='delete' onClick={() => this._handleRegisterSuccess(false)} />
           </div>
           <div className='message-body'>
-            Please login.
+            Check your email and verify your account.
           </div>
         </article>
       );

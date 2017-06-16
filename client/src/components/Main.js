@@ -12,6 +12,7 @@ import CareerPage from './CareerPage/CareerPage.jsx';
 import CompanyPage from './CompanyPage/CompanyPage.jsx';
 import FeedPage from './FeedPage/FeedPage.jsx';
 import ConversationPage from './ConversationPage/ConversationPage.jsx';
+import RegisterConfirmPage from './RegisterConfirmPage/RegisterConfirmPage.jsx';
 import NewJobPage from './NewJobPage/NewJobPage.jsx';
 
 browserHistory.listen(location => {
@@ -75,6 +76,7 @@ class App extends Component {
         <Route path='/institutions/:inst_id' component={InstPage} onEnter={this._validateAuth} />
         <Route path='/companies/:company_id' component={CompanyPage} onEnter={this._validateAuth} />
         <Route path='/conversations' component={ConversationPage} onEnter={this._validateAuth} />
+        <Route path='/confirm_register' component={RegisterConfirmPage} />
         <Route path='/post_job' component={NewJobPage} onEnter={this._validateAuth} />
         <Route path='*' component={IndexPage} onEnter={this._validateAuth} />
       </Router>

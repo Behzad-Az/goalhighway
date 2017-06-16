@@ -25,7 +25,7 @@ const postLogin = (req, res, knex, bcrypt) => {
       'institution_program.inst_id', 'institution_program.prog_id'
     )
     .where('username', username)
-    .andWhere('validated', true)
+    .andWhere('confirmed', true)
     .whereNull('users.deleted_at');
 
   const verifyPwd = (given, actual) => bcrypt.compare(given, actual);

@@ -144,6 +144,7 @@ const updateCourseUserTutorStatus = require('./helpers/UPDATE_Routes/updateCours
 const updateTutorLog = require('./helpers/UPDATE_Routes/updateTutorLog.js');
 const updateItemForSale = require('./helpers/UPDATE_Routes/updateItemForSale.js');
 const updateResume = require('./helpers/UPDATE_Routes/updateResume.js');
+const updateUserRegisterConfirm = require('./helpers/UPDATE_Routes/updateUserRegisterConfirm');
 
 const deleteRevision = require('./helpers/DELETE_Routes/deleteRevision.js');
 const deleteCourseFeed = require('./helpers/DELETE_Routes/deleteCourseFeed.js');
@@ -409,6 +410,13 @@ app.post('/api/users/:user_id/resumes/:resume_id', resumeUpload.single('file'), 
   updateResume(req, res, knex, req.session.user_id);
 });
 
+
+// ***************************************************
+// ROUTES - PUT
+// ***************************************************
+app.put('/api/confirm_register', (req, res) => {
+  updateUserRegisterConfirm(req, res, knex);
+});
 
 // ***************************************************
 // ROUTES - DELETE

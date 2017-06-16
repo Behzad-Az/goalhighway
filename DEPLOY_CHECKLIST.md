@@ -2,4 +2,5 @@
 - Ensure correct environment on server.js for knex.
 - Change seed files to only include institutions, programs, institution_programs, courses, profs, and companies.
 - Remove default login in LogIn.jsx
+- Ensure correct ip address on postNewUser.js confirmEmailTemplate.
 - Run npm run build

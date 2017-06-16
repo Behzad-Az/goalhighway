@@ -8,13 +8,14 @@ const postNewUser = (req, res, knex, bcrypt, mailer) => {
   const email = req.body.email.trim().toLowerCase();
   const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
   const user_year = parseInt(req.body.userYear);
+  const register_token = Math.random().toString(36).substr(2, 15);
 
   const mailOptions = {
     from: '"GoalHighway" <no-reply@goalhighway.com>', // sender address
-    to: email, // list of receivers
+    to: email,
     subject: 'Verify your account at GoalHighway', // Subject line
-    text: 'click here', // plaintext body
-    html: confirmEmailTemplate('http://www.goalhighway.com')
+    text: 'Welcome to GoalHighway!', // plaintext body
+    html: confirmEmailTemplate(`http://localhost:3000/confirm_register?token=${register_token}&email=${email}`)
   };
 
   const validateInputs = () => new Promise ((resolve, reject) => {
@@ -58,7 +59,8 @@ const postNewUser = (req, res, knex, bcrypt, mailer) => {
         email,
         password: results[0],
         user_year,
-        inst_prog_id: results[1][0].id
+        inst_prog_id: results[1][0].id,
+        register_token
       };
       return insertNewUser(newUserObj, trx);
     })
@@ -71,21 +73,6 @@ const postNewUser = (req, res, knex, bcrypt, mailer) => {
   })
   .then(() => res.send(true))
   .catch(() => res.send(false));
-
-  // validateInputs()
-  // .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId() ]))
-  // .then(results => insertNewUser({
-  //   username,
-  //   email,
-  //   password: results[0],
-  //   user_year,
-  //   inst_prog_id: results[1][0].id
-  // }))
-  // .then(() => res.send(true))
-  // .catch(err => {
-  //   console.error('Error inside postNewUser.js: ', err);
-  //   res.send(false);
-  // });
 
 };
 
