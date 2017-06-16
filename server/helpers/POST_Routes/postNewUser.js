@@ -1,4 +1,6 @@
-const postNewUser = (req, res, knex, bcrypt) => {
+const confirmEmailTemplate = require('../Email_Templates/confirmEmailTemplate.js');
+
+const postNewUser = (req, res, knex, bcrypt, mailer) => {
 
   const username = req.body.username.trim().toLowerCase();
   const pwd = req.body.password.trim();
@@ -7,13 +9,13 @@ const postNewUser = (req, res, knex, bcrypt) => {
   const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
   const user_year = parseInt(req.body.userYear);
 
-  // const mailOptions = {
-  //   from: '"GoalHighway" <no-reply@goalhighway.com>', // sender address
-  //   to: email, // list of receivers
-  //   subject: 'Verify your account at GoalHighway', // Subject line
-  //   text: 'click here', // plaintext body
-  //   html: '<p>Click here</p>' // html body
-  // };
+  const mailOptions = {
+    from: '"GoalHighway" <no-reply@goalhighway.com>', // sender address
+    to: email, // list of receivers
+    subject: 'Verify your account at GoalHighway', // Subject line
+    text: 'click here', // plaintext body
+    html: confirmEmailTemplate('http://www.goalhighway.com')
+  };
 
   const validateInputs = () => new Promise ((resolve, reject) => {
     if (
@@ -36,52 +38,54 @@ const postNewUser = (req, res, knex, bcrypt) => {
     }
   });
 
-  const findInstProgId = () => knex('institution_program')
+  const findInstProgId = trx => knex('institution_program')
+    .transacting(trx)
     .select('id')
     .where('inst_id', req.body.instId)
     .andWhere('prog_id', req.body.progId)
     .whereNull('deleted_at');
 
-  const insertNewUser = newUserObj => knex('users')
+  const insertNewUser = (newUserObj, trx) => knex('users')
+    .transacting(trx)
     .insert(newUserObj);
 
-  // knex.transaction(trx => {
-  //   validateInputs()
-  //   .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId(trx) ]))
-  //   .then(results => {
-  //     const newUserObj = {
-  //       username,
-  //       email,
-  //       password: results[0],
-  //       user_year,
-  //       inst_prog_id: results[1][0].id
-  //     };
-  //     return insertNewUser(newUserObj, trx);
-  //   })
-  //   .then(() => mailer.sendMail(mailOptions))
-  //   .then(() => trx.commit())
-  //   .catch(err => {
-  //     console.error('Error inside postNewItemForSale.js: ', err);
-  //     trx.rollback();
-  //   });
-  // })
-  // .then(() => res.send(true))
-  // .catch(() => res.send(false));
-
-  validateInputs()
-  .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId() ]))
-  .then(results => insertNewUser({
-    username,
-    email,
-    password: results[0],
-    user_year,
-    inst_prog_id: results[1][0].id
-  }))
+  knex.transaction(trx => {
+    validateInputs()
+    .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId(trx) ]))
+    .then(results => {
+      const newUserObj = {
+        username,
+        email,
+        password: results[0],
+        user_year,
+        inst_prog_id: results[1][0].id
+      };
+      return insertNewUser(newUserObj, trx);
+    })
+    .then(() => mailer.sendMail(mailOptions))
+    .then(() => trx.commit())
+    .catch(err => {
+      console.error('Error inside postNewUser.js: ', err);
+      trx.rollback();
+    });
+  })
   .then(() => res.send(true))
-  .catch(err => {
-    console.error('Error inside postNewUser.js: ', err);
-    res.send(false);
-  });
+  .catch(() => res.send(false));
+
+  // validateInputs()
+  // .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId() ]))
+  // .then(results => insertNewUser({
+  //   username,
+  //   email,
+  //   password: results[0],
+  //   user_year,
+  //   inst_prog_id: results[1][0].id
+  // }))
+  // .then(() => res.send(true))
+  // .catch(err => {
+  //   console.error('Error inside postNewUser.js: ', err);
+  //   res.send(false);
+  // });
 
 };
 

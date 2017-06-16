@@ -25,15 +25,16 @@ const googleMapsClient = require('@google/maps').createClient({
 // ***************************************************
 // NODE MAILER SETUP
 // ***************************************************
-// const nodemailer = require('nodemailer');
-// const mailer = nodemailer.createTransport({
-//   host: 'mailtrap.io',
-//   port: 2525,
-//   auth: {
-//     user: '12d82a5ce210c8',
-//     pass: '2b5b44e86ab965'
-//   }
-// });
+const nodemailer = require('nodemailer');
+const mailer = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'no-reply@goalhighway.com',
+    pass: 'ba9876543210'
+  }
+});
 
 const blacklist = ['/api/index', '/api/courses', '/api/users', '/api/docs', '/api/institutions', '/api/searchbar', '/images'];
 
@@ -341,7 +342,7 @@ app.post('/api/institutions', (req, res) => {
 });
 
 app.post('/api/register', (req, res) => {
-  postNewUser(req, res, knex, bcryptJs);
+  postNewUser(req, res, knex, bcryptJs, mailer);
 });
 
 app.post('/api/searchbar', (req, res) => {
