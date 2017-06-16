@@ -4,7 +4,7 @@
 
   .nav-item {
     color: #666;
-    &:hover { border-bottom: 2px solid $dark-blue; color: $dark-blue; }
+    &:hover { border-bottom: 2px solid $dark_blue; color: $dark_blue; }
     .fa { padding-right: 3px; }
   }
 }

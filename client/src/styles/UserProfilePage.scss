@@ -1,11 +1,11 @@
 .profile-page {
-  background-color: $default-bg-color; padding: 0 20px 20px 20px; min-height: 100vh; overflow: auto;
+  background-color: $default_bg_color; padding: 0 20px 20px 20px; min-height: 100vh; overflow: auto;
   .main-container {
     padding: $top_margin 0; width: 60%; min-width: 360px; display: block; margin: auto;
-    .button { background-color: $dark-blue; }
-    .card-footer-item, .icon.arrow { color: $dark-blue; }
+    .button { background-color: $dark_blue; }
+    .card-footer-item, .icon.arrow { color: $dark_blue; }
     .input.is-primary, .textarea.is-primary { border-color: #dbdbdb; }
-    a { color: $dark-blue; }
+    a { color: $dark_blue; }
     small :hover { color: $pumpkin; }
     .user-courses-container {
       margin-top: $default_margin;

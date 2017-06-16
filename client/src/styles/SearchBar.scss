@@ -1,14 +1,14 @@
 .search-bar-container {
-  width: 100%; margin: 0 auto 10px; min-width: 360px; padding: 0 0 0 0; background-color: $default-bg-color;
+  width: 100%; margin: 0 auto 10px; min-width: 360px; padding: 0 0 0 0; background-color: $default_bg_color;
   position: relative;
   .search-bar {
-    &:active, &:focus { border-color: $dark-blue; }
+    &:active, &:focus { border-color: $dark_blue; }
     &.control { margin-bottom: 0; }
-    .icon { color: $dark-blue; }
+    .icon { color: $dark_blue; }
     &.results {
-      border: 1px $dark-blue solid; background-color: white; position: absolute; left: 0; right: 0; padding: 5px; display: none; z-index: 1;
+      border: 1px $dark_blue solid; background-color: white; position: absolute; left: 0; right: 0; padding: 5px; display: none; z-index: 1;
       .result-row {
-        padding: 0 10px; color: $dark-blue; font-size: 15px; line-height: 32px;
+        padding: 0 10px; color: $dark_blue; font-size: 15px; line-height: 32px;
         &.valid {
           cursor: pointer;
           i { line-height: 32px; font-size: 15px; }

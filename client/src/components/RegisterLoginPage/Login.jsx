@@ -49,7 +49,7 @@ class Login extends Component {
     })
     .then(response => response.json())
     .then(resJSON => {
-      resJSON ? browserHistory.push('/index') : this.props.handleError(true, 'Invalid credentials. Make sure you have activated your account.');
+      resJSON ? browserHistory.push('/index') : this.props.handleError(true, 'Invalid credentials or unactivated account.');
     })
     .catch(err => console.error('Unable to process login - ', err))
     .then(() => this.setState({ processing: false }));

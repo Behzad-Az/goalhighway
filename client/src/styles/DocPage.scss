@@ -1,5 +1,5 @@
 .doc-page {
-  background-color: $default-bg-color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
+  background-color: $default_bg_color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
     padding: $top_margin $default_margin $default_margin $sidebar_width_left + $default_margin; width: $main_container_width; min-width: 360px; display: inline-block;
@@ -10,7 +10,7 @@
     }
 
     .header {
-      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
+      background-color: $dark_blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
       .fa { float: right; }
       a { color: white; &:hover { color: $peach; } }
     }
@@ -51,7 +51,7 @@
 
     .end-msg {
       text-align: center; margin: $default_margin/2 0;
-      .button { background-color: $dark-blue; color: white; &:hover { background-color: darken($dark-blue, 10%); } }
+      .button { background-color: $dark_blue; color: white; &:hover { background-color: darken($dark_blue, 10%); } }
     }
 
   }

@@ -1,5 +1,5 @@
 .conversation-page {
-  background-color: $default-bg-color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
+  background-color: $default_bg_color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
     padding: $top_margin $default_margin $default_margin 270px; width: $main_container_width; min-width: 360px; display: inline-block;
@@ -14,7 +14,7 @@
       .title { margin-bottom: 0; }
       .actions {
         float: right;
-        .fa { cursor: pointer; color: #999; margin: 0 $default_margin/4; &:hover { color: $dark-blue; } }
+        .fa { cursor: pointer; color: #999; margin: 0 $default_margin/4; &:hover { color: $dark_blue; } }
       }
       hr { margin: $default_margin/2 0; }
       .conversation-row {

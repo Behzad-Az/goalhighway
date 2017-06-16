@@ -1,5 +1,5 @@
 .inst-page {
-  background-color: $default-bg-color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
+  background-color: $default_bg_color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
     padding: $top_margin $default_margin $default_margin $sidebar_width_left + $default_margin; width: $main_container_width; min-width: 360px; display: inline-block;
@@ -10,8 +10,8 @@
     }
 
     .header {
-      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
-      .button { float: right; height: 100%; font-size: 10px; color: $dark-blue; &:hover { font-weight: bold; } }
+      background-color: $dark_blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
+      .button { float: right; height: 100%; font-size: 10px; color: $dark_blue; &:hover { font-weight: bold; } }
     }
 
     .top-row { margin-bottom: $default_margin/2; }
@@ -19,7 +19,7 @@
     .courses-container {
       margin-bottom: $default_margin/2;
       .filter-box .icon { z-index: 0; }
-      .course-row { margin: 5px; a { color: $dark-blue; &:hover { color: $pumpkin; } } }
+      .course-row { margin: 5px; a { color: $dark_blue; &:hover { color: $pumpkin; } } }
     }
   }
 

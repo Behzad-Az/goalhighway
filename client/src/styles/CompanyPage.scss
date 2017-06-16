@@ -1,11 +1,11 @@
 .company-page {
-  background-color: $default-bg-color; padding: 0 20px 20px 20px; min-height: 100vh; overflow: auto;
+  background-color: $default_bg_color; padding: 0 20px 20px 20px; min-height: 100vh; overflow: auto;
 
   .main-container {
     padding: $top_margin $default_margin $default_margin $sidebar_width_left + $default_margin; width: $main_container_width; min-width: 360px; display: inline-block;
 
     .header {
-      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
+      background-color: $dark_blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
       .fa { float: right; }
     }
 
@@ -37,16 +37,16 @@
       margin-bottom: $default_margin/2;
       .fa { cursor: pointer; }
       .job-row {
-        background-color: white; padding: $default_margin/2; margin: 0 0 $default_margin/2 0; border: 1px darken($default-bg-color, 20%) solid;
-        .tag { margin: 3px; background-color: $light-blue; color: white; font-weight: bold; }
+        background-color: white; padding: $default_margin/2; margin: 0 0 $default_margin/2 0; border: 1px darken($default_bg_color, 20%) solid;
+        .tag { margin: 3px; background-color: $light_blue; color: white; font-weight: bold; }
         .fa { font-size: 14px; cursor: pointer; vertical-align: middle; &:hover { transform: scale(1.1); } }
         .footer-item { margin-right: $default_margin/2; }
         .control.flag-submission { text-align: center; margin-right: $default_margin/2; select { max-width: 110px; } }
-        a { color: $dark-blue; &:hover { color: $pumpkin; } }
+        a { color: $dark_blue; &:hover { color: $pumpkin; } }
       }
       .end-msg {
         text-align: right;
-        .button { color: $dark-blue; &:hover { color: $pumpkin; } }
+        .button { color: $dark_blue; &:hover { color: $pumpkin; } }
       }
     }
 
@@ -54,17 +54,17 @@
       margin-bottom: $default_margin/2;
       .fa { cursor: pointer; }
       .qa-row {
-        background-color: white; padding: $default_margin/2; margin-top: $default_margin/2; border: 1px darken($default-bg-color, 20%) solid;
-        .button.new-answer {  height: 100%; font-size: 10px; color: $dark-blue; }
+        background-color: white; padding: $default_margin/2; margin-top: $default_margin/2; border: 1px darken($default_bg_color, 20%) solid;
+        .button.new-answer {  height: 100%; font-size: 10px; color: $dark_blue; }
         .fa { font-size: 14px; cursor: pointer; vertical-align: middle; &:hover { transform: scale(1.1); } }
         .footer-item { margin-right: $default_margin/2; }
         .control.flag-submission { text-align: center; margin-right: $default_margin/2; select { max-width: 110px; } }
-        small a { color: $dark-blue; &:hover { color: $pumpkin; } }
+        small a { color: $dark_blue; &:hover { color: $pumpkin; } }
         .date.top-right { float: right; }
       }
       .end-msg {
         text-align: right;
-        .button { color: $dark-blue; &:hover { color: $pumpkin; } }
+        .button { color: $dark_blue; &:hover { color: $pumpkin; } }
       }
     }
 
@@ -81,7 +81,7 @@
       }
       .end-msg {
         text-align: right;
-        .button { color: $dark-blue; &:hover { color: $pumpkin; } }
+        .button { color: $dark_blue; &:hover { color: $pumpkin; } }
       }
     }
 

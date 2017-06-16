@@ -7,7 +7,7 @@
       margin-bottom: 0;
       .media-content {
         text-align: center; margin-bottom: 0;
-        a { color: $dark-blue; &:hover { color: $pumpkin; } }
+        a { color: $dark_blue; &:hover { color: $pumpkin; } }
       }
     }
     hr { margin: $default_margin/4 0; }

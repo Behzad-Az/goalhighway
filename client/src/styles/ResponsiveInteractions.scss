@@ -14,7 +14,7 @@ $side_hamburger_width: 40px;
     }
     .hamburger {
       display: inline-block; width: $side_hamburger_width;
-      background-color: $dark-blue; height: calc(100vh - 50px - 30px); margin-top: $top_margin;
+      background-color: $dark_blue; height: calc(100vh - 50px - 30px); margin-top: $top_margin;
       float: left; position: fixed; cursor: pointer; :hover { transform: scale(1.1); }
       .fa { margin: auto; display: block; margin: 5px; font-size: 30px; color: white; }
     }

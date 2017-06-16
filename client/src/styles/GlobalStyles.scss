@@ -1,10 +1,10 @@
-$light-blue: #82ABCA;
-$dark-blue: #004E89;
+$light_blue: #82ABCA;
+$dark_blue: #004E89;
 $eggshell: #EFEFD0;
 $peach: #F7C59F;
 $pumpkin: #FF6B35;
-$bad-red: #9D0600;
-$default-bg-color: #f5f5f5;
+$bad_red: #9D0600;
+$default_bg_color: #f5f5f5;
 
 $default_margin: 20px;
 $sidebar_width_right: 270px;
@@ -16,10 +16,10 @@ body,html {
   margin:0;
   padding:0;
   font-family: 'Nunito', sans-serif;
-  .char-limit { color: $bad-red; font-size: 12px; padding-left: $default_margin/4; }
+  .char-limit { color: $bad_red; font-size: 12px; padding-left: $default_margin/4; }
   .control {
     .input, .select, .textarea {
-      &:active, &:focus { border-color: $dark-blue; }
+      &:active, &:focus { border-color: $dark_blue; }
     }
   }
 }

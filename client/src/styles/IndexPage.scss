@@ -1,5 +1,5 @@
 .index-page {
-  background-color: $default-bg-color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
+  background-color: $default_bg_color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
     padding: $top_margin $default_margin $default_margin $sidebar_width_left + $default_margin; width: $main_container_width; min-width: 360px; display: inline-block;
@@ -16,7 +16,7 @@
     }
 
     .header {
-      background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
+      background-color: $dark_blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
       .fa { float: right; }
     }
 
@@ -24,14 +24,14 @@
       margin-bottom: $default_margin/2;
       .card-content {
         .title.header {
-          background-color: $dark-blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
+          background-color: $dark_blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;
           .fa { float: right; }
           a { color: white; .course-name { font-weight: bold } .course-desc { font-size: 12px } &:hover { color: $peach; } }
         }
         .updates.column {
           padding-bottom: 0;
-          .header { background-color: $light-blue; color: white; padding: 5px 10px; }
-          a { color: $dark-blue; &:hover { color: $pumpkin; } }
+          .header { background-color: $light_blue; color: white; padding: 5px 10px; }
+          a { color: $dark_blue; &:hover { color: $pumpkin; } }
         }
       }
     }
