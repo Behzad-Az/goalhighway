@@ -79,7 +79,7 @@ class NewResumeReviewForm extends Component {
             </p>
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' disabled={!this.state.title} onClick={this._handleNewResumeReviewReq}>Submit</button>
+            <button className='button is-primary' disabled={!this.state.title} onClick={this._handleNewResumeReviewReq}>Confirm and Send for Review</button>
             <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
