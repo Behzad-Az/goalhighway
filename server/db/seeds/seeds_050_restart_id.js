@@ -8,7 +8,6 @@ exports.seed = function(knex, Promise) {
     knex.raw('ALTER SEQUENCE resumes_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE interview_questions_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE interview_answers_id_seq RESTART WITH 1;'),
-    knex.raw('ALTER SEQUENCE companies_id_seq RESTART WITH 4;'),
     knex.raw('ALTER SEQUENCE flags_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE profs_id_seq RESTART WITH 1;'),
     knex.raw('ALTER SEQUENCE course_reviews_id_seq RESTART WITH 1;'),

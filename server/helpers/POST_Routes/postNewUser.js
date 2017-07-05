@@ -60,11 +60,12 @@ const postNewUser = (req, res, knex, bcrypt, mailer) => {
         password: results[0],
         user_year,
         inst_prog_id: results[1][0].id,
-        register_token
+        register_token,
+        confirmed: true
       };
       return insertNewUser(newUserObj, trx);
     })
-    .then(() => mailer.sendMail(mailOptions))
+    // .then(() => mailer.sendMail(mailOptions))
     .then(() => trx.commit())
     .catch(err => {
       console.error('Error inside postNewUser.js: ', err);

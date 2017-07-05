@@ -65,9 +65,9 @@ class NewResumeReviewForm extends Component {
                 placeholder='Enter resume title here'
                 defaultValue={this.state.title}
                 onChange={this._handleChange}
-              />
+                disabled />
             </p>
-            <label className='label'>Provide Addtional Info (Recommended):</label>
+            <label className='label'>Addtional Info:</label>
             <p className='control'>
               <textarea
                 className='textarea'
@@ -75,7 +75,7 @@ class NewResumeReviewForm extends Component {
                 placeholder='Example: I intend to use this resume for junior level mechanical engineering jobs in aerospace industry.'
                 defaultValue={this.state.additionalInfo}
                 onChange={this._handleChange}
-              />
+                disabled />
             </p>
           </section>
           <footer className='modal-card-foot'>
