@@ -39,7 +39,7 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
     body: [{ delete: { _index: 'goalhwy_es_db', _type: 'document', _id: doc_id } }]
   });
 
-  const updateElasticSearch = (title, type) => {
+  const updateElasticSearch = (title, kind) => {
     const indexObj = {
       update: {
         _index: 'goalhwy_es_db',
@@ -48,8 +48,7 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
       }
     };
 
-    let kind;
-    switch (type) {
+    switch (kind) {
       case 'asg_report':
         kind = 'assignment assingments report reports';
         break;
@@ -66,10 +65,11 @@ const deleteRevision = (req, res, knex, user_id, esClient) => {
 
     const bodyObj = {
       doc: {
-        'title': title,
-        'kind': kind
+        title,
+        kind
       }
     };
+
     return esClient.bulk({ body: [indexObj, bodyObj] });
   };
 

@@ -1,7 +1,5 @@
 const getCoursePageDocs = (req, res, knex, user_id) => {
 
-   let docs;
-
    const getDocs = () => knex('docs')
     .select(
       'id', 'course_id', 'created_at', 'latest_type as type', 'latest_title as title', 'latest_rev_desc as revDesc',
@@ -30,17 +28,14 @@ const getCoursePageDocs = (req, res, knex, user_id) => {
     .then(results => {
       item.likeCount = results[0][0].likeCount ? parseInt(results[0][0].likeCount) : 0;
       item.alreadyLiked = results[1][0].likeCount ? parseInt(results[1][0].likeCount) : 0;
-      resolve();
+      resolve(item);
     })
     .catch(err => reject(err));
   });
 
   getDocs()
-  .then(documents => {
-    docs = documents;
-    return Promise.all(docs.map(doc => getLikesInfo(doc)));
-  })
-  .then(() => res.send({ docs }))
+  .then(docs => Promise.all(docs.map(doc => getLikesInfo(doc))))
+  .then(docs => res.send({ docs }))
   .catch(err => {
     console.error('Error inside getCoursePageDocs.js: ', err);
     res.send(false);

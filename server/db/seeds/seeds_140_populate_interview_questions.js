@@ -1,16 +1,16 @@
 const questions = [
 
-  { question: "Give me an example of a difficult decision you've made in the last two years and how did you come to that decision?", company_id: 1, poster_id: 1 },
-  { question: "Why should we hire you?", company_id: 1, poster_id: 1 },
-  { question: "How would you describe your work style?", company_id: 1, poster_id: 1 },
+  { question: "Give me an example of a difficult decision you've made in the last two years and how did you come to that decision?", company_id: 1, poster_id: '2' },
+  { question: "Why should we hire you?", company_id: 1, poster_id: '2' },
+  { question: "How would you describe your work style?", company_id: 1, poster_id: '2' },
 
-  { question: "What do you consider the single most important idea you contributed in your most recent position?", company_id: 2, poster_id: 2 },
-  { question: "Tell me about yourself.", company_id: 2, poster_id: 2 },
-  { question: "What was the last project you headed up, and what was its outcome?", company_id: 2, poster_id: 2 },
+  { question: "What do you consider the single most important idea you contributed in your most recent position?", company_id: 2, poster_id: '2' },
+  { question: "Tell me about yourself.", company_id: 2, poster_id: '2' },
+  { question: "What was the last project you headed up, and what was its outcome?", company_id: 2, poster_id: '2' },
 
-  { question: "What is your ideal job?", company_id: 3, poster_id: 3 },
-  { question: "Where would you like to be in your career three years from now?", company_id: 3, poster_id: 3 },
-  { question: "Tell me about how you set your career goals in your last job and what was the outcome?", company_id: 3, poster_id: 3 }
+  { question: "What is your ideal job?", company_id: 3, poster_id: '2' },
+  { question: "Where would you like to be in your career three years from now?", company_id: 3, poster_id: '2' },
+  { question: "Tell me about how you set your career goals in your last job and what was the outcome?", company_id: 3, poster_id: '2' }
 ];
 
 exports.seed = function(knex, Promise) {

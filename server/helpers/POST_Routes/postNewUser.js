@@ -1,4 +1,5 @@
 const confirmEmailTemplate = require('../Email_Templates/confirmEmailTemplate.js');
+const randIdString = require('random-base64-string');
 
 const postNewUser = (req, res, knex, bcrypt, mailer) => {
 
@@ -55,6 +56,7 @@ const postNewUser = (req, res, knex, bcrypt, mailer) => {
     .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId(trx) ]))
     .then(results => {
       const newUserObj = {
+        id: randIdString(11),
         username,
         email,
         password: results[0],

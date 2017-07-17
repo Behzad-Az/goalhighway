@@ -17,7 +17,7 @@ const getDocPageRevs = (req, res, knex, user_id) => {
 
   validateParams()
   .then(result => {
-    if (result[0].valid) { return getRevisions(); }
+    if (parseInt(result[0].valid)) { return getRevisions(); }
     else { throw 'Invalid params.'; }
   })
   .then(revs => {

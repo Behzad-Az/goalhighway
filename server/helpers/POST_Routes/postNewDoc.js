@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewDoc = (req, res, knex, user_id, esClient) => {
 
   const title = req.body.title.trim();
@@ -62,36 +64,35 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
   }
 
   const addDocToElasticSearch = esDocObj => {
-    let kind;
     const indexObj = {
       index: {
         _index: 'goalhwy_es_db',
         _type: 'document',
-        _id: esDocObj.id
+        _id: doc_id
       }
     };
     switch (esDocObj.kind) {
       case 'asg_report':
-        kind = 'assignment assingments report reports';
+        esDocObj.kind = 'assignment assingments report reports';
         break;
       case 'lecture_note':
-        kind = 'lecture lectures note notes';
+        esDocObj.kind = 'lecture lectures note notes';
         break;
       case 'sample_question':
-        kind = 'sample question questions quiz quizzes exam exams final finals midterm midterms';
+        esDocObj.kind = 'sample question questions quiz quizzes exam exams final finals midterm midterms';
         break;
       default:
-        kind = 'other_kind_not_specified';
+        esDocObj.kind = 'other_kind_not_specified';
         break;
     };
-    esDocObj.kind = kind;
-    return esClient.bulk({ body: [indexObj, esDocObj] })
+    return esClient.bulk({ body: [indexObj, esDocObj] });
   };
 
   knex.transaction(trx => {
     validateInputs()
     .then(() => {
       let newDocObj = {
+        id: randIdString(11),
         course_id,
         latest_type: type,
         latest_title: title,
@@ -103,6 +104,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     .then(docId => {
       doc_id = docId[0];
       let newRevObj = {
+        id: randIdString(11),
         title,
         type,
         rev_desc,
@@ -126,25 +128,22 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
       return adminAddToCourseFeed(adminFeedObj, trx);
     })
     .then(() => getSearchData())
-    .then(searchData => {
-      let esDocObj = {
-        id: doc_id,
-        title,
-        kind: type,
-        course_id,
-        course_name: searchData[0].short_display_name,
-        inst_id: searchData[0].id,
-        inst_name: searchData[0].inst_display_name
-      };
-      return addDocToElasticSearch(esDocObj);
-    })
+    .then(searchData => addDocToElasticSearch({
+      title,
+      kind: type,
+      course_id,
+      doc_id,
+      course_name: searchData[0].short_display_name,
+      inst_id: searchData[0].id,
+      inst_name: searchData[0].inst_display_name
+    }))
     .then(response => {
       let errorCount = response.items.reduce((count, item) => item.index && item.index.error ? 1 : 0, 0);
       if (errorCount) { throw 'Could not upload to elastic search db'; }
       else { trx.commit(); }
     })
     .catch(err => {
-      console.error('Error inside postNewDoc.js: ', err);
+      console.error('Error inside postNewDoc.js:', err);
       trx.rollback();
     });
   })

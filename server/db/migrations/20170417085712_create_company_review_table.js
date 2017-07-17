@@ -15,8 +15,8 @@ exports.up = function(knex, Promise) {
       t.integer('overall_rating').notNullable();
       t.string('pros', 500).notNullable();
       t.string('cons', 500).notNullable();
-      t.integer('reviewer_id').notNullable().references('users.id');
-      t.string('company_id', 20).notNullable();
+      t.string('reviewer_id', 11).notNullable().references('users.id');
+      t.string('company_id', 11).notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     })

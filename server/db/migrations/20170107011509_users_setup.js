@@ -1,7 +1,8 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('users', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.string('username', 30).notNullable().unique();
       t.string('password', 60).notNullable();
       t.string('email', 30).notNullable().unique();
@@ -22,13 +23,14 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('revisions', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.string('title', 60).notNullable();
       t.string('type', 35).notNullable();
       t.string('rev_desc', 250).notNullable();
       t.string('file_name', 35).notNullable();
-      t.integer('doc_id').notNullable();
-      t.integer('poster_id').notNullable().references('users.id');
+      t.string('doc_id', 11).notNullable();
+      t.string('poster_id', 11).notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     }),
@@ -38,7 +40,7 @@ exports.up = function(knex, Promise) {
       t.boolean('tutor_status').notNullable().defaultTo(false);
       t.boolean('tutor_available').notNullable().defaultTo(false);
       t.integer('course_id').notNullable().references('courses.id');
-      t.integer('user_id').notNullable().references('users.id');
+      t.string('user_id', 11).notNullable().references('users.id');
       t.timestamp('sub_date').defaultTo(knex.fn.now());
       t.timestamp('unsub_date');
       t.string('unsub_reason', 35);

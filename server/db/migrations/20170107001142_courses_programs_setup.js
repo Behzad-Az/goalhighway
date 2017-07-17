@@ -47,7 +47,8 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('docs', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.integer('course_id').notNullable().references('courses.id');
       t.string('latest_title', 60).notNullable();
       t.string('latest_type', 35).notNullable();

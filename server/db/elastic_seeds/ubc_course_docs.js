@@ -15,7 +15,7 @@ const bulkIndex = function bulkIndex(index, type, data) {
       index: {
         _index: index,
         _type: type,
-        _id: item.id
+        _id: item.doc_id
       }
     });
 
@@ -43,30 +43,30 @@ const populate = function populate() {
 
   courses.forEach(course => {
     docs.push({
-      id: ++id,
       title: `name_ar_${id}`,
       kind: 'assignment assingments report reports',
       inst_id: 1,
       inst_name: 'University of British Columbia UBC',
-      course_id: course.id,
+      course_id: course.course_id,
+      doc_id: (++id).toString(),
       course_name: course.title
     });
     docs.push({
-      id: ++id,
       title: `name_ln_${id}`,
       kind: 'lecture lectures note notes',
       inst_id: 1,
       inst_name: 'University of British Columbia UBC',
-      course_id: course.id,
+      course_id: course.course_id,
+      doc_id: (++id).toString(),
       course_name: course.title
     });
     docs.push({
-      id: ++id,
       title: `name_sq_${id}`,
       kind: 'sample question questions quiz quizzes exam exams final finals midterm midterms',
       inst_id: 1,
       inst_name: 'University of British Columbia UBC',
-      course_id: course.id,
+      course_id: course.course_id,
+      doc_id: (++id).toString(),
       course_name: course.title
     });
   });

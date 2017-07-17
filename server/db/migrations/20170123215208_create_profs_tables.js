@@ -19,7 +19,7 @@ exports.up = function(knex, Promise) {
       t.integer('overall_rating').notNullable();
       t.string('review_desc', 500).notNullable();
       t.integer('course_id').notNullable().references('courses.id');
-      t.integer('reviewer_id').notNullable().references('users.id');
+      t.string('reviewer_id', 11).notNullable().references('users.id');
       t.integer('prof_id').references('profs.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');

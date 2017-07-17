@@ -154,10 +154,11 @@ class NewDocForm extends Component {
             </p>
           </section>
 
-          <div className='block'>
-            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewDocPost}>Submit</button>
+          <footer className='modal-card-foot'>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewDocPost}>Upload</button>
             <button className='button' onClick={this.props.toggleModal}>Cancel</button>
-          </div>
+          </footer>
+
         </div>
       </div>
     );

@@ -1,5 +1,6 @@
-const randomNum = maxNum => Math.floor((Math.random() * maxNum) + 1);
+const randIdString = require('random-base64-string');
 
+const randomNum = maxNum => Math.floor((Math.random() * maxNum) + 1);
 
 const suffix = ['blah', '.xlsx', '.docx', '.pdf', '.zip', '.default'];
 
@@ -57,20 +58,20 @@ exports.seed = function(knex, Promise) {
     for(let n = 1; n <= randNum; n++) {
 
       let revObj = {
-        id: k,
-        poster_id: 2,
+        id: k.toString(),
+        poster_id: '2',
         file_name: 'default_file.pdf',
-        doc_id: i,
+        doc_id: i.toString(),
         rev_desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         type,
         title
       };
 
       let adminFeedObj = {
-        commenter_id: 2,
+        commenter_id: '2',
         course_id: Math.ceil(i / 3),
-        doc_id: i,
-        rev_id: k,
+        doc_id: i.toString(),
+        rev_id: k.toString(),
         category: determineCategory(type),
         anonymous: true,
         header: title,
@@ -78,7 +79,7 @@ exports.seed = function(knex, Promise) {
       };
 
       let docObj = {
-        id: i,
+        id: i.toString(),
         latest_title: title,
         latest_type: type,
         latest_rev_desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",

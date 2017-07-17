@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
       t.string('reason', 35).notNullable();
       t.integer('foreign_id').notNullable();
       t.string('foreign_table', 35).notNullable();
-      t.integer('flagger_id').notNullable().references('users.id');
+      t.string('flagger_id', 11).notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
     })
   ]);

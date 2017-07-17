@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
       t.string('file_name', 35).notNullable();
       t.integer('audience_filter_id').notNullable();
       t.string('audience_filter_table').notNullable();
-      t.integer('owner_id').notNullable().references('users.id');
+      t.string('owner_id', 11).notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('review_requested_at');
       t.timestamp('deleted_at');

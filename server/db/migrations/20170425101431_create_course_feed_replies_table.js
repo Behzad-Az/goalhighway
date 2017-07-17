@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
       t.bigIncrements('id');
       t.string('content', 500).notNullable();
       t.integer('course_feed_id').notNullable().references('course_feed.id');
-      t.integer('commenter_id').notNullable().references('users.id');
+      t.string('commenter_id', 11).notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
     })
   ]);

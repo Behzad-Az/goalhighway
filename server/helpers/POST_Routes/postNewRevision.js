@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewRevision = (req, res, knex, user_id, esClient) => {
 
   const title = req.body.title.trim();
@@ -104,6 +106,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     .then(() => determineFileName())
     .then(file_name => {
       let newRevObj = {
+        id: randIdString(11),
         title,
         type,
         rev_desc,
