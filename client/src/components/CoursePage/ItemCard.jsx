@@ -52,7 +52,7 @@ class ItemCard extends Component {
       this.formData.set('price', this.state.price);
 
       fetch(`/api/courses/${this.props.item.course_id}/items/${this.props.item.id}`, {
-        method: 'POST',
+        method: 'PUT',
         credentials: 'same-origin',
         body: this.formData
       })

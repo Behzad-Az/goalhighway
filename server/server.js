@@ -382,41 +382,38 @@ app.post('/api/conversations/:conversation_id', (req, res) => {
   postNewConvMessage(req, res, knex, req.session.user_id);
 });
 
-
-// ***************************************************
-// ROUTES - UPDATE
-// ***************************************************
-app.post('/api/users/:user_id', userPhotoUpload.single('file'), (req, res) => {
-  updateUserProfile(req, res, knex, req.session.user_id, googleMapsClient);
-});
-
-app.post('/api/users/:user_id/courses/:course_id/tutor', (req, res) => {
-  updateCourseUserTutorStatus(req, res, knex, req.session.user_id);
-});
-
-app.post('/api/users/:user_id/courses/:course_id/tutorlog/update', (req, res) => {
-  updateTutorLog(req, res, knex, req.session.user_id);
-});
-
-app.post('/api/courses/:course_id/items/:item_id', itemForSaleUpload.single('file'), (req, res) => {
-  updateItemForSale(req, res, knex, req.session.user_id);
-});
-
 app.post('/api/login', (req, res) => {
   postLogin(req, res, knex, bcryptJs);
 });
 
-app.post('/api/users/:user_id/resumes/:resume_id', resumeUpload.single('file'), (req, res) => {
+
+// ***************************************************
+// ROUTES - UPDATE
+// ***************************************************
+app.put('/api/users/:user_id', userPhotoUpload.single('file'), (req, res) => {
+  updateUserProfile(req, res, knex, req.session.user_id, googleMapsClient);
+});
+
+app.put('/api/users/:user_id/courses/:course_id/tutor', (req, res) => {
+  updateCourseUserTutorStatus(req, res, knex, req.session.user_id);
+});
+
+app.put('/api/users/:user_id/courses/:course_id/tutorlog/update', (req, res) => {
+  updateTutorLog(req, res, knex, req.session.user_id);
+});
+
+app.put('/api/courses/:course_id/items/:item_id', itemForSaleUpload.single('file'), (req, res) => {
+  updateItemForSale(req, res, knex, req.session.user_id);
+});
+
+app.put('/api/users/:user_id/resumes/:resume_id', resumeUpload.single('file'), (req, res) => {
   updateResume(req, res, knex, req.session.user_id);
 });
 
-
-// ***************************************************
-// ROUTES - PUT
-// ***************************************************
 app.put('/api/confirm_register', (req, res) => {
   updateUserRegisterConfirm(req, res, knex);
 });
+
 
 // ***************************************************
 // ROUTES - DELETE

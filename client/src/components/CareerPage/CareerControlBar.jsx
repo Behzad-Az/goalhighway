@@ -133,7 +133,7 @@ class CareerControlBar extends Component {
     };
 
     fetch('/api/users/currentuser', {
-      method: 'POST',
+      method: 'PUT',
       credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',

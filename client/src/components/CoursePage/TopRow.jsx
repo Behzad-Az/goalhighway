@@ -109,9 +109,9 @@ class TopRow extends Component {
   }
 
   _handleTutorStatus() {
-    let tutorStatus = !this.state.courseInfo.tutorStatus;
+    const tutorStatus = !this.state.courseInfo.tutorStatus;
     fetch(`/api/users/currentuser/courses/${this.state.courseInfo.id}/tutor`, {
-      method: 'POST',
+      method: 'PUT',
       credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
@@ -217,7 +217,7 @@ class TopRow extends Component {
                               this._handleTutorStatus, 'green', this.state.courseInfo.tutorStatus,
                               this.state.courseInfo.subscriptionStatus, <p>Click to<br/>Tutor</p>, this._handleTutorStatus) }
 
-          { this._createBtnDiv('fa fa-bell', <p>Cancel<br/>Request</p>,
+          { this._createBtnDiv('fa fa-bell', <p>Cancel / Update<br/>Request</p>,
                               () => this._toggleFormModal('showNewReqAssistForm'), 'green', this.state.courseInfo.assistReqOpen,
                               this.state.courseInfo.subscriptionStatus, <p>Request<br/>Assistance</p>,
                               () => this._toggleFormModal('showNewReqAssistForm')) }

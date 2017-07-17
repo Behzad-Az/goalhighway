@@ -78,7 +78,7 @@ class PersonalInformation extends Component {
     this.formData.set('progId', this.state.progId);
 
     fetch('/api/users/currentuser', {
-      method: 'POST',
+      method: 'PUT',
       credentials: 'same-origin',
       body: this.formData
     })

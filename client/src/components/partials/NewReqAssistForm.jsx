@@ -75,7 +75,7 @@ class NewReqAssistForm extends Component {
     };
 
     fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}/tutorlog/update`, {
-      method: 'POST',
+      method: 'PUT',
       credentials: 'same-origin',
       headers: {
         'Accept': 'application/json',
@@ -93,8 +93,6 @@ class NewReqAssistForm extends Component {
   }
 
   _handleNewRequestAssist() {
-    const data = { issueDesc: this.state.issueDesc };
-
     fetch(`/api/users/currentuser/courses/${this.props.courseInfo.id}/tutorlog`, {
       method: 'POST',
       credentials: 'same-origin',
@@ -102,7 +100,7 @@ class NewReqAssistForm extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify({ issueDesc: this.state.issueDesc })
     })
     .then(response => response.json())
     .then(resJSON => {

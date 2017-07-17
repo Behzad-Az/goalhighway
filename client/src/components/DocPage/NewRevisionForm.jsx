@@ -45,10 +45,10 @@ class NewRevisionForm extends Component {
 
   _handleNewDocPost() {
     let data = new FormData();
-    data.append('file', this.state.file);
-    data.append('title', this.state.title);
-    data.append('type', this.state.type);
-    data.append('revDesc', this.state.revDesc);
+    data.set('file', this.state.file);
+    data.set('title', this.state.title);
+    data.set('type', this.state.type);
+    data.set('revDesc', this.state.revDesc);
 
     fetch(`/api/courses/${this.props.docInfo.course_id}/docs/${this.props.docInfo.id}`, {
       method: 'POST',

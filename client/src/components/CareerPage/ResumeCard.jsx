@@ -68,12 +68,12 @@ class ResumeCard extends Component {
   _handleEdit() {
     if (this._validateForm()) {
       let data = new FormData();
-      if (this.state.file) { data.append('file', this.state.file); }
-      data.append('title', this.state.title);
-      data.append('intent', this.state.intent);
+      if (this.state.file) { data.set('file', this.state.file); }
+      data.set('title', this.state.title);
+      data.set('intent', this.state.intent);
 
       fetch(`/api/users/currentuser/resumes/${this.props.resume.id}`, {
-        method: 'POST',
+        method: 'PUT',
         credentials: 'same-origin',
         body: data
       })

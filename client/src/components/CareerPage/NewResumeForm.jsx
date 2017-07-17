@@ -43,9 +43,9 @@ class NewResumeForm extends Component {
 
   _handleNewResumePost() {
     let data = new FormData();
-    data.append('file', this.state.file);
-    data.append('title', this.state.title);
-    data.append('intent', this.state.intent);
+    data.set('file', this.state.file);
+    data.set('title', this.state.title);
+    data.set('intent', this.state.intent);
 
     fetch('/api/users/currentuser/resumes', {
       method: 'POST',
