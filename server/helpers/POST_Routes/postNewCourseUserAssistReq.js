@@ -61,6 +61,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     })
     .then(() => {
       const tutorLogObj = {
+        id: randIdString(11),
         student_id: user_id,
         course_id,
         issue_desc

@@ -2,7 +2,8 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('tutor_log', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.integer('rating');
       t.string('feedback', 500);
       t.string('issue_desc', 500).notNullable();
