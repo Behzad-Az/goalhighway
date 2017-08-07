@@ -54,9 +54,9 @@ class Register extends Component {
     if (resJSON) {
       const instProgDropDownList = resJSON.insts.map(inst => {
         const programs = inst.programs.map(prog => {
-          return { value: parseInt(prog.id), label: prog.prog_display_name };
+          return { value: prog.id, label: prog.prog_display_name };
         });
-        return { value: parseInt(inst.id), label: inst.inst_display_name, programs };
+        return { value: inst.id, label: inst.inst_display_name, programs };
       });
       this.setState({ instProgDropDownList, dataLoaded: true });
     } else {

@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewCourse = (req, res, knex, user_id, esClient) => {
 
   const capitalizeFirstLetter = str => str.trim().charAt(0).toUpperCase() + str.trim().slice(1);
@@ -66,7 +68,8 @@ const postNewCourse = (req, res, knex, user_id, esClient) => {
         throw 'Course prefix and suffix already exist for this institution.';
       }
       else {
-        let newCourseObj = {
+        const newCourseObj = {
+          id: randIdString(11),
           prefix,
           suffix,
           course_desc,

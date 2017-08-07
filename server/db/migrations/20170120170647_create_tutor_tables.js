@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
       t.integer('rating');
       t.string('feedback', 500);
       t.string('issue_desc', 500).notNullable();
-      t.integer('course_id').notNullable().references('courses.id');
+      t.string('course_id', 11).notNullable().references('courses.id');
       t.string('tutor_id', 11).references('users.id');
       t.string('student_id', 11).notNullable().references('users.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());

@@ -16,7 +16,7 @@ exports.up = function(knex, Promise) {
       t.string('photo_name', 35).notNullable().defaultTo('default_user_photo.png');
       t.boolean('confirmed').notNullable().defaultTo(false);
       t.string('register_token', 35).notNullable().unique();
-      t.integer('inst_prog_id').notNullable().references('institution_program.id');
+      t.string('inst_prog_id', 11).notNullable().references('institution_program.id');
       t.timestamp('last_feed_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
@@ -36,10 +36,11 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('course_user', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.boolean('tutor_status').notNullable().defaultTo(false);
       t.boolean('tutor_available').notNullable().defaultTo(false);
-      t.integer('course_id').notNullable().references('courses.id');
+      t.string('course_id', 11).notNullable().references('courses.id');
       t.string('user_id', 11).notNullable().references('users.id');
       t.timestamp('sub_date').defaultTo(knex.fn.now());
       t.timestamp('unsub_date');

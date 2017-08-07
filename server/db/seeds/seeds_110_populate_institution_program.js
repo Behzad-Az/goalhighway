@@ -1,18 +1,24 @@
 exports.seed = function(knex, Promise) {
 
   let tabledata = [];
+  const progIdArr = ['BgnavDcD69g', 'oefQCzPT0l0', '2pgU6ZsLl9b', '0PyMhx0kEt7', '2x6MF6xHKSG'];
+  const instProgIdArr = ['ChEXkGdp4Jg', 'dz6rj7gm3QE', 'zzlAmROFAW2', 'Xwi1pL9cF1G', 'HBT3TrZGtGh',
+                        'eTXTNiaCDdm', 'HeNCyoSrDlJ', 'F565DUHRe3t'];
+  let instProgCounter = 0;
 
-  for (let prog_id = 1; prog_id <= 5; prog_id++) {
+  for (let i = 0; i < 5; i++) {
     tabledata.push({
-      inst_id: 1,
-      prog_id
+      inst_id: 'KliraFQhB6c',
+      prog_id: progIdArr[i],
+      id: instProgIdArr[instProgCounter++]
     });
   }
 
-  for (let prog_id = 1; prog_id <= 3; prog_id++) {
+  for (let i = 0; i < 3; i++) {
     tabledata.push({
-      inst_id: 2,
-      prog_id
+      inst_id: 'kuwXbFvFhtq',
+      prog_id: progIdArr[i],
+      id: instProgIdArr[instProgCounter++]
     });
   }
 

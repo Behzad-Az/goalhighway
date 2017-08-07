@@ -1,9 +1,9 @@
 let programs = [
-  { prog_short_name: 'not avail.', prog_long_name: 'Engineering' },
-  { prog_short_name: 'not avail.', prog_long_name: 'Sciences' },
-  { prog_short_name: 'not avail.', prog_long_name: 'Fine Arts' },
-  { prog_short_name: 'not avail.', prog_long_name: 'Commerce' },
-  { prog_short_name: 'not avail.', prog_long_name: 'Other' }
+  { id: 'BgnavDcD69g', prog_short_name: 'not avail.', prog_long_name: 'Engineering' },
+  { id: 'oefQCzPT0l0', prog_short_name: 'not avail.', prog_long_name: 'Sciences' },
+  { id: '2pgU6ZsLl9b', prog_short_name: 'not avail.', prog_long_name: 'Fine Arts' },
+  { id: '0PyMhx0kEt7', prog_short_name: 'not avail.', prog_long_name: 'Commerce' },
+  { id: '2x6MF6xHKSG', prog_short_name: 'not avail.', prog_long_name: 'Other' }
 ];
 
 const getProgValue = prog_long_name => prog_long_name.toLowerCase().replace(/ /g, '_');

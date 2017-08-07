@@ -3,7 +3,8 @@ exports.up = function(knex, Promise) {
   return Promise.all([
 
     knex.schema.createTableIfNotExists('institutions', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.string('inst_short_name', 10).notNullable();
       t.string('inst_long_name', 60).notNullable();
       t.string('inst_value', 60).notNullable();
@@ -16,7 +17,8 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('programs', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.string('prog_short_name', 10).notNullable();
       t.string('prog_long_name', 60).notNullable();
       t.string('prog_value', 60).notNullable();
@@ -26,22 +28,24 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('institution_program', t => {
-      t.bigIncrements('id');
-      t.integer('inst_id').notNullable();
-      t.integer('prog_id').notNullable().references('programs.id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
+      t.string('inst_id', 11).notNullable();
+      t.string('prog_id', 11).notNullable().references('programs.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     }),
 
     knex.schema.createTableIfNotExists('courses', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.string('prefix', 10).notNullable();
       t.string('suffix', 10).notNullable();
       t.string('full_display_name', 130).notNullable();
       t.string('short_display_name', 25).notNullable();
       t.string('course_desc', 250).notNullable();
       t.integer('course_year').notNullable();
-      t.integer('inst_id').notNullable().references('institutions.id');
+      t.string('inst_id', 11).notNullable().references('institutions.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     }),
@@ -49,7 +53,7 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('docs', t => {
       // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
-      t.integer('course_id').notNullable().references('courses.id');
+      t.string('course_id', 11).notNullable().references('courses.id');
       t.string('latest_title', 60).notNullable();
       t.string('latest_type', 35).notNullable();
       t.string('latest_rev_desc', 250).notNullable();

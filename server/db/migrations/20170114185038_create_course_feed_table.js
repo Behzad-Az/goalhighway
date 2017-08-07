@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
       t.string('category', 35).notNullable();
       t.string('header', 60).notNullable();
       t.string('content', 535).notNullable();
-      t.integer('course_id').notNullable().references('courses.id');
+      t.string('course_id', 11).notNullable().references('courses.id');
       t.string('doc_id').references('docs.id');
       t.string('rev_id').references('revisions.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());

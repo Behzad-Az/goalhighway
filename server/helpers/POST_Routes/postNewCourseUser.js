@@ -1,12 +1,16 @@
+const randIdString = require('random-base64-string');
+
 const postNewCourseUser = (req, res, knex, user_id) => {
 
+  const course_id = req.params.course_id;
+
   validateInputs = () => new Promise((resolve, reject) => {
-    req.params.course_id ? resolve() : reject('Invalid parameter');
+    course_id.length === 11 ? resolve() : reject('Invalid parameter');
   });
 
   const userAlreadySubscribed = () => knex('course_user')
     .where('user_id', user_id)
-    .andWhere('course_id', req.params.course_id)
+    .andWhere('course_id', course_id)
     .whereNull('unsub_date')
     .whereNull('unsub_reason')
     .count('id as subscribed');
@@ -21,8 +25,9 @@ const postNewCourseUser = (req, res, knex, user_id) => {
       throw 'user already subscribed';
     } else {
       return insertNewCourseUser({
+        id: randIdString(11),
         user_id,
-        course_id: req.params.course_id
+        course_id
       });
     }
   })

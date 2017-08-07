@@ -49,9 +49,9 @@ class PersonalInformation extends Component {
     if (resJSON) {
       const instProgDropDownList = resJSON.insts.map(inst => {
         const programs = inst.programs.map(prog => {
-          return { value: parseInt(prog.id), label: prog.prog_display_name };
+          return { value: prog.id, label: prog.prog_display_name };
         });
-        return { value: parseInt(inst.id), label: inst.inst_display_name, programs };
+        return { value: inst.id, label: inst.inst_display_name, programs };
       });
       this.setState({ instProgDropDownList, dataLoaded: true });
     } else {
@@ -154,7 +154,7 @@ class PersonalInformation extends Component {
   }
 
   _editInfo() {
-    let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : [];
+    const programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : [];
     if (this.state.dataLoaded && !this.state.pageError) {
       return (
         <div className='card'>

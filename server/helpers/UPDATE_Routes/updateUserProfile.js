@@ -55,8 +55,9 @@ const updateUserProfile = (req, res, knex, user_id, googleMapsClient) => {
 
   const findInstProgId = (inst_id, prog_id) => knex('institution_program')
     .select('id')
-    .where('inst_id', inst_id).
-    andWhere('prog_id', prog_id);
+    .where('inst_id', inst_id)
+    .andWhere('prog_id', prog_id)
+    .whereNull('deleted_at');
 
   const determinePhotoName = () => new Promise((resolve, reject) => {
     if (req.file && req.file.filename) {
