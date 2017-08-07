@@ -17,7 +17,7 @@ class UserProfilePage extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - My Profile';
+    document.title = 'My Profile';
     fetch('/api/users/currentuser', {
       method: 'GET',
       credentials: 'same-origin'
@@ -40,6 +40,7 @@ class UserProfilePage extends Component {
       };
       this.setState({ userInfo, dataLoaded: true });
     } else {
+      document.title = 'My Profile - Error';
       throw 'Server returned false';
     }
   }

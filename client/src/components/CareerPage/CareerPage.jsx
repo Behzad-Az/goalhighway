@@ -24,7 +24,7 @@ class CareerPage extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - My Career';
+    document.title = 'Career Panel';
     this._loadComponentData();
   }
 
@@ -50,6 +50,7 @@ class CareerPage extends Component {
       });
       this.setState({ jobs, resumes, dataLoaded: true });
     } else {
+      document.title = 'Career Panel - Error';
       throw 'Server returned false';
     }
   }

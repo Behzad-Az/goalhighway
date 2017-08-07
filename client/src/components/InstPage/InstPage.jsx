@@ -28,7 +28,7 @@ class InstPage extends Component {
   }
 
   componentDidMount() {
-    // document.title = 'GoalHwy - My Institution';
+    document.title = 'Institution Panel';
     this._loadComponentData();
   }
 
@@ -59,13 +59,14 @@ class InstPage extends Component {
         dataLoaded: true
       });
     } else {
+      document.title = 'Institution Panel - Error';
       throw 'Server returned false';
     }
   }
 
   _findInstName() {
     const inst = this.state.instList.find(inst => inst.value == this.state.instId);
-    document.title = inst ? inst.label : 'GoalHwy - Instituions';
+    document.title = inst ? `${inst.label} Panel` : 'Instituion Panel';
     return inst ? inst.label : '';
   }
 

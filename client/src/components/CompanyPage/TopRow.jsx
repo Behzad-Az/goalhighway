@@ -22,7 +22,7 @@ class TopRow extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - Company Page';
+    document.title = 'Company Panel';
     this._loadComponentData();
   }
 
@@ -44,9 +44,10 @@ class TopRow extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      document.title = `GoalHwy - ${resJSON.companyInfo.name}`;
+      document.title = `${resJSON.companyInfo.name} Panel`;
       this.setState({ companyInfo: resJSON.companyInfo, dataLoaded: true });
     } else {
+      document.title = 'Company Panel - Error';
       throw 'Server returned false';
     }
   }

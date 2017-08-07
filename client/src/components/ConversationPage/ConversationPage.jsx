@@ -23,7 +23,7 @@ class ConversationPage extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - My Conversations';
+    document.title = 'Messages';
     this._loadComponentData();
   }
 
@@ -51,6 +51,7 @@ class ConversationPage extends Component {
           dataLoaded: true
         });
     } else {
+      document.title = 'Messages - Error';
       throw 'Server returned false';
     }
   }

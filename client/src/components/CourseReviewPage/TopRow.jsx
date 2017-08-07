@@ -34,7 +34,7 @@ class TopRow extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - Course Review Page';
+    document.title = 'Course Reviews';
     this._loadComponentData();
   }
 
@@ -50,7 +50,7 @@ class TopRow extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      document.title = `GoalHwy - ${resJSON.courseInfo.short_display_name} Reviews`;
+      document.title = `${resJSON.courseInfo.short_display_name} Reviews`;
       this.setState({
         courseInfo: resJSON.courseInfo,
         profAvgs: resJSON.profAvgs,
@@ -59,6 +59,7 @@ class TopRow extends Component {
         dataLoaded: true
       });
     } else {
+      document.title = 'Course Reviews - Error';
       throw 'Server returned false';
     }
   }

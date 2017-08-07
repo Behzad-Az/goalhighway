@@ -30,7 +30,7 @@ class TopRow extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - Document Page';
+    document.title = 'Document Revisions';
     this._loadComponentData();
   }
 
@@ -52,13 +52,14 @@ class TopRow extends Component {
 
   _conditionData(resJSON) {
     if (resJSON) {
-      document.title = `GoalHwy - ${resJSON.docInfo.title}`;
+      document.title = `${resJSON.docInfo.title} Revisions`;
       this.setState({
         courseInfo: resJSON.courseInfo,
         docInfo: resJSON.docInfo,
         dataLoaded: true
       });
     } else {
+      document.title = 'Document Revisions - Error';
       throw 'Server returned false';
     }
   }

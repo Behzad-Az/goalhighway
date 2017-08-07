@@ -20,7 +20,7 @@ class IndexPage extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - My Courses';
+    document.title = 'My Courses';
     fetch('/api/index', {
       method: 'GET',
       credentials: 'same-origin'
@@ -38,6 +38,7 @@ class IndexPage extends Component {
         dataLoaded: true
       });
     } else {
+      document.title = 'My Courses - Error';
       throw 'Server returned false';
     }
   }

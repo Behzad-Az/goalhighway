@@ -14,7 +14,7 @@ class RegisterConfirmPage extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - Confirm Registration';
+    document.title = 'Confirm Registration';
     this._loadComponentData();
   }
 
@@ -41,6 +41,7 @@ class RegisterConfirmPage extends Component {
     if (resJSON) {
       this.setState({ dataLoaded: true });
     } else {
+      document.title = 'Confirm Registration - Error';
       throw 'Server returned false';
     }
   }

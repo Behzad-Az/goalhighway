@@ -31,7 +31,7 @@ class FeedsContainer extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - My Feed';
+    document.title = 'Feed';
     this._loadComponentData();
   }
 
@@ -55,6 +55,7 @@ class FeedsContainer extends Component {
         noMoreFeeds: !resJSON.feeds.length
       });
     } else {
+      document.title = 'Feed - Error';
       throw 'Server returned false';
     }
   }
