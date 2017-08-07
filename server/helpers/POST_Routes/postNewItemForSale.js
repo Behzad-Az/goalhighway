@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewItemForSale = (req, res, knex, user_id) => {
 
   const title = req.body.title.trim();
@@ -32,7 +34,7 @@ const postNewItemForSale = (req, res, knex, user_id) => {
   knex.transaction(trx => {
     validateInputs()
     .then(() => {
-      let newItemObj = {
+      const newItemObj = {
         title,
         item_desc,
         price,
@@ -43,7 +45,8 @@ const postNewItemForSale = (req, res, knex, user_id) => {
       return insertNewItem(newItemObj, trx);
     })
     .then(itemId => {
-      let adminFeedObj = {
+      const adminFeedObj = {
+        id: randIdString(11),
         commenter_id: user_id,
         course_id: req.params.course_id,
         item_for_sale_id: itemId[0],

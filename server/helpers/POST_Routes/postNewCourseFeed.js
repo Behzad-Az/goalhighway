@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewCourseFeed = (req, res, knex, user_id) => {
 
   const content = req.body.content.trim();
@@ -9,7 +11,7 @@ const postNewCourseFeed = (req, res, knex, user_id) => {
       content.length >= 3 && content.length <= 535 &&
       content.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
       [true, false].includes(anonymous) &&
-      course_id
+      course_id.length === 11
     ) {
       resolve();
     } else {
@@ -22,6 +24,7 @@ const postNewCourseFeed = (req, res, knex, user_id) => {
 
   validateInputs()
   .then(() => insertNewFeed({
+    id: randIdString(11),
     anonymous,
     category: 'new_comment',
     header: 'new_comment',

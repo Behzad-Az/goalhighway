@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewCourseReview = (req, res, knex, user_id) => {
 
   const profName = req.body.profName.trim() || 'Unknown';
@@ -62,7 +64,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
     })
     .then(profId => profId[0] ? [profId[0].id] : createNewProf({ inst_id, name: profName }, trx))
     .then(profId => {
-      let courseReviewObj = {
+      const courseReviewObj = {
         course_id: req.params.course_id,
         reviewer_id: user_id,
         prof_id: profId[0],
@@ -77,7 +79,8 @@ const postNewCourseReview = (req, res, knex, user_id) => {
       return createNewCourseReview(courseReviewObj, trx);
     })
     .then(reviewId => {
-      let adminFeedObj = {
+      const adminFeedObj = {
+        id: randIdString(11),
         commenter_id: user_id,
         course_id: req.params.course_id,
         course_review_id: reviewId[0],

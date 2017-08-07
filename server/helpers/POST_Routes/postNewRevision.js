@@ -105,7 +105,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
     validateInputs()
     .then(() => determineFileName())
     .then(file_name => {
-      let newRevObj = {
+      const newRevObj = {
         id: randIdString(11),
         title,
         type,
@@ -114,7 +114,7 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
         poster_id: user_id,
         file_name
       };
-      let updatedDocObj = {
+      const updatedDocObj = {
         latest_type: type,
         latest_title: title,
         latest_rev_desc: rev_desc,
@@ -125,7 +125,8 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
       return Promise.all([ insertNewRevision(newRevObj, trx), updateDoc(updatedDocObj, trx) ]);
     })
     .then(results => {
-      let adminFeedObj = {
+      const adminFeedObj = {
+        id: randIdString(11),
         commenter_id: user_id,
         course_id,
         doc_id,

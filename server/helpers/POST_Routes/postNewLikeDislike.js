@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewLikeDislike = (req, res, knex, user_id) => {
 
   const like_or_dislike = parseInt(req.body.likeOrDislike);
@@ -21,6 +23,7 @@ const postNewLikeDislike = (req, res, knex, user_id) => {
 
   validateInputs()
   .then(() => insertLikeOrDislike({
+    id: randIdString(11),
     user_id,
     like_or_dislike,
     foreign_table,

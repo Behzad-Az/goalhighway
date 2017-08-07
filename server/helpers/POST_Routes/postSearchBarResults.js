@@ -35,7 +35,7 @@ const postSearchBarResults = (req, res, esClient) => {
         },
         filter: [
           { type: { value: 'document' } },
-          { term: { inst_id: req.session.inst_id } }
+          { term: { inst_id: req.session.inst_id.toLowerCase() } }
         ]
       }
     }
@@ -55,7 +55,7 @@ const postSearchBarResults = (req, res, esClient) => {
         },
         filter: [
           { type: { value: 'course' } },
-          { term: { inst_id: req.session.inst_id } }
+          { term: { inst_id: req.session.inst_id.toLowerCase() } }
         ]
       }
     }

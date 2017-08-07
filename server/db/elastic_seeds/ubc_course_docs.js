@@ -15,7 +15,7 @@ const bulkIndex = function bulkIndex(index, type, data) {
       index: {
         _index: index,
         _type: type,
-        _id: item.doc_id
+        _id: item.id
       }
     });
 
@@ -38,35 +38,38 @@ const bulkIndex = function bulkIndex(index, type, data) {
 const populate = function populate() {
   const coursesRaw = fs.readFileSync('ubc_courses.json');
   const courses = JSON.parse(coursesRaw);
+  const docsRaw = fs.readFileSync('ubc_course_docs.json');
+  const docIdArr = JSON.parse(docsRaw);
+
   let id = 0;
   let docs = [];
 
   courses.forEach(course => {
     docs.push({
+      id: docIdArr[id++].id,
       title: `name_ar_${id}`,
       kind: 'assignment assingments report reports',
-      inst_id: 1,
+      inst_id: course.inst_id,
       inst_name: 'University of British Columbia UBC',
-      course_id: course.course_id,
-      doc_id: (++id).toString(),
+      course_id: course.id,
       course_name: course.title
     });
     docs.push({
+      id: docIdArr[id++].id,
       title: `name_ln_${id}`,
       kind: 'lecture lectures note notes',
-      inst_id: 1,
+      inst_id: course.inst_id,
       inst_name: 'University of British Columbia UBC',
-      course_id: course.course_id,
-      doc_id: (++id).toString(),
+      course_id: course.id,
       course_name: course.title
     });
     docs.push({
+      id: docIdArr[id++].id,
       title: `name_sq_${id}`,
       kind: 'sample question questions quiz quizzes exam exams final finals midterm midterms',
-      inst_id: 1,
+      inst_id: course.inst_id,
       inst_name: 'University of British Columbia UBC',
-      course_id: course.course_id,
-      doc_id: (++id).toString(),
+      course_id: course.id,
       course_name: course.title
     });
   });

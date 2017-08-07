@@ -24,6 +24,26 @@ const newIndex = {
           search_text: { type: 'string' },
           expired: { type: 'boolean' }
         }
+      },
+      course: {
+        properties: {
+          id: { type: 'string' },
+          title: { type: 'string' },
+          course_desc: { type: 'string' },
+          inst_id: { type: 'string' },
+          inst_name: { type: 'string' }
+        }
+      },
+      document: {
+        properties: {
+          id: { type: 'string' },
+          title: { type: 'string' },
+          kind: { type: 'string' },
+          inst_id: { type: 'string' },
+          inst_name: { type: 'string' },
+          course_id: { type: 'string' },
+          course_name: { type: 'string' }
+        }
       }
     }
   }

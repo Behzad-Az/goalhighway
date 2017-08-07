@@ -7,7 +7,7 @@ const postNewCourseFeedReply = (req, res, knex, user_id) => {
     if (
       content.length >= 3 && content.length <= 500 &&
       content.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
-      course_feed_id
+      course_feed_id.length === 11
     ) {
       resolve();
     } else {

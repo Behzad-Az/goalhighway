@@ -91,7 +91,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
   knex.transaction(trx => {
     validateInputs()
     .then(() => {
-      let newDocObj = {
+      const newDocObj = {
         id: randIdString(11),
         course_id,
         latest_type: type,
@@ -103,7 +103,7 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
     })
     .then(docId => {
       doc_id = docId[0];
-      let newRevObj = {
+      const newRevObj = {
         id: randIdString(11),
         title,
         type,
@@ -115,7 +115,8 @@ const postNewDoc = (req, res, knex, user_id, esClient) => {
       return insertNewRev(newRevObj, trx);
     })
     .then(revId => {
-      let adminFeedObj = {
+      const adminFeedObj = {
+        id: randIdString(11),
         commenter_id: user_id,
         course_id,
         doc_id,

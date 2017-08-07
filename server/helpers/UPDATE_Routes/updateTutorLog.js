@@ -32,6 +32,7 @@ const updateTutorLog = (req, res, knex, user_id) => {
 
   const updateCourseFeed = tutor_log_id => knex('course_feed')
     .where('tutor_log_id', tutor_log_id)
+    .andWhere('commenter_id', user_id)
     .update({ content: `Requesting peer tutoring: ${issue_desc}` });
 
   const deleteCourseFeed = tutor_log_id => knex('course_feed')

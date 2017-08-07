@@ -14,10 +14,10 @@ const bulkIndex = function bulkIndex(index, type, data) {
     bulkBody.push({
       index: {
         _index: index,
-        _type: type
+        _type: type,
+        _id: item.id
       }
     });
-
     bulkBody.push(item);
   });
 

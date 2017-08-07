@@ -46,13 +46,13 @@ class SearhBar extends Component {
         switch (result._type) {
           case 'document':
             searchResults.push(
-              <p key={index} className='result-row valid' onClick={() => this._navigatePage(`/courses/${result._source.course_id}/docs/${result._source.doc_id}`)}>
+              <p key={index} className='result-row valid' onClick={() => this._navigatePage(`/courses/${result._source.course_id}/docs/${result._id}`)}>
                 <i className='fa fa-file-text' /> {result._source.course_name} <i className='fa fa-arrow-right' /> {result._source.title}
               </p>);
             break;
           case 'course':
             searchResults.push(
-              <p key={index} className='result-row valid' onClick={() => this._navigatePage(`/courses/${result._source.course_id}`)}>
+              <p key={index} className='result-row valid' onClick={() => this._navigatePage(`/courses/${result._id}`)}>
                 <i className='fa fa-users' /> {result._source.title}
               </p>
             );

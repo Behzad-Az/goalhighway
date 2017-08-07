@@ -1,12 +1,15 @@
+const randIdString = require('random-base64-string');
+
 const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
 
   const issue_desc = req.body.issueDesc.trim();
+  const course_id = req.params.course_id;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       issue_desc.length >= 4 && issue_desc.length <= 500 &&
       issue_desc.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
-      req.params.course_id
+      course_id
     ) {
       resolve();
     } else {
@@ -17,7 +20,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
   const closePrevReqIfNecessary = trx => knex('tutor_log')
     .transacting(trx)
     .where('student_id', user_id)
-    .andWhere('course_id', req.params.course_id)
+    .andWhere('course_id', course_id)
     .whereNull('closed_at')
     .update({
       tutor_id: null,
@@ -38,7 +41,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
 
   const verifySubscription = trx => knex('course_user')
     .transacting(trx)
-    .where('course_id', req.params.course_id)
+    .where('course_id', course_id)
     .andWhere('user_id', user_id)
     .whereNotNull('sub_date')
     .whereNull('unsub_date')
@@ -57,21 +60,22 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
       }
     })
     .then(() => {
-      let tutorLogObj = {
+      const tutorLogObj = {
         student_id: user_id,
-        course_id: req.params.course_id,
+        course_id,
         issue_desc
       };
       return insertNewTutorLog(tutorLogObj, trx);
     })
     .then(tutorLogId => {
-      let newCourseFeed = {
+      const newCourseFeed = {
+        id: randIdString(11),
         anonymous: false,
         commenter_id: user_id,
         category: 'new_tutor_request',
         header: 'new_tutor_request',
         content: issue_desc,
-        course_id: req.params.course_id,
+        course_id,
         tutor_log_id: tutorLogId[0]
       };
       return addCourseFeed(newCourseFeed, trx);
