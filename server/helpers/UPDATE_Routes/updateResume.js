@@ -2,6 +2,7 @@ const updateResume = (req, res, knex, user_id) => {
 
   const title = req.body.title.trim();
   const intent = req.body.intent.trim();
+  const resume_id = req.params.resume_id;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
@@ -10,7 +11,7 @@ const updateResume = (req, res, knex, user_id) => {
       intent.length >= 3 && intent.length <= 250 &&
       intent.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       req.session.inst_prog_id &&
-      req.params.resume_id
+      resume_id.length === 11
     ) {
       resolve();
     } else {
@@ -22,14 +23,14 @@ const updateResume = (req, res, knex, user_id) => {
     if (req.file && req.file.filename) {
       resolve(req.file.filename);
     } else {
-      knex('resumes').where('id', req.params.resume_id).andWhere('owner_id', user_id).select('file_name')
+      knex('resumes').where('id', resume_id).andWhere('owner_id', user_id).select('file_name')
       .then(resume => resolve(resume[0].file_name))
       .catch(err => reject('could not find the file_name for resume: ', err));
     }
   });
 
   const updateResumeDb = resumeObj => knex('resumes')
-    .where('id', req.params.resume_id)
+    .where('id', resume_id)
     .andWhere('owner_id', user_id)
     .whereNull('deleted_at')
     .update(resumeObj);

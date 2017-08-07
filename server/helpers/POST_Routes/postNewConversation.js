@@ -1,7 +1,11 @@
+const randIdString = require('random-base64-string');
+
 const postNewConversation = (req, res, knex, user_id) => {
 
   const subject = req.body.subject.trim();
   const content = req.body.content.trim();
+  const toId = req.body.toId;
+  const objId = req.body.objId;
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
@@ -10,8 +14,8 @@ const postNewConversation = (req, res, knex, user_id) => {
       content.length >= 3 && content.length <= 500 &&
       content.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
       ['itemForSale', 'tutorReq', 'resumeReview'].includes(req.body.type) &&
-      req.body.toId &&
-      req.body.objId
+      toId.length === 11 &&
+      objId.length === 11
     ) {
       resolve();
     } else {
@@ -20,23 +24,23 @@ const postNewConversation = (req, res, knex, user_id) => {
   });
 
   const determineConvType = trx => {
-    if (req.body.toId == user_id) {
+    if (toId === user_id) {
       throw 'User cannot send message to self';
     } else {
       switch (req.body.type) {
         case 'itemForSale':
           return knex('items_for_sale')
             .transacting(trx)
-            .where('id', req.body.objId)
-            .andWhere('owner_id', req.body.toId)
+            .where('id', objId)
+            .andWhere('owner_id', toId)
             .whereNull('deleted_at')
             .limit(1)
             .count('id as verified');
         case 'tutorReq':
           return knex('tutor_log')
             .transacting(trx)
-            .where('id', req.body.objId)
-            .andWhere('student_id', req.body.toId)
+            .where('id', objId)
+            .andWhere('student_id', toId)
             .whereNull('closed_at')
             .whereNull('closure_reason')
             .limit(1)
@@ -44,8 +48,8 @@ const postNewConversation = (req, res, knex, user_id) => {
         case 'resumeReview':
           return knex('resumes')
             .transacting(trx)
-            .where('id', req.body.objId)
-            .andWhere('owner_id', req.body.toId)
+            .where('id', objId)
+            .andWhere('owner_id', toId)
             .whereNull('deleted_at')
             .whereNotNull('review_requested_at')
             .limit(1)
@@ -74,17 +78,17 @@ const postNewConversation = (req, res, knex, user_id) => {
     .then(() => determineConvType(trx))
     .then(result => {
       if (parseInt(result[0].verified)) {
-        return insertNewConversation({ subject }, trx);
+        return insertNewConversation({ id: randIdString(11), subject }, trx);
       } else {
         throw 'Conversation parameters not valid.';
       }
     })
     .then(convId => {
       const conversation_id = convId[0];
-      let newMsgObj = { content, conversation_id, sender_id: user_id };
+      let newMsgObj = { id: randIdString(11), content, conversation_id, sender_id: user_id };
       let newMemberObjs = [
-        { user_id: req.body.toId, conversation_id },
-        { user_id, conversation_id }
+        { id: randIdString(11), user_id: toId, conversation_id },
+        { id: randIdString(11), user_id, conversation_id }
       ];
       return Promise.all([
         insertNewConvMessage(newMsgObj, trx), insertNewConvMembers(newMemberObjs, trx)

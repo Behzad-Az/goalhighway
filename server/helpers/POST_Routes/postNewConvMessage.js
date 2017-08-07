@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewConvMessage = (req, res, knex, user_id) => {
 
   const content = req.body.content.trim();
@@ -32,6 +34,7 @@ const postNewConvMessage = (req, res, knex, user_id) => {
   .then(result => {
     if (parseInt(result[0].verified)) {
       return insertNewConvMessage({
+        id: randIdString(11),
         content,
         conversation_id,
         sender_id: user_id

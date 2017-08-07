@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewResume = (req, res, knex, user_id) => {
 
   const title = req.body.title.trim();
@@ -22,6 +24,7 @@ const postNewResume = (req, res, knex, user_id) => {
 
   validateInputs()
   .then(() => insertResume({
+    id: randIdString(11),
     title,
     intent,
     file_name: req.file.filename,

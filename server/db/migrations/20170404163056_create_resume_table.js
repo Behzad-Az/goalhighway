@@ -2,7 +2,8 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('resumes', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.string('title', 60).notNullable();
       t.string('intent', 250).notNullable();
       t.string('file_name', 35).notNullable();

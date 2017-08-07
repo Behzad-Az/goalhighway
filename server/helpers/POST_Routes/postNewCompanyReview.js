@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewCompanyReview = (req, res, knex, user_id, esClient) => {
 
   const position = req.body.position.trim();
@@ -32,7 +34,7 @@ const postNewCompanyReview = (req, res, knex, user_id, esClient) => {
       pros.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
       cons.length >= 3 && cons.length <= 500 &&
       cons.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
-      company_id
+      company_id.length === 11
     ) {
       resolve();
     } else {
@@ -47,7 +49,7 @@ const postNewCompanyReview = (req, res, knex, user_id, esClient) => {
       query: {
         ids: {
           type: 'company',
-          values: [req.params.company_id]
+          values: [company_id.toLowerCase()]
         }
       }
     };
@@ -62,6 +64,7 @@ const postNewCompanyReview = (req, res, knex, user_id, esClient) => {
   .then(results => {
     if (results.hits.total === 1) {
       return insertNewReview({
+        id: randIdString(11),
         position,
         position_type,
         reviewer_background,
