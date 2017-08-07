@@ -36,10 +36,10 @@ const bulkIndex = function bulkIndex(index, type, data) {
 
 const populate = function populate() {
   const companies = [
-    { id: 1, name: 'Home Inc.' },
-    { id: 2, name: 'Ballard Power Systems' },
-    { id: 3, name: 'Apple Inc.' },
-    { id: 4, name: 'NCIS Facility - UBC' }
+    { id: 'fXt6U3UwM0o', name: 'Home Inc.' },
+    { id: 'WVZ1P82K4tJ', name: 'Ballard Power Systems' },
+    { id: 'K3IFhDYlu0L', name: 'Apple Inc.' },
+    { id: '1Uoyn12Q9iQ', name: 'NCIS Facility - UBC' }
   ];
   console.log(`${companies.length} items parsed from data file`);
   bulkIndex('goalhwy_es_db', 'company', companies);

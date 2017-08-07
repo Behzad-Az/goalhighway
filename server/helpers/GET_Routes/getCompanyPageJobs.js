@@ -1,5 +1,7 @@
 const getCompanyPageJobs = (req, res, esClient, user_id) => {
 
+  console.log("i'm here 6: ", req.params.company_id);
+
   const getJobs = () => {
     const body = {
       size: 10,
@@ -9,7 +11,7 @@ const getCompanyPageJobs = (req, res, esClient, user_id) => {
           filter: {
             bool: {
               must: [
-                { term: { 'company_id' : req.params.company_id } },
+                { term: { 'company_id' : req.params.company_id.toLowerCase() } },
                 { term: { expired: false } },
                 { type: { value : 'job' } }
               ]

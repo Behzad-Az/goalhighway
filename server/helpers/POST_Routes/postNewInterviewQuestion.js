@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const posNewInterviewQuestion = (req, res, knex, user_id, esClient) => {
 
   const question = req.body.question.trim();
@@ -19,7 +21,7 @@ const posNewInterviewQuestion = (req, res, knex, user_id, esClient) => {
     if (
       question.length >= 5 && question.length <= 250 &&
       question.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
-      company_id &&
+      company_id.length === 11 &&
       validateAnswer()
     ) {
       resolve();
@@ -57,6 +59,7 @@ const posNewInterviewQuestion = (req, res, knex, user_id, esClient) => {
     .then(results => {
       if (results.hits.total === 1) {
         const newQestionObj = {
+          id: randIdString(11),
           question,
           poster_id: user_id,
           company_id
@@ -69,6 +72,7 @@ const posNewInterviewQuestion = (req, res, knex, user_id, esClient) => {
     .then(qId => {
       if (answer) {
         const newAnsObj = {
+          id: randIdString(11),
           answer,
           outcome,
           poster_id: user_id,

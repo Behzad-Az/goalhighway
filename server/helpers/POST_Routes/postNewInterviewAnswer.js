@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewInterviewAnswer = (req, res, knex, user_id) => {
 
   const answer = req.body.answer.trim();
@@ -10,8 +12,8 @@ const postNewInterviewAnswer = (req, res, knex, user_id) => {
       answer.length >= 5 && answer.length <= 500 &&
       answer.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
       ['Got the job', 'Unsuccessful', 'Unknown'].includes(outcome) &&
-      company_id &&
-      question_id
+      company_id.length === 11 &&
+      question_id.length === 11
     ) {
       resolve();
     } else {
@@ -34,6 +36,7 @@ const postNewInterviewAnswer = (req, res, knex, user_id) => {
   .then(result => {
     if (parseInt(result[0].valid)) {
       return insertAnswer({
+        id: randIdString(11),
         answer,
         outcome,
         poster_id: user_id,

@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewFlag = (req, res, knex, user_id) => {
 
   const acceptedFlags = {
@@ -15,7 +17,7 @@ const postNewFlag = (req, res, knex, user_id) => {
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
       foreign_table &&
-      foreign_id &&
+      foreign_id.length === 11 &&
       acceptedFlags[foreign_table] &&
       acceptedFlags[foreign_table].includes(reason)
     ) {
@@ -41,6 +43,7 @@ const postNewFlag = (req, res, knex, user_id) => {
       throw 'user has already flagged this entry';
     } else {
       return insertFlag({
+        id: randIdString(11),
         reason,
         foreign_id,
         foreign_table,

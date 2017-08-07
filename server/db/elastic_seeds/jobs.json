@@ -4,7 +4,7 @@
       "lat": 49.306168,
       "lon": -122.783516
     },
-    "company_id": 1,
+    "company_id": "fXt6U3UwM0o",
     "company_name": "Home Inc.",
     "title": "Software Engineer",
     "kind": "internship",
@@ -19,7 +19,7 @@
       "lat": 49.198215,
       "lon": -123.007668
     },
-    "company_id": 2,
+    "company_id": "WVZ1P82K4tJ",
     "company_name": "Ballard Power Systems",
     "title": "Manufacturing Engineer",
     "kind": "summer",
@@ -34,7 +34,7 @@
       "lat": 49.259695,
       "lon": -123.255181
     },
-    "company_id": 3,
+    "company_id": "K3IFhDYlu0L",
     "company_name": "Apple Inc.",
     "title": "Research Engineer",
     "kind": "junior",

@@ -20,7 +20,7 @@ const newIndex = {
           link: { type: 'string' },
           photo_name: { type: 'string' },
           company_name: { type: 'string' },
-          company_id: { type: 'integer' },
+          company_id: { type: 'string' },
           search_text: { type: 'string' },
           expired: { type: 'boolean' }
         }
@@ -43,6 +43,12 @@ const newIndex = {
           inst_name: { type: 'string' },
           course_id: { type: 'string' },
           course_name: { type: 'string' }
+        },
+      },
+      company: {
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' }
         }
       }
     }
