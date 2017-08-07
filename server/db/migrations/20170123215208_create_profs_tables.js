@@ -2,7 +2,8 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('profs', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.string('name', 60).notNullable();
       t.string('inst_id', 11).notNullable();
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
@@ -10,7 +11,8 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('course_reviews', t => {
-      t.bigIncrements('id');
+      // t.bigIncrements('id');
+      t.string('id', 11).notNullable().unique();
       t.integer('start_year').notNullable();
       t.string('start_month', 10).notNullable();
       t.integer('workload_rating').notNullable();
@@ -20,7 +22,7 @@ exports.up = function(knex, Promise) {
       t.string('review_desc', 500).notNullable();
       t.string('course_id', 11).notNullable().references('courses.id');
       t.string('reviewer_id', 11).notNullable().references('users.id');
-      t.integer('prof_id').references('profs.id');
+      t.string('prof_id', 11).references('profs.id');
       t.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       t.timestamp('deleted_at');
     })

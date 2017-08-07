@@ -62,9 +62,10 @@ const postNewCourseReview = (req, res, knex, user_id) => {
       inst_id = instId[0].inst_id;
       return getProfId(inst_id, trx);
     })
-    .then(profId => profId[0] ? [profId[0].id] : createNewProf({ inst_id, name: profName }, trx))
+    .then(profId => profId[0] ? [profId[0].id] : createNewProf({ id: randIdString(11), inst_id, name: profName }, trx))
     .then(profId => {
       const courseReviewObj = {
+        id: randIdString(11),
         course_id: req.params.course_id,
         reviewer_id: user_id,
         prof_id: profId[0],

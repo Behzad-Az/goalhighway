@@ -35,6 +35,7 @@ const postNewItemForSale = (req, res, knex, user_id) => {
     validateInputs()
     .then(() => {
       const newItemObj = {
+        id: randIdString(11),
         title,
         item_desc,
         price,

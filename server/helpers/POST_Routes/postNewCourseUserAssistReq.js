@@ -9,7 +9,7 @@ const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
     if (
       issue_desc.length >= 4 && issue_desc.length <= 500 &&
       issue_desc.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
-      course_id
+      course_id.length === 11
     ) {
       resolve();
     } else {

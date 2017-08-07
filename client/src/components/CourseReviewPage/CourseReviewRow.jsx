@@ -87,7 +87,7 @@ class CourseReviewRow extends Component {
               <td>{this._decodeWorkload(this.props.review.workload_rating)}</td>
             </tr>
             <tr>
-              <td>Posted On:</td>
+              <td>Date:</td>
               <td>{this.props.review.created_at.slice(0, 10)}</td>
             </tr>
           </tbody>
