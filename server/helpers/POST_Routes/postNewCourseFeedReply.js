@@ -1,3 +1,5 @@
+const randIdString = require('random-base64-string');
+
 const postNewCourseFeedReply = (req, res, knex, user_id) => {
 
   const content = req.body.replyContent.trim();
@@ -20,6 +22,7 @@ const postNewCourseFeedReply = (req, res, knex, user_id) => {
 
   validateInputs()
   .then(() => insertNewReply({
+    id: randIdString(11),
     content,
     commenter_id: user_id,
     course_feed_id
