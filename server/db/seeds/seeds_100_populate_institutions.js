@@ -1,4 +1,4 @@
-let institutions = [
+const institutions = [
   { inst_short_name: 'UBC', inst_long_name: 'University of British Columbia', id: 'KliraFQhB6c', province: 'British Columbia', country: 'canada', photo_name: 'university_of_british_columbia.png' },
   { inst_short_name: 'SFU', inst_long_name: 'Simon Fraser University', id: 'kuwXbFvFhtq', province: 'British Columbia', country: 'canada', photo_name: 'simon_fraser_university.png' }
 ];

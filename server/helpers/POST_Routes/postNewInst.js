@@ -84,7 +84,7 @@ const postNewInst = (req, res, knex, user_id, esClient, randIdString) => {
       }
     })
     .then(instId => Promise.all([
-      addInstToElasticSearch({ id: instId[0], inst_name: inst_display_name }),
+      addInstToElasticSearch({ id: instId[0], name: inst_display_name }),
       insertDefaultInstProgs(instId[0], trx),
       insertDefaultProf(instId[0], trx)
     ]))

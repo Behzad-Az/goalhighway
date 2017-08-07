@@ -50,6 +50,12 @@ const newIndex = {
           id: { type: 'string' },
           name: { type: 'string' }
         }
+      },
+      institution: {
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' }
+        }
       }
     }
   }

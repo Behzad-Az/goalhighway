@@ -28,7 +28,7 @@ class InstPage extends Component {
   }
 
   componentDidMount() {
-    document.title = 'GoalHwy - My Institution';
+    // document.title = 'GoalHwy - My Institution';
     this._loadComponentData();
   }
 
@@ -64,7 +64,8 @@ class InstPage extends Component {
   }
 
   _findInstName() {
-    let inst = this.state.instList.find(inst => inst.value == this.state.instId);
+    const inst = this.state.instList.find(inst => inst.value == this.state.instId);
+    document.title = inst ? inst.label : 'GoalHwy - Instituions';
     return inst ? inst.label : '';
   }
 

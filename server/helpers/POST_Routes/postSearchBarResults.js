@@ -69,7 +69,7 @@ const postSearchBarResults = (req, res, esClient) => {
         must: {
           multi_match: {
             query,
-            fields: ['inst_name'],
+            fields: ['name'],
             fuzziness: 'AUTO'
           }
         },

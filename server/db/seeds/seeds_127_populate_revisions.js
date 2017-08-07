@@ -11,8 +11,6 @@ const docIdArr = JSON.parse(docsRaw);
 
 const suffix = ['blah', '.xlsx', '.docx', '.pdf', '.zip', '.default'];
 
-// let k = 1;
-
 exports.seed = function(knex, Promise) {
 
   const insertRev = revObj => knex('revisions').insert(revObj);
@@ -101,7 +99,6 @@ exports.seed = function(knex, Promise) {
       promiseArr1.push(insertRev(revObj));
       promiseArr1.push(updateDoc(docObj));
       promiseArr2.push(adminAddToCourseFeed(adminFeedObj));
-      // k++;
     }
 
   }

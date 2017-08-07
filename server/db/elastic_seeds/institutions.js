@@ -36,8 +36,8 @@ const bulkIndex = function bulkIndex(index, type, data) {
 
 const populate = function populate() {
   const institutions = [
-    { inst_id: 'KliraFQhB6c', inst_name: 'University of British Columbia (UBC)' },
-    { inst_id: 'kuwXbFvFhtq', inst_name: 'Simon Fraser University (SFU)' }
+    { inst_id: 'KliraFQhB6c', name: 'University of British Columbia (UBC)' },
+    { inst_id: 'kuwXbFvFhtq', name: 'Simon Fraser University (SFU)' }
   ];
   console.log(`${institutions.length} items parsed from data file`);
   bulkIndex('goalhwy_es_db', 'institution', institutions);

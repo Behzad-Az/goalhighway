@@ -60,7 +60,7 @@ class SearhBar extends Component {
           case 'institution':
             searchResults.push(
               <p key={index} className='result-row valid' onClick={() => this._navigatePage(`/institutions/${result._source.inst_id}`)}>
-                <i className='fa fa-graduation-cap' /> {result._source.inst_name}
+                <i className='fa fa-graduation-cap' /> {result._source.name}
               </p>
             );
             break;

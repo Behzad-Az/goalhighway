@@ -8,7 +8,7 @@
     "company_name": "Home Inc.",
     "title": "Software Engineer",
     "kind": "internship",
-    "link": "some_link",
+    "link": "http://www.homedepot.ca",
     "photo_name": "home_inc.png",
     "search_text": "software engineer javascript front-end",
     "expired": false
@@ -23,7 +23,7 @@
     "company_name": "Ballard Power Systems",
     "title": "Manufacturing Engineer",
     "kind": "summer",
-    "link": "some_link",
+    "link": "http://www.ballard.com",
     "photo_name": "ballard_power_systems.png",
     "search_text": "mechanical engineer manufacturing sustainability",
     "expired": false
@@ -38,7 +38,7 @@
     "company_name": "Apple Inc.",
     "title": "Research Engineer",
     "kind": "junior",
-    "link": "some_link",
+    "link": "http://www.apple.com",
     "photo_name": "apple_inc.png",
     "search_text": "electrical engineer R&D instrumentation",
     "expired": false

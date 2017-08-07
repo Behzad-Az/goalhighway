@@ -65,7 +65,7 @@ class JobRow extends Component {
         <div className='media-content'>
           <div className='content'>
             <p>
-              <Link><button className='button'>Apply Now!</button></Link>
+              <Link to={this.props.job.link} target='_blank'><button className='button'>Apply Now!</button></Link>
               <strong>{this.props.job.title}</strong>
               <br />
               <Link to={`/companies/${this.props.job.company_id}`}>@{this.props.job.company_name}</Link>
