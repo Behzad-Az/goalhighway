@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewFlag = (req, res, knex, user_id) => {
+const postNewFlag = (req, res, knex, user_id, randIdString) => {
 
   const acceptedFlags = {
     revisions: ['inappropriate content', 'does not belong to this course', 'corrupted file or unreadable', 'spam', 'other'],

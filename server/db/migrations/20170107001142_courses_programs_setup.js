@@ -3,7 +3,6 @@ exports.up = function(knex, Promise) {
   return Promise.all([
 
     knex.schema.createTableIfNotExists('institutions', t => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.string('inst_short_name', 10).notNullable();
       t.string('inst_long_name', 60).notNullable();
@@ -17,7 +16,6 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('programs', t => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.string('prog_short_name', 10).notNullable();
       t.string('prog_long_name', 60).notNullable();
@@ -28,7 +26,6 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('institution_program', t => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.string('inst_id', 11).notNullable();
       t.string('prog_id', 11).notNullable().references('programs.id');
@@ -37,7 +34,6 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('courses', t => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.string('prefix', 10).notNullable();
       t.string('suffix', 10).notNullable();
@@ -51,7 +47,6 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('docs', t => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.string('course_id', 11).notNullable().references('courses.id');
       t.string('latest_title', 60).notNullable();

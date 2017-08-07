@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewResume = (req, res, knex, user_id) => {
+const postNewResume = (req, res, knex, user_id, randIdString) => {
 
   const title = req.body.title.trim();
   const intent = req.body.intent.trim();

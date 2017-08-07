@@ -1,9 +1,8 @@
-const randIdString = require('random-base64-string');
-
-const postNewCourseReview = (req, res, knex, user_id) => {
+const postNewCourseReview = (req, res, knex, user_id, randIdString) => {
 
   const profName = req.body.profName.trim() || 'Unknown';
   const review_desc = req.body.reviewDesc.trim() || 'No detail provided.';
+  const course_id = req.params.course_id;
   let inst_id;
 
   const validateInputs = () => new Promise((resolve, reject) => {
@@ -18,7 +17,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
       review_desc.search(/[^a-zA-Z0-9\ \!\@\#\$\%\^\&\*\(\)\_\+\-\=\\/\\`\~\:\;\"\'\<\>\,\.\?\[\]\{\}\|]/) == -1 &&
       profName.length <= 60 &&
       profName.search(/[^a-zA-Z\ \_\-\'\,\.\`]/) &&
-      req.params.course_id
+      course_id.length === 11
     ) {
       resolve();
     } else {
@@ -29,7 +28,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
   const getInstId = trx => knex('courses')
     .transacting(trx)
     .select('inst_id')
-    .where('id', req.params.course_id)
+    .where('id', course_id)
     .whereNull('deleted_at')
     .limit(1);
 
@@ -66,7 +65,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
     .then(profId => {
       const courseReviewObj = {
         id: randIdString(11),
-        course_id: req.params.course_id,
+        course_id,
         reviewer_id: user_id,
         prof_id: profId[0],
         start_year: req.body.startYear,
@@ -83,7 +82,7 @@ const postNewCourseReview = (req, res, knex, user_id) => {
       const adminFeedObj = {
         id: randIdString(11),
         commenter_id: user_id,
-        course_id: req.params.course_id,
+        course_id,
         course_review_id: reviewId[0],
         category: 'new_course_review',
         header: 'new_course_review',

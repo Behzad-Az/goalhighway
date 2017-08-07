@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewItemForSale = (req, res, knex, user_id) => {
+const postNewItemForSale = (req, res, knex, user_id, randIdString) => {
 
   const title = req.body.title.trim();
   const item_desc = req.body.itemDesc.trim();

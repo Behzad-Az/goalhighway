@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewRevision = (req, res, knex, user_id, esClient) => {
+const postNewRevision = (req, res, knex, user_id, esClient, randIdString) => {
 
   const title = req.body.title.trim();
   const rev_desc = req.body.revDesc.trim();
@@ -15,8 +13,8 @@ const postNewRevision = (req, res, knex, user_id, esClient) => {
       rev_desc.length >= 3 && rev_desc.length <= 250 &&
       rev_desc.search(/[^a-zA-Z0-9\ \#\&\*\(\)\_\-\\/\\~\:\"\'\,\.\[\]\|]/) == -1 &&
       ['asg_report', 'lecture_note', 'sample_question'].includes(type) &&
-      course_id &&
-      doc_id
+      course_id.length === 11 &&
+      doc_id.length === 11
     ) {
       resolve();
     } else {

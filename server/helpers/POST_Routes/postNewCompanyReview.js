@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewCompanyReview = (req, res, knex, user_id, esClient) => {
+const postNewCompanyReview = (req, res, knex, user_id, esClient, randIdString) => {
 
   const position = req.body.position.trim();
   const position_type = req.body.positionType;

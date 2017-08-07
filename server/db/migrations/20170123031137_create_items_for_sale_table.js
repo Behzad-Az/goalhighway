@@ -2,7 +2,6 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('items_for_sale', (t) => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.string('title', 60).notNullable();
       t.string('item_desc', 250).notNullable();

@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewCourseUserAssistReq = (req, res, knex, user_id) => {
+const postNewCourseUserAssistReq = (req, res, knex, user_id, randIdString) => {
 
   const issue_desc = req.body.issueDesc.trim();
   const course_id = req.params.course_id;

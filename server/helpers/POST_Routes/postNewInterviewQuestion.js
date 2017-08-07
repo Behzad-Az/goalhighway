@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const posNewInterviewQuestion = (req, res, knex, user_id, esClient) => {
+const posNewInterviewQuestion = (req, res, knex, user_id, esClient, randIdString) => {
 
   const question = req.body.question.trim();
   const answer = req.body.answer.trim();

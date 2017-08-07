@@ -1,4 +1,4 @@
-const postNewInst = (req, res, knex, user_id, esClient) => {
+const postNewInst = (req, res, knex, user_id, esClient, randIdString) => {
 
   const provinceList = {
       canada: ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador', 'Northwest Territories', 'Nova Scotia', 'Nunavut', 'Saskatchewan', 'Yukon'],
@@ -42,16 +42,16 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
   const insertDefaultInstProgs = (inst_id, trx) => knex('institution_program')
     .transacting(trx)
     .insert([
-      { inst_id, prog_id: 1 },
-      { inst_id, prog_id: 2 },
-      { inst_id, prog_id: 3 },
-      { inst_id, prog_id: 4 },
-      { inst_id, prog_id: 5 }
+      { id: randIdString(11), inst_id, prog_id: 'BgnavDcD69g' },
+      { id: randIdString(11), inst_id, prog_id: 'oefQCzPT0l0' },
+      { id: randIdString(11), inst_id, prog_id: '2pgU6ZsLl9b' },
+      { id: randIdString(11), inst_id, prog_id: '0PyMhx0kEt7' },
+      { id: randIdString(11), inst_id, prog_id: '2x6MF6xHKSG' }
     ]);
 
   const insertDefaultProf = (inst_id, trx) => knex('profs')
     .transacting(trx)
-    .insert({ inst_id, name: 'Unknown' });
+    .insert({ id: randIdString(11), inst_id, name: 'Unknown' });
 
   const addInstToElasticSearch = esInstObj => {
     const indexObj = {
@@ -71,7 +71,8 @@ const postNewInst = (req, res, knex, user_id, esClient) => {
       if (parseInt(count[0].duplicate)) {
         throw 'Institution already exists';
       } else {
-        let newInstObj = {
+        const newInstObj = {
+          id: randIdString(11),
           inst_value: inst_long_name.toLowerCase().replace(/ /g, '_'),
           inst_display_name,
           inst_long_name,

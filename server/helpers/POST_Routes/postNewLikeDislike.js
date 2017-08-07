@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewLikeDislike = (req, res, knex, user_id) => {
+const postNewLikeDislike = (req, res, knex, user_id, randIdString) => {
 
   const like_or_dislike = parseInt(req.body.likeOrDislike);
   const foreign_table = req.params.foreign_table;
@@ -10,7 +8,7 @@ const postNewLikeDislike = (req, res, knex, user_id) => {
     if (
       [1, -1].includes(like_or_dislike) &&
       ['docs', 'course_feed', 'resumes'].includes(foreign_table) &&
-      foreign_id
+      foreign_id.length === 11
     ) {
       resolve();
     } else {

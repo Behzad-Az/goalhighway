@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewConversation = (req, res, knex, user_id) => {
+const postNewConversation = (req, res, knex, user_id, randIdString) => {
 
   const subject = req.body.subject.trim();
   const content = req.body.content.trim();

@@ -51,12 +51,8 @@ class InstPage extends Component {
 
   _conditionData(resJSON, instId) {
     if (resJSON) {
-      const instList = resJSON.instList.map(inst => {
-        inst.value = parseInt(inst.value);
-        return inst;
-      });
       this.setState({
-        instList,
+        instList: resJSON.instList,
         currUserCourseIds: resJSON.currUserCourseIds,
         currInstCourses: resJSON.currInstCourses,
         instId,
@@ -92,7 +88,7 @@ class InstPage extends Component {
         <div className='main-container'>
           <SearchBar />
           <TopRow
-            instId={parseInt(this.state.instId)}
+            instId={this.state.instId}
             instList={this.state.instList}
             reload={this._loadComponentData}
           />

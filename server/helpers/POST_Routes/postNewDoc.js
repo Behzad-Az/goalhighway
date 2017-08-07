@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewDoc = (req, res, knex, user_id, esClient) => {
+const postNewDoc = (req, res, knex, user_id, esClient, randIdString) => {
 
   const title = req.body.title.trim();
   const rev_desc = req.body.revDesc.trim();

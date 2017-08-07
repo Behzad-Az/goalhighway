@@ -2,7 +2,6 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('flags', t => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.string('reason', 35).notNullable();
       t.string('foreign_id', 11).notNullable();

@@ -2,7 +2,6 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('profs', t => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.string('name', 60).notNullable();
       t.string('inst_id', 11).notNullable();
@@ -11,7 +10,6 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTableIfNotExists('course_reviews', t => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.integer('start_year').notNullable();
       t.string('start_month', 10).notNullable();

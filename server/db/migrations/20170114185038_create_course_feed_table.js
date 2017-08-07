@@ -2,7 +2,6 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('course_feed', t => {
-      // t.bigIncrements('id');
       t.string('id', 11).notNullable().unique();
       t.boolean('anonymous').notNullable();
       t.string('category', 35).notNullable();

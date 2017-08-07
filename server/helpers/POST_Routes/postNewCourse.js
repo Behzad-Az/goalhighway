@@ -1,6 +1,4 @@
-const randIdString = require('random-base64-string');
-
-const postNewCourse = (req, res, knex, user_id, esClient) => {
+const postNewCourse = (req, res, knex, user_id, esClient, randIdString) => {
 
   const capitalizeFirstLetter = str => str.trim().charAt(0).toUpperCase() + str.trim().slice(1);
 

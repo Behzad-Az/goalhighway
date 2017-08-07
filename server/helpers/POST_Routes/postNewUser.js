@@ -1,7 +1,6 @@
 const confirmEmailTemplate = require('../Email_Templates/confirmEmailTemplate.js');
-const randIdString = require('random-base64-string');
 
-const postNewUser = (req, res, knex, bcrypt, mailer) => {
+const postNewUser = (req, res, knex, bcrypt, mailer, randIdString) => {
 
   const username = req.body.username.trim().toLowerCase();
   const pwd = req.body.password.trim();
@@ -31,8 +30,8 @@ const postNewUser = (req, res, knex, bcrypt, mailer) => {
       email.length >= 6 && email.length <= 30 &&
       email.match(emailRegex) &&
       [1, 2, 3, 4, 5, 6].includes(user_year) &&
-      req.body.instId &&
-      req.body.progId
+      req.body.instId.length === 11 &&
+      req.body.progId.length === 11
     ) {
       resolve();
     } else {

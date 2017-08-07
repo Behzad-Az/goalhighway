@@ -13,6 +13,7 @@ const connection = require('./db/knexfile.js').development;
 const knex = require('knex')(connection);
 const fs = require('fs');
 const path = require('path');
+const randIdString = require('random-base64-string');
 const elasticsearch = require('elasticsearch');
 const esClient = new elasticsearch.Client({
   host: '127.0.0.1:9200',
@@ -291,43 +292,43 @@ app.get('/api/courses/:course_id/feed/:course_feed_id/replies', (req, res) => {
 // ROUTES - POST
 // ***************************************************
 app.post('/api/courses', (req, res) => {
-  postNewCourse(req, res, knex, req.session.user_id, esClient);
+  postNewCourse(req, res, knex, req.session.user_id, esClient, randIdString);
 });
 
 app.post('/api/courses/:course_id/docs', documentUpload.single('file'), (req, res) => {
-  req.file ? postNewDoc(req, res, knex, req.session.user_id, esClient) : res.send(false);
+  req.file ? postNewDoc(req, res, knex, req.session.user_id, esClient, randIdString) : res.send(false);
 });
 
 app.post('/api/courses/:course_id/items', itemForSaleUpload.single('file'), (req, res) => {
-  postNewItemForSale(req, res, knex, req.session.user_id);
+  postNewItemForSale(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/courses/:course_id/reviews', (req, res) => {
-  postNewCourseReview(req, res, knex, req.session.user_id);
+  postNewCourseReview(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/courses/:course_id/docs/:doc_id', documentUpload.single('file'), (req, res) => {
-  postNewRevision(req, res, knex, req.session.user_id, esClient);
+  postNewRevision(req, res, knex, req.session.user_id, esClient, randIdString);
 });
 
 app.post('/api/likes/:foreign_table/:foreign_id', (req, res) => {
-  postNewLikeDislike(req, res, knex, req.session.user_id);
+  postNewLikeDislike(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/courses/:course_id/feed', (req, res) => {
-  postNewCourseFeed(req, res, knex, req.session.user_id);
+  postNewCourseFeed(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/courses/:course_id/feed/:course_feed_id/replies', (req, res) => {
-  postNewCourseFeedReply(req, res, knex, req.session.user_id);
+  postNewCourseFeedReply(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/users/:user_id/courses/:course_id', (req, res) => {
-  postNewCourseUser(req, res, knex, req.session.user_id);
+  postNewCourseUser(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/users/:user_id/resumes', resumeUpload.single('file'), (req, res) => {
-  req.file ? postNewResume(req, res, knex, req.session.user_id) : res.send(false);
+  req.file ? postNewResume(req, res, knex, req.session.user_id, randIdString) : res.send(false);
 });
 
 app.post('/api/feed/resumes/:resume_id', (req, res) => {
@@ -335,15 +336,15 @@ app.post('/api/feed/resumes/:resume_id', (req, res) => {
 });
 
 app.post('/api/users/:user_id/courses/:course_id/tutorlog', (req, res) => {
-  postNewCourseUserAssistReq(req, res, knex, req.session.user_id);
+  postNewCourseUserAssistReq(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/institutions', (req, res) => {
-  postNewInst(req, res, knex, req.session.user_id, esClient);
+  postNewInst(req, res, knex, req.session.user_id, esClient, randIdString);
 });
 
 app.post('/api/register', (req, res) => {
-  postNewUser(req, res, knex, bcryptJs, mailer);
+  postNewUser(req, res, knex, bcryptJs, mailer, randIdString);
 });
 
 app.post('/api/searchbar', (req, res) => {
@@ -359,27 +360,27 @@ app.post('/api/email_availability', (req, res) => {
 });
 
 app.post('/api/flags/:foreign_table/:foreign_id', (req, res) => {
-  postNewFlag(req, res, knex, req.session.user_id);
+  postNewFlag(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/companies/:company_id/questions', (req, res) => {
-  postNewInterviewQuestion(req, res, knex, req.session.user_id, esClient);
+  postNewInterviewQuestion(req, res, knex, req.session.user_id, esClient, randIdString);
 });
 
 app.post('/api/companies/:company_id/questions/:question_id/answers', (req, res) => {
-  postNewInterviewAnswer(req, res, knex, req.session.user_id);
+  postNewInterviewAnswer(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/companies/:company_id/reviews', (req, res) => {
-  postNewCompanyReview(req, res, knex, req.session.user_id, esClient);
+  postNewCompanyReview(req, res, knex, req.session.user_id, esClient, randIdString);
 });
 
 app.post('/api/conversations', (req, res) => {
-  postNewConversation(req, res, knex, req.session.user_id);
+  postNewConversation(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/conversations/:conversation_id', (req, res) => {
-  postNewConvMessage(req, res, knex, req.session.user_id);
+  postNewConvMessage(req, res, knex, req.session.user_id, randIdString);
 });
 
 app.post('/api/login', (req, res) => {

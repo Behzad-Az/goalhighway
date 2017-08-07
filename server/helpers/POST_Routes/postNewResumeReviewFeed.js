@@ -1,11 +1,13 @@
 const postNewResumeReviewFeed = (req, res, knex, user_id) => {
 
+  const resume_id = req.params.resume_id;
+
   const validateInputs = () => new Promise((resolve, reject) => {
-    req.params.resume_id ? resolve() : reject('Invalid form entries');
+    resume_id.length === 11 ? resolve() : reject('Invalid form entries');
   });
 
   const updateResumeDb = () => knex('resumes')
-    .where('id', req.params.resume_id)
+    .where('id', resume_id)
     .andWhere('owner_id', user_id)
     .whereNull('review_requested_at')
     .whereNull('deleted_at')
