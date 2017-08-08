@@ -71,16 +71,11 @@ class Register extends Component {
   }
 
   _getUserAvailability(e) {
-    let username = e.target.value.toLowerCase().trim();
+    const username = e.target.value.toLowerCase().trim();
     if (this._validateUsername(username)) {
-      fetch('/api/username_availability', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username })
+      fetch(`/api/username_availability?username=${username}`, {
+        method: 'GET',
+        credentials: 'same-origin'
       })
       .then(response => response.json())
       .then(usernameAvaialble => this.setState({ usernameAvaialble, username }));
@@ -90,16 +85,11 @@ class Register extends Component {
   }
 
   _getEmailAvailability(e) {
-    let email = e.target.value.toLowerCase().trim();
+    const email = e.target.value.toLowerCase().trim();
     if (this._validateEmail(email)) {
-      fetch('/api/email_availability', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
+      fetch(`/api/email_availability?email=${email}`, {
+        method: 'GET',
+        credentials: 'same-origin'
       })
       .then(response => response.json())
       .then(emailAvaialble => this.setState({ emailAvaialble, email }));

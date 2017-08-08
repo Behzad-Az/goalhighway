@@ -8,25 +8,23 @@ class SearhBar extends Component {
       searchResults: [],
       showResults: false
     };
+    this._validateSearchQuery = this._validateSearchQuery.bind(this);
     this._handleSearch = this._handleSearch.bind(this);
     this._navigatePage = this._navigatePage.bind(this);
     this._conditionData = this._conditionData.bind(this);
   }
 
+  _validateSearchQuery(query) {
+    return query.length >= 3 && query.length <= 40 &&
+           query.search(/[^a-zA-Z0-9\ \-\(\)\'\\/\\.]/) == -1;
+  }
+
   _handleSearch(e) {
-    const query = e.target.value;
-    if (query.length > 2) {
-      fetch('/api/searchbar', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query,
-          searchType: 'mainSearchBar'
-        })
+    const query = e.target.value.trim();
+    if (this._validateSearchQuery(query)) {
+      fetch(`/api/searchbar?query=${query}&searchType=mainSearchBar`, {
+        method: 'GET',
+        credentials: 'same-origin'
       })
       .then(response => response.json())
       .then(resJSON => {

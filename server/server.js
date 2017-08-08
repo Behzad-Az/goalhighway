@@ -80,39 +80,33 @@ const server = app.listen(PORT, '127.0.0.1', 'localhost', () => console.log(`Lis
 // ***************************************************
 const getIndexPageData = require('./helpers/GET_Routes/getIndexPageData.js');
 const getUserProfileData = require('./helpers/GET_Routes/getUserProfileData.js');
-
 const getCoursePageTopRow = require('./helpers/GET_Routes/getCoursePageTopRow.js');
 const getCoursePageDocs = require('./helpers/GET_Routes/getCoursePageDocs.js');
 const getCoursePageItems = require('./helpers/GET_Routes/getCoursePageItems.js');
 const getCoursePageFeed = require('./helpers/GET_Routes/getCoursePageFeed.js');
-
 const getCourseReviewPageTopRow = require('./helpers/GET_Routes/getCourseReviewPageTopRow.js');
 const getCourseReviewPageReviews = require('./helpers/GET_Routes/getCourseReviewPageReviews.js');
-
 const getDocPageTopRow = require('./helpers/GET_Routes/getDocPageTopRow.js');
 const getDocPageRevs = require('./helpers/GET_Routes/getDocPageRevs.js');
 const getDocPageRevDownload = require('./helpers/GET_Routes/getDocPageRevDownload.js');
-
 const getCompanyPageTopRow = require('./helpers/GET_Routes/getCompanyPageTopRow.js');
 const getCompanyPageQas = require('./helpers/GET_Routes/getCompanyPageQas.js');
 const getCompanyPageJobs = require('./helpers/GET_Routes/getCompanyPageJobs.js');
 const getCompanyPageReviews = require('./helpers/GET_Routes/getCompanyPageReviews.js');
-
 const getInstPageData = require('./helpers/GET_Routes/getInstPageData.js');
-
 const getJobPageData = require('./helpers/GET_Routes/getJobPageData.js');
 const getUserNavBarData = require('./helpers/GET_Routes/getUserNavBarData.js');
 const getInstitutionsAndPrograms = require('./helpers/GET_Routes/getInstitutionsAndPrograms.js');
 const getLoginCheck = require('./helpers/GET_Routes/getLoginCheck.js');
 const getRightSideBarData = require('./helpers/GET_Routes/getRightSideBarData.js');
 const getLeftSideBarData = require('./helpers/GET_Routes/getLeftSideBarData.js');
-
-
 const getFeedPageData = require('./helpers/GET_Routes/getFeedPageData.js');
 const getResumeData = require('./helpers/GET_Routes/getResumeData.js');
 const getConversationPageData = require('./helpers/GET_Routes/getConversationPageData.js');
 const getCourseFeedReplies = require('./helpers/GET_Routes/getCourseFeedReplies.js');
-
+const getSearchBarResults = require('./helpers/GET_Routes/getSearchBarResults.js');
+const getUsernameAvailability = require('./helpers/GET_Routes/getUsernameAvailability.js');
+const getEmailAvailability = require('./helpers/GET_Routes/getEmailAvailability.js');
 
 
 const postNewDoc = require('./helpers/POST_Routes/postNewDoc.js');
@@ -128,9 +122,6 @@ const postNewCourse = require('./helpers/POST_Routes/postNewCourse.js');
 const postNewInst = require('./helpers/POST_Routes/postNewInst.js');
 const postNewUser = require('./helpers/POST_Routes/postNewUser.js');
 const postLogin = require('./helpers/POST_Routes/postLogin.js');
-const postSearchBarResults = require('./helpers/POST_Routes/postSearchBarResults.js');
-const checkUsernameAvailability = require('./helpers/POST_Routes/checkUsernameAvailability.js');
-const checkEmailAvailability = require('./helpers/POST_Routes/checkEmailAvailability.js');
 const postNewFlag = require('./helpers/POST_Routes/postNewFlag.js');
 const postNewInterviewQuestion = require('./helpers/POST_Routes/postNewInterviewQuestion.js');
 const postNewInterviewAnswer = require('./helpers/POST_Routes/postNewInterviewAnswer.js');
@@ -287,6 +278,18 @@ app.get('/api/courses/:course_id/feed/:course_feed_id/replies', (req, res) => {
   getCourseFeedReplies(req, res, knex, req.session.user_id);
 });
 
+app.get('/api/searchbar', (req, res) => {
+  getSearchBarResults(req, res, esClient);
+});
+
+app.get('/api/username_availability', (req, res) => {
+  getUsernameAvailability(req, res, knex, req.session.user_id);
+});
+
+app.get('/api/email_availability', (req, res) => {
+  getEmailAvailability(req, res, knex, req.session.user_id);
+});
+
 
 // ***************************************************
 // ROUTES - POST
@@ -345,18 +348,6 @@ app.post('/api/institutions', (req, res) => {
 
 app.post('/api/register', (req, res) => {
   postNewUser(req, res, knex, bcryptJs, mailer, randIdString);
-});
-
-app.post('/api/searchbar', (req, res) => {
-  postSearchBarResults(req, res, esClient);
-});
-
-app.post('/api/username_availability', (req, res) => {
-  checkUsernameAvailability(req, res, knex, req.session.user_id);
-});
-
-app.post('/api/email_availability', (req, res) => {
-  checkEmailAvailability(req, res, knex, req.session.user_id);
 });
 
 app.post('/api/flags/:foreign_table/:foreign_id', (req, res) => {

@@ -1,8 +1,9 @@
-const postSearchBarResults = (req, res, esClient) => {
+const getSearchBarResults = (req, res, esClient) => {
 
   const search = (index, body) => esClient.search({ index, body });
-  const query = req.body.query.trim();
-  const searchType = req.body.searchType;
+  const query = req.query.query.trim();
+  const searchType = req.query.searchType;
+  const inst_id = req.session.inst_id.toLowerCase();
 
   const validateInputs = () => new Promise((resolve, reject) => {
     if (
@@ -35,7 +36,7 @@ const postSearchBarResults = (req, res, esClient) => {
         },
         filter: [
           { type: { value: 'document' } },
-          { term: { inst_id: req.session.inst_id.toLowerCase() } }
+          { term: { inst_id } }
         ]
       }
     }
@@ -55,7 +56,7 @@ const postSearchBarResults = (req, res, esClient) => {
         },
         filter: [
           { type: { value: 'course' } },
-          { term: { inst_id: req.session.inst_id.toLowerCase() } }
+          { term: { inst_id } }
         ]
       }
     }
@@ -128,10 +129,10 @@ const postSearchBarResults = (req, res, esClient) => {
     }
   })
   .catch(err => {
-    console.error('Error inside postSearchBarResults.js: ', err);
+    console.error('Error inside getSearchBarResults.js: ', err);
     res.send(false);
   });
 
 };
 
-module.exports = postSearchBarResults;
+module.exports = getSearchBarResults;

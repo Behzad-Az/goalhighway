@@ -117,7 +117,7 @@ class NewResumeForm extends Component {
             </p>
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-primary' onClick={this._handleNewResumePost}>Submit</button>
+            <button className='button is-primary' disabled={!this._validateForm()} onClick={this._handleNewResumePost}>Upload</button>
             <button className='button' onClick={this.props.toggleModal}>Cancel</button>
           </footer>
         </div>
