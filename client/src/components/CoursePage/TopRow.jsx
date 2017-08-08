@@ -214,10 +214,6 @@ class TopRow extends Component {
                               this._handleUnsubscribe, 'green', this.state.courseInfo.subscriptionStatus,
                               true, <p>Subscribe<br/>To Course</p>, this._handleSubscribe) }
 
-          { this._createBtnDiv('fa fa-slideshare', <p>Click to<br/>Untutor</p>,
-                              this._handleTutorStatus, 'green', this.state.courseInfo.tutorStatus,
-                              this.state.courseInfo.subscriptionStatus, <p>Click to<br/>Tutor</p>, this._handleTutorStatus) }
-
           { this._createBtnDiv('fa fa-bell', <p>Cancel / Update<br/>Request</p>,
                               () => this._toggleFormModal('showNewReqAssistForm'), 'green', this.state.courseInfo.assistReqOpen,
                               this.state.courseInfo.subscriptionStatus, <p>Request<br/>Assistance</p>,

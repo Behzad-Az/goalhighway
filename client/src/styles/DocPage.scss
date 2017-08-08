@@ -33,7 +33,7 @@
     .top-row {
       margin-bottom: $default_margin/2;
       .top-row-button {
-        display: inline-block; width: 20%; text-align: center;
+        display: inline-block; width: 25%; text-align: center;
         .fa { cursor: pointer; font-size: 35px; &:hover { transform: scale(1.1); } }
         .fa.disabled { pointer-events: none; cursor: default; opacity: 0.5 }
         p { font-size: 13px; }
