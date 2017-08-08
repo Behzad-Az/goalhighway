@@ -1,8 +1,9 @@
 - Ensure correct ip address on base.js
 - Ensure correct environment on server.js for knex.
 - Change seed files to only include institutions, programs, institution_programs, courses, profs, and companies.
+- Ensure programs inside postNewInst.js match the ones on the seeded programs.
 - Remove default login in LogIn.jsx
-- Ensure correct ip address on postNewUser.js confirmEmailTemplate.
 - Ensure all redundant files are taken out of the upload folders
 - Run npm run build
+- Ensure correct ip address on postNewUser.js confirmEmailTemplate.
 - Ensure Confirmed is set to false inside postNewUser.js, and mailer line is uncommented.

@@ -10,8 +10,8 @@ class Login extends Component {
       password: { min: 6, max: 30 }
     };
     this.state = {
-      username: 'ben',
-      password: 'ben123',
+      username: '',
+      password: '',
       processing: false
     };
     this._handleChange = this._handleChange.bind(this);
@@ -21,7 +21,6 @@ class Login extends Component {
 
   componentDidMount() {
     document.title = 'Login';
-    // this._handleLogin();
   }
 
   _handleChange(e) {

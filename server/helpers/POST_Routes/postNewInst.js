@@ -46,7 +46,8 @@ const postNewInst = (req, res, knex, user_id, esClient, randIdString) => {
       { id: randIdString(11), inst_id, prog_id: 'oefQCzPT0l0' },
       { id: randIdString(11), inst_id, prog_id: '2pgU6ZsLl9b' },
       { id: randIdString(11), inst_id, prog_id: '0PyMhx0kEt7' },
-      { id: randIdString(11), inst_id, prog_id: '2x6MF6xHKSG' }
+      { id: randIdString(11), inst_id, prog_id: '2x6MF6xHKSG' },
+      { id: randIdString(11), inst_id, prog_id: 'S8E1WBWlHyE' }
     ]);
 
   const insertDefaultProf = (inst_id, trx) => knex('profs')
