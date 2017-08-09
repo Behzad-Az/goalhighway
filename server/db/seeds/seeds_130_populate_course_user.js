@@ -1,4 +1,4 @@
-const populate = (arr, user_id, courseStart, courseEnd) => {
+// const populate = (arr, user_id, courseStart, courseEnd) => {
 //   if (user_id === 9) return;
 //   for(let i = courseStart; i <= courseEnd; i++) {
 //     course_user.push({

@@ -1,7 +1,7 @@
 // const randIdString = require('random-base64-string');
 // const fs = require('fs');
 
-const randomNum = maxNum => Math.floor((Math.random() * maxNum) + 1);
+// const randomNum = maxNum => Math.floor((Math.random() * maxNum) + 1);
 
 // const coursesRaw = fs.readFileSync(__dirname + '/ubc_courses.json');
 // const courseIdArr = JSON.parse(coursesRaw);
