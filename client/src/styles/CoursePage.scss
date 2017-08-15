@@ -2,7 +2,7 @@
   background-color: $default_bg_color; padding: 0 $default_margin; min-height: 100vh; overflow: auto;
 
   .main-container {
-    padding: $top_margin $default_margin $default_margin $sidebar_width_left + $default_margin; width: $main_container_width; min-width: 360px; display: inline-block;
+    padding: $top_margin $default_margin $default_margin $sidebar_width_left + $default_margin; width: $main_container_width; min-width: $default_min_container_width; display: inline-block;
 
     .header {
       background-color: $dark_blue; color: white; padding: 5px 10px; font-weight: bold; margin-bottom: $default_margin/2; overflow: auto;

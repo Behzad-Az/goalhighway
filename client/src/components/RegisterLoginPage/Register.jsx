@@ -165,102 +165,107 @@ class Register extends Component {
   render() {
     let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : [];
     return (
-      <div className='card'>
-        <header className='card-header'>
-          <p className='card-header-title'>
-            Register Here
-          </p>
-        </header>
-
-        <div className='card-content'>
-          <div className='control'>
-            <label className='label'>
-              Username: { this.state.usernameAvaialble && <i className='fa fa-check' /> }
-            </label>
-            <input
-              type='text'
-              className='input'
-              placeholder='Enter username'
-              name='username'
-              onChange={this._getUserAvailability}
-              disabled={this.state.processing} />
-          </div>
-          <div className='control'>
-            <label className='label'>
-              Email: { this.state.emailAvaialble && <i className='fa fa-check' /> }
-            </label>
-            <input
-              type='email'
-              className='input'
-              placeholder='Enter email'
-              name='email'
-              onChange={this._getEmailAvailability}
-              disabled={this.state.processing} />
-          </div>
-          <div className='control'>
-            <label className='label'>
-              Password: { this._validatePassword() && <i className='fa fa-check' /> }
-            </label>
-            <input
-              type='password'
-              className='input'
-              placeholder='minium six characters | one letter | one digit'
-              name='password'
-              onChange={this._handleChange}
-              disabled={this.state.processing} />
-          </div>
-          <div className='control'>
-            <label className='label'>
-              Confirm Password: { this._validatePasswordConfirm() && <i className='fa fa-check' /> }
-            </label>
-            <input
-              type='password'
-              className='input'
-              placeholder='minium six characters | one letter | one digit'
-              name='passwordConfirm'
-              onChange={this._handleChange}
-              disabled={this.state.processing} />
-          </div>
-          <div className='control'>
-            <label className='label'>
-              Primary Institution: { this.state.instId && <i className='fa fa-check' /> }
-            </label>
-            <SingleSelect
-              disabled={this.state.processing}
-              initialValue={this.state.instId}
-              options={this.state.instProgDropDownList}
-              name='instId'
-              handleChange={instId => this.setState({ instId })} />
-          </div>
-          <div className='control'>
-            <label className='label'>
-              Primary Program: { this.state.progId && <i className='fa fa-check' /> }
-            </label>
-            <SingleSelect
-              disabled={this.state.processing}
-              initialValue={this.state.progId}
-              options={programList}
-              name='progId'
-              handleChange={progId => this.setState({ progId })} />
-          </div>
-          <div className='control'>
-            <label className='label'>
-              Primary Academic Year: { this.state.userYear && <i className='fa fa-check' /> }
-            </label>
-            <SingleSelect
-              disabled={this.state.processing}
-              initialValue={this.state.userYear}
-              options={this.academicYears}
-              name='userYear'
-              handleChange={userYear => this.setState({ userYear })} />
-          </div>
+      <div className='register-row'>
+        <div className='laptop-image'>
+          <img src='../images/laptop.png' />
         </div>
+        <div className='card'>
+          <header className='card-header'>
+            <p className='card-header-title'>
+              Join the highway!
+            </p>
+          </header>
 
-        <footer className='card-footer'>
-          <Link className='card-footer-item button is-link' onClick={this._handleRegister} disabled={!this._validateForm()}>
-            { this.state.processing ? 'Registering...' : 'Register!' }
-          </Link>
-        </footer>
+          <div className='card-content'>
+            <div className='control'>
+              <label className='label'>
+                Username: { this.state.usernameAvaialble && <i className='fa fa-check' /> }
+              </label>
+              <input
+                type='text'
+                className='input'
+                placeholder='Enter username'
+                name='username'
+                onChange={this._getUserAvailability}
+                disabled={this.state.processing} />
+            </div>
+            <div className='control'>
+              <label className='label'>
+                Email: { this.state.emailAvaialble && <i className='fa fa-check' /> }
+              </label>
+              <input
+                type='email'
+                className='input'
+                placeholder='Enter email'
+                name='email'
+                onChange={this._getEmailAvailability}
+                disabled={this.state.processing} />
+            </div>
+            <div className='control'>
+              <label className='label'>
+                Password: { this._validatePassword() && <i className='fa fa-check' /> }
+              </label>
+              <input
+                type='password'
+                className='input'
+                placeholder='min six characters | one letter | one digit'
+                name='password'
+                onChange={this._handleChange}
+                disabled={this.state.processing} />
+            </div>
+            <div className='control'>
+              <label className='label'>
+                Confirm Password: { this._validatePasswordConfirm() && <i className='fa fa-check' /> }
+              </label>
+              <input
+                type='password'
+                className='input'
+                placeholder='min six characters | one letter | one digit'
+                name='passwordConfirm'
+                onChange={this._handleChange}
+                disabled={this.state.processing} />
+            </div>
+            <div className='control'>
+              <label className='label'>
+                Primary Institution: { this.state.instId && <i className='fa fa-check' /> }
+              </label>
+              <SingleSelect
+                disabled={this.state.processing}
+                initialValue={this.state.instId}
+                options={this.state.instProgDropDownList}
+                name='instId'
+                handleChange={instId => this.setState({ instId })} />
+            </div>
+            <div className='control'>
+              <label className='label'>
+                Primary Program: { this.state.progId && <i className='fa fa-check' /> }
+              </label>
+              <SingleSelect
+                disabled={this.state.processing}
+                initialValue={this.state.progId}
+                options={programList}
+                name='progId'
+                handleChange={progId => this.setState({ progId })} />
+            </div>
+            <div className='control'>
+              <label className='label'>
+                Primary Academic Year: { this.state.userYear && <i className='fa fa-check' /> }
+              </label>
+              <SingleSelect
+                disabled={this.state.processing}
+                initialValue={this.state.userYear}
+                options={this.academicYears}
+                name='userYear'
+                handleChange={userYear => this.setState({ userYear })} />
+            </div>
+          </div>
+
+          <footer className='card-footer'>
+            <Link className='card-footer-item button is-link' onClick={this._handleRegister} disabled={!this._validateForm()}>
+              { this.state.processing ? 'Registering...' : 'Register!' }
+            </Link>
+          </footer>
+        </div>
       </div>
     );
   }

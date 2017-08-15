@@ -3,14 +3,19 @@ $side_hamburger_width: 40px;
 @media screen and (max-width: 950px) {
   .side-bar.left { padding: none !important; display: none; }
   .side-bar.right { padding: none !important; display: none; }
+  .nav.logged-in {
+    width: calc(100% - 20px);
+  }
   .index-page, .inst-page, .course-page, .doc-page, .course-review-page, .profile-page, .company-page, .feed-page {
+    padding: 0 $default_margin/2;
     .main-container { display: block; width: 100%; padding: $top_margin 1px $default_margin 1px; }
   }
 
   .career-page, .conversation-page {
+    padding: 0 $default_margin/2;
     .main-container {
       display: inline-block; width: 100%; padding: $top_margin 0px $default_margin $side_hamburger_width+10px;
-      .search-bar-container { min-width: 300px; }
+      .search-bar-container { min-width: 240px; }
     }
     .hamburger {
       display: inline-block; width: $side_hamburger_width;

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Login from './Login.jsx';
 import Register from './Register.jsx';
+import SocialNumbers from './SocialNumbers.jsx';
+import Footer from './Footer.jsx';
 
 class LoginRegisterPage extends Component {
   constructor(props) {
@@ -64,6 +66,8 @@ class LoginRegisterPage extends Component {
           { this._errorMsg() }
           { this._registerMsg() }
           <Register handleError={this._handleError} handleRegisterSuccess={this._handleRegisterSuccess} />
+          <SocialNumbers />
+          <Footer />
         </div>
       </div>
     );
