@@ -8,7 +8,7 @@ class Footer extends Component {
       <footer className='footer-login'>
         <div className='container'>
           <div className='content has-text-centered'>
-            <p>© 2016 Compute Studios.</p>
+            <p>© 2017 GoalHighway Inc.</p>
             <p>
               <Link to='https://github.com/jgthms/bulma' target='_blank'><i className='fa fa-facebook' /></Link>
               <Link to='https://github.com/jgthms/bulma' target='_blank'><i className='fa fa-twitter' /></Link>

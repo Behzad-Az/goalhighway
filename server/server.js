@@ -107,7 +107,7 @@ const getCourseFeedReplies = require('./helpers/GET_Routes/getCourseFeedReplies.
 const getSearchBarResults = require('./helpers/GET_Routes/getSearchBarResults.js');
 const getUsernameAvailability = require('./helpers/GET_Routes/getUsernameAvailability.js');
 const getEmailAvailability = require('./helpers/GET_Routes/getEmailAvailability.js');
-
+const getFrontPageNumbers = require('./helpers/GET_Routes/getFrontPageNumbers.js');
 
 const postNewDoc = require('./helpers/POST_Routes/postNewDoc.js');
 const postNewRevision = require('./helpers/POST_Routes/postNewRevision.js');
@@ -288,6 +288,10 @@ app.get('/api/username_availability', (req, res) => {
 
 app.get('/api/email_availability', (req, res) => {
   getEmailAvailability(req, res, knex, req.session.user_id);
+});
+
+app.get('/api/front_page_numbers', (req, res) => {
+  getFrontPageNumbers(req, res, knex, esClient);
 });
 
 

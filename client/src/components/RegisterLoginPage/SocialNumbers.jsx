@@ -1,6 +1,3 @@
-
-
-
 import React, {Component} from 'react';
 
 class SocialNumbers extends Component {
@@ -9,53 +6,56 @@ class SocialNumbers extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      instCount: 0,
-      docCount: 0,
-      userCount: 0
+      courseCount: 0,
+      revCount: 0,
+      jobCount: 0
     };
     this._conditionData = this._conditionData.bind(this);
+    this._commaSeparateNumber = this._commaSeparateNumber.bind(this);
   }
 
   componentDidMount() {
-    // fetch('/api/institutions_programs', {
-    //   method: 'GET',
-    //   credentials: 'same-origin'
-    // })
-    // .then(response => response.json())
-    // .then(resJSON => this._conditionData(resJSON))
-    // .catch(() => this.setState({ dataLoaded: true, pageError: true }));
+    fetch('/api/front_page_numbers', {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(resJSON => this._conditionData(resJSON))
+    .catch(() => this.setState({ dataLoaded: true, pageError: true }));
   }
 
   _conditionData(resJSON) {
     if (resJSON) {
-      const instProgDropDownList = resJSON.insts.map(inst => {
-        const programs = inst.programs.map(prog => {
-          return { value: prog.id, label: prog.prog_display_name };
-        });
-        return { value: inst.id, label: inst.inst_display_name, programs };
+      this.setState({
+        courseCount: this._commaSeparateNumber(parseInt(resJSON.courseCount)),
+        revCount: this._commaSeparateNumber(parseInt(resJSON.revCount)),
+        jobCount: this._commaSeparateNumber(parseInt(resJSON.jobCount)),
+        dataLoaded: true
       });
-      this.setState({ instProgDropDownList, dataLoaded: true });
     } else {
       throw 'Server returned false';
     }
   }
 
+  _commaSeparateNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
 
   render() {
     return (
       <div className='social-numbers'>
 
         <div className='social-number'>
-          <p className='value'>2,950</p>
-          <p className='type'>Users</p>
+          <p className='value'>{this.state.courseCount}</p>
+          <p className='type'>Courses</p>
         </div>
         <div className='social-number'>
-          <p className='value'>2,950</p>
-          <p className='type'>Users</p>
+          <p className='value'>{this.state.revCount}</p>
+          <p className='type'>Documents</p>
         </div>
         <div className='social-number'>
-          <p className='value'>2,950</p>
-          <p className='type'>Users</p>
+          <p className='value'>{this.state.jobCount}</p>
+          <p className='type'>Jobs</p>
         </div>
       </div>
     );
