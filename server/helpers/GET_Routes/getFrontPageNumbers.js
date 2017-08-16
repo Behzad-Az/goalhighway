@@ -26,7 +26,7 @@ const getFrontPageNumbers = (req, res, knex, esClient) => {
     return esClient.search({ index: 'goalhwy_es_db', body });
   };
 
-  Promise.all([ getRevCount(), getCoursesCount(), getJobsCount() ])
+  Promise.all([ getCoursesCount(), getRevCount(), getJobsCount() ])
   .then(results => res.send({
     courseCount: results[0][0].count,
     revCount: results[1][0].count,
