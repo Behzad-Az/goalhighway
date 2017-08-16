@@ -9,7 +9,7 @@ const getDocPageRevDownload = (req, res, knex) => {
       throw 'file could not be found';
     } else {
       const fileName = revision[0].file_name;
-      const downloadPath = './uploads/documents/' + fileName;
+      const downloadPath = '../../goalhwy_docs/uploads/documents/' + fileName;
       res.download(downloadPath, 'report.pdf');
     }
   })

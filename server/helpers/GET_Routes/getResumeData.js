@@ -5,7 +5,7 @@ const getResumeData = (req, res, knex, user_id) => {
       throw 'file could not be found';
     } else {
       const fileName = resume[0].file_name;
-      const downloadPath = './uploads/resumes/' + fileName;
+      const downloadPath = '../../goalhwy_docs/uploads/resumes/' + fileName;
       res.download(downloadPath, 'resume.pdf');
     }
   })

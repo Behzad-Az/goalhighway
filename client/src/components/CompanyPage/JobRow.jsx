@@ -66,7 +66,7 @@ class JobRow extends Component {
               {this.props.job.tags.map((tag, index) => <span key={index} className='tag'>{tag}</span>)}
               <br />
               <small>
-                <Link className='footer-item'>Apply Now!</Link>
+                <Link to={this.props.job.link} target='_blank'>Apply Now!</Link>
                 <i className='fa fa-flag footer-item' aria-hidden='true' onClick={() => this.setState({ flagRequest: !this.state.flagRequest })} style={{ color: this.state.flagRequest ? '#9D0600' : 'inherit' }} />
                 { this.state.flagRequest && this._renderFlagSelect() }
               </small>

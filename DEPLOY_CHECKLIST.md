@@ -1,7 +1,7 @@
 - Ensure correct ip address on base.js
 - Ensure correct environment on server.js for knex.
 - Change seed files to only include institutions, programs, institution_programs, courses, profs, and companies.
-- Change elastic seed files to only include jobs, institutions, companies.
+- Change elastic seed files to only include jobs, institutions, companies, and ubc_courses.
 - Ensure programs inside postNewInst.js match the ones on the seeded programs.
 - Remove default login in LogIn.jsx
 - Ensure all redundant files are taken out of the upload folders

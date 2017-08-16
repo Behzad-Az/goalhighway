@@ -1,22 +1,13 @@
 const multer = require('multer');
-
-const getRandomDocName = () => {
-  let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let length = 4;
-  let randomName = '';
-  for(let i = 0; i < length; i++) {
-    randomName += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return `${randomName}_`;
-};
+const randIdString = require('random-base64-string');
 
 const acceptableMimeType = [
   'image/png'
 ];
 
 const userPhotoStorage = multer.diskStorage({
-  destination: './public/imagesapi/itemsforsale/',
-  filename: (req, file, cb) => file.mimetype === 'image/png' ? cb(null, getRandomDocName() + Date.now() + '.png') : cb(null, new Error('unknown file type'))
+  destination: '../../goalhwy_docs/public/imagesapi/itemsforsale/',
+  filename: (req, file, cb) => file.mimetype === 'image/png' ? cb(null, '__' + randIdString(4) + Date.now() + '.png') : cb(null, new Error('unknown file type'))
 });
 
 module.exports = multer({

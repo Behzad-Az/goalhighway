@@ -1,21 +1,12 @@
 const multer = require('multer');
-
-const getRandomDocName = () => {
-  let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let length = 4;
-  let randomName = '';
-  for(let i = 0; i < length; i++) {
-    randomName += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return `${randomName}_`;
-};
+const randIdString = require('random-base64-string');
 
 const acceptableMimeType = [
   'image/png'
 ];
 
 const userPhotoStorage = multer.diskStorage({
-  destination: './public/imagesapi/users/',
+  destination: '../../goalhwy_docs/public/imagesapi/users/',
   filename: (req, file, cb) => {
     let ext = '.unknown';
     switch (file.mimetype) {
@@ -31,7 +22,7 @@ const userPhotoStorage = multer.diskStorage({
       default:
        new Error('unknown file type');
     }
-    cb(null, getRandomDocName() + Date.now() + ext);
+    cb(null, '__' + randIdString(4) + Date.now() + ext);
   }
 });
 

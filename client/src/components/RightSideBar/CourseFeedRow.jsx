@@ -80,7 +80,7 @@ class CourseFeedRow extends Component {
             {this.props.feed.content}
             <br />
             <small>
-              {this.props.feed.created_at.slice(0, 10)} | <Link>Reply</Link>
+              {this.props.feed.created_at.slice(0, 10)}
             </small>
           </div>
         </div>

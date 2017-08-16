@@ -9,7 +9,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const bcryptJs = require('bcryptjs');
 const session = require('express-session');
-const connection = require('./db/knexfile.js').production;
+const connection = require('./db/knexfile.js').development;
 const knex = require('knex')(connection);
 const fs = require('fs');
 const path = require('path');
@@ -58,7 +58,7 @@ app.use(blacklist, (req, res, next) => {
     res.send(false);
   }
 });
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/../../goalhwy_docs/public')));
 
 
 // ***************************************************

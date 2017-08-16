@@ -1,5 +1,6 @@
 elasticsearch-5.4.0*
-resumes*
+# resumes*
+# documents*
 
 # Logs
 logs

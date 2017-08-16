@@ -79,7 +79,7 @@ class Login extends Component {
                 type='text'
                 name='username'
                 className='input'
-                placeholder='Enter username'
+                placeholder='Username'
                 onChange={this._handleChange}
                 disabled={this.state.processing}
                 style={{ borderColor: InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') ? '#9D0600' : '' }} />
@@ -93,12 +93,12 @@ class Login extends Component {
                 type='password'
                 name='password'
                 className='input'
-                placeholder='Enter password'
+                placeholder='Password'
                 onChange={this._handleChange}
                 disabled={this.state.processing}
                 style={{ borderColor: InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password') ? '#9D0600' : '' }} />
             </div>
-            <button className='button' onClick={this._handleLogin} disabled={!this._validateForm()}>Log in</button>
+            <button className='button' onClick={this._handleLogin} disabled={!this._validateForm()}>Go!</button>
           </div>
         </div>
       </nav>

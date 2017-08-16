@@ -11,10 +11,10 @@ class IntroDescription extends Component {
         </p>
 
         <p className='intro-description'>
-          Well, you're missing out on an actively growing and collaborative network of post-secondary students that help each other achieve their academic and career
-          goals through peer tutoring, document sharing, peer CV reviews, and many other features. Our app keeps you up to date with all the activities inside your courses
-          from document revisions to peer questions to classmate comments in an organized and ergonomic fashion. Furthermore, along the way, our team of job hunters will
-          help you find your ideal summer, internship, and junior career options with a ridiculously simple to use search feature. You have to join to truly appreciate what we mean 😀
+          You're missing out on an <strong>actively growing</strong> and <strong>collaborative network</strong> of post-secondary students that help each other <strong>achieve</strong> their <strong>academic</strong> and <strong>career goals</strong> through peer tutoring, document sharing, peer CV reviews, and many other features. Our
+          app keeps you <strong>up to date</strong> with all the activities inside your courses
+          from document revisions to peer questions to classmate comments in an <strong>organized</strong> and <strong>ergonomic</strong> fashion. Furthermore, along the way, our team of job hunters will
+          help you find your ideal <strong>summer</strong>, <strong>internship</strong>, and <strong>junior career</strong> options with a ridiculously simple to use search feature. You have to join to truly appreciate what we mean 😀
         </p>
 
 

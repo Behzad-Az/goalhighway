@@ -3,6 +3,7 @@ $side_hamburger_width: 40px;
 @media screen and (max-width: 950px) {
   .side-bar.left { padding: none !important; display: none; }
   .side-bar.right { padding: none !important; display: none; }
+
   .nav.logged-in {
     width: calc(100% - 20px);
   }
@@ -27,4 +28,19 @@ $side_hamburger_width: 40px;
     .control-bar.is-enabled { display: inline-block; position: fixed; margin-left: $side_hamburger_width; width: 250px; z-index: 1; }
   }
 
+}
+
+
+@media screen and (max-width: 520px) {
+  .register-login-page {
+    .nav.login {
+      .container {
+        .nav-item {
+          &.credentials {
+            width: calc(100% - 118px);
+          }
+        }
+      }
+    }
+  }
 }
