@@ -9,7 +9,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const bcryptJs = require('bcryptjs');
 const session = require('express-session');
-const connection = require('./db/knexfile.js').production;
+const connection = require('./db/knexfile.js').development;
 const knex = require('knex')(connection);
 const fs = require('fs');
 const path = require('path');
@@ -293,7 +293,6 @@ app.get('/api/email_availability', (req, res) => {
 app.get('/api/front_page_numbers', (req, res) => {
   getFrontPageNumbers(req, res, knex, esClient);
 });
-
 
 // ***************************************************
 // ROUTES - POST

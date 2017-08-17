@@ -175,7 +175,6 @@ class Register extends Component {
               Join the highway!
             </p>
           </header>
-
           <div className='card-content'>
             <div className='control'>
               <label className='label'>

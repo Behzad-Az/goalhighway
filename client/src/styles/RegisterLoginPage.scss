@@ -32,8 +32,8 @@
     .register-row {
       background-size: cover; overflow: auto;
       .laptop-image {
-        padding: $default_margin/2 $default_margin; position: absolute; right: 450px; top: 100px;
-        img { max-height: 550px; max-width: 1000px; overflow: hidden; }
+        padding: $default_margin/2 $default_margin; position: absolute; right: 450px; top: 75px;
+        img { max-height: 600px; max-width: 1000px; overflow: hidden; }
       }
       .card {
         display: inline-block; float: right; width: 360px; background-color: $default_bg_color; border-radius: 5px;
