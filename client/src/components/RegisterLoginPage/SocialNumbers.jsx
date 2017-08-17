@@ -6,9 +6,9 @@ class SocialNumbers extends Component {
     this.state = {
       dataLoaded: false,
       pageError: false,
-      courseCount: 0,
-      revCount: 0,
-      jobCount: 0
+      courseCount: '-',
+      revCount: '-',
+      jobCount: '-'
     };
     this._conditionData = this._conditionData.bind(this);
     this._commaSeparateNumber = this._commaSeparateNumber.bind(this);

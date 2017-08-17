@@ -32,7 +32,7 @@
     .register-row {
       background-size: cover; overflow: auto;
       .laptop-image {
-        padding: $default_margin/2 $default_margin; position: absolute; right: 450px; top: 75px;
+        padding: $default_margin/2 $default_margin; position: absolute; right: 410px; top: 75px;
         img { max-height: 600px; max-width: 1000px; overflow: hidden; }
       }
       .card {

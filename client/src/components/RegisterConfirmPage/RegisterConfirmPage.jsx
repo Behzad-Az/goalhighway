@@ -23,7 +23,7 @@ class RegisterConfirmPage extends Component {
       email: this.props.location.query.email,
       registerToken: this.props.location.query.token
     };
-    fetch(`/api/confirm_register`, {
+    fetch('/api/confirm_register', {
       method: 'PUT',
       credentials: 'same-origin',
       headers: {
