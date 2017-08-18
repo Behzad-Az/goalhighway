@@ -80,6 +80,7 @@ class Login extends Component {
                 name='username'
                 className='input'
                 placeholder='Username'
+                onKeyPress={e => e.key === 'Enter' && this._validateForm() ? this._handleLogin() : '' }
                 onChange={this._handleChange}
                 disabled={this.state.processing}
                 style={{ borderColor: InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') ? '#9D0600' : '' }} />
@@ -93,6 +94,7 @@ class Login extends Component {
                 type='password'
                 name='password'
                 className='input'
+                onKeyPress={e => e.key === 'Enter' && this._validateForm() ? this._handleLogin() : '' }
                 placeholder='Password'
                 onChange={this._handleChange}
                 disabled={this.state.processing}
