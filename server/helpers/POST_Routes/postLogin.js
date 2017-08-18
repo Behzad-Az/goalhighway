@@ -2,6 +2,7 @@ const postLogin = (req, res, knex, bcrypt) => {
 
   const username = req.body.username.trim().toLowerCase();
   const password = req.body.password;
+  const ip_address = req.connection.remoteAddress;
   let currUser;
 
   const validateInputs = () => new Promise((resolve, reject) => {
@@ -30,6 +31,9 @@ const postLogin = (req, res, knex, bcrypt) => {
 
   const verifyPwd = (given, actual) => bcrypt.compare(given, actual);
 
+  const insertLoginHistory = user_id => knex('login_history')
+    .insert({ user_id, ip_address });
+
   validateInputs()
   .then(() => findUser())
   .then(user => {
@@ -41,29 +45,29 @@ const postLogin = (req, res, knex, bcrypt) => {
     }
   })
   .then(valid => {
-    if (valid) {
-      req.session.username = username;
-      req.session.user_id = currUser.id;
-      req.session.inst_prog_id = currUser.inst_prog_id;
-      req.session.inst_id = currUser.inst_id;
-      req.session.prog_id = currUser.prog_id;
-      req.session.email = currUser.email;
-      req.session.user_year = currUser.user_year;
-      req.session.photo_name = currUser.photo_name;
-      req.session.created_at = currUser.created_at;
-      req.session.postal_code = currUser.postal_code;
-      req.session.lat = currUser.lat;
-      req.session.lon = currUser.lon;
-      req.session.job_kind = currUser.job_kind;
-      req.session.job_query = currUser.job_query;
-      req.session.job_distance = currUser.job_distance;
-      res.send(true);
-    } else {
-      throw 'Invalid username and password';
-    }
+    if (valid) { return insertLoginHistory(currUser.id); }
+    else { throw 'Invalid username and password'; }
+  })
+  .then(() => {
+    req.session.username = username;
+    req.session.user_id = currUser.id;
+    req.session.inst_prog_id = currUser.inst_prog_id;
+    req.session.inst_id = currUser.inst_id;
+    req.session.prog_id = currUser.prog_id;
+    req.session.email = currUser.email;
+    req.session.user_year = currUser.user_year;
+    req.session.photo_name = currUser.photo_name;
+    req.session.created_at = currUser.created_at;
+    req.session.postal_code = currUser.postal_code;
+    req.session.lat = currUser.lat;
+    req.session.lon = currUser.lon;
+    req.session.job_kind = currUser.job_kind;
+    req.session.job_query = currUser.job_query;
+    req.session.job_distance = currUser.job_distance;
+    res.send(true);
   })
   .catch(err => {
-    console.error('Error inside ', err);
+    console.error('Error inside postLogin.js', err);
     res.send(false);
   });
 

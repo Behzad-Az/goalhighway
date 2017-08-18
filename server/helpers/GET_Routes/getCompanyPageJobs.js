@@ -1,7 +1,5 @@
 const getCompanyPageJobs = (req, res, esClient, user_id) => {
 
-  console.log("i'm here 6: ", req.params.company_id);
-
   const getJobs = () => {
     const body = {
       size: 10,

@@ -167,7 +167,7 @@ class Register extends Component {
     return (
       <div className='register-row'>
         <div className='laptop-image'>
-          <img src='../images/laptop.png' />
+          <img src='../images/laptop-min.png' />
         </div>
         <div className='card'>
           <header className='card-header'>
