@@ -1,10 +1,8 @@
-const getIP = require('ipware')().get_ip;
-
 const postLogin = (req, res, knex, bcrypt) => {
 
   const username = req.body.username.trim().toLowerCase();
   const password = req.body.password;
-  const ip_address = getIP(req).clientIp;
+  const ip_address = req.headers['x-forwarded_for'] || x.headers['x-real-ip'] || 'unknown';
 
   let currUser;
 
