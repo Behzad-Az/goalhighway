@@ -60,7 +60,6 @@ app.use(blacklist, (req, res, next) => {
 });
 app.use(express.static(path.join(__dirname, '/../../goalhwy_docs/public')));
 
-
 // ***************************************************
 // DOCUMENT STORAGE
 // ***************************************************

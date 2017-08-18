@@ -1,11 +1,11 @@
+const getIP = require('ipware')().get_ip;
+
 const postLogin = (req, res, knex, bcrypt) => {
 
   const username = req.body.username.trim().toLowerCase();
   const password = req.body.password;
-  const ip_address = req.headers['x-forwarded-for'] ||
-                     req.connection.remoteAddress ||
-                     req.socket.remoteAddress ||
-                     req.connection.socket.remoteAddress;
+  const ip_address = getIP(req).clientIp;
+
   let currUser;
 
   const validateInputs = () => new Promise((resolve, reject) => {
