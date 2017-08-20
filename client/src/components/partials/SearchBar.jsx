@@ -77,7 +77,6 @@ class SearhBar extends Component {
   }
 
   _renderSearchResults() {
-    console.log("i'm here 0: searchResults");
     let searchResults = [];
     if (this.state.searchResults.length) {
       this.state.searchResults.forEach((result, index) => {
