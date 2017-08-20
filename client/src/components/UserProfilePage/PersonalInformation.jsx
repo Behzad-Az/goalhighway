@@ -154,7 +154,6 @@ class PersonalInformation extends Component {
   }
 
   _editInfo() {
-    const programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : [];
     if (this.state.dataLoaded && !this.state.pageError) {
       return (
         <div className='card'>
@@ -206,7 +205,7 @@ class PersonalInformation extends Component {
               <SingleSelect
                 disabled={false}
                 initialValue={this.state.progId}
-                options={programList}
+                options={this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : []}
                 name='progId'
                 handleChange={(progId, progDisplayName) => this.setState({ progId, progDisplayName })} />
             </div>

@@ -12,7 +12,7 @@
         &.valid {
           cursor: pointer;
           i { line-height: 32px; font-size: 15px; }
-          &:hover { background-color: #eee; }
+          &.highlighted { background-color: #eee; }
         }
       }
       &.is-enabled { display: block; }

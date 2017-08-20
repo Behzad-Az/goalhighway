@@ -163,7 +163,6 @@ class Register extends Component {
   }
 
   render() {
-    let programList = this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : [];
     return (
       <div className='register-row'>
         <div className='laptop-image'>
@@ -242,7 +241,7 @@ class Register extends Component {
               <SingleSelect
                 disabled={this.state.processing}
                 initialValue={this.state.progId}
-                options={programList}
+                options={this.state.instId ? this.state.instProgDropDownList.find(item => item.value == this.state.instId).programs : []}
                 name='progId'
                 handleChange={progId => this.setState({ progId })} />
             </div>

@@ -13,6 +13,7 @@ const newIndex = {
     mappings: {
       job: {
         properties: {
+          id: { type: 'string' },
           created_at: { type: 'date', format: 'yyyy-mm-dd' },
           location: { type: 'geo_point' },
           title: { type: 'string' },
@@ -69,6 +70,7 @@ const bulkIndex = function bulkIndex(index, type, data) {
     item.created_at = today.toISOString().slice(0, 10);
     body.push({
       index: {
+        _id: item.id,
         _index: index,
         _type: type
       }
