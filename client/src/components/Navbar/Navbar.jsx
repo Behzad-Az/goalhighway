@@ -53,7 +53,7 @@ class Navbar extends Component {
       <nav className='nav logged-in has-shadow'>
         <div className='container'>
           <div className='nav-left'>
-            <Link className='nav-item' to='/index'><img src='../../../images/goalhighway-logo.png' alt='Bulma logo' /></Link>
+            <Link className='nav-item' to='/index'><img src='../../../images/goalhighway-logo-no-background.png' alt='Bulma logo' /></Link>
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-mobile' to={`/institutions/${this.state.userInfo.inst_id}`}><i className='fa fa-graduation-cap' aria-hidden='true' />Academics</Link>
             <Link id='institute-nav-btn' className='nav-item is-tab is-hidden-mobile' to='/jobs'><i className='fa fa-briefcase' aria-hidden='true' />Careers</Link>
           </div>

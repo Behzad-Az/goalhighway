@@ -67,7 +67,7 @@ class Login extends Component {
       <nav className='nav login has-shadow'>
         <div className='container'>
           <div className='nav-left'>
-            <Link className='nav-item logo' to='/index'><img src='../../../images/goalhighway-logo.png' alt='Bulma logo' /></Link>
+            <Link className='nav-item logo' to='/index'><img src='../../../images/goalhighway-logo-no-background.png' alt='Bulma logo' /></Link>
           </div>
           <div className='nav-item credentials'>
             <div className='credential'>
