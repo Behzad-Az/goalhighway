@@ -8,7 +8,7 @@ const getDocPageRevs = (req, res, knex, user_id) => {
     .count('id as valid');
 
   const getRevisions = () => knex('revisions')
-    .select('id', 'created_at', 'rev_desc', 'poster_id')
+    .select('id', 'created_at', 'rev_desc', 'poster_id', 'title')
     .where('doc_id', req.params.doc_id)
     .whereNull('deleted_at')
     .orderBy('created_at', 'desc')

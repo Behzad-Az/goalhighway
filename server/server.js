@@ -37,7 +37,16 @@ const mailer = nodemailer.createTransport({
   }
 });
 
-const blacklist = ['/api/index', '/api/courses', '/api/users', '/api/docs', '/api/institutions', '/api/searchbar', '/images'];
+const blacklist = [
+  '/api/index',
+  '/api/courses',
+  '/api/users',
+  '/api/docs',
+  '/api/institutions',
+  '/api/searchbar',
+  '/images',
+  '/api/resumes'
+];
 
 // ***************************************************
 // MIDDLEWARE
@@ -100,7 +109,7 @@ const getLoginCheck = require('./helpers/GET_Routes/getLoginCheck.js');
 const getRightSideBarData = require('./helpers/GET_Routes/getRightSideBarData.js');
 const getLeftSideBarData = require('./helpers/GET_Routes/getLeftSideBarData.js');
 const getFeedPageData = require('./helpers/GET_Routes/getFeedPageData.js');
-const getResumeData = require('./helpers/GET_Routes/getResumeData.js');
+const getResumeDownload = require('./helpers/GET_Routes/getResumeDownload.js');
 const getConversationPageData = require('./helpers/GET_Routes/getConversationPageData.js');
 const getCourseFeedReplies = require('./helpers/GET_Routes/getCourseFeedReplies.js');
 const getSearchBarResults = require('./helpers/GET_Routes/getSearchBarResults.js');
@@ -193,7 +202,7 @@ app.get('/api/courses/:course_id/docs/:doc_id/revisions', (req, res) => {
 });
 
 app.get('/api/courses/:course_id/docs/:doc_id/revisions/:rev_id/download', (req, res) => {
-  getDocPageRevDownload(req, res, knex);
+  getDocPageRevDownload(req, res, knex, req.session.user_id);
 });
 
 
@@ -262,7 +271,7 @@ app.get('/api/users/:user_id/feed', (req, res) => {
 });
 
 app.get('/api/resumes/:resume_id', (req, res) => {
-  getResumeData(req, res, knex, req.session.user_id);
+  getResumeDownload(req, res, knex, req.session.user_id);
 });
 
 app.get('/api/chatroom', (req, res) => {
