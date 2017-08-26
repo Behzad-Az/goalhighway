@@ -14,7 +14,7 @@
             .label { text-align: left; margin: 0; font-size: 12px; color: $dark_blue; }
             .input { max-height: 30px; border-color: $dark_blue; font-size: 12px; }
           }
-          .button { max-height: 30px; margin-top: $default_margin; background-color: $dark_blue; color: white; font-style: bold; }
+          .button { max-height: 30px; margin-top: $default_margin*-1; background-color: $dark_blue; color: white; font-style: bold; }
         }
       }
     }

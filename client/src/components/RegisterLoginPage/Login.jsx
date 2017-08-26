@@ -32,7 +32,7 @@ class Login extends Component {
   _handleLogin() {
     this.setState({ processing: true });
 
-    let data = {
+    const data = {
       username: this.state.username,
       password: this.state.password
     };
@@ -71,10 +71,6 @@ class Login extends Component {
           </div>
           <div className='nav-item credentials'>
             <div className='credential'>
-              <label className='label'>
-                Username:
-                { InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') && <span className='char-limit'>Invalid</span> }
-              </label>
               <input
                 type='text'
                 name='username'
@@ -83,13 +79,13 @@ class Login extends Component {
                 onKeyPress={e => e.key === 'Enter' && this._validateForm() ? this._handleLogin() : '' }
                 onChange={this._handleChange}
                 disabled={this.state.processing}
-                style={{ borderColor: InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') ? '#9D0600' : '' }}
+              />
+              <p className='label'>
+                Welcome back!
+              </p>
             </div>
             <div className='credential'>
-              <label className='label'>
-                Password:
-                { InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password') && <span className='char-limit'>Invalid</span> }
-              </label>
               <input
                 type='password'
                 name='password'
@@ -98,7 +94,11 @@ class Login extends Component {
                 placeholder='Password'
                 onChange={this._handleChange}
                 disabled={this.state.processing}
-                style={{ borderColor: InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password') ? '#9D0600' : '' }} />
+                style={{ borderColor: InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password') ? '#9D0600' : '' }}
+              />
+              <Link className='label' to='/forgot_account'>
+                Forgot account?
+              </Link>
             </div>
             <button className='button' onClick={this._handleLogin} disabled={!this._validateForm()}>Go!</button>
           </div>

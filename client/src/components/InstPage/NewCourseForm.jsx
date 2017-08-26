@@ -40,7 +40,7 @@ class NewCourseForm extends Component {
   }
 
   _handleNewCoursePost() {
-    let data = {
+    const data = {
       prefix: this.state.prefix,
       suffix: this.state.suffix,
       courseDesc: this.state.courseDesc,

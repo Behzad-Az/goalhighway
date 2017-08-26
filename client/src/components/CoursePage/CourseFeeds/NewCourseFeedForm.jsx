@@ -32,7 +32,7 @@ class NewCourseFeedForm extends Component {
   }
 
   _handleSubmit() {
-    let data = {
+    const data = {
       anonymous: this.state.anonymous,
       content: this.state.content
     };

@@ -15,7 +15,7 @@ const postNewUser = (req, res, knex, bcrypt, mailer, randIdString) => {
     to: email,
     subject: 'Verify your account at GoalHighway', // Subject line
     text: 'Welcome to GoalHighway!', // plaintext body
-    html: confirmEmailTemplate(`http://localhost:3000/confirm_register?token=${register_token}&email=${email}`)
+    html: confirmEmailTemplate(`http://localhost:3000/confirm_register?token=${register_token}&email=${email}`, username)
   };
 
   const validateInputs = () => new Promise ((resolve, reject) => {

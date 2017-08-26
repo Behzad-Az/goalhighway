@@ -20,7 +20,7 @@ class NewResumeReviewForm extends Component {
   }
 
   _handleNewResumeReviewReq() {
-    let data = {
+    const data = {
       title: this.state.title,
       additionalInfo: this.state.additionalInfo
     };

@@ -21,12 +21,14 @@ class PersonalInformation extends Component {
       progId: '',
       progDisplayName: '',
       editView: false,
-      instProgDropDownList: []
+      instProgDropDownList: [],
+      changePasswordText: 'Click here to change password'
     };
     this._conditionData = this._conditionData.bind(this);
     this._toggleView = this._toggleView.bind(this);
     this._handleChange = this._handleChange.bind(this);
     this._handleUpdateProfile = this._handleUpdateProfile.bind(this);
+    this._handlePasswordReset = this._handlePasswordReset.bind(this);
     this._showInfo = this._showInfo.bind(this);
     this._editInfo = this._editInfo.bind(this);
   }
@@ -89,6 +91,21 @@ class PersonalInformation extends Component {
     })
     .catch(() => this.reactAlert.showAlert('Could not save user profile', 'error'))
     .then(() => this._toggleView());
+  }
+
+  _handlePasswordReset() {
+    fetch('/api/forgot_account', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ usernameOrEmail: this.state.username })
+    })
+    .then(response => response.json())
+    .then(resJSON => resJSON ? this.setState({ changePasswordText: 'Password reset request sent. Check your email' }) : this.setState({ changePasswordText: 'Encountered error. Try again' }))
+    .catch(err => console.error('Unable to retrieve account - ', err));
   }
 
   _showInfo() {
@@ -178,6 +195,15 @@ class PersonalInformation extends Component {
                      name='username'
                      defaultValue={this.state.username}
                      onChange={this._handleChange} />
+            </div>
+
+            <div className='control'>
+              <label className='label'>Password:</label>
+              <button className='button'
+                      disabled={this.state.changePasswordText === 'Password reset request sent. Check your email'}
+                      onClick={this._handlePasswordReset}>
+                {this.state.changePasswordText}
+              </button>
             </div>
 
             <div className='control'>

@@ -7,9 +7,9 @@ const express = require('express');
 const url = require('url');
 const app = express();
 const bodyParser = require('body-parser');
-const bcryptJs = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
 const session = require('express-session');
-const connection = require('./db/knexfile.js').production;
+const connection = require('./db/knexfile.js').development;
 const knex = require('knex')(connection);
 const fs = require('fs');
 const path = require('path');
@@ -138,6 +138,7 @@ const postNewResume = require('./helpers/POST_Routes/postNewResume.js');
 const postNewResumeReviewFeed = require('./helpers/POST_Routes/postNewResumeReviewFeed.js');
 const postNewConversation = require('./helpers/POST_Routes/postNewConversation.js');
 const postNewConvMessage = require('./helpers/POST_Routes/postNewConvMessage.js');
+const postNewPasswordChangeRequest = require('./helpers/POST_Routes/postNewPasswordChangeRequest.js');
 
 const updateUserProfile = require('./helpers/UPDATE_Routes/updateUserProfile.js');
 const updateCourseUserTutorStatus = require('./helpers/UPDATE_Routes/updateCourseUserTutorStatus.js');
@@ -145,6 +146,7 @@ const updateTutorLog = require('./helpers/UPDATE_Routes/updateTutorLog.js');
 const updateItemForSale = require('./helpers/UPDATE_Routes/updateItemForSale.js');
 const updateResume = require('./helpers/UPDATE_Routes/updateResume.js');
 const updateUserRegisterConfirm = require('./helpers/UPDATE_Routes/updateUserRegisterConfirm');
+const updateUserPassword = require('./helpers/UPDATE_Routes/updateUserPassword.js');
 
 const deleteRevision = require('./helpers/DELETE_Routes/deleteRevision.js');
 const deleteCourseFeed = require('./helpers/DELETE_Routes/deleteCourseFeed.js');
@@ -358,7 +360,7 @@ app.post('/api/institutions', (req, res) => {
 });
 
 app.post('/api/register', (req, res) => {
-  postNewUser(req, res, knex, bcryptJs, mailer, randIdString);
+  postNewUser(req, res, knex, bcryptjs, mailer, randIdString);
 });
 
 app.post('/api/flags/:foreign_table/:foreign_id', (req, res) => {
@@ -386,7 +388,11 @@ app.post('/api/conversations/:conversation_id', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-  postLogin(req, res, knex, bcryptJs);
+  postLogin(req, res, knex, bcryptjs);
+});
+
+app.post('/api/forgot_account', (req, res) => {
+  postNewPasswordChangeRequest(req, res, knex, bcryptjs, mailer, randIdString);
 });
 
 
@@ -415,6 +421,10 @@ app.put('/api/users/:user_id/resumes/:resume_id', resumeUpload.single('file'), (
 
 app.put('/api/confirm_register', (req, res) => {
   updateUserRegisterConfirm(req, res, knex);
+});
+
+app.put('/api/reset_password', (req, res) => {
+  updateUserPassword(req, res, knex, bcryptjs);
 });
 
 

@@ -1,4 +1,4 @@
-const confirmEmailTemplate = confirmLink => {
+const confirmEmailTemplate = (confirmLink, username) => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="initial-scale=1.0"><meta name="format-detection" content="telephone=no"><title>MOSAICO Responsive Email Designer</title><style type="text/css">.socialLinks {font-size: 6px;}
 .socialLinks a {display: inline-block;}
@@ -61,7 +61,7 @@ table.vb-container.fullwidth {padding-left: 0;padding-right: 0;}</style><style t
 
                 <img border="0" hspace="0" vspace="0" width="534" class="mobile-full" alt="" style="border: 0px;display: block;vertical-align: top;max-width: 534px;width: 100%;height: auto;" src="https://mosaico.io/srv/f-45jduuw/img?src=https%3A%2F%2Fmosaico.io%2Ffiles%2F45jduuw%2Fgoalhighway-logo_2.png&amp;method=resize&amp;params=534%2Cnull"></td>
           </tr><tr><td><table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td style="font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #004E89; text-align: left;">
-                <span style="color: #004E89;">Confirm your email address. Thanks for registering!</span>
+                <span style="color: #004E89;">Welcome to the highway, ${username}! Please confirm your email address.</span>
               </td>
             </tr><tr><td height="9" style="font-size: 1px; line-height: 1px;"> </td>
             </tr><tr><td align="left" class="long-text links-color" style="text-align: left; font-size: 13px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f;"><p style="margin: 1em 0px;margin-bottom: 0px;margin-top: 0px;">Click on the link below to confirm your email address.<br></p></td>

@@ -42,7 +42,7 @@ class NewConvForm extends Component {
   }
 
   _submitConversation() {
-    let data = {
+    const data = {
       toId: this.props.convParams.toId,
       type: this.props.convParams.type,
       objId: this.props.convParams.objId,

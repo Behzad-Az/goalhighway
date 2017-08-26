@@ -43,7 +43,7 @@ class NewQuestionForm extends Component {
   }
 
   _handleNewInterviewQuestion() {
-    let data = {
+    const data = {
       question: this.state.question,
       answer: this.state.answer,
       outcome: this.state.outcome

@@ -72,7 +72,7 @@ class NewInstForm extends Component {
   }
 
   _handleNewInstPost() {
-    let data = {
+    const data = {
       country: this.state.country,
       province:  this.state.province,
       instLongName: this.state.instLongName,

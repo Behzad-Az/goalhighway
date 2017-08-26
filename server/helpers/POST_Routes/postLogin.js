@@ -30,8 +30,6 @@ const postLogin = (req, res, knex, bcrypt) => {
     .andWhere('confirmed', true)
     .whereNull('users.deleted_at');
 
-  const verifyPwd = (given, actual) => bcrypt.compare(given, actual);
-
   const insertLoginHistory = user_id => knex('login_history')
     .insert({ user_id, ip_address });
 
@@ -40,7 +38,7 @@ const postLogin = (req, res, knex, bcrypt) => {
   .then(user => {
     if (user[0]) {
       currUser = user[0];
-      return verifyPwd(password, currUser.password);
+      return bcrypt.compare(password, currUser.password);
     } else {
       throw 'No username could be found or user has not verified email yet';
     }

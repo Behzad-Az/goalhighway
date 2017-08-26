@@ -32,7 +32,7 @@ class LoginRegisterPage extends Component {
       return (
         <article className='message is-success'>
           <div className='message-header'>
-            <p><strong>Thank you for registring and welcome!</strong>!</p>
+            <strong>Thank you for registring and welcome!</strong>
             <button className='delete' onClick={() => this._handleRegisterSuccess(false)} />
           </div>
           <div className='message-body'>

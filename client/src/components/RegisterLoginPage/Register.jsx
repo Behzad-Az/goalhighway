@@ -137,7 +137,7 @@ class Register extends Component {
   _handleRegister() {
     this.setState({ processing: true });
 
-    let data = {
+    const data = {
       username: this.state.username,
       email: this.state.email,
       password: this.state.password,

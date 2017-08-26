@@ -30,7 +30,7 @@ class NewReplyForm extends Component {
   }
 
   _submitReply() {
-    let data = {
+    const data = {
       content: this.state.content
     };
 

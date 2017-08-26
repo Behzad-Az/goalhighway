@@ -31,7 +31,7 @@ class NewAnswerForm extends Component {
   }
 
   _handleNewAnsSubmission() {
-    let data = {
+    const data = {
       answer: this.state.answer,
       outcome: this.state.outcome
     };

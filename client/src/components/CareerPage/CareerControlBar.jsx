@@ -124,7 +124,7 @@ class CareerControlBar extends Component {
   }
 
   _handleUpdateSearch() {
-    let data = {
+    const data = {
       type: 'job',
       postalCode: this.state.postalCode,
       jobDistance: this.state.jobDistance,
