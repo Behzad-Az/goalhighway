@@ -37,7 +37,7 @@ $side_hamburger_width: 40px;
         .nav-item {
           &.credentials {
             width: calc(100% - 118px);
-            .credential .label { width: 87px; overflow: hidden; }
+            .credential .label { width: 80px; overflow: hidden; }
           }
         }
       }
