@@ -28,7 +28,6 @@ class InstPage extends Component {
   }
 
   componentDidMount() {
-    document.title = 'Institution Panel';
     this._loadComponentData();
   }
 

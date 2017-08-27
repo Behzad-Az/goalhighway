@@ -34,7 +34,6 @@ class TopRow extends Component {
   }
 
   componentDidMount() {
-    document.title = 'Course Reviews';
     this._loadComponentData();
   }
 

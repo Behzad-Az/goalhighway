@@ -40,7 +40,6 @@ class UserProfilePage extends Component {
       };
       this.setState({ userInfo, dataLoaded: true });
     } else {
-      document.title = 'My Profile - Error';
       throw 'Server returned false';
     }
   }

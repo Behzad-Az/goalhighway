@@ -51,7 +51,6 @@ class ConversationPage extends Component {
           dataLoaded: true
         });
     } else {
-      document.title = 'Messages - Error';
       throw 'Server returned false';
     }
   }

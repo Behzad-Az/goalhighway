@@ -30,7 +30,6 @@ class TopRow extends Component {
   }
 
   componentDidMount() {
-    document.title = 'Document Revisions';
     this._loadComponentData();
   }
 

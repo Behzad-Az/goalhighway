@@ -38,7 +38,6 @@ class IndexPage extends Component {
         dataLoaded: true
       });
     } else {
-      document.title = 'My Courses - Error';
       throw 'Server returned false';
     }
   }

@@ -55,7 +55,6 @@ class FeedsContainer extends Component {
         noMoreFeeds: !resJSON.feeds.length
       });
     } else {
-      document.title = 'Feed - Error';
       throw 'Server returned false';
     }
   }

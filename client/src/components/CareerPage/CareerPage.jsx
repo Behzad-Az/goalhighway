@@ -50,7 +50,6 @@ class CareerPage extends Component {
       });
       this.setState({ jobs, resumes, dataLoaded: true });
     } else {
-      document.title = 'Career Panel - Error';
       throw 'Server returned false';
     }
   }

@@ -55,7 +55,6 @@ class ResetPasswordPage extends Component {
     if (resJSON) {
       this.setState({ successStatus: true });
     } else {
-      document.title = 'Change Password - Error';
       this.setState({ errorStatus: true });
       throw 'Server returned false';
     }

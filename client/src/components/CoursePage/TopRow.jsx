@@ -28,7 +28,6 @@ class TopRow extends Component {
   }
 
   componentDidMount() {
-    document.title = 'Course Panel';
     this._loadComponentData();
   }
 

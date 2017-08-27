@@ -22,7 +22,6 @@ class TopRow extends Component {
   }
 
   componentDidMount() {
-    document.title = 'Company Panel';
     this._loadComponentData();
   }
 
