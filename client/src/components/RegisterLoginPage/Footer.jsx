@@ -10,8 +10,8 @@ class Footer extends Component {
           <div className='content has-text-centered'>
             <p>© 2017 GoalHighway Inc.</p>
             <p>
-              <Link to='https://github.com/jgthms/bulma' target='_blank'><i className='fa fa-facebook' /></Link>
-              <Link to='https://github.com/jgthms/bulma' target='_blank'><i className='fa fa-twitter' /></Link>
+              <Link to='https://www.facebook.com/goalhighway' target='_blank'><i className='fa fa-facebook' /></Link>
+              <Link to='https://twitter.com/goalhighway' target='_blank'><i className='fa fa-twitter' /></Link>
             </p>
           </div>
         </div>
