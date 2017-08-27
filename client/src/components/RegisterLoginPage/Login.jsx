@@ -81,9 +81,6 @@ class Login extends Component {
                 disabled={this.state.processing}
                 style={{ borderColor: InvalidCharChecker(this.state.username, this.formLimits.username.max, 'username') ? '#9D0600' : '' }}
               />
-              <p className='label'>
-                Welcome back!
-              </p>
             </div>
             <div className='credential'>
               <input
@@ -96,11 +93,11 @@ class Login extends Component {
                 disabled={this.state.processing}
                 style={{ borderColor: InvalidCharChecker(this.state.password, this.formLimits.password.max, 'password') ? '#9D0600' : '' }}
               />
-              <Link className='label' to='/forgot_account'>
-                Forgot account?
-              </Link>
             </div>
             <button className='button' onClick={this._handleLogin} disabled={!this._validateForm()}>Go!</button>
+            <Link className='label forgot' to='/forgot_account'>
+              Forgot account?
+            </Link>
           </div>
         </div>
       </nav>
