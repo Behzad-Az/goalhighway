@@ -65,7 +65,7 @@ class ForgotPasswordPage extends Component {
 
   render() {
     return (
-      <div className='forgot-password-page'>
+      <div className='forgot-account-page'>
         <Login handleError={this._handleError} />
         <div className='main-container'>
           { this.state.errorStatus && this._renderErrorMsg() }
