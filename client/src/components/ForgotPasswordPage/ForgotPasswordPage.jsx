@@ -88,7 +88,7 @@ class ForgotPasswordPage extends Component {
               </div>
             </div>
             <footer className='card-footer'>
-              <Link className='card-footer-item button is-link' onClick={this._handlePasswordReset} disabled={!this.state.usernameOrEmail}>
+              <Link className='card-footer-item button is-link' onClick={this._handlePasswordReset} disabled={!this.state.usernameOrEmail || this.state.processing}>
                 { this.state.processing ? 'Processing...' : 'Find Account' }
               </Link>
             </footer>

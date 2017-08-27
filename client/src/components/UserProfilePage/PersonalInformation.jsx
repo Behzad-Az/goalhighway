@@ -94,6 +94,7 @@ class PersonalInformation extends Component {
   }
 
   _handlePasswordReset() {
+    this.setState({ changePasswordText: 'Password reset request sent. Check your email' });
     fetch('/api/forgot_account', {
       method: 'POST',
       credentials: 'same-origin',
@@ -104,7 +105,7 @@ class PersonalInformation extends Component {
       body: JSON.stringify({ usernameOrEmail: this.state.username })
     })
     .then(response => response.json())
-    .then(resJSON => resJSON ? this.setState({ changePasswordText: 'Password reset request sent. Check your email' }) : this.setState({ changePasswordText: 'Encountered error. Try again' }))
+    .then(resJSON => resJSON ? '' : this.setState({ changePasswordText: 'Encountered error. Try again' }))
     .catch(err => console.error('Unable to retrieve account - ', err));
   }
 

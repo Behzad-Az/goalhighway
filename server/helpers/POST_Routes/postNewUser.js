@@ -10,14 +10,6 @@ const postNewUser = (req, res, knex, bcrypt, mailer, randIdString) => {
   const user_year = parseInt(req.body.userYear);
   const register_token = Math.random().toString(36).substr(2, 15);
 
-  const mailOptions = {
-    from: '"GoalHighway" <no-reply@goalhighway.com>', // sender address
-    to: email,
-    subject: 'Verify your account at GoalHighway', // Subject line
-    text: 'Welcome to GoalHighway!', // plaintext body
-    html: confirmEmailTemplate(`http://localhost:3000/confirm_register?token=${register_token}&email=${email}`, username)
-  };
-
   const validateInputs = () => new Promise ((resolve, reject) => {
     if (
       pwd === pwdConfirm &&
@@ -62,11 +54,18 @@ const postNewUser = (req, res, knex, bcrypt, mailer, randIdString) => {
         user_year,
         inst_prog_id: results[1][0].id,
         register_token,
-        confirmed: true
+        confirmed: false
       };
       return insertNewUser(newUserObj, trx);
     })
-    // .then(() => mailer.sendMail(mailOptions))
+    .then(() => mailer.sendMail({
+      from: '"GoalHighway" <no-reply@goalhighway.com>', // sender address
+      to: email,
+      subject: 'Verify your account at GoalHighway', // Subject line
+      text: 'Welcome to GoalHighway!', // plaintext body
+      html: confirmEmailTemplate(`https://goalhighway.com/confirm_register?token=${register_token}&email=${email}`, username)
+      // html: confirmEmailTemplate(`http://localhost:3000/confirm_register?token=${register_token}&email=${email}`, username)
+    }))
     .then(() => trx.commit())
     .catch(err => {
       console.error('Error inside postNewUser.js: ', err);

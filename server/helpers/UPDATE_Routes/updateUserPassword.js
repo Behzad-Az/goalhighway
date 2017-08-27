@@ -59,32 +59,6 @@ const updateUserPassword = (req, res, knex, bcrypt) => {
     res.send(false);
   });
 
-  // knex.transaction(trx => {
-  //   validateInputs()
-  //   .then(() => Promise.all([ bcrypt.hash(pwd, 10), findInstProgId(trx) ]))
-  //   .then(results => {
-  //     const newUserObj = {
-  //       id: randIdString(11),
-  //       username,
-  //       email,
-  //       password: results[0],
-  //       user_year,
-  //       inst_prog_id: results[1][0].id,
-  //       register_token,
-  //       confirmed: true
-  //     };
-  //     return insertNewUser(newUserObj, trx);
-  //   })
-  //   // .then(() => mailer.sendMail(mailOptions))
-  //   .then(() => trx.commit())
-  //   .catch(err => {
-  //     console.error('Error inside updateUserPassword.js: ', err);
-  //     trx.rollback();
-  //   });
-  // })
-  // .then(() => res.send(true))
-  // .catch(() => res.send(false));
-
 };
 
 module.exports = updateUserPassword;

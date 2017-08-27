@@ -24,13 +24,14 @@ const postNewPasswordChangeRequest = (req, res, knex, bcrypt, mailer, randIdStri
     }
   })
   .then(id => insertNewPswdChangeReq({ id, user_id: foundUser.id, email: foundUser.email }))
-  // .then(() => mailer.sendMail({
-  //   from: '"GoalHighway" <no-reply@goalhighway.com>', // sender address
-  //   to: foundUser.email,
-  //   subject: 'Password Reset - GoalHighway', // Subject line
-  //   text: 'Reset your password', // plaintext body
-  //   html: resetPasswordTemplate(`http://localhost:3000/reset_password?requestId=${requestId}&email=${foundUser.email}`, foundUser.username)
-  // }))
+  .then(() => mailer.sendMail({
+    from: '"GoalHighway" <no-reply@goalhighway.com>', // sender address
+    to: foundUser.email,
+    subject: 'Forgot Account - GoalHighway', // Subject line
+    text: 'Forgot account', // plaintext body
+    html: resetPasswordTemplate(`https://goalhighway.com/reset_password?requestId=${requestId}&email=${foundUser.email}`, foundUser.username)
+    // html: resetPasswordTemplate(`http://localhost:3000/reset_password?requestId=${requestId}&email=${foundUser.email}`, foundUser.username)
+  }))
   .then(() => res.send(true))
   .catch(err => {
     console.error('Error inside postNewPasswordChangeRequest.js: ', err);
