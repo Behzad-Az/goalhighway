@@ -44,7 +44,10 @@ const blacklist = [
   '/api/docs',
   '/api/institutions',
   '/api/searchbar',
-  '/images',
+  '/imagesapi/companies',
+  '/imagesapi/users',
+  '/imagesapi/itemsforsale',
+  '/imagesapi/institutions',
   '/api/resumes'
 ];
 

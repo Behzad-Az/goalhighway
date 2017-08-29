@@ -1,4 +1,4 @@
-const confimrEmailTemplate = (confrimLink, username) => {
+const confimrEmailTemplate = (confirmLink, username) => {
   return `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>
     <!--[if gte mso 9]><xml>
      <o:OfficeDocumentSettings>
@@ -160,7 +160,7 @@ a[x-apple-data-detectors=true] {
 
                     <div align="center" class="img-container center fullwidth" style="padding-right: 30px;  padding-left: 30px;">
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 30px; padding-left: 30px;" align="center"><![endif]-->
-<div style="line-height:30px;font-size:1px">&#160;</div>  <img class="center fullwidth" align="center" border="0" src="images/goalhighway-logo-no-background.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 440px" width="440">
+<div style="line-height:30px;font-size:1px">&#160;</div>  <img class="center fullwidth" align="center" border="0" src="https://goalhighway.com/imagesapi/emailtemplates/goalhighway-logo-no-background.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 440px" width="440">
 <div style="line-height:30px;font-size:1px">&#160;</div><!--[if mso]></td></tr></table><![endif]-->
 </div>
 
@@ -168,7 +168,7 @@ a[x-apple-data-detectors=true] {
 
                     <div align="center" class="img-container center fullwidth" style="padding-right: 0px;  padding-left: 0px;">
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px;" align="center"><![endif]-->
-  <img class="center fullwidth" align="center" border="0" src="images/login-page-photo.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 500px" width="500">
+  <img class="center fullwidth" align="center" border="0" src="https://goalhighway.com/imagesapi/emailtemplates/login-page-photo.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 500px" width="500">
 <!--[if mso]></td></tr></table><![endif]-->
 </div>
 
@@ -246,7 +246,7 @@ a[x-apple-data-detectors=true] {
     <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 10px">
       <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
         <a href="https://www.facebook.com/goalhighway" title="Facebook" target="_blank">
-          <img src="images/facebook@2x.png" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+          <img src="https://goalhighway.com/imagesapi/emailtemplates/facebook@2x.png" alt="Facebook" title="Facebook" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
         </a>
       <div style="line-height:5px;font-size:1px">&#160;</div>
       </td></tr>
@@ -255,7 +255,7 @@ a[x-apple-data-detectors=true] {
     <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32" style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;Margin-right: 0">
       <tbody><tr style="vertical-align: top"><td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
         <a href="https://twitter.com/goalhighway" title="Twitter" target="_blank">
-          <img src="images/twitter@2x.png" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+          <img src="https://goalhighway.com/imagesapi/emailtemplates/twitter@2x.png" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
         </a>
       <div style="line-height:5px;font-size:1px">&#160;</div>
       </td></tr>
