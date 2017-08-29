@@ -1,4 +1,4 @@
-const confirmEmailTemplate = require('../Email_Templates/confirmEmailTemplate2.js');
+const confirmEmailTemplate = require('../Email_Templates/confirmEmailTemplate.js');
 
 const postNewUser = (req, res, knex, bcrypt, mailer, randIdString) => {
 
