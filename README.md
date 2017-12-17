@@ -1,2 +1,1 @@
-GoalHighway is a 'must-have' social networking app that helps post-secondary students achieve their academic and career
-goals through peer tutoring, note sharing, peer CV reviews, and many other features. The app is still under development and has not been deployed publically yet.
+Goalhighway is a full-stack social networking app that helps post-secondary students achieve their academic and career goals through peer collaboration. Over 50k lines of code using Node.js, PostgreSQL, ElasticSearch, React, Redux, fully-responsive CSS, as well as GoogleMail, GoogleMaps, and Twitter APIs. Deployed on DigitalOcean with SSL certification.
